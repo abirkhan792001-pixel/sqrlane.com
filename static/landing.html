@@ -289,15 +289,23 @@ h1,h2,h3,h4,p{margin:0}
    this alone, but it was inset 6% and stopped short of the frame's own bottom
    edge - which left exactly the hairline it was meant to hide. The mask on the
    frame is what actually removes it; the gradient stays to ground the shadow. */
-.shot::after{content:""; position:absolute; left:0; right:0; bottom:-40px; height:220px;
-  background:linear-gradient(to bottom, transparent 0, var(--bg) 60%, var(--bg) 100%);
+/* Grounds the mock's mask-out. Kept inside .hero (which is overflow:hidden)
+   so it only fades the frame; below the fold the strip's own gradient
+   carries the transition on. */
+.shot::after{content:""; position:absolute; left:0; right:0; bottom:-1px; height:150px;
+  background:linear-gradient(to bottom, transparent 0, var(--bg) 55%, var(--bg) 100%);
   pointer-events:none}
 /* The one object on the page that is not a card: a browser window standing in
    for a screenshot. It keeps the lift and the 16px radius because flattening it
    turns the hero shot into an inline table - but the frame is a hairline now,
    like everything else. Being the only lifted thing is what makes it read. */
-.frame{-webkit-mask-image:linear-gradient(to bottom, #000 74%, rgba(0,0,0,.4) 91%, transparent 100%);
-               mask-image:linear-gradient(to bottom, #000 74%, rgba(0,0,0,.4) 91%, transparent 100%);
+/* The mask fades the frame's bottom out. Tuned to keep every row of the
+   overview animation fully readable while still fading the frame's own
+   edge - was 74/91/100 when the frame was 420px tall, but is now 88/96/
+   100 because the frame is 580+ tall and the same percentages were
+   fading the shipment rows the animation lands on. */
+.frame{-webkit-mask-image:linear-gradient(to bottom, #000 88%, rgba(0,0,0,.5) 96%, transparent 100%);
+               mask-image:linear-gradient(to bottom, #000 88%, rgba(0,0,0,.5) 96%, transparent 100%);
        background:var(--card); border:1px solid var(--border); border-radius:var(--r-lg);
        box-shadow:var(--shadow-lift); overflow:hidden; text-align:left}
 /* The frame-bar was three macOS dots. Attio-style dashboards carry a strip
@@ -748,11 +756,16 @@ h1,h2,h3,h4,p{margin:0}
    negative margin-top pulls the fade over the last of the hero's own
    padding, and top padding is 4 so the "60 live sources" pill sits well
    inside the blur rather than announcing where it starts. */
-.strip{margin-top:-70px; padding:6px 0 34px;
+/* No negative margin: pulling the strip up covers the last rows of the
+   animation and hides the "60 live sources" pill behind the mock's fade.
+   Instead, both sides meet at var(--bg): the mock's ::after grounds to
+   --bg at its bottom, and the strip starts at --bg here, so the join is
+   the same colour on both sides - no line to hide - and the strip's
+   own long gradient carries the transition down to the card ground. */
+.strip{margin-top:0; padding:28px 0 34px;
        background:linear-gradient(to bottom, var(--bg) 0,
-                  color-mix(in srgb, var(--bg) 70%, var(--card)) 55%,
-                  color-mix(in srgb, var(--bg) 35%, var(--card)) 74%,
-                  var(--card) 240px)}
+                  color-mix(in srgb, var(--bg) 55%, var(--card)) 55%,
+                  var(--card) 220px)}
 /* The band's caption. It carries the live dot the hero pill used to - the
    claim belongs over the sources it is about, not over the headline. The dot
    is styled here rather than reused from .pill, whose rule is scoped to that
@@ -768,11 +781,14 @@ h1,h2,h3,h4,p{margin:0}
 
    width:fit-content is what makes it a pill rather than a full-width bar -
    the box has to shrink to the text before a border means anything. */
+/* Sat on var(--bg) before, which is the top of the strip's own gradient -
+   so the pill vanished into the fade. --card gives it enough contrast
+   to read as a chip against the fade at the top of the band. */
 .strip .lead{font-size:12px; line-height:16px; color:var(--faint);
              margin:0 auto 22px; width:fit-content;
              display:flex; align-items:center; gap:8px;
              height:32px; padding:0 15px; border-radius:999px;
-             background:var(--bg); border:1px solid var(--border-strong);
+             background:var(--card); border:1px solid var(--border-strong);
              box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .strip .lead .dot{width:6px; height:6px; border-radius:50%; background:var(--green);
                   box-shadow:0 0 0 3px var(--green-100); flex:none}
