@@ -671,7 +671,13 @@ h1,h2,h3,h4,p{margin:0}
    Every mark is an inline SVG drawn in this file - no image, no icon font,
    nothing fetched. A logo strip that half-loads in front of an audience
    looks broken, and this one cannot. */
-.strip{padding:34px 0; border-top:1px solid var(--border); background:var(--card)}
+/* No border-top: a 1px rule read as an abrupt line between the walk-through
+   and the pill above the sources. The transition is a gradient instead - the
+   strip's own background fades from the page bg at the top edge into --card
+   over ~44px, so the seam blurs rather than snapping. Top padding is smaller
+   than bottom on purpose: it nudges the pill up into the fade. */
+.strip{padding:22px 0 34px;
+       background:linear-gradient(to bottom, var(--bg) 0, var(--card) 44px)}
 /* The band's caption. It carries the live dot the hero pill used to - the
    claim belongs over the sources it is about, not over the headline. The dot
    is styled here rather than reused from .pill, whose rule is scoped to that
