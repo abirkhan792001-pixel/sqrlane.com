@@ -111,6 +111,12 @@ def whitepaper():
     return _page(PAPER, "Whitepaper")
 
 
+@app.get("/signals")
+def signals():
+    """The public live-feed page: headlines from the feeds SQRlane reads."""
+    return _page(STATIC_DIR / "signals.html", "Signals page")
+
+
 @app.get("/deck")
 def deck():
     """The pitch deck: what, why, how, who.
