@@ -922,17 +922,11 @@ h1,h2,h3,h4,p{margin:0}
        color:#fff; display:inline-flex; align-items:center; justify-content:center;
        font-size:9px; font-weight:700; font-style:normal}
 
-.gf-cards{padding:16px; display:flex; flex-direction:column; gap:8px;
-          position:relative}
-.gf-thread{position:absolute; left:34px; top:22px; bottom:22px; width:2px;
-           pointer-events:none}
-.gf-thread-line{position:absolute; left:0; top:0; bottom:0; width:2px;
-                background:var(--border)}
-.gf-thread-dot{position:absolute; left:-3px; width:8px; height:8px;
-               border-radius:50%; background:var(--fg);
-               top:20px; transition:top .55s var(--ease);
-               box-shadow:0 0 0 3px var(--card),
-                          0 0 0 4px color-mix(in srgb, var(--fg) 12%, transparent)}
+/* Thread rail dropped: it sat at left:34px inside .gf-cards, which put
+   it running through the middle of the mark column instead of alongside
+   it. The card-lift + badge fade-in already carry the sequence, so the
+   rail was decoration that didn't survive its own maths. */
+.gf-cards{padding:16px; display:flex; flex-direction:column; gap:8px}
 
 /* Each card. Idle state: quiet, mark grey, no badge visible. Active
    state: card lifts, mark takes its family colour, badge fades in.
@@ -977,7 +971,7 @@ h1,h2,h3,h4,p{margin:0}
   .gf-split{grid-template-columns:minmax(0,1fr); gap:28px}
 }
 @media (prefers-reduced-motion:reduce){
-  .gf-card, .gf-step, .gf-thread-dot{transition:none}
+  .gf-card, .gf-step{transition:none}
 }
 
 /* The original 10-tile grid is kept in the source so the vendor-name
@@ -2255,10 +2249,10 @@ h1,h2,h3,h4,p{margin:0}
                 <path d="M12 9v4M12 16.5v.5"/></svg>
             </span>
             <div class="gf-cbody">
-              <div class="gf-ctitle">Warning strike at Port of Hamburg</div>
-              <div class="gf-cmeta">NDR Hamburg, regional broadcaster</div>
+              <div class="gf-ctitle">Strike at Port of Hamburg</div>
+              <div class="gf-cmeta">NDR Hamburg, 23h before the wires</div>
             </div>
-            <span class="gf-cbadge red">23h before wires</span>
+            <span class="gf-cbadge red">Detected</span>
           </div>
 
           <div class="gf-card" data-card="2">
@@ -2267,10 +2261,10 @@ h1,h2,h3,h4,p{margin:0}
                    stroke-width="2" stroke-linecap="round"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5"/></svg>
             </span>
             <div class="gf-cbody">
-              <div class="gf-ctitle">SHP-001 · Automotive parts</div>
-              <div class="gf-cmeta">Shanghai to Munich, 4d slack</div>
+              <div class="gf-ctitle">SHP-001, Shanghai to Munich</div>
+              <div class="gf-cmeta">4d slack, RTM adds 2d</div>
             </div>
-            <span class="gf-cbadge blue">Rerouted via RTM</span>
+            <span class="gf-cbadge blue">Rerouted</span>
           </div>
 
           <div class="gf-card" data-card="3">
@@ -2280,8 +2274,8 @@ h1,h2,h3,h4,p{margin:0}
                 <path d="M3.5 6.5 12 13l8.5-6.5"/></svg>
             </span>
             <div class="gf-cbody">
-              <div class="gf-ctitle">To Katrin Vogel, Bavaria Drivetrain</div>
-              <div class="gf-cmeta">Revised ETA 2026-09-22, two drafts</div>
+              <div class="gf-ctitle">Carrier and customer mail</div>
+              <div class="gf-cmeta">Revised ETA to Bavaria Drivetrain</div>
             </div>
             <span class="gf-cbadge amber">Draft, not sent</span>
           </div>
@@ -2293,8 +2287,8 @@ h1,h2,h3,h4,p{margin:0}
                 <path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0z"/><path d="M12 18v4"/></svg>
             </span>
             <div class="gf-cbody">
-              <div class="gf-ctitle">port_of_discharge: DEHAM to NLRTM</div>
-              <div class="gf-cmeta">booking_status: REROUTED</div>
+              <div class="gf-ctitle">Discharge port DEHAM to NLRTM</div>
+              <div class="gf-cmeta">On the booking</div>
             </div>
             <span class="gf-cbadge amber">Queued, not written</span>
           </div>
@@ -2305,23 +2299,18 @@ h1,h2,h3,h4,p{margin:0}
                    stroke-width="2" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>
             </span>
             <div class="gf-cbody">
-              <div class="gf-ctitle">Approvals waiting</div>
-              <div class="gf-cmeta">Three write-backs, three mails, nothing sent</div>
+              <div class="gf-ctitle">Three write-backs, three mails</div>
+              <div class="gf-cmeta">Waiting on you</div>
             </div>
             <span class="gf-cbadge green">Ready</span>
           </div>
         </div>
 
-        <div class="gf-thread">
-          <span class="gf-thread-line"></span>
-          <span class="gf-thread-dot"></span>
-        </div>
       </div>
     </div>
 
     <p class="apnote" style="text-align:center; margin-inline:auto; max-width:70ch">
-      SQRlane reads the booking through one demo connector and writes nothing. No vendor,
-      no credential, no endpoint, and nothing is ever written.</p>
+      The TMS link is a demo connector. Nothing is ever written.</p>
 
     <!-- The original 10-tile grid follows, kept in the source so the block
          still carries the vendor-name disclaimer the promise test scopes
@@ -3236,17 +3225,9 @@ h1,h2,h3,h4,p{margin:0}
 
   var cards = [].slice.call(frame.querySelectorAll(".gf-card"));
   var stepEls = [].slice.call(steps.querySelectorAll(".gf-step"));
-  var dot = frame.querySelector(".gf-thread-dot");
   if (!cards.length || !stepEls.length) return;
 
   var at = 1;
-  function place() {
-    if (!dot) return;
-    var target = cards[at - 1];
-    var cards0 = cards[0].getBoundingClientRect();
-    var here = target.getBoundingClientRect();
-    dot.style.top = (here.top - cards0.top + (here.height / 2) - 4) + "px";
-  }
   function paint() {
     stepEls.forEach(function (el) {
       var n = +el.getAttribute("data-step");
@@ -3257,7 +3238,6 @@ h1,h2,h3,h4,p{margin:0}
       el.classList.toggle("on",   n === at);
       el.classList.toggle("done", n <  at);
     });
-    place();
   }
 
   var timer = 0;
@@ -3274,7 +3254,6 @@ h1,h2,h3,h4,p{margin:0}
     if (!timer) return;
     clearInterval(timer); timer = 0;
   }
-  window.addEventListener("resize", place);
   document.addEventListener("visibilitychange", function () {
     document.hidden ? stop() : start();
   });
