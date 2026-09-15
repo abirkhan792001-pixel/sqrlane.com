@@ -737,13 +737,15 @@ h1,h2,h3,h4,p{margin:0}
    over ~44px, so the seam blurs rather than snapping. Top padding is smaller
    than bottom on purpose: it nudges the pill up into the fade. */
 /* The seam under the hero used to be a 1px border, then a 44px gradient,
-   now a longer soft blur so the mock's fade-out reads as one motion into
-   this band rather than as two sections meeting. Top padding is 10px so
-   the "60 live sources" pill sits well inside the fade. */
-.strip{padding:10px 0 34px;
+   then 96px; now the whole strip's top half is one long fade so the
+   mock's mask-out and the band's own ground read as one motion. The
+   negative margin-top pulls the fade over the last of the hero's own
+   padding, and top padding is 4 so the "60 live sources" pill sits well
+   inside the blur rather than announcing where it starts. */
+.strip{margin-top:-24px; padding:4px 0 34px;
        background:linear-gradient(to bottom, var(--bg) 0,
-                  color-mix(in srgb, var(--bg) 55%, var(--card)) 42%,
-                  var(--card) 96px)}
+                  color-mix(in srgb, var(--bg) 60%, var(--card)) 45%,
+                  var(--card) 170px)}
 /* The band's caption. It carries the live dot the hero pill used to - the
    claim belongs over the sources it is about, not over the headline. The dot
    is styled here rather than reused from .pill, whose rule is scoped to that
@@ -1287,8 +1289,9 @@ h1,h2,h3,h4,p{margin:0}
         <!-- The top strip: workspace chip, a run's filter state, and Export.
              None of these are controls; they name the state of THIS run so
              the header reads as a working view. -->
+        <!-- No workspace chip here: the sidebar's brand already names the
+             dashboard once, and doing it twice reads as noise. -->
         <div class="frame-bar">
-          <span class="fb-chip brand"><span class="sq">SQ</span>SQRlane</span>
           <span class="fb-chip">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round"><path d="M12 3l9 16H3z"/></svg>
@@ -1317,9 +1320,12 @@ h1,h2,h3,h4,p{margin:0}
         </div>
         <div class="board">
           <aside class="board-side">
+            <!-- The dashboard's workspace label. Named after the hypothetical
+                 customer whose board this is, the way Attio's own dashboard
+                 named "Attio's Dashboard" - not after the vendor. -->
             <div class="sb-brand">
-              <span class="sq">SQ</span>
-              <span class="nm">SQRlane's board</span>
+              <span class="sq">A</span>
+              <span class="nm">Acme Inc.</span>
             </div>
             <div class="sb-search">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
