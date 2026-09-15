@@ -1471,9 +1471,16 @@ h1,h2,h3,h4,p{margin:0}
                 <circle class="dot"  cx="286" cy="8"  r="2.6"/>
                 <circle class="dot"  cx="339" cy="44" r="2.6"/>
                 <circle class="dot"  cx="392" cy="44" r="2.6"/>
-                <g class="tip on" transform="translate(133 -14)">
-                  <rect x="0" y="0" width="96" height="20"/>
-                  <text x="8"  y="14"><tspan class="lab">Thu</tspan> &middot; 4 disruptions</text>
+                <!-- Tooltip. Text is anchor="middle" and the rect is
+                     centered on the Thursday dot (x=181), so lengthening or
+                     shortening the label does not push it off the peak.
+                     Width is deliberately generous - preserveAspectRatio=
+                     "none" on the parent SVG stretches text horizontally
+                     so a rect sized to the *nominal* string overflows in
+                     practice. -->
+                <g class="tip on" transform="translate(129 -18)">
+                  <rect x="0" y="0" width="104" height="20"/>
+                  <text x="52" y="14" text-anchor="middle"><tspan class="lab">Thu</tspan> &middot; 4 active</text>
                 </g>
               </svg>
               <div style="display:flex; justify-content:space-between;
