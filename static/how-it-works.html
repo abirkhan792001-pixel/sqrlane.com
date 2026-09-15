@@ -165,9 +165,11 @@ h1,h2,h3,h4,p{margin:0}
 /* ---------- top banner ---------- */
 .banner{background:var(--fg); color:#fff; font-size:13px; line-height:18px;
         padding:9px 0; text-align:center}
-.banner .wrap{display:flex; align-items:center; justify-content:center; gap:10px;
-              flex-wrap:wrap}
-.banner b{font-weight:600}
+/* Not a flex row: the bold + em-dash + span read as one sentence, so let it
+   flow inline and be centered by .banner's text-align. A flex row wrapped
+   them as two centered lines, and the bold read as a title. */
+.banner .wrap{max-width:min(1120px, 92ch)}
+.banner b{font-weight:600; margin-right:4px}
 .banner span{color:#a8a8a8}
 
 /* ---------- nav ---------- */
@@ -556,7 +558,6 @@ h1,h2,h3,h4,p{margin:0}
   /* The honest note is the first thing on the page and must stay readable,
      but four lines of black bar is too much weight above the fold. */
   .banner{font-size:12px; line-height:17px; padding:8px 0; text-align:left}
-  .banner .wrap{gap:4px; justify-content:flex-start}
   .section{padding:64px 0}
   .hero{padding-top:60px}
   .d1{font-size:38px; line-height:42px; letter-spacing:-1.6px}
