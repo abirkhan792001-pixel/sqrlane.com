@@ -289,8 +289,9 @@ h1,h2,h3,h4,p{margin:0}
    this alone, but it was inset 6% and stopped short of the frame's own bottom
    edge - which left exactly the hairline it was meant to hide. The mask on the
    frame is what actually removes it; the gradient stays to ground the shadow. */
-.shot::after{content:""; position:absolute; left:0; right:0; bottom:-1px; height:120px;
-  background:linear-gradient(to bottom, transparent, var(--bg) 92%); pointer-events:none}
+.shot::after{content:""; position:absolute; left:0; right:0; bottom:-40px; height:220px;
+  background:linear-gradient(to bottom, transparent 0, var(--bg) 60%, var(--bg) 100%);
+  pointer-events:none}
 /* The one object on the page that is not a card: a browser window standing in
    for a screenshot. It keeps the lift and the 16px radius because flattening it
    turns the hero shot into an inline table - but the frame is a hairline now,
@@ -742,10 +743,11 @@ h1,h2,h3,h4,p{margin:0}
    negative margin-top pulls the fade over the last of the hero's own
    padding, and top padding is 4 so the "60 live sources" pill sits well
    inside the blur rather than announcing where it starts. */
-.strip{margin-top:-24px; padding:4px 0 34px;
+.strip{margin-top:-70px; padding:6px 0 34px;
        background:linear-gradient(to bottom, var(--bg) 0,
-                  color-mix(in srgb, var(--bg) 60%, var(--card)) 45%,
-                  var(--card) 170px)}
+                  color-mix(in srgb, var(--bg) 70%, var(--card)) 55%,
+                  color-mix(in srgb, var(--bg) 35%, var(--card)) 74%,
+                  var(--card) 240px)}
 /* The band's caption. It carries the live dot the hero pill used to - the
    claim belongs over the sources it is about, not over the headline. The dot
    is styled here rather than reused from .pill, whose rule is scoped to that
@@ -1619,7 +1621,15 @@ h1,h2,h3,h4,p{margin:0}
               <span class="h">Risk Worker</span>
               <span class="chip live">Live</span>
               <span class="chip red">1 active</span>
-              <div class="r"><span class="w-mini">60 sources read</span></div>
+              <div class="r">
+                <div class="rank-row">
+                  <span class="rank">Sources: <b>60/60</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Detected: <b>1</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Bookings hit: <b>3/7</b></span>
+                </div>
+              </div>
             </div>
             <div class="w-evt">
               <div class="w-evt-h">
@@ -1648,7 +1658,15 @@ h1,h2,h3,h4,p{margin:0}
               <span class="h">Routing Worker</span>
               <span class="chip live">Live</span>
               <span class="w-mini">SHP-001 &middot; Automotive parts</span>
-              <div class="r"><span class="st-badge st-blue"><i></i>Rerouted &middot; RTM</span></div>
+              <div class="r">
+                <div class="rank-row">
+                  <span class="rank">Options: <b>4</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Chosen: <b>R-RTM-ALT</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Saved: <b>EUR 29,196</b></span>
+                </div>
+              </div>
             </div>
             <ol class="w-steps">
               <li><span class="k">02</span>R-HAM-STD passes SUEZ, REDSEA, HAM</li>
@@ -1675,7 +1693,15 @@ h1,h2,h3,h4,p{margin:0}
               <span class="h">Comms Worker</span>
               <span class="chip live">Live</span>
               <span class="chip">18 waiting</span>
-              <div class="r"><span class="w-mini">nothing is sent</span></div>
+              <div class="r">
+                <div class="rank-row">
+                  <span class="rank">Waiting: <b>18</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">This run: <b>6</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Voices: <b>2</b></span>
+                </div>
+              </div>
             </div>
             <!-- The customer mail, verbatim from the run - signature block and
                  all. A subject line only shows that drafting happened; the
@@ -1734,7 +1760,15 @@ h1,h2,h3,h4,p{margin:0}
             <div class="board-top">
               <span class="h">TMS link</span>
               <span class="chip live">connected</span>
-              <div class="r"><span class="w-mini">Consol &middot; HLCU-2261188 &middot; amendment pending</span></div>
+              <div class="r">
+                <div class="rank-row">
+                  <span class="rank">Fields: <b>5</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Changes: <b>3</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Author: <b>Routing</b></span>
+                </div>
+              </div>
             </div>
             <p class="w-sec">Consol details</p>
             <div class="w-fields">
@@ -1761,7 +1795,15 @@ h1,h2,h3,h4,p{margin:0}
             <div class="board-top">
               <span class="h">Exposure on this run</span>
               <span class="chip synth">Synthetic scenario</span>
-              <div class="r"><span class="w-mini">7 bookings &middot; Hamburg strike</span></div>
+              <div class="r">
+                <div class="rank-row">
+                  <span class="rank">Bookings: <b>7</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Actioned: <b>3</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Saved: <b>EUR 46,500</b></span>
+                </div>
+              </div>
             </div>
             <div class="w-money">
               <div class="w-mo">
