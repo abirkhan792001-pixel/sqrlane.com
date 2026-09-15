@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About &mdash; SQRlane</title>
-<meta name="description" content="What is real in this build and what is not: the live source pull, decisions and drafts; the synthetic bookings and authored disruptions; and a TMS connector that is modelled rather than wired.">
+<title>Signals &mdash; SQRlane</title>
+<meta name="description" content="Live headlines the desk should have seen. Regional broadcasters read as they land, tagged by source and country, straight from the feeds SQRlane already watches.">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3.5' fill='%23171717'/%3E%3Cpath d='M3 11.2h10M3 8h6.5M3 4.8h3.5' stroke='%23fff' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -407,8 +407,8 @@ h1,h2,h3,h4,p{margin:0}
       <a href="/product">Product</a>
       <a href="/how-it-works">How it works</a>
       <a href="/use-cases">Use cases</a>
-      <a href="/about" class="on">About</a>
-      <a href="/signals">Signals</a>
+      <a href="/about">About</a>
+      <a href="/signals" class="on">Signals</a>
       <a href="/whitepaper">Whitepaper</a>
     </nav>
     <div class="right">
@@ -421,163 +421,228 @@ h1,h2,h3,h4,p{margin:0}
   </div>
 </header>
 
+<!-- ======================== SIGNALS FEED ============================
+     Live headlines from the same feeds SQRlane already reads. Each item
+     is fetched from /api/live-feed and rendered as a card with the
+     country flag, source name, headline and a link to the story.
+     Nothing on the page is authored; if the endpoint returns no items,
+     the empty state names what would have been shown.
+     =================================================================== -->
 <section class="phead">
   <div class="wrap">
-    <div class="in rv">
-      <span class="eyebrow">About</span>
-      <h1 class="d2">Real where it earns credibility. Scripted where it has to be.</h1>
-      <p class="copy18">This is a working prototype, not a live product, and the difference is on screen rather than in the small print. Here is exactly which half is which.</p>
-      <!-- Each page states its own job. Five pages that all try to sell the
-           whole product are five pages nobody finishes. -->
-      <p class="goal"><span class="chip blue">This page</span> <b>what is real here, and what is not</b></p>
-    </div>
-  </div>
-</section>
-
-<section class="section honest" id="real">
-  <div class="wrap">
-    <div class="head rv">
-      <span class="eyebrow">The ledger</span>
-      <h2 class="h32">Everything in the build sits in one of three columns.</h2>
-    </div>
-
-    <div class="ledger rv">
-      <div class="led is-live">
-        <div class="h"><span class="chip live">Live</span><span class="t">Genuinely run</span></div>
-        <ul>
-          <li>The pull across sixty free, keyless sources</li>
-          <li>Classification &mdash; chokepoint, disruption type, severity</li>
-          <li>Every routing decision, and the reasoning under it</li>
-          <li>Both drafted emails, written per booking</li>
-          <li>The Rhine gauges on the how-it-works page</li>
-        </ul>
-      </div>
-      <div class="led is-synth">
-        <div class="h"><span class="chip synth">Synthetic</span><span class="t">Authored</span></div>
-        <ul>
-          <li>The seven bookings on the board</li>
-          <li>The four disruptions, so one can be shown on command</li>
-          <li>The candidate routes and their transit days</li>
-          <li>Ten of the fourteen Workers, each tagged on its own card</li>
-        </ul>
-      </div>
-      <div class="led is-demo">
-        <div class="h"><span class="chip">Demo connector</span><span class="t">Modelled, not wired</span></div>
-        <ul>
-          <li>The TMS the bookings are read from</li>
-          <li>Every change written back onto a booking</li>
-          <li>No vendor, no credential, no endpoint &mdash; a write-back is a
-              description of a change, and it stays one</li>
-        </ul>
-      </div>
-    </div>
-    <div class="panel rv">
-      <span class="eyebrow">What is real and what is not</span>
-      <blockquote class="h24">
-        “The risk detection is real — it runs against live news right now. The shipments are
-        synthetic, so I can show you a disruption on demand instead of waiting for one.”
-      </blockquote>
-      <div class="who">
-        <span><span class="chip live">Live</span>
-          <span class="copy14">news pull, classification, decisions, drafts</span></span>
-        <span><span class="chip synth">Synthetic</span>
-          <span class="copy14">the seven bookings and the injected Hamburg strike</span></span>
-        <span><span class="chip synth">Demo connector</span>
-          <span class="copy14">the TMS the bookings are read from and written back to</span></span>
-      </div>
-      <p class="copy14">
-        The injected strike uses the same event format as a live one, so it runs through the
-        real pipeline rather than around it. The TMS link is the same idea in reverse: one door
-        to the book, every decision written back onto the record it came from, but no TMS
-        contacted and nothing written. A demo, not a live product — the wall between the two is
-        integration and trust, and this connector stops at it.
+    <div class="in">
+      <span class="eyebrow">The feed</span>
+      <h1 class="d2" style="text-wrap:balance">
+        The signals the desk should have seen.
+      </h1>
+      <p class="copy18" style="max-width:60ch">
+        Regional broadcasters on the North Range, read as they land. The same
+        feeds SQRlane watches on every cycle, one row per headline, with the
+        country flag switching source by source.
       </p>
     </div>
   </div>
 </section>
 
-<section class="section" id="for">
+<section class="section signals-feed">
   <div class="wrap">
-    <div class="head rv">
-      <span class="eyebrow">Who it is for</span>
-      <h2 class="h32">The desk that is doing both halves by hand.</h2>
-    </div>
-    <div class="who-for rv">
-      <div class="card">
-        <p class="k">Modelled end user</p>
-        <p class="v">Head of Operations at a mid-size forwarder</p>
-        <p>DACH or Benelux, running the North Range corridors. Big enough that a Hamburg
-          strike touches several bookings at once; too small for the enterprise risk
-          platforms, which stop at the alert anyway.</p>
+    <div class="sf-head">
+      <div class="sf-lead">
+        <span class="sf-live-dot"></span>
+        <span class="sf-live-txt">Live</span>
+        <span class="sf-lead-sep">&middot;</span>
+        <span class="sf-lead-note" data-sf-note>reading feeds</span>
       </div>
-      <div class="card">
-        <p class="k">The job it removes</p>
-        <p class="v">Re-keying the consequences, one booking at a time</p>
-        <p>Watching is narrower than the problem and reacting is slower than the problem.
-          The plank that eats the day is the second one: typing each decision into the
-          system of record by hand.</p>
-      </div>
+      <button class="sf-refresh" type="button" data-sf-refresh aria-label="Refresh">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-3.5-7.1"/><path d="M21 4v5h-5"/></svg>
+        Refresh
+      </button>
     </div>
+
+    <ul class="sf-list" data-sf-list aria-live="polite"></ul>
+
+    <div class="sf-empty" data-sf-empty hidden>
+      <p class="sf-empty-t">No live signals right now.</p>
+      <p class="sf-empty-s">The feeds SQRlane reads are keyless and best-effort. When they answer, headlines show up here as they land. Try refresh in a moment.</p>
+    </div>
+
+    <p class="sf-foot">
+      Reading <b>NDR Hamburg</b>, <b>Rijnmond</b> and <b>France Info</b> today.
+      The full pool the risk monitor watches on a run is 60 sources across six
+      families; this page shows the news half of that, unclassified.
+    </p>
   </div>
 </section>
 
-<section class="section" id="not">
-  <div class="wrap">
-    <div class="head rv">
-      <span class="eyebrow">Scope</span>
-      <h2 class="h32">What it deliberately does not do.</h2>
-      <p class="copy18">Each of these is a decision, not a gap &mdash; and saying so is
-        cheaper than being found out.</p>
-    </div>
-    <div class="grid g2 nots rv">
-      <div class="not">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        <div><p class="k">No live TMS connection</p><p class="v">Working through the TMS is the design; the far end is not built. No vendor, no credential, no endpoint, and nothing is ever written.</p></div>
-      </div>
-      <div class="not">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        <div><p class="k">Nothing is sent</p><p class="v">No email library and no transport of any kind is imported anywhere in the app. A test parses every file and fails the build if one appears.</p></div>
-      </div>
-      <div class="not">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        <div><p class="k">No route optimisation</p><p class="v">Routes are pre-authored candidates. The agent chooses among them and justifies the choice; it does not compute them.</p></div>
-      </div>
-      <div class="not">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        <div><p class="k">No accuracy figures</p><p class="v">Nothing here has been measured against real freight, so no percentage is claimed anywhere on this site. An invented number is the one thing this project refuses to produce.</p></div>
-      </div>
-      <div class="not">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        <div><p class="k">No scheduler</p><p class="v">Button-triggered. For a demo, the magic has to happen on screen, on command &mdash; not in a background job nobody can see.</p></div>
-      </div>
-      <div class="not">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        <div><p class="k">No database</p><p class="v">JSON files and memory. There is nothing to install and nothing to migrate.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="closer">
-  <div class="wrap rv">
-    <div>
-      <p class="t">Seen enough to want a look at your own lanes?</p>
-      <p class="s">Half an hour, your corridors, your disruption.</p>
-    </div>
-    <div class="cta">
-      <a class="btn btn-primary btn-lg" href="/#contact">Book a demo
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h13M12 5l7 7-7 7"/></svg></a>
-      <a class="btn btn-secondary btn-lg" href="/whitepaper">Read the whitepaper</a>
-    </div>
-  </div>
-</section>
+<style>
+/* ---------- Signals page ------------------------------------------------- */
+.signals-feed{padding-top:8px}
+.sf-head{display:flex; align-items:center; justify-content:space-between;
+         gap:12px; margin-bottom:20px}
+.sf-lead{display:inline-flex; align-items:center; gap:8px; height:32px;
+         padding:0 14px; border-radius:999px;
+         background:var(--card); border:1px solid var(--border-strong);
+         box-shadow:0 1px 2px rgba(0,0,0,.04);
+         font-size:12px; color:var(--faint); letter-spacing:-.05px}
+.sf-live-dot{width:7px; height:7px; border-radius:50%; background:var(--green);
+             box-shadow:0 0 0 3px var(--green-100);
+             animation:sf-pulse 2s ease-in-out infinite}
+.sf-live-txt{color:var(--green); font-weight:500}
+.sf-lead-sep{color:var(--gray-400)}
+.sf-lead-note{color:var(--muted)}
+@keyframes sf-pulse{
+  0%,100%{box-shadow:0 0 0 3px var(--green-100)}
+  50%    {box-shadow:0 0 0 4px color-mix(in srgb, var(--green) 30%, transparent)}
+}
+.sf-refresh{display:inline-flex; align-items:center; gap:7px;
+            height:32px; padding:0 13px; border-radius:var(--r-sm);
+            background:var(--card); border:1px solid var(--border-strong);
+            font:inherit; font-size:12px; color:var(--fg); cursor:pointer;
+            transition:background .2s var(--ease), border-color .2s var(--ease)}
+.sf-refresh:hover{background:var(--gray-100)}
+.sf-refresh.spinning svg{animation:sf-spin .8s linear infinite}
+@keyframes sf-spin{to{transform:rotate(360deg)}}
+
+.sf-list{list-style:none; margin:0; padding:0;
+         display:flex; flex-direction:column; gap:10px}
+.sf-item{display:grid; grid-template-columns:40px minmax(0,1fr) auto;
+         gap:16px; align-items:center;
+         padding:14px 16px; border-radius:var(--r-md);
+         background:var(--card); border:1px solid var(--border);
+         transition:border-color .2s var(--ease),
+                    box-shadow .25s var(--ease),
+                    transform .25s var(--ease); text-decoration:none}
+.sf-item:hover{border-color:var(--border-strong);
+               box-shadow:var(--shadow-card); transform:translateY(-1px)}
+.sf-flag{width:40px; height:28px; border-radius:5px; overflow:hidden;
+         display:inline-block; background:var(--card-muted);
+         box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.sf-flag svg{width:100%; height:100%; display:block}
+.sf-body{min-width:0}
+.sf-t{font-size:15px; line-height:21px; font-weight:500;
+      color:var(--fg); letter-spacing:-.2px; margin:0;
+      overflow:hidden; display:-webkit-box; -webkit-line-clamp:2;
+      -webkit-box-orient:vertical}
+.sf-m{margin-top:5px; display:flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--faint); letter-spacing:-.05px}
+.sf-source{color:var(--muted); font-weight:500}
+.sf-sep{color:var(--gray-400)}
+.sf-country{font-family:"Geist Mono",ui-monospace,monospace;
+            text-transform:uppercase; letter-spacing:.06em; font-size:10.5px}
+.sf-arrow{display:inline-flex; align-items:center; justify-content:center;
+          width:32px; height:32px; border-radius:8px;
+          color:var(--muted); background:var(--card-muted);
+          border:1px solid var(--border)}
+.sf-item:hover .sf-arrow{color:var(--fg)}
+
+.sf-empty{text-align:center; padding:48px 24px;
+          border:1px dashed var(--border-strong); border-radius:var(--r-md)}
+.sf-empty-t{font-size:16px; font-weight:600; color:var(--fg); margin:0}
+.sf-empty-s{margin:6px auto 0; max-width:52ch;
+            font-size:13px; color:var(--muted); line-height:20px}
+
+.sf-foot{margin-top:24px; font-size:12px; line-height:18px; color:var(--faint);
+         letter-spacing:-.05px; text-align:center}
+.sf-foot b{color:var(--muted); font-weight:500}
+
+@media (max-width:640px){
+  .sf-item{grid-template-columns:32px minmax(0,1fr) auto; gap:12px;
+           padding:12px 14px}
+  .sf-flag{width:32px; height:22px}
+  .sf-t{font-size:14px; line-height:19px}
+  .sf-arrow{width:28px; height:28px}
+}
+</style>
+
+<script>
+/* Fetch the shared /api/live-feed endpoint and render the items as a
+   flat list. Same FLAGS registry the landing card uses. If the endpoint
+   returns nothing, the empty state names why rather than leaving a blank
+   pane. Refresh button re-fetches (no cache) and spins its icon while it
+   waits. */
+(function () {
+  var listEl    = document.querySelector("[data-sf-list]");
+  var emptyEl   = document.querySelector("[data-sf-empty]");
+  var noteEl    = document.querySelector("[data-sf-note]");
+  var refreshEl = document.querySelector("[data-sf-refresh]");
+  if (!listEl) return;
+
+  var FLAGS = {
+    de: '<svg viewBox="0 0 5 3" preserveAspectRatio="none">' +
+        '<rect width="5" height="1" y="0" fill="#000"/>' +
+        '<rect width="5" height="1" y="1" fill="#DD0000"/>' +
+        '<rect width="5" height="1" y="2" fill="#FFCE00"/></svg>',
+    nl: '<svg viewBox="0 0 5 3" preserveAspectRatio="none">' +
+        '<rect width="5" height="1" y="0" fill="#AE1C28"/>' +
+        '<rect width="5" height="1" y="1" fill="#FFFFFF"/>' +
+        '<rect width="5" height="1" y="2" fill="#21468B"/></svg>',
+    fr: '<svg viewBox="0 0 3 2" preserveAspectRatio="none">' +
+        '<rect width="1" height="2" x="0" fill="#0055A4"/>' +
+        '<rect width="1" height="2" x="1" fill="#FFFFFF"/>' +
+        '<rect width="1" height="2" x="2" fill="#EF4135"/></svg>',
+  };
+  function flagOf(iso) {
+    return FLAGS[("" + (iso || "")).toLowerCase().slice(0, 2)] ||
+      '<svg viewBox="0 0 1 1"><rect width="1" height="1" fill="#d0d0d0"/></svg>';
+  }
+
+  function escape(s) {
+    return (s || "").replace(/[<>&"']/g, function (c) {
+      return { "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+
+  function render(items) {
+    if (!items || !items.length) {
+      listEl.innerHTML = "";
+      emptyEl.hidden = false;
+      noteEl.textContent = "no headlines to show";
+      return;
+    }
+    emptyEl.hidden = true;
+    noteEl.textContent = items.length + " headlines";
+    var arrow =
+      '<span class="sf-arrow"><svg width="14" height="14" viewBox="0 0 24 24"' +
+      ' fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+      '<path d="M7 17L17 7"/><path d="M9 7h8v8"/></svg></span>';
+    listEl.innerHTML = items.map(function (it) {
+      var iso = ("" + (it.iso || "")).toUpperCase();
+      var href = it.link ? ' href="' + escape(it.link) + '"' : "";
+      var tag  = it.link ? "a" : "div";
+      return "<li><" + tag + ' class="sf-item"' + href +
+             ' target="_blank" rel="noopener">' +
+             '<span class="sf-flag">' + flagOf(it.iso) + '</span>' +
+             '<span class="sf-body">' +
+               '<p class="sf-t">' + escape(it.title) + '</p>' +
+               '<span class="sf-m">' +
+                 '<span class="sf-source">' + escape(it.source) + '</span>' +
+                 '<span class="sf-sep">&middot;</span>' +
+                 '<span class="sf-country">' + escape(iso) + '</span>' +
+               '</span>' +
+             '</span>' +
+             arrow +
+             '</' + tag + '></li>';
+    }).join("");
+  }
+
+  function load(nocache) {
+    if (refreshEl) refreshEl.classList.add("spinning");
+    noteEl.textContent = "reading feeds";
+    fetch("/api/live-feed", nocache ? { cache: "no-store" } : {})
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { render(d && d.items || []); })
+      .catch(function () { render([]); })
+      .then(function () {
+        if (refreshEl) refreshEl.classList.remove("spinning");
+      });
+  }
+
+  if (refreshEl) refreshEl.addEventListener("click", function () { load(true); });
+  load(false);
+})();
+</script>
 
 <!-- ======================== FOOTER ======================== -->
 <footer class="foot">
