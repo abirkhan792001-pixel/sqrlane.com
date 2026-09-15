@@ -979,6 +979,53 @@ h1,h2,h3,h4,p{margin:0}
    div-class-apps, closer section-close). Hidden here in one place. */
 .gap-flow .apps{display:none}
 
+/* ---------- the hub (Peec-AI-featured-MCP orbit) --------------------------
+   Central SQRlane chip with six tool satellites around it. Every ~1.6s the
+   .on class advances to the next satellite; that satellite lifts, its icon
+   colours in, and the spoke to the hub brightens with it. Reduced-motion
+   opts out and the whole thing stays as a static, still-legible diagram. */
+.hub-section{padding:80px 0}
+.hub-wrap{margin-top:44px; display:flex; justify-content:center}
+.hub-orbit{width:100%; max-width:520px; height:auto; display:block}
+
+.hb-ring{fill:none; stroke:var(--border); stroke-dasharray:2 6; opacity:.7}
+
+.hb-spokes{stroke:var(--border); stroke-width:1; stroke-dasharray:2 5}
+.hb-spoke{transition:stroke .5s var(--ease), stroke-dasharray .5s var(--ease),
+          stroke-width .5s var(--ease)}
+.hb-spoke.on{stroke:var(--fg); stroke-dasharray:none; stroke-width:1.5}
+
+.hb-sat > circle{fill:var(--card); stroke:var(--border-strong); stroke-width:1;
+                 transition:stroke .35s var(--ease), filter .5s var(--ease)}
+.hb-sat .hb-icon{stroke:var(--muted); fill:none; stroke-linecap:round;
+                 transition:stroke .35s var(--ease), transform .5s var(--ease)}
+.hb-sat.on > circle{stroke:var(--fg);
+                    filter:drop-shadow(0 6px 14px rgba(0,0,0,.10))}
+.hb-sat.on .hb-icon{stroke:var(--fg)}
+.hb-lbl{fill:var(--muted); font-family:"Geist",sans-serif;
+        font-size:12px; font-weight:500; letter-spacing:-.15px;
+        transition:fill .35s var(--ease)}
+.hb-sat.on .hb-lbl{fill:var(--fg)}
+
+.hb-hub circle{fill:var(--fg)}
+.hb-hub .hb-halo{fill:none; stroke:var(--fg); stroke-opacity:.14;
+                 stroke-width:1; r:56; animation:hb-halo 2.6s ease-in-out infinite}
+.hb-hub-t{fill:#fff; font-family:"Geist",sans-serif;
+          font-size:20px; font-weight:700; letter-spacing:-.5px}
+@keyframes hb-halo{
+  0%,100%{r:56; stroke-opacity:.14}
+  50%    {r:66; stroke-opacity:0}
+}
+
+@media (max-width:640px){
+  .hub-section{padding:52px 0}
+  .hub-wrap{margin-top:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hb-spoke, .hb-sat > circle, .hb-sat .hb-icon, .hb-lbl{transition:none}
+  .hb-hub .hb-halo{animation:none}
+}
+
 .apps{margin-top:40px; position:relative}
 /* The stroke lives on the <svg> that instances the symbol, never on the
    <symbol> itself - styling the symbol does not reach the shadow content a
@@ -2396,6 +2443,116 @@ h1,h2,h3,h4,p{margin:0}
   </div>
 </section>
 
+<!-- ======================== THE HUB ==============================================
+     Reference is Peec AI's "Featured MCP" orbit - a central chip and six
+     tool logos arranged around it. Here the centre is SQRlane and the six
+     satellites are the tools the desk already uses. Pictograms only, per
+     the same convention as the hidden apps grid above (drawing the real
+     marks would reproduce someone else's trademark and read as an
+     integration none of them has). The active satellite is highlighted
+     in sequence by a small JS cycler; the spoke to the hub lights with it.
+     ============================================================================= -->
+<section class="section hub-section" id="hub">
+  <div class="wrap">
+    <div class="head rv" style="text-align:center; margin:0 auto">
+      <span class="eyebrow">One place</span>
+      <h2 class="d2" style="text-wrap:balance">Every tool the desk already uses.</h2>
+      <p class="copy18" style="margin-inline:auto; max-width:52ch">
+        Gmail, Outlook, Slack, WhatsApp, the TMS. Sixty live sources on top. One workflow reads all of them.</p>
+    </div>
+
+    <div class="hub-wrap rv" data-hub aria-hidden="true">
+      <svg class="hub-orbit" viewBox="0 0 500 420" preserveAspectRatio="xMidYMid meet">
+
+        <!-- Dotted rings, purely decorative depth. -->
+        <circle class="hb-ring" cx="250" cy="200" r="130"/>
+        <circle class="hb-ring" cx="250" cy="200" r="88"/>
+
+        <!-- Spokes from each satellite to the hub. .on brightens the one
+             whose satellite is currently active. -->
+        <g class="hb-spokes" fill="none" stroke-linecap="round">
+          <line class="hb-spoke" data-sat="1" x1="250" y1="70"  x2="250" y2="200"/>
+          <line class="hb-spoke" data-sat="2" x1="363" y1="135" x2="250" y2="200"/>
+          <line class="hb-spoke" data-sat="3" x1="363" y1="265" x2="250" y2="200"/>
+          <line class="hb-spoke" data-sat="4" x1="250" y1="330" x2="250" y2="200"/>
+          <line class="hb-spoke" data-sat="5" x1="137" y1="265" x2="250" y2="200"/>
+          <line class="hb-spoke" data-sat="6" x1="137" y1="135" x2="250" y2="200"/>
+        </g>
+
+        <!-- The six satellites. Positions on a circle of radius 130 at
+             60deg intervals starting from the top; icons are 24x24
+             centred on each. Labels sit below. -->
+        <g class="hb-sat" data-sat="1">
+          <circle cx="250" cy="70" r="28"/>
+          <g transform="translate(238 58)" class="hb-icon">
+            <path d="M3 5h18v14H3z" fill="none" stroke-width="1.7"/>
+            <path d="M3.5 6.5 12 13l8.5-6.5" fill="none" stroke-width="1.7"/>
+          </g>
+          <text class="hb-lbl" x="250" y="118" text-anchor="middle">Gmail</text>
+        </g>
+
+        <g class="hb-sat" data-sat="2">
+          <circle cx="363" cy="135" r="28"/>
+          <g transform="translate(351 123)" class="hb-icon">
+            <path d="M3 5h18v14H3z" fill="none" stroke-width="1.7"/>
+            <path d="M3 9h18M8 5v14" fill="none" stroke-width="1.7"/>
+          </g>
+          <text class="hb-lbl" x="363" y="183" text-anchor="middle">Outlook</text>
+        </g>
+
+        <g class="hb-sat" data-sat="3">
+          <circle cx="363" cy="265" r="28"/>
+          <g transform="translate(351 253)" class="hb-icon">
+            <path d="M4 5h16v10H9l-5 4z" fill="none" stroke-width="1.7"/>
+            <path d="M8 9h8M8 12h5" fill="none" stroke-width="1.7"/>
+          </g>
+          <text class="hb-lbl" x="363" y="313" text-anchor="middle">Slack</text>
+        </g>
+
+        <g class="hb-sat" data-sat="4">
+          <circle cx="250" cy="330" r="28"/>
+          <g transform="translate(238 318)" class="hb-icon">
+            <rect x="6" y="2.5" width="12" height="19" rx="2.6"
+                  fill="none" stroke-width="1.7"/>
+            <path d="M10.5 5.6h3" fill="none" stroke-width="1.7"/>
+            <circle cx="12" cy="18.2" r="1" fill="none" stroke-width="1.7"/>
+          </g>
+          <text class="hb-lbl" x="250" y="378" text-anchor="middle">WhatsApp</text>
+        </g>
+
+        <g class="hb-sat" data-sat="5">
+          <circle cx="137" cy="265" r="28"/>
+          <g transform="translate(125 253)" class="hb-icon">
+            <path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0z"
+                  fill="none" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M12 18v4" fill="none" stroke-width="1.7"/>
+          </g>
+          <text class="hb-lbl" x="137" y="313" text-anchor="middle">TMS</text>
+        </g>
+
+        <g class="hb-sat" data-sat="6">
+          <circle cx="137" cy="135" r="28"/>
+          <g transform="translate(125 123)" class="hb-icon">
+            <rect x="3.5" y="4" width="17" height="16" rx="1.8"
+                  fill="none" stroke-width="1.7"/>
+            <path d="M3.5 9h17M3.5 14.5h17M9.5 4v16"
+                  fill="none" stroke-width="1.7"/>
+          </g>
+          <text class="hb-lbl" x="137" y="183" text-anchor="middle">Excel</text>
+        </g>
+
+        <!-- The hub in the middle. -->
+        <g class="hb-hub">
+          <circle cx="250" cy="200" r="44"/>
+          <circle cx="250" cy="200" r="44" class="hb-halo"/>
+          <text x="250" y="207" text-anchor="middle" class="hb-hub-t">SQ</text>
+        </g>
+
+      </svg>
+    </div>
+  </div>
+</section>
+
 <!-- ======================== THE LOOP, IN ONE PICTURE ======================== -->
 <!-- Deliberately without explanation. The mechanism is /how-it-works' whole
      job; if this section starts describing it, there are two pages doing one
@@ -3265,6 +3422,51 @@ h1,h2,h3,h4,p{margin:0}
       });
     }, { threshold: 0.25 });
     io.observe(frame);
+  } else {
+    start();
+  }
+})();
+
+/* Hub orbit cycler.
+   Advances .on around the six satellites every 1.6s and mirrors it on the
+   matching spoke, so the reader follows the light around the ring. Only
+   runs while the hub is on screen and honours reduced-motion. */
+(function () {
+  var hub = document.querySelector("[data-hub]");
+  if (!hub) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var sats   = [].slice.call(hub.querySelectorAll(".hb-sat"));
+  var spokes = [].slice.call(hub.querySelectorAll(".hb-spoke"));
+  if (!sats.length) return;
+
+  var at = 1;
+  function paint() {
+    sats.forEach(function (el) {
+      el.classList.toggle("on", +el.getAttribute("data-sat") === at);
+    });
+    spokes.forEach(function (el) {
+      el.classList.toggle("on", +el.getAttribute("data-sat") === at);
+    });
+  }
+  var timer = 0;
+  function tick() { at = at === 6 ? 1 : at + 1; paint(); }
+  function start() {
+    if (timer) return;
+    paint();
+    timer = setInterval(tick, 1600);
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = 0; } }
+
+  document.addEventListener("visibilitychange", function () {
+    document.hidden ? stop() : start();
+  });
+
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
+    }, { threshold: 0.25 });
+    io.observe(hub);
   } else {
     start();
   }
