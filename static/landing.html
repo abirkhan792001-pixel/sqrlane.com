@@ -452,8 +452,13 @@ h1,h2,h3,h4,p{margin:0}
              color:var(--fg)}
 .ov-donut .s{font-size:10.5px; color:var(--faint); line-height:15px;
              margin-top:1px}
-.ov-donut .row{display:grid; grid-template-columns:88px 1fr; gap:10px;
-               align-items:center; margin-top:10px; padding:0; border:0; background:transparent}
+/* Not .row: the animation script owns that class for the shipment list
+   and grabs it via shot.querySelectorAll(".row"). Re-using it here made
+   this element look like an eighth shipment row with no .st-badge,
+   which threw when the script tried to snapshot the initial badges -
+   and the whole walk-through never started. */
+.ov-donut .drow{display:grid; grid-template-columns:88px 1fr; gap:10px;
+                align-items:center; margin-top:10px}
 .ov-donut svg{width:88px; height:88px; display:block}
 .ov-donut .n{font-size:22px; font-weight:600; letter-spacing:-.9px;
              font-variant-numeric:tabular-nums; fill:var(--fg)}
@@ -1565,7 +1570,7 @@ h1,h2,h3,h4,p{margin:0}
             <aside class="ov-donut" aria-hidden="true">
               <div class="h">Sources by family</div>
               <div class="s">60 keyless feeds, six families</div>
-              <div class="row">
+              <div class="drow">
                 <svg viewBox="0 0 88 88" role="img" aria-label="60 sources across six families">
                   <g transform="rotate(-90 44 44)">
                     <!-- pathLength=100 makes each slice's dasharray simply
@@ -2703,7 +2708,13 @@ h1,h2,h3,h4,p{margin:0}
   var frame  = shot.querySelector(".frame");
   var cursor = shot.querySelector("[data-wk-cursor]");
   var scan   = shot.querySelector("[data-wk-scan]");
-  var rows   = [].slice.call(shot.querySelectorAll(".row"));
+  /* A shipment row is one that carries a state badge. .row is generic
+     enough that another descendant (the donut's layout row was the last
+     example) can grab the selector and stall the whole IIFE later on
+     r.querySelector(".st-badge").className. Filter here rather than
+     hunting for the collider next time. */
+  var rows   = [].slice.call(shot.querySelectorAll(".row"))
+                 .filter(function (r) { return r.querySelector(".st-badge"); });
   var stats  = [].slice.call(shot.querySelectorAll(".mini-stats .v"));
   /* The animated sidebar counters are marked .na (data-role names them),
      so the Sources section's static reference counts stay put while the
