@@ -293,58 +293,55 @@ h1,h2,h3,h4,p{margin:0}
    swaps with the source. */
 .live-feed{position:absolute; left:50%; transform:translateX(-50%);
            bottom:8px; z-index:5;
-           width:min(96%, 900px);
+           width:min(96%, 1120px);
            background:var(--card); border:1px solid var(--border-strong);
-           border-radius:14px;
+           border-radius:12px;
            box-shadow:0 14px 36px -14px rgba(0,0,0,.26),
                       0 6px 16px -6px rgba(0,0,0,.10),
                       0 0 0 1px rgba(0,0,0,.02);
-           padding:12px 18px;
+           padding:8px 14px;
            opacity:0; transform:translate(-50%, 8px);
            transition:opacity .5s var(--ease), transform .5s var(--ease)}
 .live-feed.on{opacity:1; transform:translate(-50%, 0)}
-/* Grid column widths match the flag and open-arrow control sizes exactly
-   so nothing has to centre inside a track wider than itself. align-items:
-   center vertically balances both the flag and the two-line text block. */
-.lf-inner{display:grid; grid-template-columns:40px minmax(0,1fr) 30px;
-          gap:14px; align-items:center}
-/* Flag holder. Was a circle with an emoji inside; Windows Chrome ships
-   without flag glyphs and rendered the ISO pair as letters ("NL"), so
-   this is now a 44x30 rounded rectangle with an inline SVG flag - same
-   on every OS, and the height lines up with the two-line text block. */
-.lf-flag{width:40px; height:28px; border-radius:5px; overflow:hidden;
-         display:inline-block;
+/* One flex row: flag, title (flexes to eat the space), meta and arrow
+   pinned on the right. Nothing sits in a track wider than itself. */
+.lf-inner{display:flex; align-items:center; gap:12px}
+/* Flag holder. Inline SVG flag - stays the same on every OS, unlike
+   emoji flags which Windows Chrome renders as text ("NL"). */
+.lf-flag{width:32px; height:22px; border-radius:4px; overflow:hidden;
+         display:inline-block; flex:none;
          background:var(--card-muted);
          box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
          transition:opacity .35s var(--ease), transform .45s var(--ease)}
 .lf-flag svg{width:100%; height:100%; display:block}
-.lf-body{min-width:0; display:flex; flex-direction:column; gap:3px}
-.lf-title{font-size:14px; line-height:19px; font-weight:600;
-          color:var(--fg); letter-spacing:-.2px;
+.lf-title{flex:1 1 auto; min-width:0;
+          font-size:13px; line-height:17px; font-weight:500;
+          color:var(--fg); letter-spacing:-.15px;
           overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
           margin:0;
           transition:opacity .35s var(--ease)}
-.lf-meta{display:flex; align-items:center; gap:7px;
-         font-size:11.5px; color:var(--faint); line-height:15px;
-         letter-spacing:-.05px}
+.lf-meta{flex:none; display:inline-flex; align-items:center; gap:6px;
+         font-size:11px; color:var(--faint); line-height:1;
+         letter-spacing:-.05px; white-space:nowrap}
 .lf-source{font-weight:500; color:var(--muted)}
 .lf-sep{color:var(--gray-400); line-height:1}
 .lf-live{display:inline-flex; align-items:center; gap:6px;
          color:var(--green); font-weight:500}
-.lf-live-dot{width:7px; height:7px; border-radius:50%; background:var(--green);
-             box-shadow:0 0 0 3px var(--green-100);
+.lf-live-dot{width:6px; height:6px; border-radius:50%; background:var(--green);
+             box-shadow:0 0 0 2px var(--green-100);
              animation:lf-live-pulse 2s ease-in-out infinite}
 @keyframes lf-live-pulse{
   0%,100%{box-shadow:0 0 0 3px var(--green-100)}
   50%    {box-shadow:0 0 0 4px color-mix(in srgb, var(--green) 30%, transparent)}
 }
-.lf-open{display:inline-flex; align-items:center; justify-content:center;
-         width:30px; height:30px; border-radius:8px;
+.lf-open{flex:none;
+         display:inline-flex; align-items:center; justify-content:center;
+         width:26px; height:26px; border-radius:7px;
          color:var(--muted); background:var(--card-muted);
          border:1px solid var(--border);
          transition:color .2s var(--ease), background .2s var(--ease),
                     border-color .2s var(--ease)}
-.lf-open svg{width:14px; height:14px}
+.lf-open svg{width:12px; height:12px}
 .lf-open:hover{color:var(--fg); background:var(--gray-100);
                border-color:var(--border-strong)}
 
@@ -354,13 +351,16 @@ h1,h2,h3,h4,p{margin:0}
 .live-feed .lf-flag.swap{opacity:0}
 
 @media (max-width:640px){
-  .live-feed{bottom:16px; width:calc(100% - 24px);
-             padding:12px 14px; border-radius:14px}
-  .lf-inner{grid-template-columns:36px minmax(0,1fr) 30px; gap:12px}
-  .lf-flag{width:36px; height:24px}
-  .lf-title{font-size:14px; line-height:19px}
-  .lf-meta{font-size:11.5px; line-height:15px}
-  .lf-open{width:30px; height:30px; border-radius:8px}
+  .live-feed{bottom:12px; width:calc(100% - 24px);
+             padding:8px 12px; border-radius:12px}
+  .lf-inner{gap:10px}
+  .lf-flag{width:28px; height:20px}
+  .lf-title{font-size:12px; line-height:16px}
+  /* On phones the source and Live tag would eat the title's track, so
+     drop them and let the title breathe. Flag + headline + arrow is
+     already the whole story on that width. */
+  .lf-meta{display:none}
+  .lf-open{width:24px; height:24px; border-radius:6px}
 }
 @media (prefers-reduced-motion:reduce){
   .live-feed, .lf-title, .lf-flag, .lf-live-dot{transition:none; animation:none}
@@ -1495,17 +1495,18 @@ h1,h2,h3,h4,p{margin:0}
            ISO code, so it switches source-by-source: NDR Hamburg flies DE,
            Rijnmond flies NL, France Info flies FR. Hidden if the endpoint
            returns no items - the mock never depends on it. -->
+      <!-- One horizontal row: flag, title (flexes to fill), source and Live
+           tag on the right, then the open arrow. Title stays on a single
+           line and ellipsises if the sentence is too long for its track. -->
       <div class="live-feed" data-live-feed hidden aria-live="polite">
         <div class="lf-inner">
-          <span class="lf-flag" data-lf-flag aria-hidden="true">&#127760;</span>
-          <div class="lf-body">
-            <div class="lf-title" data-lf-title></div>
-            <div class="lf-meta">
-              <span data-lf-source class="lf-source"></span>
-              <span class="lf-sep">&middot;</span>
-              <span class="lf-live"><span class="lf-live-dot"></span>Live</span>
-            </div>
-          </div>
+          <span class="lf-flag" data-lf-flag aria-hidden="true"></span>
+          <span class="lf-title" data-lf-title></span>
+          <span class="lf-meta">
+            <span data-lf-source class="lf-source"></span>
+            <span class="lf-sep">&middot;</span>
+            <span class="lf-live"><span class="lf-live-dot"></span>Live</span>
+          </span>
           <a class="lf-open" data-lf-open target="_blank" rel="noopener" aria-label="Open the source">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7"/>
