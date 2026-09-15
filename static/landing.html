@@ -292,40 +292,40 @@ h1,h2,h3,h4,p{margin:0}
    as it was and the page never depends on the network. The country flag
    swaps with the source. */
 .live-feed{position:absolute; left:50%; transform:translateX(-50%);
-           bottom:28px; z-index:5;
-           width:min(94%, 780px);
+           bottom:8px; z-index:5;
+           width:min(96%, 900px);
            background:var(--card); border:1px solid var(--border-strong);
-           border-radius:16px;
+           border-radius:14px;
            box-shadow:0 14px 36px -14px rgba(0,0,0,.26),
                       0 6px 16px -6px rgba(0,0,0,.10),
                       0 0 0 1px rgba(0,0,0,.02);
-           padding:16px 20px;
+           padding:12px 18px;
            opacity:0; transform:translate(-50%, 8px);
            transition:opacity .5s var(--ease), transform .5s var(--ease)}
 .live-feed.on{opacity:1; transform:translate(-50%, 0)}
 /* Grid column widths match the flag and open-arrow control sizes exactly
    so nothing has to centre inside a track wider than itself. align-items:
    center vertically balances both the flag and the two-line text block. */
-.lf-inner{display:grid; grid-template-columns:44px minmax(0,1fr) 34px;
-          gap:16px; align-items:center}
+.lf-inner{display:grid; grid-template-columns:40px minmax(0,1fr) 30px;
+          gap:14px; align-items:center}
 /* Flag holder. Was a circle with an emoji inside; Windows Chrome ships
    without flag glyphs and rendered the ISO pair as letters ("NL"), so
    this is now a 44x30 rounded rectangle with an inline SVG flag - same
    on every OS, and the height lines up with the two-line text block. */
-.lf-flag{width:44px; height:30px; border-radius:5px; overflow:hidden;
+.lf-flag{width:40px; height:28px; border-radius:5px; overflow:hidden;
          display:inline-block;
          background:var(--card-muted);
          box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
          transition:opacity .35s var(--ease), transform .45s var(--ease)}
 .lf-flag svg{width:100%; height:100%; display:block}
 .lf-body{min-width:0; display:flex; flex-direction:column; gap:3px}
-.lf-title{font-size:15px; line-height:20px; font-weight:600;
-          color:var(--fg); letter-spacing:-.25px;
+.lf-title{font-size:14px; line-height:19px; font-weight:600;
+          color:var(--fg); letter-spacing:-.2px;
           overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
           margin:0;
           transition:opacity .35s var(--ease)}
-.lf-meta{display:flex; align-items:center; gap:8px;
-         font-size:12px; color:var(--faint); line-height:16px;
+.lf-meta{display:flex; align-items:center; gap:7px;
+         font-size:11.5px; color:var(--faint); line-height:15px;
          letter-spacing:-.05px}
 .lf-source{font-weight:500; color:var(--muted)}
 .lf-sep{color:var(--gray-400); line-height:1}
@@ -339,12 +339,12 @@ h1,h2,h3,h4,p{margin:0}
   50%    {box-shadow:0 0 0 4px color-mix(in srgb, var(--green) 30%, transparent)}
 }
 .lf-open{display:inline-flex; align-items:center; justify-content:center;
-         width:34px; height:34px; border-radius:9px;
+         width:30px; height:30px; border-radius:8px;
          color:var(--muted); background:var(--card-muted);
          border:1px solid var(--border);
          transition:color .2s var(--ease), background .2s var(--ease),
                     border-color .2s var(--ease)}
-.lf-open svg{width:16px; height:16px}
+.lf-open svg{width:14px; height:14px}
 .lf-open:hover{color:var(--fg); background:var(--gray-100);
                border-color:var(--border-strong)}
 
