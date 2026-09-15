@@ -292,43 +292,46 @@ h1,h2,h3,h4,p{margin:0}
    as it was and the page never depends on the network. The country flag
    swaps with the source. */
 .live-feed{position:absolute; left:50%; transform:translateX(-50%);
-           bottom:24px; z-index:5;
-           width:min(94%, 680px);
+           bottom:28px; z-index:5;
+           width:min(94%, 780px);
            background:var(--card); border:1px solid var(--border-strong);
-           border-radius:14px;
-           box-shadow:0 12px 32px -12px rgba(0,0,0,.24),
-                      0 4px 12px -4px rgba(0,0,0,.08),
+           border-radius:16px;
+           box-shadow:0 14px 36px -14px rgba(0,0,0,.26),
+                      0 6px 16px -6px rgba(0,0,0,.10),
                       0 0 0 1px rgba(0,0,0,.02);
-           padding:12px 16px;
+           padding:16px 20px;
            opacity:0; transform:translate(-50%, 8px);
            transition:opacity .5s var(--ease), transform .5s var(--ease)}
 .live-feed.on{opacity:1; transform:translate(-50%, 0)}
-.lf-inner{display:grid; grid-template-columns:36px minmax(0,1fr) 28px;
-          gap:14px; align-items:center}
-/* Flag holder. Was a 36px circle with an emoji inside; a lot of Chromes,
-   Windows especially, don't ship flag glyphs and rendered the ISO pair
-   as plain letters ("NL"). Now a 32x22 rounded rectangle with an inline
-   SVG flag, so it looks the same on every OS and pixel-lines up with the
-   card's own baseline. */
-.lf-flag{width:36px; height:26px; border-radius:5px; overflow:hidden;
-         display:inline-flex; align-items:center; justify-content:center;
+/* Grid column widths match the flag and open-arrow control sizes exactly
+   so nothing has to centre inside a track wider than itself. align-items:
+   center vertically balances both the flag and the two-line text block. */
+.lf-inner{display:grid; grid-template-columns:44px minmax(0,1fr) 34px;
+          gap:16px; align-items:center}
+/* Flag holder. Was a circle with an emoji inside; Windows Chrome ships
+   without flag glyphs and rendered the ISO pair as letters ("NL"), so
+   this is now a 44x30 rounded rectangle with an inline SVG flag - same
+   on every OS, and the height lines up with the two-line text block. */
+.lf-flag{width:44px; height:30px; border-radius:5px; overflow:hidden;
+         display:inline-block;
          background:var(--card-muted);
          box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
          transition:opacity .35s var(--ease), transform .45s var(--ease)}
 .lf-flag svg{width:100%; height:100%; display:block}
-.lf-body{min-width:0}
-.lf-title{font-size:13px; line-height:18px; font-weight:500;
-          color:var(--fg); letter-spacing:-.15px;
+.lf-body{min-width:0; display:flex; flex-direction:column; gap:3px}
+.lf-title{font-size:15px; line-height:20px; font-weight:600;
+          color:var(--fg); letter-spacing:-.25px;
           overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+          margin:0;
           transition:opacity .35s var(--ease)}
-.lf-meta{margin-top:2px; display:flex; align-items:center; gap:7px;
-         font-size:11px; color:var(--faint); line-height:15px;
+.lf-meta{display:flex; align-items:center; gap:8px;
+         font-size:12px; color:var(--faint); line-height:16px;
          letter-spacing:-.05px}
 .lf-source{font-weight:500; color:var(--muted)}
-.lf-sep{color:var(--gray-400)}
-.lf-live{display:inline-flex; align-items:center; gap:5px;
+.lf-sep{color:var(--gray-400); line-height:1}
+.lf-live{display:inline-flex; align-items:center; gap:6px;
          color:var(--green); font-weight:500}
-.lf-live-dot{width:6px; height:6px; border-radius:50%; background:var(--green);
+.lf-live-dot{width:7px; height:7px; border-radius:50%; background:var(--green);
              box-shadow:0 0 0 3px var(--green-100);
              animation:lf-live-pulse 2s ease-in-out infinite}
 @keyframes lf-live-pulse{
@@ -336,11 +339,12 @@ h1,h2,h3,h4,p{margin:0}
   50%    {box-shadow:0 0 0 4px color-mix(in srgb, var(--green) 30%, transparent)}
 }
 .lf-open{display:inline-flex; align-items:center; justify-content:center;
-         width:28px; height:28px; border-radius:8px;
+         width:34px; height:34px; border-radius:9px;
          color:var(--muted); background:var(--card-muted);
          border:1px solid var(--border);
          transition:color .2s var(--ease), background .2s var(--ease),
                     border-color .2s var(--ease)}
+.lf-open svg{width:16px; height:16px}
 .lf-open:hover{color:var(--fg); background:var(--gray-100);
                border-color:var(--border-strong)}
 
@@ -350,10 +354,13 @@ h1,h2,h3,h4,p{margin:0}
 .live-feed .lf-flag.swap{opacity:0}
 
 @media (max-width:640px){
-  .live-feed{bottom:14px; width:calc(100% - 24px);
-             padding:10px 12px}
-  .lf-inner{grid-template-columns:30px minmax(0,1fr) 24px; gap:10px}
-  .lf-flag{width:30px; height:22px}
+  .live-feed{bottom:16px; width:calc(100% - 24px);
+             padding:12px 14px; border-radius:14px}
+  .lf-inner{grid-template-columns:36px minmax(0,1fr) 30px; gap:12px}
+  .lf-flag{width:36px; height:24px}
+  .lf-title{font-size:14px; line-height:19px}
+  .lf-meta{font-size:11.5px; line-height:15px}
+  .lf-open{width:30px; height:30px; border-radius:8px}
 }
 @media (prefers-reduced-motion:reduce){
   .live-feed, .lf-title, .lf-flag, .lf-live-dot{transition:none; animation:none}
