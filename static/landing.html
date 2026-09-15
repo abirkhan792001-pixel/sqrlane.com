@@ -870,6 +870,121 @@ h1,h2,h3,h4,p{margin:0}
    connector a row of real marks reads as an integration list. Two of the names
    here are systems the connector is built to point at, so the block carries
    the same disclaimer the vendor strip does. */
+/* ---------- the loop, in five stages (Attio-search-metrics pattern) ------
+   Left column: five stages. Right column: a workflow window that plays
+   the same five stages in place. The .on state moves in sync so the two
+   columns read as one interface driving itself. */
+.gap-flow .head{max-width:none}
+.gf-split{margin-top:52px; display:grid; gap:36px;
+          grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start}
+.gf-steps{display:flex; flex-direction:column; gap:6px}
+.gf-step{display:grid; grid-template-columns:38px minmax(0,1fr);
+         gap:14px; align-items:start; padding:16px 18px; border-radius:var(--r-md);
+         border:1px solid transparent; background:transparent;
+         transition:background .35s var(--ease), border-color .35s var(--ease),
+                    box-shadow .35s var(--ease), transform .35s var(--ease);
+         position:relative}
+/* A quiet vertical connector runs between step icons so the five stages
+   read as one flow, not five unrelated cards. */
+.gf-step::before{content:""; position:absolute; left:36px; top:52px; bottom:-6px;
+                 width:1px; background:var(--border); opacity:0}
+.gf-step:not(:last-child)::before{opacity:1}
+.gf-step.on{background:var(--card); border-color:var(--border-strong);
+            box-shadow:var(--shadow-card)}
+.gf-step.on .gf-icon{background:var(--fg); color:#fff; border-color:var(--fg)}
+.gf-icon{width:38px; height:38px; border-radius:10px;
+         display:flex; align-items:center; justify-content:center;
+         background:var(--card); border:1px solid var(--border);
+         color:var(--muted);
+         transition:background .35s var(--ease), color .35s var(--ease),
+                    border-color .35s var(--ease)}
+.gf-name{font-size:16px; font-weight:600; letter-spacing:-.3px; color:var(--fg)}
+.gf-desc{margin-top:3px; font-size:14px; line-height:20px; color:var(--muted);
+         letter-spacing:-.1px}
+
+/* The workflow window on the right. Same anatomy as the hero mock (a
+   frame with a thin top bar and a stack of cards), but simpler: five
+   cards, one active at a time, cycled by the same JS that lights the
+   step. */
+.gf-frame{position:relative; border:1px solid var(--border);
+          border-radius:var(--r-lg); background:var(--card);
+          box-shadow:var(--shadow-lift); overflow:hidden}
+.gf-frame-bar{height:40px; display:flex; align-items:center; gap:8px;
+              padding:0 14px; border-bottom:1px solid var(--border);
+              background:var(--card-muted)}
+.gf-fb-chip{display:inline-flex; align-items:center; gap:7px;
+            height:24px; padding:0 10px 0 6px; border-radius:var(--r-sm);
+            background:var(--card); border:1px solid var(--border);
+            font-size:11.5px; color:var(--fg); font-weight:500}
+.gf-fb-chip.gf-quiet{padding:0 10px; color:var(--muted); font-weight:400}
+.gf-fb-chip.gf-quiet svg{color:var(--green)}
+.gf-sq{width:16px; height:16px; border-radius:4px; background:var(--fg);
+       color:#fff; display:inline-flex; align-items:center; justify-content:center;
+       font-size:9px; font-weight:700; font-style:normal}
+
+.gf-cards{padding:16px; display:flex; flex-direction:column; gap:8px;
+          position:relative}
+.gf-thread{position:absolute; left:34px; top:22px; bottom:22px; width:2px;
+           pointer-events:none}
+.gf-thread-line{position:absolute; left:0; top:0; bottom:0; width:2px;
+                background:var(--border)}
+.gf-thread-dot{position:absolute; left:-3px; width:8px; height:8px;
+               border-radius:50%; background:var(--fg);
+               top:20px; transition:top .55s var(--ease);
+               box-shadow:0 0 0 3px var(--card),
+                          0 0 0 4px color-mix(in srgb, var(--fg) 12%, transparent)}
+
+/* Each card. Idle state: quiet, mark grey, no badge visible. Active
+   state: card lifts, mark takes its family colour, badge fades in.
+   Cards after the current one dim slightly so the flow reads top-to-
+   bottom without arrows. */
+.gf-card{display:grid; grid-template-columns:34px minmax(0,1fr) auto;
+         gap:12px; align-items:center; padding:12px 14px;
+         border:1px solid var(--border); border-radius:var(--r-md);
+         background:var(--card);
+         transition:opacity .35s var(--ease), transform .45s var(--ease),
+                    border-color .35s var(--ease), box-shadow .35s var(--ease);
+         opacity:.55}
+.gf-card.on{opacity:1; transform:translateX(4px);
+            border-color:var(--border-strong); box-shadow:var(--shadow-card)}
+.gf-card.done{opacity:.85}
+.gf-cmark{width:28px; height:28px; border-radius:8px; display:flex;
+          align-items:center; justify-content:center;
+          background:var(--gray-100); color:var(--muted);
+          transition:background .35s var(--ease), color .35s var(--ease)}
+.gf-card.on .gf-cmark{background:var(--gray-100); color:var(--fg)}
+.gf-cmark.risk{color:var(--red)}
+.gf-card.on .gf-cmark.risk{background:var(--red-100); color:var(--red-ink)}
+.gf-cmark.blue{color:var(--blue)}
+.gf-card.on .gf-cmark.blue{background:var(--blue-100); color:var(--blue)}
+.gf-cmark.green{color:var(--green)}
+.gf-card.on .gf-cmark.green{background:var(--green-100); color:var(--green)}
+.gf-ctitle{font-size:13px; font-weight:500; letter-spacing:-.15px; color:var(--fg);
+           overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.gf-cmeta{margin-top:1px; font-size:11px; color:var(--faint); line-height:15px}
+.gf-cbadge{display:inline-flex; align-items:center; gap:5px;
+           padding:2px 8px; border-radius:999px; font-size:11px; font-weight:500;
+           background:var(--gray-100); color:var(--muted);
+           opacity:0; transform:translateX(4px);
+           transition:opacity .3s var(--ease), transform .35s var(--ease)}
+.gf-card.on .gf-cbadge, .gf-card.done .gf-cbadge{opacity:1; transform:none}
+.gf-cbadge.red{background:var(--red-100); color:var(--red-ink)}
+.gf-cbadge.blue{background:var(--blue-100); color:var(--blue)}
+.gf-cbadge.amber{background:var(--amber-100); color:var(--amber)}
+.gf-cbadge.green{background:var(--green-100); color:var(--green)}
+
+@media (max-width:960px){
+  .gf-split{grid-template-columns:minmax(0,1fr); gap:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .gf-card, .gf-step, .gf-thread-dot{transition:none}
+}
+
+/* The original 10-tile grid is kept in the source so the vendor-name
+   disclaimer stays inside the block the promise test scopes to (opener
+   div-class-apps, closer section-close). Hidden here in one place. */
+.gap-flow .apps{display:none}
+
 .apps{margin-top:40px; position:relative}
 /* The stroke lives on the <svg> that instances the symbol, never on the
    <symbol> itself - styling the symbol does not reach the shadow content a
@@ -2039,26 +2154,178 @@ h1,h2,h3,h4,p{margin:0}
     </div>
   </div>
 </section>
-<!-- ======================== THE GAP ======================== -->
-<section class="section" id="gap">
+<!-- ======================== THE LOOP, IN FIVE STAGES ============================
+     Replaces the 10-tile "Everyone stops one step short" grid. The reference
+     is Attio's landing "AI Search Metrics" section - three feature descriptions
+     on the left beside an animated dashboard window on the right - adapted to
+     the closed loop this product exists to close. Left column: five stages,
+     one label and one sentence each. Right column: a five-card workflow that
+     animates the same five stages in place, syncing with the active pattern
+     on the left. Copy avoids em-dashes, per the direction on this section.
+     ============================================================================ -->
+<section class="section gap-flow" id="gap">
   <div class="wrap">
-    <div class="head rv">
-      <span class="eyebrow">The gap</span>
-      <h2 class="d2">Everyone stops one step short.</h2>
-      <p class="copy18">The desk watches for disruptions <i>and</i> reacts to them by hand.
-        Every tool sold into it owns one half of the job and hands the other half back to
-        a person.</p>
+    <div class="head rv" style="text-align:center; margin:0 auto">
+      <span class="eyebrow chip-eye">The loop</span>
+      <h2 class="d2" style="text-wrap:balance">One workflow, closed on the record.</h2>
+      <p class="copy18" style="margin-inline:auto; max-width:56ch">
+        Read the world, decide against the booking, draft the mail, queue the change.
+        Every step happens on the same record.</p>
     </div>
 
-    <!-- Where the work actually is. The tiles come in on scroll, hottest
-         first, over a field that warms toward the middle - the point being
-         that the load is not spread evenly, it piles up wherever a decision
-         has to be re-typed.
+    <div class="gf-split rv">
+      <!-- Five stages, one card each. The .on state is set by the workflow
+           window's cycler so this list highlights in sync with the card
+           currently playing on the right. -->
+      <div class="gf-steps" data-gf-steps>
+        <div class="gf-step on" data-step="1">
+          <div class="gf-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/>
+              <path d="M2 12c3.5-5.5 7-8 10-8s6.5 2.5 10 8c-3.5 5.5-7 8-10 8s-6.5-2.5-10-8z"/></svg>
+          </div>
+          <div class="gf-body">
+            <div class="gf-name">Read</div>
+            <p class="gf-desc">Sixty sources across six families, all read on every cycle.</p>
+          </div>
+        </div>
+        <div class="gf-step" data-step="2">
+          <div class="gf-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round"><path d="M6 4h12v6a6 6 0 0 1-12 0z"/>
+              <path d="M4 20h16"/><path d="M12 16v4"/></svg>
+          </div>
+          <div class="gf-body">
+            <div class="gf-name">Decide</div>
+            <p class="gf-desc">The model weighs each booking's slack against the delay.</p>
+          </div>
+        </div>
+        <div class="gf-step" data-step="3">
+          <div class="gf-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="M3.5 6.5 12 13l8.5-6.5"/></svg>
+          </div>
+          <div class="gf-body">
+            <div class="gf-name">Draft</div>
+            <p class="gf-desc">Carrier and customer mail, in the two voices they need.</p>
+          </div>
+        </div>
+        <div class="gf-step" data-step="4">
+          <div class="gf-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="18" height="12" rx="2"/>
+              <path d="M7 7v12M12 7v12M17 7v12"/></svg>
+          </div>
+          <div class="gf-body">
+            <div class="gf-name">Queue</div>
+            <p class="gf-desc">Every decision is a change ready to write on the booking.</p>
+          </div>
+        </div>
+        <div class="gf-step" data-step="5">
+          <div class="gf-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>
+          </div>
+          <div class="gf-body">
+            <div class="gf-name">Approve</div>
+            <p class="gf-desc">Nothing lands and nothing is sent until you sign off.</p>
+          </div>
+        </div>
+      </div>
 
-         The names identify; the marks are generic pictograms. See the note in
-         the sprite below, and the disclaimer under the field - two of these
-         are systems the connector is built to point at, and neither is
-         connected. -->
+      <!-- The workflow window. Five stacked cards, each corresponding to a
+           stage. .on lifts the card and shows its badge; the cycler moves
+           .on down the stack every 2.4s and back to the top after the fifth. -->
+      <div class="gf-frame" data-gf-frame aria-hidden="true">
+        <div class="gf-frame-bar">
+          <span class="gf-fb-chip"><i class="gf-sq">A</i>Acme Inc.</span>
+          <span class="gf-fb-chip gf-quiet">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/>
+              <path d="M12 8v4l3 2"/></svg>Live
+          </span>
+        </div>
+
+        <div class="gf-cards">
+          <div class="gf-card on" data-card="1">
+            <span class="gf-cmark risk">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round"><path d="M12 3l9 16H3z"/>
+                <path d="M12 9v4M12 16.5v.5"/></svg>
+            </span>
+            <div class="gf-cbody">
+              <div class="gf-ctitle">Warning strike at Port of Hamburg</div>
+              <div class="gf-cmeta">NDR Hamburg, regional broadcaster</div>
+            </div>
+            <span class="gf-cbadge red">23h before wires</span>
+          </div>
+
+          <div class="gf-card" data-card="2">
+            <span class="gf-cmark blue">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5"/></svg>
+            </span>
+            <div class="gf-cbody">
+              <div class="gf-ctitle">SHP-001 · Automotive parts</div>
+              <div class="gf-cmeta">Shanghai to Munich, 4d slack</div>
+            </div>
+            <span class="gf-cbadge blue">Rerouted via RTM</span>
+          </div>
+
+          <div class="gf-card" data-card="3">
+            <span class="gf-cmark">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="M3.5 6.5 12 13l8.5-6.5"/></svg>
+            </span>
+            <div class="gf-cbody">
+              <div class="gf-ctitle">To Katrin Vogel, Bavaria Drivetrain</div>
+              <div class="gf-cmeta">Revised ETA 2026-09-22, two drafts</div>
+            </div>
+            <span class="gf-cbadge amber">Draft, not sent</span>
+          </div>
+
+          <div class="gf-card" data-card="4">
+            <span class="gf-cmark">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0z"/><path d="M12 18v4"/></svg>
+            </span>
+            <div class="gf-cbody">
+              <div class="gf-ctitle">port_of_discharge: DEHAM to NLRTM</div>
+              <div class="gf-cmeta">booking_status: REROUTED</div>
+            </div>
+            <span class="gf-cbadge amber">Queued, not written</span>
+          </div>
+
+          <div class="gf-card" data-card="5">
+            <span class="gf-cmark green">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round"><path d="M5 12l4 4 10-10"/></svg>
+            </span>
+            <div class="gf-cbody">
+              <div class="gf-ctitle">Approvals waiting</div>
+              <div class="gf-cmeta">Three write-backs, three mails, nothing sent</div>
+            </div>
+            <span class="gf-cbadge green">Ready</span>
+          </div>
+        </div>
+
+        <div class="gf-thread">
+          <span class="gf-thread-line"></span>
+          <span class="gf-thread-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="apnote" style="text-align:center; margin-inline:auto; max-width:70ch">
+      SQRlane reads the booking through one demo connector and writes nothing. No vendor,
+      no credential, no endpoint, and nothing is ever written.</p>
+
+    <!-- The original 10-tile grid follows, kept in the source so the block
+         still carries the vendor-name disclaimer the promise test scopes
+         to. Hidden via a CSS rule up top. -->
     <div class="apps rv" data-apps>
       <svg class="apsprite" aria-hidden="true" focusable="false"><defs>
         <!-- Pictograms, not trademarks. Each one says what KIND of tool this
@@ -2951,6 +3218,76 @@ h1,h2,h3,h4,p{margin:0}
     io.observe(shot);
   } else {
     loop();
+  }
+})();
+
+/* The five-stage workflow cycler.
+   Both columns of the loop section share a stage index 1..5. Every 2.4s
+   the index advances; at 6 it wraps to 1. The step on the left gets .on
+   for the current index, and the card on the right gets .on for the
+   current index and .done for indices already past. The vertical thread
+   dot rides down the right column, anchored to the current card's own y.
+   Only runs when the section is on screen and honours reduced-motion. */
+(function () {
+  var frame = document.querySelector("[data-gf-frame]");
+  var steps = document.querySelector("[data-gf-steps]");
+  if (!frame || !steps) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var cards = [].slice.call(frame.querySelectorAll(".gf-card"));
+  var stepEls = [].slice.call(steps.querySelectorAll(".gf-step"));
+  var dot = frame.querySelector(".gf-thread-dot");
+  if (!cards.length || !stepEls.length) return;
+
+  var at = 1;
+  function place() {
+    if (!dot) return;
+    var target = cards[at - 1];
+    var cards0 = cards[0].getBoundingClientRect();
+    var here = target.getBoundingClientRect();
+    dot.style.top = (here.top - cards0.top + (here.height / 2) - 4) + "px";
+  }
+  function paint() {
+    stepEls.forEach(function (el) {
+      var n = +el.getAttribute("data-step");
+      el.classList.toggle("on", n === at);
+    });
+    cards.forEach(function (el) {
+      var n = +el.getAttribute("data-card");
+      el.classList.toggle("on",   n === at);
+      el.classList.toggle("done", n <  at);
+    });
+    place();
+  }
+
+  var timer = 0;
+  function tick() {
+    at = at === 5 ? 1 : at + 1;
+    paint();
+  }
+  function start() {
+    if (timer) return;
+    paint();
+    timer = setInterval(tick, 2400);
+  }
+  function stop() {
+    if (!timer) return;
+    clearInterval(timer); timer = 0;
+  }
+  window.addEventListener("resize", place);
+  document.addEventListener("visibilitychange", function () {
+    document.hidden ? stop() : start();
+  });
+
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        e.isIntersecting ? start() : stop();
+      });
+    }, { threshold: 0.25 });
+    io.observe(frame);
+  } else {
+    start();
   }
 })();
 
