@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SQRlane — AI Agents for freight forwarders</title>
+<title>Acme Inc — AI Agents for freight forwarders</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3.5' fill='%23171717'/%3E%3Cpath d='M3 11.2h10M3 8h6.5M3 4.8h3.5' stroke='%23fff' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
 /* Geist, self-hosted from static/fonts/ - the same faces the landing page is
@@ -749,11 +749,11 @@ table.q tr.pick td{background:var(--surface)}
 <body>
 <div class="shell">
   <aside class="side">
-    <a class="side-h" href="/" title="Back to the SQRlane overview page"
+    <a class="side-h" href="/" title="Back to the Acme Inc overview page"
        style="text-decoration:none;color:inherit">
       <div class="mark"><svg width="15" height="15" viewBox="0 0 20 20" fill="none">
         <path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6" stroke="var(--card)" stroke-width="2.1" stroke-linecap="round"/></svg></div>
-      <div><div class="wordmark">SQRlane</div><div class="tagline">AI Agents for freight forwarders</div></div>
+      <div><div class="wordmark">Acme Inc</div><div class="tagline">AI Agents for freight forwarders</div></div>
     </a>
     <button class="sidesearch" id="sidesearch" title="Search  Ctrl-K">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -772,7 +772,7 @@ table.q tr.pick td{background:var(--surface)}
     <div class="top">
       <button class="icon-btn" id="collapse" title="Toggle sidebar  ⌘B"
               aria-label="Toggle sidebar"></button>
-      <div class="crumb"><span>SQRlane</span> / <span id="crumb">Overview</span></div>
+      <div class="crumb"><span>Acme Inc</span> / <span id="crumb">Overview</span></div>
       <div class="right">
         <button class="icon-btn bell" id="bell" title="Drafts awaiting your approval"
                 aria-label="Drafts awaiting your approval"></button>
@@ -1235,7 +1235,7 @@ function connectionsView(){
     <div class="conn-h"><div><h2>Field mapping</h2>
       <p>Where each booking field lands, which way it moves, and who writes it</p></div></div>
     <table class="q" style="margin-top:14px">
-      <thead><tr><th>TMS field</th><th>SQRlane field</th><th>Direction</th><th>Written by</th></tr></thead>
+      <thead><tr><th>TMS field</th><th>Acme Inc field</th><th>Direction</th><th>Written by</th></tr></thead>
       <tbody>${(t.field_map||[]).map(f=>`<tr>
         <td class="mono">${esc(f.tms_field)}</td>
         <td class="mono">${esc(f.sqrlane_field)}</td>
@@ -1550,7 +1550,7 @@ function go(id, fromRoute){
   document.querySelectorAll(".view").forEach(v => v.classList.remove("on"));
   $("v-"+id).classList.add("on");
   $("crumb").textContent = VIEW_TITLES[id];
-  document.title = `${VIEW_TITLES[id]} · SQRlane`;
+  document.title = `${VIEW_TITLES[id]} · Acme Inc`;
   $("scroll").scrollTop = 0;
   if (!fromRoute) writeRoute();
   render();

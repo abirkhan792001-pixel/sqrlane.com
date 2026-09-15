@@ -283,7 +283,7 @@ h1,h2,h3,h4,p{margin:0}
 }
 
 /* ---------- product mock (a real-looking SQRlane board, in HTML) ------- */
-.shot{margin:56px auto 0; max-width:1000px; position:relative}
+.shot{margin:56px auto 0; max-width:1180px; position:relative}
 /* The window is a preview of a screen that carries on below the fold, so it
    fades out rather than ending on a border. The gradient underneath used to do
    this alone, but it was inset 6% and stopped short of the frame's own bottom
@@ -299,24 +299,124 @@ h1,h2,h3,h4,p{margin:0}
                mask-image:linear-gradient(to bottom, #000 74%, rgba(0,0,0,.4) 91%, transparent 100%);
        background:var(--card); border:1px solid var(--border); border-radius:var(--r-lg);
        box-shadow:var(--shadow-lift); overflow:hidden; text-align:left}
-.frame-bar{height:38px; display:flex; align-items:center; gap:7px; padding:0 14px;
+/* The frame-bar was three macOS dots. Attio-style dashboards carry a strip
+   of filter chips instead, and an Export button on the right - the chips
+   are what makes the header read as a working view rather than a
+   screenshot. The chips are decorative: they name the state of THIS run
+   (the scenario, the shipment in focus, the model in use). */
+.frame-bar{height:44px; display:flex; align-items:center; gap:6px; padding:0 12px;
            border-bottom:1px solid var(--border); background:var(--card-muted)}
-.frame-bar i{width:9px; height:9px; border-radius:50%; background:var(--gray-400); flex:none}
-.board{display:flex; min-height:392px}
-.board-side{width:186px; flex:none; border-right:1px solid var(--border); padding:12px 10px;
+.frame-bar .fb-chip{display:inline-flex; align-items:center; gap:6px;
+           height:26px; padding:0 10px; border-radius:var(--r-sm);
+           background:var(--card); border:1px solid var(--border);
+           font-size:11.5px; color:var(--fg); line-height:1;
+           box-shadow:0 1px 1px rgba(0,0,0,.02)}
+.frame-bar .fb-chip svg{color:var(--faint)}
+.frame-bar .fb-chip.brand{padding:0 8px 0 6px}
+.frame-bar .fb-chip.brand .sq{width:16px; height:16px; border-radius:4px;
+           background:var(--fg); color:#fff; display:inline-flex;
+           align-items:center; justify-content:center; font-size:9px;
+           font-weight:700; letter-spacing:0; font-family:var(--sans)}
+.frame-bar .fb-spacer{flex:1}
+.frame-bar .fb-export{display:inline-flex; align-items:center; gap:6px;
+           height:26px; padding:0 11px; border-radius:var(--r-sm);
+           background:var(--card); border:1px solid var(--border-strong);
+           font-size:11.5px; color:var(--fg); font-weight:500;
+           box-shadow:0 1px 1px rgba(0,0,0,.03)}
+.board{display:flex; min-height:452px}
+.board-side{width:212px; flex:none; border-right:1px solid var(--border); padding:12px 10px;
             display:none}
+/* The brand chip at the top of the sidebar - the equivalent of a workspace
+   pill in a real dashboard. */
+.board-side .sb-brand{display:flex; align-items:center; gap:8px;
+           padding:6px 8px 10px; margin-bottom:6px}
+.board-side .sb-brand .sq{width:20px; height:20px; border-radius:5px;
+           background:var(--fg); color:#fff; display:inline-flex;
+           align-items:center; justify-content:center; font-size:10px;
+           font-weight:700}
+.board-side .sb-brand .nm{font-size:12.5px; font-weight:600; letter-spacing:-.15px;
+           color:var(--fg)}
+.board-side .sb-search{display:flex; align-items:center; gap:7px;
+           padding:6px 9px; margin:0 2px 12px; height:28px;
+           border:1px solid var(--border); border-radius:var(--r-sm);
+           background:var(--card-muted); font-size:11.5px; color:var(--faint)}
+.board-side .sb-search svg{color:var(--faint); flex:none}
+.board-side .sb-search .kb{margin-left:auto; font-family:"Geist Mono",ui-monospace,monospace;
+           font-size:10px; padding:1px 5px; border-radius:3px;
+           background:var(--card); border:1px solid var(--border);
+           color:var(--muted)}
+.board-side .sec{display:flex; flex-direction:column; gap:1px; margin-bottom:10px}
 .board-side .t{font-size:10px; font-weight:500; letter-spacing:.07em; text-transform:uppercase;
-               color:var(--faint); padding:6px 8px}
-.board-side .i{display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:var(--r-sm);
-               font-size:13px; color:var(--muted)}
+               color:var(--faint); padding:8px 8px 4px}
+.board-side .i{display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:var(--r-sm);
+               font-size:13px; color:var(--muted); letter-spacing:-.1px}
 .board-side .i.on{background:var(--gray-100); color:var(--fg); font-weight:500}
 .board-side .i .n{margin-left:auto; font-size:10px; font-weight:600; padding:0 6px;
-                  border-radius:999px; background:var(--gray-200); color:var(--muted)}
+                  border-radius:999px; background:var(--gray-200); color:var(--muted);
+                  font-variant-numeric:tabular-nums}
 .board-side .i.on .n{background:var(--fg); color:#fff}
 .board-main{flex:1; min-width:0; padding:16px}
 .board-top{display:flex; align-items:center; gap:10px; margin-bottom:14px}
 .board-top .h{font-size:14px; font-weight:600; letter-spacing:-.28px}
-.board-top .r{margin-left:auto; display:flex; gap:8px; align-items:center}
+.board-top .r{margin-left:auto; display:flex; gap:12px; align-items:center}
+/* Overview-header rank chips (the analog of Attio's "Visibility 3/14 ·
+   Sentiment 2/14 · Position 5/14"). Every value is a run-figure and every
+   denominator is the real total - no delta arrows, no invented percentages. */
+.rank-row{display:flex; align-items:center; gap:14px}
+.rank{display:inline-flex; align-items:center; gap:6px;
+      font-size:11px; color:var(--faint); letter-spacing:-.05px}
+.rank b{font-weight:600; color:var(--fg); font-variant-numeric:tabular-nums}
+.rank .sep{color:var(--gray-400)}
+
+/* The overview pane holds a main column and a right rail. The rail
+   carries the route options for the actioned shipment - the same shape as
+   Attio's "competitors" table, using real routes.json rows ranked by
+   least-late. The main column keeps the mini-stats + rows structure the
+   animation walks. */
+.ov-split{display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:14px;
+          align-items:start}
+.ov-rail{border:1px solid var(--border); border-radius:var(--r-md);
+         background:var(--card); overflow:hidden}
+.ov-rail-h{padding:12px 13px 10px; border-bottom:1px solid var(--border)}
+.ov-rail-h .h{font-size:12.5px; font-weight:600; letter-spacing:-.2px; color:var(--fg)}
+.ov-rail-h .s{margin-top:2px; font-size:10.5px; color:var(--faint); line-height:15px}
+.ov-tbl{font-size:11.5px}
+.ov-tbl .th, .ov-tbl .tr{display:grid;
+      grid-template-columns:22px minmax(0,1fr) 42px 42px 68px;
+      gap:8px; align-items:center; padding:7px 13px}
+.ov-tbl .th{font-size:9.5px; font-weight:600; letter-spacing:.06em;
+      text-transform:uppercase; color:var(--faint);
+      border-bottom:1px solid var(--border); padding-top:8px; padding-bottom:8px}
+.ov-tbl .tr{border-bottom:1px solid var(--border-soft, var(--border))}
+.ov-tbl .tr:last-child{border-bottom:0}
+.ov-tbl .rk{font-family:"Geist Mono",ui-monospace,monospace;
+      font-size:10.5px; color:var(--faint)}
+.ov-tbl .rt{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      color:var(--fg); font-weight:500; letter-spacing:-.1px}
+.ov-tbl .rt small{display:block; font-weight:400; color:var(--faint);
+      font-size:10px; margin-top:1px; letter-spacing:0}
+.ov-tbl .nu{font-variant-numeric:tabular-nums; color:var(--muted);
+      text-align:right; font-size:11px}
+.ov-tbl .tr.chosen{background:color-mix(in srgb, var(--green) 7%, transparent)}
+.ov-tbl .tr.chosen .rt{color:var(--fg)}
+.ov-tbl .bd{display:flex; justify-content:flex-end}
+.ov-badge{display:inline-flex; align-items:center; gap:4px;
+      padding:1px 6px; border-radius:999px;
+      font-size:10px; font-weight:500; line-height:15px; white-space:nowrap;
+      font-variant-numeric:tabular-nums}
+.ov-badge.chosen{background:var(--green-100); color:var(--green)}
+.ov-badge.risk{background:var(--red-100); color:var(--red-ink)}
+.ov-badge.slow{background:var(--gray-200); color:var(--muted)}
+
+/* The overview's non-overview panes still occupy the full width, so
+   collapse the split back to one column there. .win-pane's absolute
+   positioning already does that; this is the safety belt. */
+.win-pane[data-pane]:not([data-pane="overview"]) .ov-split{display:block}
+
+@media (max-width:960px){
+  .ov-split{grid-template-columns:minmax(0,1fr)}
+  .ov-rail{display:none}
+}
 .mini-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px}
 .ms{border:1px solid var(--border); border-radius:var(--r-sm); padding:10px 11px;
     background:var(--card)}
@@ -416,7 +516,7 @@ h1,h2,h3,h4,p{margin:0}
    Panes are stacked and absolutely positioned so the frame never changes
    height between them; a mock that reflows mid-play reads as a bug. The
    height floor is the overview's, which is the tallest. */
-.board-panes{position:relative; flex:1; min-width:0; min-height:392px}
+.board-panes{position:relative; flex:1; min-width:0; min-height:452px}
 /* The outgoing pane clears before the incoming one arrives. A plain
    symmetric crossfade overlaps two dense text panes at half opacity each,
    which reads as ghosting rather than as a transition - so out is quick and
@@ -1018,8 +1118,7 @@ h1,h2,h3,h4,p{margin:0}
 <div class="banner">
   <div class="wrap">
     <b>The risk detection is real</b>
-    <span>— it runs on live news. The shipments are synthetic and the TMS link is a
-    demo connector, so a disruption can be shown on demand and nothing is ever written.</span>
+    <span>— shipments are synthetic and the TMS link is a demo connector, so nothing is ever written.</span>
   </div>
 </div>
 <header class="nav">
@@ -1113,42 +1212,140 @@ h1,h2,h3,h4,p{margin:0}
           </svg>
         </span>
         <span class="wk-scan" data-wk-scan aria-hidden="true"></span>
+        <!-- The top strip: workspace chip, a run's filter state, and Export.
+             None of these are controls; they name the state of THIS run so
+             the header reads as a working view. -->
         <div class="frame-bar">
-          <i></i><i></i><i></i>
+          <span class="fb-chip brand"><span class="sq">SQ</span>SQRlane</span>
+          <span class="fb-chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M12 3l9 16H3z"/></svg>
+            Hamburg strike</span>
+          <span class="fb-chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/>
+                 <path d="M12 8v4l3 2"/></svg>
+            Last 24h</span>
+          <span class="fb-chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5"/>
+                 </svg>
+            All 7 bookings</span>
+          <span class="fb-chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M4 5h16v11H4z"/>
+                 <path d="M4 6l8 6 8-6"/></svg>
+            All 3 Workers</span>
+          <span class="fb-spacer"></span>
+          <span class="fb-export">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M12 4v11m-4-4l4 4 4-4"/>
+                 <path d="M4 19h16"/></svg>
+            Export</span>
         </div>
         <div class="board">
           <aside class="board-side">
-            <div class="t">Operations</div>
-            <div class="i on">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9"/>
-                <rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/>
-                <rect x="3" y="16" width="7" height="5"/></svg>Overview</div>
-            <div class="i">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5"/>
-                <circle cx="7" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>
-              Shipments<span class="n">7</span></div>
-            <div class="i">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round"><path d="M12 3l9 16H3z"/>
-                <path d="M12 9v4M12 16.5v.5"/></svg>Risk feed<span class="n">7</span></div>
-            <div class="i">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round"><path d="M4 5h16v11H4z"/>
-                <path d="M4 6l8 6 8-6"/></svg>Approvals<span class="n">18</span></div>
-            <div class="i">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0z"/><path d="M12 18v4"/></svg>
-              TMS link<span class="n">12</span></div>
+            <div class="sb-brand">
+              <span class="sq">SQ</span>
+              <span class="nm">SQRlane's board</span>
+            </div>
+            <div class="sb-search">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/>
+                <path d="M16 16l4 4"/></svg>
+              Quick actions
+              <span class="kb">&#8984; K</span>
+            </div>
+
+            <!-- Section 1: the desk. Overview + the three live Workers'
+                 queues on the same book. -->
+            <div class="sec">
+              <div class="t">General</div>
+              <div class="i on" data-nav="overview">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9"/>
+                  <rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/>
+                  <rect x="3" y="16" width="7" height="5"/></svg>Overview</div>
+              <div class="i" data-nav="reasoning">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5"/>
+                  <circle cx="7" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>
+                Shipments<span class="n na" data-role="shipments">7</span></div>
+              <div class="i" data-nav="risk">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><path d="M12 3l9 16H3z"/>
+                  <path d="M12 9v4M12 16.5v.5"/></svg>Risk feed<span class="n na" data-role="risk">7</span></div>
+              <div class="i" data-nav="approvals">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><path d="M4 5h16v11H4z"/>
+                  <path d="M4 6l8 6 8-6"/></svg>Approvals<span class="n na" data-role="approvals">18</span></div>
+            </div>
+
+            <!-- Section 2: what feeds the Risk Worker. Not clickable; the
+                 counts are real - see sources_by_family() in the code. -->
+            <div class="sec">
+              <div class="t">Sources</div>
+              <div class="i">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/>
+                  <path d="M3.9 12h16.2M12 3.4c2.9 2.4 2.9 14.8 0 17.2M12 3.4c-2.9 2.4-2.9 14.8 0 17.2"/></svg>
+                News<span class="n">41</span></div>
+              <div class="i">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><path d="M3 12c3 0 3-3 6-3s3 3 6 3 3-3 6-3"/>
+                  <path d="M3 18c3 0 3-3 6-3s3 3 6 3 3-3 6-3"/></svg>
+                Rivers<span class="n">7</span></div>
+              <div class="i">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/>
+                  <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></svg>
+                Weather &amp; sea<span class="n">4</span></div>
+              <div class="i">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><path d="M2 14h4l2-6 4 12 3-9 2 3h5"/></svg>
+                Seismic &amp; hazards<span class="n">5</span></div>
+            </div>
+
+            <!-- Section 3: where the decisions land - the last live Worker
+                 and the connection point. -->
+            <div class="sec">
+              <div class="t">Optimize</div>
+              <div class="i" data-nav="tms">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0z"/><path d="M12 18v4"/></svg>
+                TMS link<span class="n na" data-role="tms">12</span></div>
+              <div class="i" data-nav="workers">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round"><path d="M4 4h16v12H4z"/>
+                  <path d="M8 20h8M12 16v4"/></svg>
+                Workers<span class="n">3</span></div>
+            </div>
           </aside>
           <div class="board-panes" data-wins>
           <div class="board-main win-pane on" data-pane="overview">
             <div class="board-top">
               <span class="h">Overview</span>
               <span class="chip live">Live</span>
+              <!-- The rank row: three run-figures with their real
+                   denominators. Same shape as Attio's "Visibility 3/14 ·
+                   Sentiment 2/14 · Position 5/14", but every value here is
+                   traced to the run - Sources is expected_sources(), the
+                   live Workers are Risk/Routing/Comms, Actioned is what
+                   the advisor decided on this scenario. No delta arrows:
+                   this build has no baseline to compare against. -->
+              <div class="r">
+                <div class="rank-row">
+                  <span class="rank">Sources: <b>60/60</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Workers: <b>3/3</b></span>
+                  <span class="sep">&middot;</span>
+                  <span class="rank">Actioned: <b>3/7</b></span>
+                </div>
+              </div>
             </div>
+            <div class="ov-split">
+            <div class="ov-main">
             <div class="mini-stats">
               <div class="ms"><div class="l">Bookings from the TMS</div><div class="v tabular">7</div></div>
               <div class="ms"><div class="l">Needing action</div><div class="v amber tabular">3</div></div>
@@ -1184,6 +1381,55 @@ h1,h2,h3,h4,p{margin:0}
                 <span class="lane">Textiles · Shanghai → Lyon</span>
                 <span class="meta">5d slack</span>
                 <span class="st"><span class="st-badge st-green"><i></i>On plan</span></span></div>
+            </div>
+            </div>
+            <!-- The route-options rail: the routes SHP-001 could take,
+                 ranked by transit_days. Every number is from routes.json -
+                 nothing calculated, nothing invented. Same shape as
+                 Attio's competitors table: rank, name, two columns of
+                 numbers, and a badge saying where each one stands. The
+                 badge tells the story of the run: R-HAM-STD is exposed to
+                 the strike, R-RTM-ALT is chosen, the two Cape options are
+                 too slow to be the answer here. -->
+            <aside class="ov-rail" aria-hidden="true">
+              <div class="ov-rail-h">
+                <div class="h">Route options &middot; SHP-001</div>
+                <div class="s">Ranked by least-late &middot; from routes.json</div>
+              </div>
+              <div class="ov-tbl">
+                <div class="th">
+                  <span>#</span><span>Route</span><span>Days</span><span>Idx</span><span></span>
+                </div>
+                <div class="tr">
+                  <span class="rk">1</span>
+                  <span class="rt">R-HAM-STD<small>Suez &rarr; Hamburg</small></span>
+                  <span class="nu">32d</span>
+                  <span class="nu">100</span>
+                  <span class="bd"><span class="ov-badge risk">Exposed</span></span>
+                </div>
+                <div class="tr chosen">
+                  <span class="rk">2</span>
+                  <span class="rt">R-RTM-ALT<small>Suez &rarr; Rotterdam</small></span>
+                  <span class="nu">34d</span>
+                  <span class="nu">108</span>
+                  <span class="bd"><span class="ov-badge chosen">Chosen</span></span>
+                </div>
+                <div class="tr">
+                  <span class="rk">3</span>
+                  <span class="rt">R-COGH-ALT<small>Cape &rarr; Hamburg</small></span>
+                  <span class="nu">42d</span>
+                  <span class="nu">130</span>
+                  <span class="bd"><span class="ov-badge slow">Too slow</span></span>
+                </div>
+                <div class="tr">
+                  <span class="rk">4</span>
+                  <span class="rt">R-COGH-RTM<small>Cape &rarr; Rotterdam</small></span>
+                  <span class="nu">43d</span>
+                  <span class="nu">128</span>
+                  <span class="bd"><span class="ov-badge slow">Too slow</span></span>
+                </div>
+              </div>
+            </aside>
             </div>
           </div>
 
@@ -2246,7 +2492,10 @@ h1,h2,h3,h4,p{margin:0}
   var scan   = shot.querySelector("[data-wk-scan]");
   var rows   = [].slice.call(shot.querySelectorAll(".row"));
   var stats  = [].slice.call(shot.querySelectorAll(".mini-stats .v"));
-  var side   = [].slice.call(shot.querySelectorAll(".board-side .n"));
+  /* The animated sidebar counters are marked .na (data-role names them),
+     so the Sources section's static reference counts stay put while the
+     Risk/Approvals/TMS ones tick up with the run. */
+  var side   = [].slice.call(shot.querySelectorAll(".board-side .na"));
   if (!rows.length) return;
 
   /* --- remember where it ends up, then rewind ------------------------- */
@@ -2371,15 +2620,17 @@ h1,h2,h3,h4,p{margin:0}
   var panes = [].slice.call(shot.querySelectorAll(".win-pane"));
   var sideItems = [].slice.call(shot.querySelectorAll(".board-side .i"));
 
-  /* pane -> [sidebar index it lights, how long it holds].
-     Overview's hold is 0 because its own animation decides when it is done. */
+  /* pane -> [sidebar item's data-nav it lights, how long it holds].
+     Overview's hold is 0 because its own animation decides when it is done.
+     Using the data-nav name rather than a numeric index means adding more
+     sidebar items above cannot silently shift what lights up. */
   var WINDOWS = [
-    ["overview",  0,    0],
-    ["risk",      2, 4400],
-    ["reasoning", 1, 6600],
-    ["drafts",    3, 4600],
-    ["tms",       4, 5200],
-    ["margin",    4, 6800],
+    ["overview",  "overview",  0],
+    ["risk",      "risk",   4400],
+    ["reasoning", "reasoning", 6600],
+    ["drafts",    "approvals", 4600],
+    ["tms",       "tms",    5200],
+    ["margin",    "tms",    6800],
   ];
 
   function showPane(i) {
@@ -2387,8 +2638,10 @@ h1,h2,h3,h4,p{margin:0}
       el.classList.toggle("on", n === i);
       el.classList.toggle("out", n < i);
     });
-    var w = WINDOWS[i];
-    sideItems.forEach(function (el, n) { el.classList.toggle("on", n === w[1]); });
+    var target = WINDOWS[i][1];
+    sideItems.forEach(function (el) {
+      el.classList.toggle("on", el.getAttribute("data-nav") === target);
+    });
   }
 
   /* The approve button, taking a beat. A real one does not resolve instantly
