@@ -284,6 +284,74 @@ h1,h2,h3,h4,p{margin:0}
 
 /* ---------- product mock (a real-looking SQRlane board, in HTML) ------- */
 .shot{margin:56px auto 0; max-width:1180px; position:relative}
+
+/* ---------- floating live-feed card ---------------------------------------
+   Sits over the mock. Real live headlines from three regional broadcasters
+   (NDR Hamburg, Rijnmond, France Info) via /api/live-feed. The card is
+   hidden until the fetch returns items, so a failed pull leaves the mock
+   as it was and the page never depends on the network. The country flag
+   swaps with the source. */
+.live-feed{position:absolute; left:50%; transform:translateX(-50%);
+           bottom:24px; z-index:5;
+           width:min(92%, 460px);
+           background:var(--card); border:1px solid var(--border-strong);
+           border-radius:14px;
+           box-shadow:0 12px 32px -12px rgba(0,0,0,.24),
+                      0 4px 12px -4px rgba(0,0,0,.08),
+                      0 0 0 1px rgba(0,0,0,.02);
+           padding:12px 14px;
+           opacity:0; transform:translate(-50%, 8px);
+           transition:opacity .5s var(--ease), transform .5s var(--ease)}
+.live-feed.on{opacity:1; transform:translate(-50%, 0)}
+.lf-inner{display:grid; grid-template-columns:36px minmax(0,1fr) 28px;
+          gap:12px; align-items:center}
+.lf-flag{width:36px; height:36px; border-radius:50%; background:var(--card-muted);
+         border:1px solid var(--border); display:inline-flex;
+         align-items:center; justify-content:center;
+         font-size:19px; line-height:1;
+         transition:opacity .35s var(--ease), transform .45s var(--ease)}
+.lf-body{min-width:0}
+.lf-title{font-size:13px; line-height:18px; font-weight:500;
+          color:var(--fg); letter-spacing:-.15px;
+          overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+          transition:opacity .35s var(--ease)}
+.lf-meta{margin-top:2px; display:flex; align-items:center; gap:7px;
+         font-size:11px; color:var(--faint); line-height:15px;
+         letter-spacing:-.05px}
+.lf-source{font-weight:500; color:var(--muted)}
+.lf-sep{color:var(--gray-400)}
+.lf-live{display:inline-flex; align-items:center; gap:5px;
+         color:var(--green); font-weight:500}
+.lf-live-dot{width:6px; height:6px; border-radius:50%; background:var(--green);
+             box-shadow:0 0 0 3px var(--green-100);
+             animation:lf-live-pulse 2s ease-in-out infinite}
+@keyframes lf-live-pulse{
+  0%,100%{box-shadow:0 0 0 3px var(--green-100)}
+  50%    {box-shadow:0 0 0 4px color-mix(in srgb, var(--green) 30%, transparent)}
+}
+.lf-open{display:inline-flex; align-items:center; justify-content:center;
+         width:28px; height:28px; border-radius:8px;
+         color:var(--muted); background:var(--card-muted);
+         border:1px solid var(--border);
+         transition:color .2s var(--ease), background .2s var(--ease),
+                    border-color .2s var(--ease)}
+.lf-open:hover{color:var(--fg); background:var(--gray-100);
+               border-color:var(--border-strong)}
+
+/* The swap: title fades out, then in, with the flag riding it. Class .swap
+   is toggled by the cycler right before it writes the next item. */
+.live-feed .lf-title.swap,
+.live-feed .lf-flag.swap{opacity:0}
+
+@media (max-width:640px){
+  .live-feed{bottom:14px; width:calc(100% - 24px);
+             padding:10px 12px}
+  .lf-inner{grid-template-columns:32px minmax(0,1fr) 24px; gap:10px}
+  .lf-flag{width:32px; height:32px; font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){
+  .live-feed, .lf-title, .lf-flag, .lf-live-dot{transition:none; animation:none}
+}
 /* The window is a preview of a screen that carries on below the fold, so it
    fades out rather than ending on a border. The gradient underneath used to do
    this alone, but it was inset 6% and stopped short of the frame's own bottom
@@ -1409,6 +1477,30 @@ h1,h2,h3,h4,p{margin:0}
 
     <!-- A rendering of the actual board, drawn in HTML so it stays sharp. -->
     <div class="shot" data-walk>
+      <!-- Floating live-feed card. Fetches /api/live-feed once, rotates
+           through the items every 4s. Country flag comes from the feed's
+           ISO code, so it switches source-by-source: NDR Hamburg flies DE,
+           Rijnmond flies NL, France Info flies FR. Hidden if the endpoint
+           returns no items - the mock never depends on it. -->
+      <div class="live-feed" data-live-feed hidden aria-live="polite">
+        <div class="lf-inner">
+          <span class="lf-flag" data-lf-flag aria-hidden="true">&#127760;</span>
+          <div class="lf-body">
+            <div class="lf-title" data-lf-title></div>
+            <div class="lf-meta">
+              <span data-lf-source class="lf-source"></span>
+              <span class="lf-sep">&middot;</span>
+              <span class="lf-live"><span class="lf-live-dot"></span>Live</span>
+            </div>
+          </div>
+          <a class="lf-open" data-lf-open target="_blank" rel="noopener" aria-label="Open the source">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7"/>
+              <path d="M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+
       <div class="frame">
         <!-- The pointer. Drawn, not a cursor image: it has to be visible on
              a light board and to sit above the rows it points at. -->
@@ -3268,6 +3360,74 @@ h1,h2,h3,h4,p{margin:0}
   } else {
     start();
   }
+})();
+
+/* Live feed cycler.
+   Fetches /api/live-feed once, then rotates through the returned headlines
+   every ~4.2s. Flag emoji is generated from the two-letter ISO code with
+   regional indicator symbols; unknown codes fall back to a globe. If the
+   endpoint returns no items, the card stays hidden and the page carries on
+   as though the feature was never there. */
+(function () {
+  var card = document.querySelector("[data-live-feed]");
+  if (!card) return;
+
+  var flag   = card.querySelector("[data-lf-flag]");
+  var title  = card.querySelector("[data-lf-title]");
+  var source = card.querySelector("[data-lf-source]");
+  var open   = card.querySelector("[data-lf-open]");
+
+  function flagOf(iso) {
+    if (!iso || iso.length !== 2) return "🌐";  // globe
+    var a = iso.toLowerCase().charCodeAt(0) - 97;
+    var b = iso.toLowerCase().charCodeAt(1) - 97;
+    if (a < 0 || a > 25 || b < 0 || b > 25) return "🌐";
+    return String.fromCodePoint(0x1F1E6 + a, 0x1F1E6 + b);
+  }
+
+  var items = [];
+  var at = 0;
+  var timer = 0;
+
+  function paint() {
+    if (!items.length) return;
+    var it = items[at % items.length];
+    // Fade out title + flag together, swap, fade back in on the next tick.
+    flag.classList.add("swap"); title.classList.add("swap");
+    setTimeout(function () {
+      title.textContent  = it.title || "";
+      source.textContent = it.source || "";
+      flag.textContent   = flagOf(it.iso);
+      if (open && it.link) { open.href = it.link; open.hidden = false; }
+      else if (open) { open.hidden = true; }
+      flag.classList.remove("swap"); title.classList.remove("swap");
+    }, 220);
+  }
+  function reveal() {
+    card.hidden = false;
+    // rAF to make the .on transition kick in after display flip.
+    requestAnimationFrame(function () { card.classList.add("on"); });
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = 0; } }
+  function start() {
+    if (timer || !items.length) return;
+    timer = setInterval(function () { at++; paint(); }, 4200);
+  }
+
+  fetch("/api/live-feed", { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !d.items || !d.items.length) return;
+      items = d.items;
+      paint();
+      reveal();
+      start();
+    })
+    .catch(function () { /* card stays hidden */ });
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stop(); else start();
+  });
 })();
 
 /* The source band. One row is written in the HTML; two hidden copies are

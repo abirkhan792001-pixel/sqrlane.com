@@ -313,6 +313,75 @@ def gauges():
     return _gauge_response(fresh, age=0, stale=False)
 
 
+# In-memory cache for the live feed panel. 15 min is plenty - the panel
+# rotates through 4-6 items every few seconds, and hammering three RSS
+# hosts on every visit would be rude and slow the page. A cold serverless
+# instance will re-fetch on its first request and cache from there.
+_feed_cache = {"at": 0.0, "payload": None}
+_FEED_CACHE_SECONDS = 900
+
+# Three regional broadcasters, one per country, all keyless. Choosing a
+# small, curated pool over the full RSS_FEEDS list because this endpoint
+# runs on every landing-page load and cannot afford a 20-feed budget - the
+# risk_monitor is where breadth belongs, not here.
+_LIVE_FEEDS = [
+    ("NDR Hamburg", "de", "https://www.ndr.de/nachrichten/hamburg/index-rss.xml"),
+    ("Rijnmond",    "nl", "https://www.rijnmond.nl/rss/index.xml"),
+    ("France Info", "fr", "https://www.francetvinfo.fr/titres.rss"),
+]
+
+
+@app.get("/api/live-feed")
+def live_feed():
+    """A handful of live headlines from three regional broadcasters.
+
+    Powers the small floating card on the landing page. Fails soft in
+    exactly the same shape as /api/gauges: a bad read serves the last
+    good payload if there is one, otherwise returns ok:false items:[]
+    so the client can hide the card rather than break the page.
+    """
+    import feedparser
+    from src import httpget
+
+    now = time.monotonic()
+    cached = _feed_cache["payload"]
+    age = now - _feed_cache["at"]
+    if cached and age < _FEED_CACHE_SECONDS:
+        return JSONResponse(dict(cached, age_seconds=round(age)))
+
+    items = []
+    for (name, iso, url) in _LIVE_FEEDS:
+        try:
+            resp = httpget.get_capped(url, timeout=3.5)
+            parsed = feedparser.parse(resp.content)
+            for entry in list(parsed.entries)[:2]:
+                title = (entry.get("title") or "").strip()
+                if not title:
+                    continue
+                items.append({
+                    "source": name,
+                    "iso": iso,
+                    "title": title[:160],
+                    "link": entry.get("link", ""),
+                })
+        except Exception:                             # noqa: BLE001
+            # Any single feed failing must not empty the whole panel, and
+            # must not stall the request either.
+            continue
+
+    payload = {"ok": bool(items), "items": items,
+               "sources": [{"name": n, "iso": i} for (n, i, _) in _LIVE_FEEDS]}
+    if items:
+        _feed_cache.update(at=now, payload=payload)
+        return JSONResponse(dict(payload, age_seconds=0),
+                            headers={"Cache-Control":
+                                     f"public, max-age=60, s-maxage={_FEED_CACHE_SECONDS}"})
+    if cached:
+        return JSONResponse(dict(cached, age_seconds=round(age)))
+    return JSONResponse(dict(payload, age_seconds=0),
+                        headers={"Cache-Control": "no-store"})
+
+
 @app.get("/api/initial")
 def initial():
     """The board before the button is pressed: five shipments, all green."""
