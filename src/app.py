@@ -359,22 +359,24 @@ def _translate_items_to_english(items):
 
     Adds `title_en` and `summary_en` to each item in place. Called once
     per cache refresh (every 15 min), so it never blocks a warm request.
-    If the LLM is not configured or the call fails, the items are
-    returned unchanged - the panel still reads, in the source language,
-    which is the pre-translation behaviour.
+    Returns a small dict describing what happened so a failure shows up
+    in the response payload instead of being swallowed - broad try/except
+    used to eat the actual error and left us guessing in production.
     """
     if not llm.is_configured():
-        return
+        return {"status": "off", "reason": "llm not configured"}
     todo = [(i, it) for i, it in enumerate(items)
             if (it.get("iso") or "").lower() != "en"
             and (it.get("title") or it.get("summary"))]
     if not todo:
-        return
+        return {"status": "skipped", "reason": "no non-english items"}
 
-    # One prompt, one JSON array back. Keep the batch small enough that
-    # a single response stays under a comfortable token cap - 12 items
-    # covers our 18-item ceiling in at most two calls.
-    BATCH = 12
+    # Small batches keep each round-trip fast (Groq's free tier can be
+    # slow to first token) so one bad call only loses a handful of items,
+    # and the whole translation stays inside the function's time budget.
+    BATCH = 6
+    translated = 0
+    errors = []
     for start in range(0, len(todo), BATCH):
         chunk = todo[start:start + BATCH]
         payload = [
@@ -396,12 +398,14 @@ def _translate_items_to_english(items):
             "Input:\n" + json.dumps(payload, ensure_ascii=False)
         )
         try:
-            out = llm.complete_json(prompt, temperature=0.2, max_tokens=1400)
-        except Exception:                              # noqa: BLE001
-            # A translation failure must not empty the panel. Leave the
-            # items as they are; the UI falls back to the original text.
+            out = llm.complete_json(prompt, temperature=0.2, max_tokens=900)
+        except Exception as exc:                       # noqa: BLE001
+            # Record the reason so it surfaces in the response payload -
+            # a silent failure took an afternoon to diagnose on production.
+            errors.append(f"{type(exc).__name__}: {exc}"[:200])
             continue
         if not isinstance(out, list):
+            errors.append(f"non-list JSON: {type(out).__name__}")
             continue
         for row in out:
             if not isinstance(row, dict):
@@ -411,10 +415,22 @@ def _translate_items_to_english(items):
                 continue
             te = (row.get("title_en") or "").strip()
             se = (row.get("summary_en") or "").strip()
+            wrote = False
             if te and te.lower() != (items[idx].get("title") or "").lower():
                 items[idx]["title_en"] = te[:200]
+                wrote = True
             if se and se.lower() != (items[idx].get("summary") or "").lower():
                 items[idx]["summary_en"] = se[:220]
+                wrote = True
+            if wrote:
+                translated += 1
+
+    diag = {"status": "ok" if translated else "failed",
+            "translated": translated, "todo": len(todo),
+            "model": llm.active_model() if llm.is_configured() else None}
+    if errors:
+        diag["errors"] = errors[:3]
+    return diag
 
 
 @app.get("/api/live-feed")
@@ -475,34 +491,44 @@ def live_feed():
                     continue
         return ""
 
-    items = []
-    for (name, iso, url) in _LIVE_FEEDS:
+    # Fetch the feeds in parallel. Serial fetches (9 * up to 3.5s each) can
+    # eat most of the 60s function budget on a cold start, which is what
+    # left production without translations even though the code shipped.
+    from concurrent.futures import ThreadPoolExecutor
+
+    def _read_one(spec):
+        name, iso, url = spec
+        rows = []
         try:
-            resp = httpget.get_capped(url, timeout=3.5)
+            resp = httpget.get_capped(url, timeout=3.0)
             parsed = feedparser.parse(resp.content)
-            for entry in list(parsed.entries)[:_ITEMS_PER_FEED]:
-                title = (entry.get("title") or "").strip()
-                if not title:
-                    continue
-                summary = _clean_summary(
-                    entry.get("summary") or entry.get("description") or ""
-                )
-                # A summary that just echoes the title adds noise, not
-                # information - drop it so the row stays a headline.
-                if summary and summary.lower().startswith(title.lower()[:60]):
-                    summary = ""
-                items.append({
-                    "source": name,
-                    "iso": iso,
-                    "title": title[:160],
-                    "summary": summary,
-                    "published": _published_iso(entry),
-                    "link": entry.get("link", ""),
-                })
         except Exception:                             # noqa: BLE001
-            # Any single feed failing must not empty the whole panel, and
-            # must not stall the request either.
-            continue
+            return rows
+        for entry in list(parsed.entries)[:_ITEMS_PER_FEED]:
+            title = (entry.get("title") or "").strip()
+            if not title:
+                continue
+            summary = _clean_summary(
+                entry.get("summary") or entry.get("description") or ""
+            )
+            # A summary that just echoes the title adds noise, not
+            # information - drop it so the row stays a headline.
+            if summary and summary.lower().startswith(title.lower()[:60]):
+                summary = ""
+            rows.append({
+                "source": name,
+                "iso": iso,
+                "title": title[:160],
+                "summary": summary,
+                "published": _published_iso(entry),
+                "link": entry.get("link", ""),
+            })
+        return rows
+
+    items = []
+    with ThreadPoolExecutor(max_workers=len(_LIVE_FEEDS)) as pool:
+        for rows in pool.map(_read_one, _LIVE_FEEDS):
+            items.extend(rows)
 
     # Round-robin merge so each source's first item comes before any
     # source's second item, then cap. Otherwise a run of German feeds at
@@ -519,12 +545,14 @@ def live_feed():
                 interleaved.append(bucket[row])
     items = interleaved[:_MAX_ITEMS]
 
-    # Translate non-English titles/summaries in place. Silent no-op if the
-    # LLM is not configured or the call fails - the panel still reads.
-    _translate_items_to_english(items)
+    # Translate non-English titles/summaries in place. Returns a small
+    # diagnostic dict so a failure is visible in the payload instead of
+    # being silently swallowed.
+    translation_diag = _translate_items_to_english(items)
 
     payload = {"ok": bool(items), "items": items,
-               "sources": [{"name": n, "iso": i} for (n, i, _) in _LIVE_FEEDS]}
+               "sources": [{"name": n, "iso": i} for (n, i, _) in _LIVE_FEEDS],
+               "translation": translation_diag}
     if items:
         _feed_cache.update(at=now, payload=payload)
         return JSONResponse(dict(payload, age_seconds=0),
