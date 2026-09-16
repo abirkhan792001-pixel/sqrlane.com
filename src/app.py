@@ -374,7 +374,11 @@ def _translate_items_to_english(items):
     # Small batches keep each round-trip fast (Groq's free tier can be
     # slow to first token) so one bad call only loses a handful of items,
     # and the whole translation stays inside the function's time budget.
-    BATCH = 6
+    # 4 items fits comfortably inside a 2000-token reply even when a
+    # reasoning model (Groq's gpt-oss family emits hidden reasoning
+    # tokens that count against max_tokens) is picked - the diagnostic
+    # caught the previous 900-token cap being exceeded on every call.
+    BATCH = 4
     translated = 0
     errors = []
     for start in range(0, len(todo), BATCH):
@@ -388,9 +392,9 @@ def _translate_items_to_english(items):
         prompt = (
             "Translate each item's title and summary into natural, concise "
             "English. Keep proper nouns (people, places, organisations, "
-            "publication names) as they are. Do not paraphrase or add "
-            "commentary. If the source is already in English return the "
-            "original text.\n\n"
+            "publication names) as they are. Do not paraphrase, add "
+            "commentary, or think out loud. If the source is already in "
+            "English return the original text.\n\n"
             "Return a JSON array in the SAME order and length as the input, "
             "with objects of exactly this shape:\n"
             '  {"i": <same index>, "title_en": "<translated title>", '
@@ -398,7 +402,7 @@ def _translate_items_to_english(items):
             "Input:\n" + json.dumps(payload, ensure_ascii=False)
         )
         try:
-            out = llm.complete_json(prompt, temperature=0.2, max_tokens=900)
+            out = llm.complete_json(prompt, temperature=0.2, max_tokens=2400)
         except Exception as exc:                       # noqa: BLE001
             # Record the reason so it surfaces in the response payload -
             # a silent failure took an afternoon to diagnose on production.
