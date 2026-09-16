@@ -513,17 +513,13 @@ h1,h2,h3,h4,p{margin:0}
   .phead-split .globe{display:none}
 }
 
+/* The globe is drawn on a canvas; this wrapper is just a stage. The disc
+   itself, its rim, and its atmospheric halo are all painted inside the
+   canvas so they scale with the sphere and don't leak past its edge on
+   rounded borders. Only the outer soft glow is a CSS box-shadow. */
 .globe{position:relative; width:380px; height:380px; margin-left:auto;
-       border-radius:50%;
-       /* The globe sits on a dark disc with a faint outer glow, same
-          look as the reference. --fg is the page's near-black. */
-       background:radial-gradient(circle at 50% 50%,
-                 #0a0a0a 0%, #050505 62%, #000 100%);
-       box-shadow:
-         inset 0 0 0 1px rgba(255,255,255,.05),
-         0 0 40px rgba(0,0,0,.28),
-         0 0 90px rgba(0,0,0,.12);
-       overflow:hidden}
+       filter:drop-shadow(0 0 22px rgba(90,150,255,.10))
+              drop-shadow(0 12px 26px rgba(0,0,0,.28))}
 .globe-c,.globe-svg{position:absolute; inset:0; width:100%; height:100%;
                     display:block}
 .globe-svg{pointer-events:none}
@@ -965,29 +961,50 @@ h1,h2,h3,h4,p{margin:0}
 
   function drawDots() {
     ctx.clearRect(0, 0, W, H);
-    // subtle inner shadow - a bit darker at the limb than at the middle,
-    // to sell the sphere.
-    var g = ctx.createRadialGradient(CX, CY, R * 0.55, CX, CY, R);
-    g.addColorStop(0, "rgba(255,255,255,0)");
-    g.addColorStop(1, "rgba(0,0,0,.35)");
-    ctx.fillStyle = "#0a0a0a";
-    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2); ctx.fill();
 
+    // 1. Atmospheric halo, just outside the sphere. Cool blue-white,
+    //    fading to transparent. This is what sells "planet" more than
+    //    any amount of dot detail does.
+    var halo = ctx.createRadialGradient(CX, CY, R * 0.98, CX, CY, R * 1.18);
+    halo.addColorStop(0.00, "rgba(120,170,255,.22)");
+    halo.addColorStop(0.55, "rgba(90,140,220,.08)");
+    halo.addColorStop(1.00, "rgba(90,140,220,0)");
+    ctx.fillStyle = halo;
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. The sphere body. A single mid-tone dark disc with a very
+    //    subtle radial lift toward the centre - just enough for the
+    //    eye to read curvature; the dots do the rest.
+    ctx.save();
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2); ctx.clip();
+    ctx.fillStyle = "#0d1017";
+    ctx.fillRect(CX - R, CY - R, R * 2, R * 2);
+    var body = ctx.createRadialGradient(CX, CY - R * 0.15, R * 0.1,
+                                        CX, CY, R * 1.05);
+    body.addColorStop(0, "rgba(255,255,255,.045)");
+    body.addColorStop(1, "rgba(0,0,0,.35)");
+    ctx.fillStyle = body;
+    ctx.fillRect(CX - R, CY - R, R * 2, R * 2);
+    ctx.restore();
+
+    // 3. The land dots. Kept bright the whole way to the limb so the
+    //    continents read as ONE thing; a tiny alpha lift near the
+    //    centre suggests a highlight without dimming the edges.
     for (var i = 0; i < N; i++) {
       if (!isLand[i]) continue;
       var p = project(lat[i], lon[i]);
-      if (p.z <= 0) continue;                       // back of the sphere
-      // dot size tapers toward the limb; brightness tracks z so the
-      // silhouette reads as round.
-      var b = 0.35 + 0.65 * p.z;
-      var s = 1.05 + 0.5 * p.z;
-      ctx.fillStyle = "rgba(255,255,255," + b.toFixed(2) + ")";
+      if (p.z <= 0.02) continue;                    // back / grazing limb
+      var b = 0.72 + 0.28 * p.z;                    // 0.72..1.00 alpha
+      var s = 1.35 + 0.35 * p.z;                    // 1.35..1.70 px
+      ctx.fillStyle = "rgba(230,240,255," + b.toFixed(2) + ")";
       ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
     }
 
-    // rim shadow
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2); ctx.fill();
+    // 4. A thin rim highlight so the sphere has a definite edge
+    //    against the page.
+    ctx.strokeStyle = "rgba(120,170,255,.18)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(CX, CY, R - 0.5, 0, Math.PI * 2); ctx.stroke();
   }
 
   var reduced = window.matchMedia &&
