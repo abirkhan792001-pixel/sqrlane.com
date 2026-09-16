@@ -390,15 +390,25 @@ def _translate_items_to_english(items):
             for (idx, _) in chunk
         ]
         prompt = (
-            "Translate each item's title and summary into natural, concise "
-            "English. Keep proper nouns (people, places, organisations, "
-            "publication names) as they are. Do not paraphrase, add "
-            "commentary, or think out loud. If the source is already in "
-            "English return the original text.\n\n"
+            "For each item: (1) translate its title and summary into "
+            "natural, concise English (keep proper nouns as they are; do "
+            "not paraphrase, add commentary or think out loud; if the "
+            "source is already in English return the original text), and "
+            "(2) decide whether the item is a SUPPLY-CHAIN or TRADE-LANE "
+            "story - anything about ports, shipping lines, freight rates, "
+            "container carriers, sanctions, tariffs, customs, strikes or "
+            "labour actions affecting cargo movement, extreme weather over "
+            "ports or shipping lanes, rail/road/inland-waterway freight, "
+            "aviation cargo, fuel prices moving transport costs, or "
+            "geopolitical events that directly disrupt trade routes. "
+            "Domestic politics, crime, sport, entertainment, general "
+            "weather, tech product news and consumer stories are NOT "
+            "relevant. When in doubt, mark it not relevant.\n\n"
             "Return a JSON array in the SAME order and length as the input, "
             "with objects of exactly this shape:\n"
             '  {"i": <same index>, "title_en": "<translated title>", '
-            '"summary_en": "<translated summary or empty string>"}\n\n'
+            '"summary_en": "<translated summary or empty string>", '
+            '"relevant": <true|false>}\n\n'
             "Input:\n" + json.dumps(payload, ensure_ascii=False)
         )
         try:
@@ -420,12 +430,18 @@ def _translate_items_to_english(items):
             te = (row.get("title_en") or "").strip()
             se = (row.get("summary_en") or "").strip()
             wrote = False
-            if te and te.lower() != (items[idx].get("title") or "").lower():
+            if te:
                 items[idx]["title_en"] = te[:200]
                 wrote = True
-            if se and se.lower() != (items[idx].get("summary") or "").lower():
+            if se:
                 items[idx]["summary_en"] = se[:220]
                 wrote = True
+            # Trade-lane relevance is a boolean stamped by the same
+            # classifier so we do not have to make a second LLM call
+            # per item. Default is "not classified yet" (kept), so a
+            # translation failure never silently empties the panel.
+            if "relevant" in row:
+                items[idx]["relevant"] = bool(row["relevant"])
             if wrote:
                 translated += 1
 
@@ -549,14 +565,33 @@ def live_feed():
                 interleaved.append(bucket[row])
     items = interleaved[:_MAX_ITEMS]
 
-    # Translate non-English titles/summaries in place. Returns a small
-    # diagnostic dict so a failure is visible in the payload instead of
-    # being silently swallowed.
+    # Translate non-English titles/summaries in place, and stamp each
+    # item with a trade-lane relevance boolean. The diagnostic surfaces
+    # any failure in the response payload rather than swallowing it.
     translation_diag = _translate_items_to_english(items)
+
+    # Keep only items the classifier marked relevant to a trade lane -
+    # a general news feed is what a broadcaster shows, and the desk
+    # already gets those elsewhere. Items that were never classified
+    # (translation off, or LLM failed) are kept so the panel is never
+    # silently emptied by a classifier problem.
+    total_before = len(items)
+    items = [it for it in items if it.get("relevant", True)]
+    dropped_by_relevance = total_before - len(items)
+
+    # Drop the source-language fields on rows that have an English
+    # translation - the panel only shows the English rendering now,
+    # so shipping the originals would just bloat the payload.
+    for it in items:
+        if it.get("title_en"):
+            it.pop("title", None)
+        if it.get("summary_en"):
+            it.pop("summary", None)
 
     payload = {"ok": bool(items), "items": items,
                "sources": [{"name": n, "iso": i} for (n, i, _) in _LIVE_FEEDS],
-               "translation": translation_diag}
+               "translation": translation_diag,
+               "dropped_by_relevance": dropped_by_relevance}
     if items:
         _feed_cache.update(at=now, payload=payload)
         return JSONResponse(dict(payload, age_seconds=0),
