@@ -1157,6 +1157,118 @@ h1,h2,h3,h4,p{margin:0}
   .ln + .ln::before{left:50%; top:-5px; margin:0 0 0 -5px; transform:rotate(135deg)}
 }
 
+/* ---------- the integrations grid ---------- */
+/* A tile grid of the tools SQRlane is built to plug into - the same
+   convention every other systems band on the site uses (stylized
+   pictograms + vendor names as text, no logo reproduced) but larger,
+   with slight per-tile rotation for the shuffled-stack feel, and with
+   each tile floating up-and-down on one of four out-of-phase keyframes
+   so no two neighbours move together. The load-bearing disclaimer sits
+   under the block: none of these vendors is connected today.
+
+   Under prefers-reduced-motion, tiles sit still. */
+.integ-wrap{margin-top:44px; position:relative; overflow:hidden;
+            background:linear-gradient(180deg,var(--card) 0%,var(--card-muted) 100%);
+            border:1px solid var(--border); border-radius:var(--r-lg);
+            box-shadow:var(--shadow-card); padding:56px 40px 60px}
+/* Soft radial vignette so tiles at the edges dissolve into the frame
+   rather than colliding with it. pointer-events:none so tiles under it
+   still hover. */
+.integ-wrap::before{content:""; position:absolute; inset:0; pointer-events:none;
+  z-index:2;
+  background:radial-gradient(140% 90% at 50% 50%, transparent 60%,
+                             rgba(250,250,250,.94) 100%)}
+.integ-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:18px;
+            position:relative; z-index:1}
+
+.itile{position:relative; padding:20px 12px 16px; background:var(--card);
+       border:1px solid var(--border); border-radius:14px;
+       box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 18px -10px rgba(0,0,0,.10);
+       display:flex; flex-direction:column; align-items:center; gap:10px;
+       text-align:center; min-height:126px;
+       transform:rotate(var(--r,0deg)) translateY(var(--y,0px));
+       opacity:0;
+       transition:opacity .6s var(--ease), box-shadow .3s var(--ease);
+       will-change:transform, opacity}
+.integ-grid.in .itile{opacity:1}
+.itile:hover{box-shadow:0 3px 6px rgba(0,0,0,.06),0 18px 32px -10px rgba(0,0,0,.16);
+             z-index:3}
+
+/* The icon square is deliberately generic - a light card with the shape
+   of the KIND of tool this is in muted grey. Reproducing the vendor's
+   own mark would claim an integration the disclaimer denies, and the
+   site's own rule already forbids it. */
+.itile-mk{width:46px; height:46px; border-radius:11px;
+          background:linear-gradient(180deg,#fff 0%,var(--gray-100) 100%);
+          border:1px solid var(--border);
+          display:flex; align-items:center; justify-content:center; flex:none}
+.itile-mk svg{width:24px; height:24px; color:var(--muted);
+              fill:none; stroke:currentColor; stroke-width:1.7;
+              stroke-linecap:round; stroke-linejoin:round}
+.itile-n{font-size:13.5px; line-height:17px; font-weight:600;
+         letter-spacing:-.2px; color:var(--fg); margin-top:2px}
+.itile-c{font-size:9px; line-height:14px; font-weight:600; letter-spacing:.08em;
+         text-transform:uppercase; color:var(--faint);
+         padding:1px 6px; border:1px solid var(--border-strong); border-radius:3px}
+
+/* Five per-tile rotation/offset phases for the shuffled resting pose. */
+.itile:nth-child(5n+1){--r:-1.4deg; --y:6px}
+.itile:nth-child(5n+2){--r: 1.2deg; --y:-5px}
+.itile:nth-child(5n+3){--r:-2.2deg; --y:4px}
+.itile:nth-child(5n+4){--r: 1.8deg; --y:-3px}
+.itile:nth-child(5n+5){--r:-0.8deg; --y:7px}
+
+/* Staggered fade-in - --i is set inline per tile. */
+.integ-grid.in .itile{transition-delay:calc(var(--i,0) * 30ms)}
+
+/* Four float keyframes, cycled by nth-child so no two neighbours move
+   together. Amplitude 8-11px so the block reads as MOVING rather than
+   subtly settled - the peec-style up-and-down. Each keyframe preserves
+   the resting rotation so the shuffled pose stays intact. */
+@keyframes itile-float-a{
+  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
+  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) - 10px))}
+}
+@keyframes itile-float-b{
+  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
+  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) + 9px))}
+}
+@keyframes itile-float-c{
+  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
+  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) - 8px))}
+}
+@keyframes itile-float-d{
+  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
+  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) + 11px))}
+}
+.integ-grid.in .itile{
+  animation:itile-float-a 5.4s ease-in-out infinite;
+  animation-delay:calc(1s + var(--i,0) * 130ms)
+}
+.integ-grid.in .itile:nth-child(4n+2){animation-name:itile-float-b; animation-duration:6.1s}
+.integ-grid.in .itile:nth-child(4n+3){animation-name:itile-float-c; animation-duration:4.7s}
+.integ-grid.in .itile:nth-child(4n+4){animation-name:itile-float-d; animation-duration:6.6s}
+
+/* The disclaimer, over the vignette so it stays legible. */
+.integ-note{margin-top:26px; font-size:12.5px; line-height:18px; color:var(--faint);
+            text-align:center; max-width:78ch; margin-left:auto; margin-right:auto;
+            position:relative; z-index:3}
+.integ-note b{color:var(--muted); font-weight:600}
+
+@media (max-width:1000px){
+  .integ-grid{grid-template-columns:repeat(4,1fr); gap:16px}
+  .integ-wrap{padding:44px 24px 48px}
+}
+@media (max-width:640px){
+  .integ-grid{grid-template-columns:repeat(2,1fr); gap:12px}
+  .integ-wrap{padding:34px 16px 40px}
+  .itile{min-height:108px; padding:16px 10px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .itile,.integ-grid.in .itile{animation:none !important; transition:none !important}
+  .integ-grid.in .itile{opacity:1}
+}
+
 /* ---------- the three numbers ---------- */
 /* Big figures, the way every B2B page does it - except that each of these can
    be traced to code or committed data, and the note underneath says they are
@@ -2548,6 +2660,78 @@ h1,h2,h3,h4,p{margin:0}
         <span class="line"></span>
         <span>Same record at both ends &mdash; and <b>a person approves the write</b></span>
         <span class="line"></span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== INTEGRATIONS, AS A TILE GRID ==================== -->
+<!-- What SQRlane is built to plug into. Framed in the future tense
+     ("built to plug into") rather than the present ("integrates with"),
+     because the disclaimer under the block is the truth: none of these
+     vendors is connected today - no vendor, no credential, no endpoint.
+     Same rule as the /product page's targets strip.
+
+     Every mark is a stylized pictogram of what KIND of tool this is
+     (envelope for mail, chat bubble for chat, container for TMS, crane
+     for a port system, shield for customs), never a reproduction of a
+     trademark. The vendor name below the mark is what identifies each
+     tile - naming a system is nominative reference, drawing its logo
+     is not. The convention matches the sources strip above and the
+     apps grid below.
+
+     Tiles rest at a small per-tile rotation and offset, and each one
+     bobs up-and-down on one of four out-of-phase float animations, so
+     the block reads as MOVING rather than settled. peec.ai-style. -->
+<section class="section" id="integrations">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">Fits your stack</span>
+      <h2 class="d2">Built to plug into the tools your desk already runs.</h2>
+      <p class="copy18">The mail your customer replies to, the chat where
+        the ops lead asks who has it, the TMS the booking actually lives in,
+        the exchange the truck is booked on, the rate manager the quote comes
+        from. Where the desk works today, so does SQRlane &mdash; without
+        asking you to move.</p>
+    </div>
+
+    <div class="integ-wrap rv">
+      <!-- Six pictograms not defined by the apps sprite above: a scope
+           crosshair, a truck, a percent for rate mgmt, a crane, a ship
+           and a shield. Drawn inline so the section is portable and
+           does not depend on load order elsewhere on the page. -->
+      <svg class="apsprite" aria-hidden="true" focusable="false"><defs>
+        <symbol id="ap-scope" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.4"/><path d="M12 3v3.8M12 17.4V21M3 12h3.8M17.4 12H21"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></symbol>
+        <symbol id="ap-truck" viewBox="0 0 24 24"><path d="M2.8 6.8h11v9.6h-11z"/><path d="M13.8 10.2h3.7l3.7 3.9v2.3h-7.4"/><circle cx="7" cy="18.3" r="1.6"/><circle cx="17.4" cy="18.3" r="1.6"/></symbol>
+        <symbol id="ap-percent" viewBox="0 0 24 24"><circle cx="7.5" cy="7.5" r="2.4"/><circle cx="16.5" cy="16.5" r="2.4"/><path d="M5 19 19 5"/></symbol>
+        <symbol id="ap-crane" viewBox="0 0 24 24"><path d="M3.4 20.6h17.2"/><path d="M7.2 20.6V5.4h13.4"/><path d="M7.2 5.4H3.6"/><path d="M14.8 5.4v4.9"/><rect x="12.4" y="10.3" width="4.9" height="3.4" rx=".8"/></symbol>
+        <symbol id="ap-ship" viewBox="0 0 24 24"><path d="M3.4 14.8h17.2l-2.6 5.2H6Z"/><path d="M7.8 14.8V9.6h8.4v5.2"/><path d="M12 9.6V5.4"/></symbol>
+        <symbol id="ap-shield" viewBox="0 0 24 24"><path d="M12 2.9 20 5.6v6.1c0 4.4-3.2 7.6-8 9.4-4.8-1.8-8-5-8-9.4V5.6Z"/><path d="M8.7 11.9 11 14.3l4.5-4.7"/></symbol>
+      </defs></svg>
+
+      <div class="integ-grid rv" role="list" aria-label="Tools SQRlane is built to plug into">
+        <div class="itile" role="listitem" style="--i:0"><span class="itile-mk"><svg><use href="#ap-mail"/></svg></span><span class="itile-n">Gmail</span><span class="itile-c">Mail</span></div>
+        <div class="itile" role="listitem" style="--i:1"><span class="itile-mk"><svg><use href="#ap-mail2"/></svg></span><span class="itile-n">Outlook</span><span class="itile-c">Mail</span></div>
+        <div class="itile" role="listitem" style="--i:2"><span class="itile-mk"><svg><use href="#ap-chat"/></svg></span><span class="itile-n">Slack</span><span class="itile-c">Chat</span></div>
+        <div class="itile" role="listitem" style="--i:3"><span class="itile-mk"><svg><use href="#ap-team"/></svg></span><span class="itile-n">Teams</span><span class="itile-c">Chat</span></div>
+        <div class="itile" role="listitem" style="--i:4"><span class="itile-mk"><svg><use href="#ap-phone"/></svg></span><span class="itile-n">WhatsApp</span><span class="itile-c">Chat</span></div>
+        <div class="itile" role="listitem" style="--i:5"><span class="itile-mk"><svg><use href="#ap-box"/></svg></span><span class="itile-n">CargoWise</span><span class="itile-c">TMS</span></div>
+        <div class="itile" role="listitem" style="--i:6"><span class="itile-mk"><svg><use href="#ap-scope"/></svg></span><span class="itile-n">Riege Scope</span><span class="itile-c">TMS</span></div>
+        <div class="itile" role="listitem" style="--i:7"><span class="itile-mk"><svg><use href="#ap-globe"/></svg></span><span class="itile-n">Descartes</span><span class="itile-c">Network</span></div>
+        <div class="itile" role="listitem" style="--i:8"><span class="itile-mk"><svg><use href="#ap-swap"/></svg></span><span class="itile-n">TIMOCOM</span><span class="itile-c">Exchange</span></div>
+        <div class="itile" role="listitem" style="--i:9"><span class="itile-mk"><svg><use href="#ap-truck"/></svg></span><span class="itile-n">Transporeon</span><span class="itile-c">Execution</span></div>
+        <div class="itile" role="listitem" style="--i:10"><span class="itile-mk"><svg><use href="#ap-percent"/></svg></span><span class="itile-n">Rate manager</span><span class="itile-c">Rate mgmt</span></div>
+        <div class="itile" role="listitem" style="--i:11"><span class="itile-mk"><svg><use href="#ap-crane"/></svg></span><span class="itile-n">DAKOSY</span><span class="itile-c">Port system</span></div>
+        <div class="itile" role="listitem" style="--i:12"><span class="itile-mk"><svg><use href="#ap-ship"/></svg></span><span class="itile-n">Portbase</span><span class="itile-c">Port system</span></div>
+        <div class="itile" role="listitem" style="--i:13"><span class="itile-mk"><svg><use href="#ap-shield"/></svg></span><span class="itile-n">AEB</span><span class="itile-c">Customs</span></div>
+        <div class="itile" role="listitem" style="--i:14"><span class="itile-mk"><svg><use href="#ap-grid"/></svg></span><span class="itile-n">Excel</span><span class="itile-c">Sheet</span></div>
+      </div>
+
+      <p class="integ-note">
+        <b>None of these is connected today.</b> SQRlane reads the booking
+        through one demo connector and writes nothing &mdash; no vendor, no
+        credential, no endpoint, and nothing is ever written. Marks are
+        generic pictograms, not anyone&rsquo;s logo.
       </p>
     </div>
   </div>
