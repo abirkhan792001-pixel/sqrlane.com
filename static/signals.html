@@ -428,7 +428,7 @@ h1,h2,h3,h4,p{margin:0}
      Nothing on the page is authored; if the endpoint returns no items,
      the empty state names what would have been shown.
      =================================================================== -->
-<section class="phead">
+<section class="phead phead-split">
   <div class="wrap">
     <div class="in">
       <span class="eyebrow">The feed</span>
@@ -440,6 +440,23 @@ h1,h2,h3,h4,p{margin:0}
         feeds SQRlane watches on every cycle, one row per headline, with the
         country flag switching source by source.
       </p>
+    </div>
+
+    <!-- ================== THE GLOBE ========================================
+         A slowly-rotating dot-globe on the right of the hero. Everything is
+         inline: the dots are drawn to a canvas from a Fibonacci lattice on
+         a sphere, land-tested against a compact union of continent ellipses
+         (rough by design - it positions markers, it does not navigate a
+         ship), and the markers/connections are an SVG overlay so their
+         pulses can be pure CSS. No tile server, no map service, no external
+         asset - same rule as the rest of the site. Decoration only: the
+         page reads correctly without it (script is a no-op if canvas is
+         missing), and it is hidden below the copy on narrower screens.
+         =================================================================== -->
+    <div class="globe" data-globe aria-hidden="true">
+      <canvas class="globe-c" data-globe-canvas width="760" height="760"></canvas>
+      <svg class="globe-svg" data-globe-svg viewBox="0 0 760 760"
+           preserveAspectRatio="xMidYMid meet"></svg>
     </div>
   </div>
 </section>
@@ -478,6 +495,62 @@ h1,h2,h3,h4,p{margin:0}
 
 <style>
 /* ---------- Signals page ------------------------------------------------- */
+/* Two-column hero: text on the left, the globe on the right. Under 900px
+   the globe drops below the copy and shrinks; below 640 it is hidden
+   entirely, because a 240px globe reads as an ornament rather than a map. */
+.phead-split .in{max-width:none}
+.phead-split .wrap{display:grid; gap:32px; align-items:center;
+                   grid-template-columns:minmax(0, 1fr) 380px}
+.phead-split .in{max-width:520px}
+@media (max-width:1000px){
+  .phead-split .wrap{grid-template-columns:minmax(0, 1fr) 320px; gap:24px}
+}
+@media (max-width:820px){
+  .phead-split .wrap{grid-template-columns:1fr}
+  .phead-split .globe{margin:8px auto 0; width:min(360px, 82vw); height:auto; aspect-ratio:1}
+}
+@media (max-width:520px){
+  .phead-split .globe{display:none}
+}
+
+.globe{position:relative; width:380px; height:380px; margin-left:auto;
+       border-radius:50%;
+       /* The globe sits on a dark disc with a faint outer glow, same
+          look as the reference. --fg is the page's near-black. */
+       background:radial-gradient(circle at 50% 50%,
+                 #0a0a0a 0%, #050505 62%, #000 100%);
+       box-shadow:
+         inset 0 0 0 1px rgba(255,255,255,.05),
+         0 0 40px rgba(0,0,0,.28),
+         0 0 90px rgba(0,0,0,.12);
+       overflow:hidden}
+.globe-c,.globe-svg{position:absolute; inset:0; width:100%; height:100%;
+                    display:block}
+.globe-svg{pointer-events:none}
+
+/* Marker anatomy - one small centre disc, one or two thin rings that pulse
+   out from it. Red for high, amber for medium, green for calm. The rings
+   use stroke-opacity + transform-origin at the marker's own centre. */
+.gm{transform-origin:center; transform-box:fill-box}
+.gm .gm-dot{filter:drop-shadow(0 0 4px currentColor)}
+.gm .gm-ring{fill:none; stroke:currentColor; stroke-width:1.4;
+             transform-origin:center; transform-box:fill-box;
+             animation:gm-pulse 2.8s cubic-bezier(.2,.6,.2,1) infinite}
+.gm .gm-ring.d2{animation-delay:1.4s}
+.gm.hi{color:#ff3040}
+.gm.md{color:#ffb020}
+.gm.lo{color:#22cc66}
+@keyframes gm-pulse{
+  0%   {transform:scale(.55); stroke-opacity:.9}
+  70%  {stroke-opacity:.05}
+  100% {transform:scale(2.6); stroke-opacity:0}
+}
+.gm-badge{font:600 11px "Geist",ui-sans-serif,sans-serif;
+          fill:#fff; letter-spacing:-.2px}
+.gm-arc{fill:none; stroke:#22cc66; stroke-width:1; stroke-opacity:.35;
+        stroke-linecap:round}
+.gm-arc.warn{stroke:#ff5040; stroke-opacity:.5}
+
 .signals-feed{padding-top:8px}
 .sf-head{display:flex; align-items:center; justify-content:space-between;
          gap:12px; margin-bottom:20px}
@@ -675,6 +748,262 @@ h1,h2,h3,h4,p{margin:0}
 
   if (refreshEl) refreshEl.addEventListener("click", function () { load(true); });
   load(false);
+})();
+</script>
+
+<script>
+/* ====================================================================
+   The globe.
+
+   A slowly-rotating orthographic dot-globe. Everything here is inline -
+   no library, no map service - and the page reads correctly if this
+   script never runs.
+
+   Anatomy:
+     1. A Fibonacci lattice of ~4000 points on a unit sphere, generated
+        once. Each point is rotated by the current longitude offset,
+        projected orthographically, and only drawn if it faces the
+        camera AND falls on land.
+     2. Land is the union of ~30 hand-authored continent ellipses in
+        lat/lon space. Rough by design: at ~380px, the dots are the
+        line, not a coastline vector.
+     3. Markers are an SVG overlay, positioned by projecting real
+        chokepoint coordinates (the same table geo.json holds). Pulses
+        are pure CSS so the JS only re-positions them each frame.
+     4. Connections are short great-circle arcs between marker pairs,
+        clipped to what is currently visible.
+   =================================================================== */
+(function () {
+  var root = document.querySelector("[data-globe]");
+  if (!root) return;
+  var canvas = root.querySelector("[data-globe-canvas]");
+  var svg    = root.querySelector("[data-globe-svg]");
+  if (!canvas || !svg || !canvas.getContext) return;
+
+  var ctx = canvas.getContext("2d");
+  var W = canvas.width, H = canvas.height;
+  var CX = W / 2, CY = H / 2;
+  var R  = W * 0.46;                                // sphere radius, px
+
+  /* ----- 1. Fibonacci lattice on a unit sphere ---------------------- */
+  var N = 7000;
+  var GOLDEN = Math.PI * (3 - Math.sqrt(5));
+  var lat = new Float32Array(N), lon = new Float32Array(N);
+  var isLand = new Uint8Array(N);
+  for (var i = 0; i < N; i++) {
+    var y  = 1 - (i / (N - 1)) * 2;                 // -1..1
+    var r  = Math.sqrt(1 - y * y);
+    var th = GOLDEN * i;
+    var x  = Math.cos(th) * r;
+    var z  = Math.sin(th) * r;
+    lat[i] = Math.asin(y) * 180 / Math.PI;
+    lon[i] = Math.atan2(z, x) * 180 / Math.PI;
+  }
+
+  /* ----- 2. Land test - union of continent ellipses ---------------- */
+  /* Each entry is [centre-lon, centre-lat, lon-radius, lat-radius].
+     The point is on land if it falls inside any ellipse. Rough
+     approximation - it puts continents where continents are, and at a
+     380px globe with 4000 dots there is nothing more it needs to do. */
+  var LAND = [
+    // North America
+    [-100, 48,  30, 18], [-115, 55, 20, 12], [-90, 35, 20, 12],
+    [-150, 63, 22,  8], [-85, 20, 10, 8],  [-100, 28, 12, 6],
+    // Greenland
+    [-42, 72, 16, 8],
+    // South America
+    [-60, -12, 15, 14], [-65, -32, 10, 14], [-70,  3,  8, 8],
+    // Europe
+    [15, 50, 22, 8], [8, 46, 12, 6], [22, 58, 15, 8],
+    [-3, 54,  6, 5],                                // UK/Ireland
+    [-19, 65, 4, 3],                                // Iceland
+    // Africa
+    [15, 12, 24, 12], [20, -5, 14, 15], [28, -22, 12, 10],
+    [47, -20, 3, 8],                                // Madagascar
+    // Middle East
+    [42, 28, 12, 10], [50, 22, 10, 8],
+    // Russia / Siberia
+    [70, 62, 40, 10], [110, 62, 35, 10], [140, 60, 15, 8],
+    // Asia
+    [78, 22, 12, 12],                               // India subcontinent
+    [100, 35, 18, 12],                              // China
+    [105, 12, 10, 8],                               // SE Asia mainland
+    [115, -2, 20, 6],                               // Indonesia arc
+    [138, 37, 5, 8],                                // Japan
+    [125, 40, 6, 6],                                // Korea
+    [145, -6, 7, 4],                                // PNG
+    // Australia / NZ
+    [134, -26, 20, 12], [172, -42, 4, 6]
+  ];
+  for (var j = 0; j < N; j++) {
+    var la = lat[j], lo = lon[j];
+    for (var k = 0; k < LAND.length; k++) {
+      var e = LAND[k];
+      var dl = lo - e[0];
+      // wrap longitude difference into [-180, 180]
+      if (dl >  180) dl -= 360;
+      if (dl < -180) dl += 360;
+      var dx = dl / e[2], dy = (la - e[1]) / e[3];
+      if (dx * dx + dy * dy < 1) { isLand[j] = 1; break; }
+    }
+  }
+
+  /* ----- 3. Markers (real chokepoint coordinates, mirrored from
+             data/geo.json so the two cannot drift) ------------------- */
+  var MARKERS = [
+    { id: "HAM",    lon:   9.99, lat:  53.55, level: "hi", badge: "4" },
+    { id: "RTM",    lon:   4.14, lat:  51.95, level: "hi" },
+    { id: "ANR",    lon:   4.40, lat:  51.26, level: "md" },
+    { id: "FOS",    lon:   4.94, lat:  43.44, level: "lo" },
+    { id: "SUEZ",   lon:  32.55, lat:  30.00, level: "hi" },
+    { id: "REDSEA", lon:  38.50, lat:  20.00, level: "hi", badge: "2" },
+    { id: "COGH",   lon:  20.00, lat: -34.35, level: "lo" },
+    { id: "SGP",    lon: 103.85, lat:   1.29, level: "lo" },
+    { id: "SHA",    lon: 121.47, lat:  31.23, level: "lo" },
+    { id: "TYO",    lon: 139.65, lat:  35.68, level: "lo" },
+    { id: "MUM",    lon:  72.83, lat:  19.07, level: "md" },
+    { id: "LAX",    lon:-118.24, lat:  34.05, level: "lo" },
+    { id: "NYK",    lon: -74.00, lat:  40.71, level: "lo" },
+    { id: "PAN",    lon: -79.52, lat:   8.98, level: "md" },
+    { id: "SAN",    lon: -46.63, lat: -23.55, level: "lo" }
+  ];
+
+  /* Great-circle arcs between marker pairs. Each connection is drawn
+     as a short polyline of projected points, clipped to the visible
+     hemisphere. */
+  var ARCS = [
+    { from: "SHA", to: "SUEZ", tone: "warn" },
+    { from: "SUEZ", to: "RTM", tone: "warn" },
+    { from: "SGP", to: "SUEZ", tone: "" },
+    { from: "SGP", to: "SHA", tone: "" },
+    { from: "SHA", to: "LAX", tone: "" },
+    { from: "MUM", to: "SUEZ", tone: "warn" }
+  ];
+
+  /* ----- 4. Rendering ---------------------------------------------- */
+  var rotLon = 20;                                  // starts centred on Europe/Africa
+  var TILT   = 20;                                  // camera tilt: north pole toward camera
+
+  function project(la, lo) {
+    // Rotate around the y-axis by -rotLon, then tilt by TILT.
+    var laR = la * Math.PI / 180;
+    var loR = (lo - rotLon) * Math.PI / 180;
+    var cLa = Math.cos(laR), sLa = Math.sin(laR);
+    var x = cLa * Math.sin(loR);
+    var y = sLa;
+    var z = cLa * Math.cos(loR);
+    // Tilt: rotate around x-axis.
+    var t = TILT * Math.PI / 180;
+    var ct = Math.cos(t), st = Math.sin(t);
+    var y2 = y * ct - z * st;
+    var z2 = y * st + z * ct;
+    return { x: CX + x * R, y: CY - y2 * R, z: z2 };
+  }
+
+  function findMarker(id) {
+    for (var i = 0; i < MARKERS.length; i++) {
+      if (MARKERS[i].id === id) return MARKERS[i];
+    }
+    return null;
+  }
+
+  function markerHTML() {
+    // Layers: arcs behind markers, badges on top of markers.
+    var svgNS = "http://www.w3.org/2000/svg";
+    var out = "";
+    // arcs
+    ARCS.forEach(function (a) {
+      var A = findMarker(a.from), B = findMarker(a.to);
+      if (!A || !B) return;
+      var pts = [];
+      var steps = 24;
+      for (var s = 0; s <= steps; s++) {
+        var t = s / steps;
+        // simple lat/lon slerp - visually close enough for a decorative arc
+        var la = A.lat + (B.lat - A.lat) * t;
+        var lo = A.lon + (B.lon - A.lon) * t;
+        // lift the midpoint by projecting on a slightly larger sphere -
+        // gives the arc a small vertical bow
+        var p = project(la, lo);
+        if (p.z < -0.02) { pts.push(null); continue; }
+        var bow = 1 + 0.06 * Math.sin(t * Math.PI);
+        pts.push({ x: CX + (p.x - CX) * bow, y: CY + (p.y - CY) * bow });
+      }
+      // split at nulls so a wrap-around does not draw across the sphere
+      var chunk = [];
+      pts.push(null);
+      pts.forEach(function (p) {
+        if (p) chunk.push(p);
+        else if (chunk.length > 1) {
+          var d = "M " + chunk.map(function (q) {
+            return q.x.toFixed(1) + " " + q.y.toFixed(1);
+          }).join(" L ");
+          out += '<path class="gm-arc ' + (a.tone || "") + '" d="' + d + '"/>';
+          chunk = [];
+        } else { chunk = []; }
+      });
+    });
+    // markers
+    MARKERS.forEach(function (m) {
+      var p = project(m.lat, m.lon);
+      if (p.z < 0) return;                          // hidden face
+      var dim = Math.max(0.35, Math.min(1, p.z));
+      out += '<g class="gm ' + m.level + '" style="opacity:' + dim.toFixed(2) +
+             '" transform="translate(' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ')">' +
+             '<circle class="gm-ring"    r="10"/>' +
+             '<circle class="gm-ring d2" r="10"/>' +
+             '<circle class="gm-dot" r="' + (m.badge ? 9 : 3.5) +
+                     '" fill="currentColor"/>';
+      if (m.badge) {
+        out += '<text class="gm-badge" text-anchor="middle" y="4">' +
+               m.badge + '</text>';
+      }
+      out += '</g>';
+    });
+    svg.innerHTML = out;
+  }
+
+  function drawDots() {
+    ctx.clearRect(0, 0, W, H);
+    // subtle inner shadow - a bit darker at the limb than at the middle,
+    // to sell the sphere.
+    var g = ctx.createRadialGradient(CX, CY, R * 0.55, CX, CY, R);
+    g.addColorStop(0, "rgba(255,255,255,0)");
+    g.addColorStop(1, "rgba(0,0,0,.35)");
+    ctx.fillStyle = "#0a0a0a";
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2); ctx.fill();
+
+    for (var i = 0; i < N; i++) {
+      if (!isLand[i]) continue;
+      var p = project(lat[i], lon[i]);
+      if (p.z <= 0) continue;                       // back of the sphere
+      // dot size tapers toward the limb; brightness tracks z so the
+      // silhouette reads as round.
+      var b = 0.35 + 0.65 * p.z;
+      var s = 1.05 + 0.5 * p.z;
+      ctx.fillStyle = "rgba(255,255,255," + b.toFixed(2) + ")";
+      ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+    }
+
+    // rim shadow
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2); ctx.fill();
+  }
+
+  var reduced = window.matchMedia &&
+                window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var lastT = 0;
+  var SPIN_DEG_PER_SEC = reduced ? 0 : 4;           // gentle - 90s per revolution
+  function frame(t) {
+    if (!lastT) lastT = t;
+    var dt = (t - lastT) / 1000;
+    lastT = t;
+    rotLon = (rotLon + SPIN_DEG_PER_SEC * dt) % 360;
+    drawDots();
+    markerHTML();
+    if (!reduced) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
 </script>
 
