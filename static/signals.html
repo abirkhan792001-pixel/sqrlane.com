@@ -486,9 +486,12 @@ h1,h2,h3,h4,p{margin:0}
     </div>
 
     <p class="sf-foot">
-      Reading <b>NDR Hamburg</b>, <b>Rijnmond</b> and <b>France Info</b> today.
-      The full pool the risk monitor watches on a run is 60 sources across six
-      families; this page shows the news half of that, unclassified.
+      Reading <b>NDR Hamburg</b>, <b>tagesschau</b>, <b>DW Deutsch</b>,
+      <b>Rijnmond</b>, <b>NOS Nieuws</b>, <b>France Info</b>, <b>Le Monde</b>,
+      <b>NHK</b> and <b>BBC Arabic</b> today. English translation under each
+      headline where the source is not English. The full pool the risk
+      monitor watches on a run is 60 sources across six families; this page
+      shows the news half of that, unclassified.
     </p>
   </div>
 </section>
@@ -600,6 +603,23 @@ h1,h2,h3,h4,p{margin:0}
 .sf-s{margin:4px 0 0; font-size:13px; line-height:19px; color:var(--muted);
       letter-spacing:-.1px; overflow:hidden; text-overflow:ellipsis;
       white-space:nowrap}
+/* Translation lines. The original headline stays as the primary text
+   (that IS what a Rotterdam broadcaster wrote); the English rendering
+   sits under it, muted, so a reader who does not read the source
+   language still gets it. Same treatment for the summary. */
+.sf-t-en{margin:3px 0 0; font-size:13.5px; line-height:19px;
+         color:var(--muted); font-style:normal; letter-spacing:-.15px;
+         display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+         overflow:hidden}
+.sf-s-en{margin:2px 0 0; font-size:12.5px; line-height:18px;
+         color:var(--faint); font-style:italic;
+         overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.sf-t-en::before,
+.sf-s-en::before{content:"EN"; display:inline-block;
+                 margin-right:7px; padding:0 5px; border-radius:3px;
+                 background:var(--gray-100); color:var(--faint);
+                 font:600 9.5px/14px "Geist Mono",ui-monospace,monospace;
+                 letter-spacing:.05em; vertical-align:1px}
 .sf-m{margin-top:6px; display:flex; align-items:center; gap:8px;
       font-size:12px; color:var(--faint); letter-spacing:-.05px}
 .sf-source{color:var(--muted); font-weight:500}
@@ -658,6 +678,19 @@ h1,h2,h3,h4,p{margin:0}
         '<rect width="1" height="2" x="0" fill="#0055A4"/>' +
         '<rect width="1" height="2" x="1" fill="#FFFFFF"/>' +
         '<rect width="1" height="2" x="2" fill="#EF4135"/></svg>',
+    // Japan - a red hinomaru disc on a white field. viewBox is 3:2
+    // to match the reference proportions; the disc is 3/5 of the
+    // shorter side, centred.
+    ja: '<svg viewBox="0 0 3 2" preserveAspectRatio="none">' +
+        '<rect width="3" height="2" fill="#FFFFFF"/>' +
+        '<circle cx="1.5" cy="1" r="0.6" fill="#BC002D"/></svg>',
+    // A neutral language chip for Arabic (spoken across many nations).
+    // Same shape as the flags so it lines up in the row.
+    ar: '<svg viewBox="0 0 3 2" preserveAspectRatio="none">' +
+        '<rect width="3" height="2" fill="#0f172a"/>' +
+        '<text x="1.5" y="1.42" text-anchor="middle" ' +
+              'font-family="Geist Mono, ui-monospace, monospace" ' +
+              'font-size="1" font-weight="700" fill="#ffffff">AR</text></svg>',
   };
   function flagOf(iso) {
     return FLAGS[("" + (iso || "")).toLowerCase().slice(0, 2)] ||
@@ -705,19 +738,28 @@ h1,h2,h3,h4,p{margin:0}
       var href = it.link ? ' href="' + escape(it.link) + '"' : "";
       var tag  = it.link ? "a" : "div";
       var when = formatDate(it.published);
-      var summary = it.summary
-        ? '<p class="sf-s">' + escape(it.summary) + '</p>' : "";
+      var titleEn = it.title_en
+        ? '<p class="sf-t-en">' + escape(it.title_en) + '</p>' : "";
+      var summaryEn = it.summary_en
+        ? '<p class="sf-s-en">' + escape(it.summary_en) + '</p>' : "";
       var dateBit = when
         ? '<span class="sf-sep">&middot;</span>' +
           '<span class="sf-date" title="' + escape(it.published || "") + '">' +
             escape(when) + '</span>'
         : "";
+      // dir="auto" lets the browser detect RTL for Arabic titles/summaries
+      // so their punctuation lands on the correct side. Latin scripts are
+      // unaffected. The English translation lines are always LTR.
+      var summary = it.summary
+        ? '<p class="sf-s" dir="auto">' + escape(it.summary) + '</p>' : "";
       return "<li><" + tag + ' class="sf-item"' + href +
              ' target="_blank" rel="noopener">' +
              '<span class="sf-flag">' + flagOf(it.iso) + '</span>' +
              '<span class="sf-body">' +
-               '<p class="sf-t">' + escape(it.title) + '</p>' +
+               '<p class="sf-t" dir="auto">' + escape(it.title) + '</p>' +
+               titleEn +
                summary +
+               summaryEn +
                '<span class="sf-m">' +
                  '<span class="sf-source">' + escape(it.source) + '</span>' +
                  '<span class="sf-sep">&middot;</span>' +
