@@ -683,6 +683,231 @@ h1,h2,h3,h4,p{margin:0}
   .shot{margin-top:38px}
   .btn{width:100%}
   .hero .cta,.final .cta{flex-direction:column}
+  .sc-wrap{grid-template-columns:1fr; gap:0}
+  .sc-viz{position:relative; top:auto; height:340px; margin:8px 0 32px}
+  .sc-text{padding:0}
+  .sc-panel{min-height:0; padding:36px 0}
+  .steps{grid-template-columns:1fr}
+  .step-card:not(:last-child)::after{display:none}
+  .fig-mock{transform:none}
+}
+
+/* ============================================================
+   The scrolly-tell - three panels of copy on the left, a single
+   sticky visual on the right that fades between three frames as
+   the reader scrolls. Not decoration: this is the page's own
+   pitch, put into the shape that reads best without a room to
+   present into. The pattern is common enough that "sticky-scroll"
+   describes it, and the mechanics are unremarkable - a grid, a
+   position:sticky visual, an IntersectionObserver that hands the
+   current panel's id to both columns.
+
+   Every frame is inline SVG-in-HTML; nothing here is fetched.
+   The marks inside them are stylised pictograms of a MAIL
+   client, a SPREADSHEET, a DOCUMENT and so on - never a copy of
+   anyone's actual logo. Same convention the sources strip below
+   already carries, for the same reason: reproducing a mark reads
+   as a claim about an integration this build does not have.
+   ============================================================ */
+.sc{padding:56px 0 24px; border-top:1px solid var(--border)}
+.sc-head{max-width:720px; margin:0 auto 26px; text-align:center}
+.sc-head .eyebrow{margin-bottom:12px}
+.sc-head p{margin-top:14px}
+
+.sc-wrap{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+         gap:64px; align-items:start}
+.sc-text{display:flex; flex-direction:column; gap:0; padding:8vh 0}
+.sc-panel{min-height:78vh; display:flex; flex-direction:column; justify-content:center;
+          opacity:.34; transition:opacity .5s var(--ease)}
+.sc-panel.on{opacity:1}
+.sc-panel .eyebrow{margin-bottom:14px}
+.sc-panel h3{font-size:34px; line-height:40px; letter-spacing:-1.2px; font-weight:600;
+             margin-bottom:16px}
+.sc-panel p{font-size:17px; line-height:26px; color:var(--muted); max-width:52ch}
+.sc-panel .note{margin-top:18px; font-size:13px; line-height:19px; color:var(--faint)}
+
+.sc-viz{position:sticky; top:96px; height:min(78vh,680px);
+        border-radius:var(--r-md); overflow:hidden;
+        background:var(--card); border:1px solid var(--border);
+        box-shadow:var(--shadow-lift)}
+.sc-frame{position:absolute; inset:0; opacity:0;
+          transition:opacity .55s var(--ease), transform .55s var(--ease);
+          transform:translateY(12px) scale(.985); pointer-events:none;
+          overflow:hidden}
+.sc-frame.on{opacity:1; transform:translateY(0) scale(1); pointer-events:auto}
+.sc-progress{position:absolute; left:0; top:0; bottom:0; width:2px;
+             display:flex; flex-direction:column; gap:6px; padding:12px 0; z-index:3}
+.sc-dot{flex:1; background:rgba(255,255,255,.16); border-radius:2px;
+        transition:background .35s var(--ease)}
+.sc-dot.on{background:rgba(255,255,255,.9)}
+
+/* Frame 1 - the agent processing a disruption. Dark gradient, cards
+   stacked inside so the reader watches a mail arrive, an agent respond,
+   and two drafts come back for review. */
+.frm-agent{color:#f4efe6;
+  background:
+    radial-gradient(120% 90% at 12% 8%, #6a3577 0%, #3a1d55 30%, transparent 60%),
+    radial-gradient(140% 100% at 100% 100%, #d97742 0%, #6b2c4a 40%, #1a0f2a 75%),
+    #14082a;
+  padding:26px 22px}
+.frm-agent .head-row{display:flex; align-items:center; gap:10px; font-size:11px;
+                     letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.66)}
+.frm-agent .head-row .live-dot{width:8px; height:8px; border-radius:50%;
+                               background:#4ade80; box-shadow:0 0 0 4px rgba(74,222,128,.22)}
+.frm-agent .stack{margin-top:18px; display:flex; flex-direction:column; gap:10px}
+.frm-agent .item{background:rgba(24,10,42,.7); border:1px solid rgba(255,255,255,.08);
+                 border-radius:12px; padding:12px 14px;
+                 backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+.frm-agent .mail{display:flex; align-items:flex-start; gap:12px}
+.frm-agent .mail .app{width:32px; height:32px; border-radius:7px; flex:none;
+                      background:linear-gradient(135deg,#0a67c2,#0059b3); display:flex;
+                      align-items:center; justify-content:center; position:relative}
+.frm-agent .mail .app svg{width:18px; height:18px; color:#fff}
+.frm-agent .mail .app .badge{position:absolute; top:-4px; right:-4px; width:14px;
+                             height:14px; border-radius:50%; background:#ff3a3a;
+                             color:#fff; font-size:9px; font-weight:700;
+                             display:flex; align-items:center; justify-content:center;
+                             border:2px solid #14082a; line-height:1}
+.frm-agent .mail .txt{flex:1; min-width:0}
+.frm-agent .mail .k{font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
+                    color:rgba(255,255,255,.6)}
+.frm-agent .mail .subj{margin-top:2px; font-size:13.5px; line-height:19px; font-weight:600;
+                       color:#f4efe6; letter-spacing:-.15px}
+.frm-agent .agent-head{display:flex; align-items:center; gap:8px}
+.frm-agent .agent-head .glyph{width:20px; height:20px; border-radius:5px;
+                              background:linear-gradient(135deg,#c5a3ff,#7d5cff);
+                              display:flex; align-items:center; justify-content:center}
+.frm-agent .agent-head .glyph svg{width:12px; height:12px; color:#fff}
+.frm-agent .agent-head .nm{font-size:13px; font-weight:600; letter-spacing:-.15px}
+.frm-agent .agent-head .status{margin-left:auto; font-size:10px; letter-spacing:.05em;
+                               text-transform:uppercase; color:rgba(255,255,255,.5)}
+.frm-agent .kv{margin-top:8px; font-size:12px; line-height:18px; color:rgba(255,255,255,.72)}
+.frm-agent .row{display:flex; align-items:center; gap:8px; margin-top:6px}
+.frm-agent .row .tag{font-size:10.5px; padding:2px 7px; border-radius:4px;
+                     background:rgba(255,255,255,.09); color:rgba(255,255,255,.78)}
+.frm-agent .draft{display:flex; align-items:flex-start; gap:12px}
+.frm-agent .draft .app{width:28px; height:28px; border-radius:6px; flex:none;
+                       display:flex; align-items:center; justify-content:center}
+.frm-agent .draft .app svg{width:16px; height:16px; color:#fff}
+.frm-agent .draft.a1 .app{background:linear-gradient(135deg,#0a67c2,#0059b3)}
+.frm-agent .draft.a2 .app{background:linear-gradient(135deg,#ea5b3a,#c73f24)}
+.frm-agent .draft .txt{flex:1; min-width:0; font-size:12.5px; line-height:18px;
+                       color:rgba(255,255,255,.86)}
+.frm-agent .draft .to{font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
+                      color:rgba(255,255,255,.5)}
+.frm-agent .draft .snip{margin-top:3px}
+.frm-agent .draft .snip b{color:#fff; font-weight:600}
+.frm-agent .btn-approve{border:0; padding:5px 11px; border-radius:5px; background:#f0e8d8;
+                        color:#1a0f2a; font-size:11px; font-weight:600; letter-spacing:.06em;
+                        text-transform:uppercase; cursor:default; flex:none; align-self:center}
+.frm-agent .btn-approve.g{background:rgba(255,255,255,.14); color:rgba(255,255,255,.7)}
+
+/* Frame 2 - the workstack. Light card. A row of tiles at the top with dotted
+   lines converging into a mock dashboard below - the picture the copy
+   promises: everything the desk works in, feeding into one view. */
+.frm-stack{background:linear-gradient(180deg,#faf5eb 0%,#eee2c8 55%,#e0916a 100%);
+           padding:26px 22px; color:#1a0f2a}
+.frm-stack .apps-row{display:flex; align-items:flex-start; justify-content:space-around;
+                     gap:8px; padding:6px 4px 0}
+.frm-stack .tile{width:44px; height:44px; border-radius:9px; background:#fff;
+                 border:1px solid rgba(0,0,0,.06); display:flex; align-items:center;
+                 justify-content:center; position:relative;
+                 box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.frm-stack .tile svg{width:24px; height:24px}
+.frm-stack .tile.mail{background:linear-gradient(135deg,#0a67c2,#0059b3)}
+.frm-stack .tile.doc{background:linear-gradient(135deg,#ea5b3a,#c73f24)}
+.frm-stack .tile.rows{background:linear-gradient(135deg,#5d4dd6,#3f2fb0)}
+.frm-stack .tile.grid{background:linear-gradient(135deg,#1e9c4e,#0f7c3d)}
+.frm-stack .tile.chat{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+.frm-stack .tile.mail2{background:linear-gradient(135deg,#0aa3c2,#0080a5)}
+.frm-stack .tile svg{color:#fff}
+.frm-stack .lines{position:relative; height:44px; margin-top:2px}
+.frm-stack .lines svg{width:100%; height:100%; display:block}
+.frm-stack .board{margin-top:6px; background:#fbf7ee; border-radius:12px;
+                  border:1px solid rgba(0,0,0,.08); padding:14px;
+                  box-shadow:0 10px 24px -12px rgba(0,0,0,.18)}
+.frm-stack .board-top{display:flex; align-items:center; gap:8px}
+.frm-stack .search{flex:1; height:26px; background:rgba(0,0,0,.03);
+                   border-radius:6px; display:flex; align-items:center; padding:0 10px;
+                   font-size:11px; color:rgba(0,0,0,.4); letter-spacing:-.1px}
+.frm-stack .search::before{content:""; width:10px; height:10px; border:1.5px solid rgba(0,0,0,.35);
+                           border-radius:50%; margin-right:6px}
+.frm-stack .icn-btn{width:24px; height:24px; border-radius:5px; background:rgba(0,0,0,.05);
+                    display:flex; align-items:center; justify-content:center}
+.frm-stack .icn-btn svg{width:12px; height:12px; color:rgba(0,0,0,.55)}
+.frm-stack .avatar{width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,#7d5cff,#c5a3ff)}
+.frm-stack .cards{margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.frm-stack .mini{background:#fff; border-radius:9px; padding:10px 11px 12px;
+                 border:1px solid rgba(0,0,0,.05); min-height:82px}
+.frm-stack .mini svg{width:100%; height:52px; display:block; overflow:visible}
+.frm-stack .mini .lbl{font-size:9.5px; letter-spacing:.06em; text-transform:uppercase;
+                      color:rgba(0,0,0,.44); font-weight:600}
+
+/* Frame 3 - the config, in plain language. Dark gradient again, one card
+   showing the SQRlane rule set for a route-exception agent: four steps, the
+   currently-being-refined step highlighted, and a "improve" affordance. */
+.frm-cfg{color:#f4efe6;
+  background:
+    radial-gradient(140% 100% at 8% 0%, #eadbc3 0%, #b7a893 22%, transparent 44%),
+    radial-gradient(120% 80% at 90% 100%, #7d5cff 0%, #2b0f6a 40%, transparent 70%),
+    linear-gradient(180deg,#1a0d3a 0%,#0a0518 100%);
+  padding:26px 22px}
+.frm-cfg .cfg-card{margin-top:34%; background:rgba(24,10,42,.55);
+                   border:1px solid rgba(255,255,255,.09); border-radius:12px;
+                   padding:14px 16px; backdrop-filter:blur(10px);
+                   -webkit-backdrop-filter:blur(10px)}
+.frm-cfg .cfg-top{display:flex; align-items:center; gap:8px}
+.frm-cfg .cfg-top .nm{font-size:13.5px; font-weight:600; letter-spacing:-.15px}
+.frm-cfg .cfg-top .actions{margin-left:auto; display:flex; align-items:center; gap:8px}
+.frm-cfg .cfg-top .icn{width:20px; height:20px; display:flex; align-items:center;
+                       justify-content:center; color:rgba(255,255,255,.55)}
+.frm-cfg .cfg-top .icn svg{width:13px; height:13px}
+.frm-cfg .create{padding:4px 11px; border:1px solid rgba(255,255,255,.35);
+                 border-radius:16px; font-size:10.5px; letter-spacing:.08em;
+                 text-transform:uppercase; color:rgba(255,255,255,.85)}
+.frm-cfg .toolbar{margin-top:10px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,.08);
+                  display:flex; align-items:center; gap:12px; font-size:11.5px;
+                  color:rgba(255,255,255,.55)}
+.frm-cfg .toolbar span{display:inline-flex; align-items:center; gap:4px}
+.frm-cfg .toolbar b{font-weight:700; color:rgba(255,255,255,.75)}
+.frm-cfg .toolbar i{font-style:italic; color:rgba(255,255,255,.75)}
+.frm-cfg .toolbar u{color:rgba(255,255,255,.75)}
+.frm-cfg .steps-list{margin-top:12px; display:flex; flex-direction:column; gap:6px;
+                     font-size:13px; line-height:20px; color:rgba(255,255,255,.85)}
+.frm-cfg .st-line{padding:3px 6px; border-radius:4px; display:flex; align-items:center;
+                  gap:8px; flex-wrap:wrap}
+.frm-cfg .st-line .lab{color:rgba(255,255,255,.55); min-width:52px}
+.frm-cfg .st-line.hl{background:rgba(255,255,255,.14); color:#fff}
+.frm-cfg .improve{display:inline-flex; align-items:center; gap:6px; padding:2px 9px;
+                  border:1px solid rgba(255,255,255,.28); border-radius:12px;
+                  font-size:11px; color:#fff; background:rgba(255,255,255,.06)}
+.frm-cfg .improve svg{width:11px; height:11px}
+
+/* ============================================================
+   The steps section - four steps SQRlane runs on every trigger,
+   drawn as a flow of cards so the automation reads as one loop
+   rather than four disconnected panels.
+   ============================================================ */
+.steps{margin-top:28px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+.step-card{position:relative; background:var(--card); border:1px solid var(--border);
+           border-radius:var(--r-md); padding:20px 20px 22px; box-shadow:var(--shadow-card)}
+.step-card .num{width:26px; height:26px; border-radius:6px; background:var(--fg);
+                color:#fff; font-family:"Geist Mono",ui-monospace,monospace;
+                font-size:12px; font-weight:600;
+                display:flex; align-items:center; justify-content:center}
+.step-card h4{margin-top:14px; font-size:16px; line-height:22px; font-weight:600;
+              letter-spacing:-.28px}
+.step-card p{margin-top:8px; font-size:13px; line-height:19px; color:var(--muted)}
+.step-card .tag{margin-top:14px; display:inline-flex; align-items:center; gap:6px;
+                font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+                color:var(--faint); font-weight:600}
+.step-card .tag .d{width:6px; height:6px; border-radius:50%; background:var(--green)}
+.step-card:not(:last-child)::after{content:""; position:absolute; right:-11px; top:32px;
+                                    width:20px; height:1px;
+                                    background:linear-gradient(to right,var(--gray-500),transparent)}
+@media (max-width:1000px){
+  .steps{grid-template-columns:1fr 1fr}
+  .step-card:not(:last-child)::after{display:none}
 }
 
 </style>
@@ -754,6 +979,380 @@ h1,h2,h3,h4,p{margin:0}
       <!-- Each page states its own job. Five pages that all try to sell the
            whole product are five pages nobody finishes. -->
       <p class="goal"><span class="chip blue">This page</span> <b>what you get &mdash; the roster, the record, the gate</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     The sticky-scroll pitch. Three panels of copy on the left,
+     one visual on the right that fades between three frames as
+     the reader scrolls. The visual holds its place until the next
+     panel enters view; the reveal comes from the visual changing,
+     not from the copy moving.
+     ============================================================ -->
+<section class="section sc" id="story">
+  <div class="wrap">
+    <div class="sc-head rv">
+      <span class="eyebrow">The pitch</span>
+      <h2 class="h32">Pre-configured agents on the workflows your desk already runs.</h2>
+      <p class="copy18">Not a generic AI tool you configure yourself. The Workers know what
+        a booking is, what a chokepoint is, and where a decision has to land &mdash; because
+        the shape of a forwarder&rsquo;s day is what they were built against.</p>
+    </div>
+
+    <div class="sc-wrap">
+      <div class="sc-text">
+        <div class="sc-panel on" data-panel="1">
+          <span class="eyebrow">01 &nbsp;Purpose-built</span>
+          <h3>An agent for every leg of the shipment lifecycle.</h3>
+          <p>SQRlane is a technology provider for international freight forwarding.
+            The Workers arrive knowing what a booking is, what a chokepoint is, and
+            what a discharge port change breaks &mdash; so a disruption arrives, the
+            agent reads it against the book, and the drafts come back before anyone
+            has re-typed the same details into three tools.</p>
+          <p class="note">Fourteen Workers ship in the roster. Three of them reason
+            live on every run &mdash; the tag on each card is the honesty.</p>
+        </div>
+        <div class="sc-panel" data-panel="2">
+          <span class="eyebrow">02 &nbsp;One book, one platform</span>
+          <h3>Central control over the AI agents that live in your TMS.</h3>
+          <p>The board is read out of the system of record through one connector, and
+            every action a Worker takes goes back onto the record it came from &mdash;
+            never a second book to keep. Your central team sees every draft, every
+            queued write, and every rule change on one screen, across every Worker
+            and every lane.</p>
+          <p class="note">The connector today is a demo connector. The near end is
+            already built; the far end is the integration work behind the trust wall.</p>
+        </div>
+        <div class="sc-panel" data-panel="3">
+          <span class="eyebrow">03 &nbsp;Plain-language rules</span>
+          <h3>Instructions written like a runbook. Effect on the next run.</h3>
+          <p>The rules a Worker follows are written the way an ops lead would brief a
+            new hire: read this, check that, propose the change, hand it over. Edit a
+            step, save, and the very next trigger runs against the new rule. No
+            deploy, no schema, no ticket to engineering.</p>
+          <p class="note">Session monitoring records what a human approved, edited or
+            rejected on each draft, so a rule that stops fitting the work is the
+            first thing to be surfaced &mdash; not the last.</p>
+        </div>
+      </div>
+
+      <div class="sc-viz" aria-hidden="true">
+        <div class="sc-progress">
+          <span class="sc-dot on" data-dot="1"></span>
+          <span class="sc-dot" data-dot="2"></span>
+          <span class="sc-dot" data-dot="3"></span>
+        </div>
+
+        <!-- Frame 1: the agent processing a disruption. -->
+        <div class="sc-frame on frm-agent" data-frame="1">
+          <div class="head-row">
+            <span class="live-dot"></span>
+            <span>Trigger &middot; 09:14 &middot; HAM port alert</span>
+          </div>
+
+          <div class="stack">
+            <div class="item">
+              <div class="mail">
+                <span class="app">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="14" rx="2"/>
+                    <path d="M3.5 6.5 12 13l8.5-6.5"/>
+                  </svg>
+                  <span class="badge">1</span>
+                </span>
+                <div class="txt">
+                  <div class="k">Mail &middot; carrier alert</div>
+                  <div class="subj">PORT NOTICE &mdash; HAM terminal disruption, ver.di walkout 07 Aug</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="agent-head">
+                <span class="glyph">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3v18M3 12h18M6 6l12 12M18 6 6 18"/>
+                  </svg>
+                </span>
+                <span class="nm">SQRlane Risk Worker</span>
+                <span class="status">working&hellip;</span>
+              </div>
+              <div class="kv">Read 60 sources &middot; 6 families &middot; 3 bookings affected.</div>
+              <div class="row">
+                <span class="tag">SHP-001 reroute</span>
+                <span class="tag">SHP-002 hold</span>
+                <span class="tag">SHP-005 reroute</span>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="draft a1">
+                <span class="app">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="14" rx="2"/>
+                    <path d="M3.5 6.5 12 13l8.5-6.5"/>
+                  </svg>
+                </span>
+                <div class="txt">
+                  <div class="to">Draft &middot; carrier &middot; SHP-001</div>
+                  <div class="snip">Discharge change request &mdash; <b>HAM &rarr; RTM</b>, revised
+                    ETA 12 Aug. Please confirm slot on connecting service.</div>
+                </div>
+                <button class="btn-approve">Send</button>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="draft a2">
+                <span class="app">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="14" rx="2"/>
+                    <path d="M3.5 6.5 12 13l8.5-6.5"/>
+                  </svg>
+                </span>
+                <div class="txt">
+                  <div class="to">Draft &middot; customer &middot; SHP-002</div>
+                  <div class="snip">Dear Ms Wright,<br>Following the notified port
+                    disruption, we are recommending a short hold on your reefer&hellip;</div>
+                </div>
+                <button class="btn-approve g">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frame 2: the workstack. Apps feed into one board. -->
+        <div class="sc-frame frm-stack" data-frame="2">
+          <div class="apps-row">
+            <div class="tile mail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="M3.5 6.5 12 13l8.5-6.5"/>
+              </svg>
+            </div>
+            <div class="tile doc">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>
+                <path d="M9 12h6M9 15.5h6"/>
+              </svg>
+            </div>
+            <div class="tile rows">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6h5M4 12h11M4 18h8"/>
+                <circle cx="18" cy="6" r="1.3"/><circle cx="18" cy="18" r="1.3"/>
+              </svg>
+            </div>
+            <div class="tile grid">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3.5" y="4" width="17" height="16" rx="1.8"/>
+                <path d="M3.5 9h17M3.5 14.5h17M9.5 4v16"/>
+              </svg>
+            </div>
+            <div class="tile mail2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6.5 12 13l9-6.5"/>
+                <path d="M3 6.5v11h18v-11"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="lines">
+            <svg viewBox="0 0 300 44" preserveAspectRatio="none">
+              <g fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1" stroke-dasharray="3 3"
+                 stroke-linecap="round">
+                <path d="M30 0 Q30 22 150 44"/>
+                <path d="M85 0 Q85 22 150 44"/>
+                <path d="M150 0 L150 44"/>
+                <path d="M215 0 Q215 22 150 44"/>
+                <path d="M270 0 Q270 22 150 44"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="board">
+            <div class="board-top">
+              <div class="search">Search bookings, workers, rules&hellip;</div>
+              <div class="icn-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 5h18l-6 8v6l-6-3v-3z"/>
+                </svg>
+              </div>
+              <div class="icn-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 8h12l-1.4 10a2 2 0 0 1-2 1.8H9.4a2 2 0 0 1-2-1.8Z"/>
+                  <path d="M9 8V5.5A2 2 0 0 1 11 3.5h2A2 2 0 0 1 15 5.5V8"/>
+                </svg>
+              </div>
+              <span class="avatar"></span>
+            </div>
+
+            <div class="cards">
+              <div class="mini">
+                <div class="lbl">Decisions today</div>
+                <svg viewBox="0 0 100 52" preserveAspectRatio="none">
+                  <g fill="rgba(0,0,0,.7)">
+                    <rect x="2"  y="34" width="4" height="16"/>
+                    <rect x="10" y="28" width="4" height="22"/>
+                    <rect x="18" y="18" width="4" height="32"/>
+                    <rect x="26" y="24" width="4" height="26"/>
+                    <rect x="34" y="12" width="4" height="38"/>
+                    <rect x="42" y="20" width="4" height="30"/>
+                    <rect x="50" y="8"  width="4" height="42"/>
+                    <rect x="58" y="16" width="4" height="34"/>
+                    <rect x="66" y="26" width="4" height="24"/>
+                    <rect x="74" y="10" width="4" height="40"/>
+                    <rect x="82" y="20" width="4" height="30"/>
+                    <rect x="90" y="14" width="4" height="36"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="mini">
+                <div class="lbl">Approvals pending</div>
+                <svg viewBox="0 0 100 52" preserveAspectRatio="none">
+                  <path d="M0 42 C 15 40, 25 34, 35 24 S 55 6, 70 12 S 90 30, 100 24"
+                        fill="none" stroke="rgba(0,0,0,.7)" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div class="mini">
+                <div class="lbl">By worker</div>
+                <svg viewBox="0 0 100 52" preserveAspectRatio="none">
+                  <g fill="rgba(0,0,0,.7)">
+                    <rect x="0" y="12" width="60" height="6" rx="1"/>
+                    <rect x="0" y="24" width="46" height="6" rx="1"/>
+                    <rect x="0" y="36" width="34" height="6" rx="1"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="mini">
+                <div class="lbl">Reroute vs hold</div>
+                <svg viewBox="0 0 100 52">
+                  <circle cx="50" cy="26" r="18" fill="none" stroke="rgba(0,0,0,.12)"
+                          stroke-width="6"/>
+                  <circle cx="50" cy="26" r="18" fill="none" stroke="rgba(0,0,0,.7)"
+                          stroke-width="6" stroke-dasharray="80 113" transform="rotate(-90 50 26)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frame 3: the config, in plain language. -->
+        <div class="sc-frame frm-cfg" data-frame="3">
+          <div class="cfg-card">
+            <div class="cfg-top">
+              <span class="nm">Hamburg Reroute Agent</span>
+              <div class="actions">
+                <span class="icn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13"/>
+                  </svg>
+                </span>
+                <span class="icn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="8" y="3" width="12" height="14" rx="2"/>
+                    <path d="M4 7v14h12"/>
+                  </svg>
+                </span>
+                <span class="create">Save</span>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <span><b>B</b></span>
+              <span><i>i</i></span>
+              <span><u>U</u></span>
+              <span style="opacity:.35">|</span>
+              <span>
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round">
+                  <path d="M9 15 5 11l4-4M15 9l4 4-4 4M10 5l4 14"/>
+                </svg>
+              </span>
+            </div>
+
+            <div class="steps-list">
+              <div class="st-line"><span class="lab">Step 1</span>
+                Read every booking calling at HAM in the next 96 hours.</div>
+              <div class="st-line"><span class="lab">Step 2</span>
+                Check active risk on HAM across all six source families.</div>
+              <div class="st-line hl"><span class="lab">Step 3</span>
+                For each affected booking, weigh slack against added transit.</div>
+              <div class="st-line"><span class="lab">Step 4</span>
+                <span class="improve">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/>
+                  </svg>
+                  Improve with SQRlane
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     The four-step automation flow. Same shape on every trigger:
+     read the book, read the world, decide, draft. The Workers do
+     it; the person approves it.
+     ============================================================ -->
+<section class="section" id="flow">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">On every trigger</span>
+      <h2 class="h32">Four steps, one loop, one record.</h2>
+      <p class="copy18">The same shape runs on a strike, a river reading, a tariff
+        filing or a wildfire. What changes is which Worker leads and which fields on
+        the booking are queued to move.</p>
+    </div>
+
+    <div class="steps rv">
+      <div class="step-card">
+        <span class="num">01</span>
+        <h4>Read the book</h4>
+        <p>Bookings come out of the TMS through one connector &mdash; every Worker
+          resolves back to it, so the board is a view of the book, not a copy.</p>
+        <span class="tag"><span class="d"></span>Live</span>
+      </div>
+      <div class="step-card">
+        <span class="num">02</span>
+        <h4>Read the world</h4>
+        <p>Sixty free, keyless sources across six families &mdash; news, rivers,
+          weather, hazards, filings, rates &mdash; read together on every run.</p>
+        <span class="tag"><span class="d"></span>Live</span>
+      </div>
+      <div class="step-card">
+        <span class="num">03</span>
+        <h4>Decide, and record why</h4>
+        <p>Reroute, hold or leave on plan &mdash; with the reasoning trail attached
+          to the booking. A booking left on plan is a real answer, not a gap.</p>
+        <span class="tag"><span class="d"></span>Live</span>
+      </div>
+      <div class="step-card">
+        <span class="num">04</span>
+        <h4>Draft the change</h4>
+        <p>Carrier mail, customer mail, and the booking amendment each decision
+          implies. <b>Drafted, not sent.</b> Queued, not written.</p>
+        <span class="tag"><span class="d" style="background:var(--amber)"></span>Awaits you</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1289,6 +1888,45 @@ h1,h2,h3,h4,p{margin:0}
     });
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
   items.forEach(function (el) { io.observe(el); });
+})();
+
+/* The sticky-scroll section. Three panels of copy on the left, one visual on
+   the right with three frames stacked inside it. As each panel enters the
+   middle of the viewport it becomes the active one, and the matching frame
+   fades in on the right. Everything is legible without JS - the first panel
+   and its frame are already .on in the markup, so a reader without the
+   observer sees the first pair and can scroll past the rest of the copy. */
+(function () {
+  var panels = document.querySelectorAll(".sc-panel");
+  var frames = document.querySelectorAll(".sc-frame");
+  var dots   = document.querySelectorAll(".sc-dot");
+  if (!panels.length || !frames.length) return;
+
+  function activate(i) {
+    panels.forEach(function (p) {
+      p.classList.toggle("on", p.getAttribute("data-panel") === i);
+    });
+    frames.forEach(function (f) {
+      f.classList.toggle("on", f.getAttribute("data-frame") === i);
+    });
+    dots.forEach(function (d) {
+      d.classList.toggle("on", d.getAttribute("data-dot") === i);
+    });
+  }
+
+  if (!("IntersectionObserver" in window)) return;
+  /* The band the observer treats as "in view" is a narrow horizontal slice
+     across the middle of the viewport. A panel crossing that slice is the
+     active one, which is what keeps the transition happening at a
+     predictable moment - too wide a band and two panels can be active at
+     once, too narrow and there is a dead zone where nothing is. */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) activate(e.target.getAttribute("data-panel"));
+    });
+  }, { rootMargin: "-42% 0px -42% 0px", threshold: 0 });
+
+  panels.forEach(function (p) { io.observe(p); });
 })();
 
 /* The source band. One row is written in the HTML; two hidden copies are
