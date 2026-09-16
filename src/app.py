@@ -16,6 +16,7 @@ Start it:
 """
 
 import hashlib
+import json
 import os
 import time
 from pathlib import Path
@@ -326,15 +327,94 @@ def gauges():
 _feed_cache = {"at": 0.0, "payload": None}
 _FEED_CACHE_SECONDS = 900
 
-# Three regional broadcasters, one per country, all keyless. Choosing a
-# small, curated pool over the full RSS_FEEDS list because this endpoint
-# runs on every landing-page load and cannot afford a 20-feed budget - the
-# risk_monitor is where breadth belongs, not here.
+# A curated pool of regional broadcasters, all keyless. Kept small because
+# this endpoint runs on every /signals load and cannot afford the full
+# RSS_FEEDS budget - risk_monitor is where breadth belongs, not here. This
+# is still a subset of config.RSS_FEEDS; adding a feed there is what wires
+# it into the risk monitor, adding a feed here only surfaces it on the
+# panel. If the two need to reference the same URL, take it from
+# config.RSS_FEEDS by name rather than re-typing.
 _LIVE_FEEDS = [
     ("NDR Hamburg", "de", "https://www.ndr.de/nachrichten/hamburg/index-rss.xml"),
+    ("tagesschau",  "de", "https://www.tagesschau.de/index~rss2.xml"),
+    ("DW Deutsch",  "de", "https://rss.dw.com/rdf/rss-de-all"),
     ("Rijnmond",    "nl", "https://www.rijnmond.nl/rss/index.xml"),
+    ("NOS Nieuws",  "nl", "https://feeds.nos.nl/nosnieuwsalgemeen"),
     ("France Info", "fr", "https://www.francetvinfo.fr/titres.rss"),
+    ("Le Monde",    "fr", "https://www.lemonde.fr/rss/une.xml"),
+    ("NHK",         "ja", "https://www3.nhk.or.jp/rss/news/cat0.xml"),
+    ("BBC Arabic",  "ar", "https://feeds.bbci.co.uk/arabic/rss.xml"),
 ]
+
+# Cap how many items per feed and in total, so a chatty feed cannot crowd
+# out the rest and one translation batch is not too long for the model to
+# parse cleanly. 3 * 9 = 27 max; the total cap trims to 18 after
+# de-duplication and ordering.
+_ITEMS_PER_FEED = 3
+_MAX_ITEMS = 18
+
+
+def _translate_items_to_english(items):
+    """Batch-translate non-English titles + summaries to English.
+
+    Adds `title_en` and `summary_en` to each item in place. Called once
+    per cache refresh (every 15 min), so it never blocks a warm request.
+    If the LLM is not configured or the call fails, the items are
+    returned unchanged - the panel still reads, in the source language,
+    which is the pre-translation behaviour.
+    """
+    if not llm.is_configured():
+        return
+    todo = [(i, it) for i, it in enumerate(items)
+            if (it.get("iso") or "").lower() != "en"
+            and (it.get("title") or it.get("summary"))]
+    if not todo:
+        return
+
+    # One prompt, one JSON array back. Keep the batch small enough that
+    # a single response stays under a comfortable token cap - 12 items
+    # covers our 18-item ceiling in at most two calls.
+    BATCH = 12
+    for start in range(0, len(todo), BATCH):
+        chunk = todo[start:start + BATCH]
+        payload = [
+            {"i": idx, "lang": (items[idx].get("iso") or "").lower(),
+             "title": items[idx].get("title", "")[:200],
+             "summary": items[idx].get("summary", "")[:220]}
+            for (idx, _) in chunk
+        ]
+        prompt = (
+            "Translate each item's title and summary into natural, concise "
+            "English. Keep proper nouns (people, places, organisations, "
+            "publication names) as they are. Do not paraphrase or add "
+            "commentary. If the source is already in English return the "
+            "original text.\n\n"
+            "Return a JSON array in the SAME order and length as the input, "
+            "with objects of exactly this shape:\n"
+            '  {"i": <same index>, "title_en": "<translated title>", '
+            '"summary_en": "<translated summary or empty string>"}\n\n'
+            "Input:\n" + json.dumps(payload, ensure_ascii=False)
+        )
+        try:
+            out = llm.complete_json(prompt, temperature=0.2, max_tokens=1400)
+        except Exception:                              # noqa: BLE001
+            # A translation failure must not empty the panel. Leave the
+            # items as they are; the UI falls back to the original text.
+            continue
+        if not isinstance(out, list):
+            continue
+        for row in out:
+            if not isinstance(row, dict):
+                continue
+            idx = row.get("i")
+            if not isinstance(idx, int) or idx < 0 or idx >= len(items):
+                continue
+            te = (row.get("title_en") or "").strip()
+            se = (row.get("summary_en") or "").strip()
+            if te and te.lower() != (items[idx].get("title") or "").lower():
+                items[idx]["title_en"] = te[:200]
+            if se and se.lower() != (items[idx].get("summary") or "").lower():
+                items[idx]["summary_en"] = se[:220]
 
 
 @app.get("/api/live-feed")
@@ -400,7 +480,7 @@ def live_feed():
         try:
             resp = httpget.get_capped(url, timeout=3.5)
             parsed = feedparser.parse(resp.content)
-            for entry in list(parsed.entries)[:2]:
+            for entry in list(parsed.entries)[:_ITEMS_PER_FEED]:
                 title = (entry.get("title") or "").strip()
                 if not title:
                     continue
@@ -423,6 +503,25 @@ def live_feed():
             # Any single feed failing must not empty the whole panel, and
             # must not stall the request either.
             continue
+
+    # Round-robin merge so each source's first item comes before any
+    # source's second item, then cap. Otherwise a run of German feeds at
+    # the top of _LIVE_FEEDS pushes every other language off the panel.
+    by_feed = {}
+    for it in items:
+        by_feed.setdefault(it["source"], []).append(it)
+    sources_order = [n for (n, _, _) in _LIVE_FEEDS if n in by_feed]
+    interleaved = []
+    for row in range(_ITEMS_PER_FEED):
+        for src in sources_order:
+            bucket = by_feed[src]
+            if row < len(bucket):
+                interleaved.append(bucket[row])
+    items = interleaved[:_MAX_ITEMS]
+
+    # Translate non-English titles/summaries in place. Silent no-op if the
+    # LLM is not configured or the call fails - the panel still reads.
+    _translate_items_to_english(items)
 
     payload = {"ok": bool(items), "items": items,
                "sources": [{"name": n, "iso": i} for (n, i, _) in _LIVE_FEEDS]}
