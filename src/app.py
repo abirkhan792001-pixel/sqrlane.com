@@ -346,6 +346,10 @@ def live_feed():
     good payload if there is one, otherwise returns ok:false items:[]
     so the client can hide the card rather than break the page.
     """
+    import calendar
+    import re
+    from datetime import datetime, timezone
+
     import feedparser
     from src import httpget
 
@@ -354,6 +358,42 @@ def live_feed():
     age = now - _feed_cache["at"]
     if cached and age < _FEED_CACHE_SECONDS:
         return JSONResponse(dict(cached, age_seconds=round(age)))
+
+    # RSS summaries often ship as HTML. Strip tags, collapse whitespace and
+    # decode the handful of entities feedparser leaves behind - the panel
+    # renders one line as plain text, so a stray <p> or &nbsp; would show.
+    _tag_re = re.compile(r"<[^>]+>")
+    _ws_re = re.compile(r"\s+")
+    _entities = {"&amp;": "&", "&nbsp;": " ", "&#160;": " ",
+                 "&quot;": '"', "&#39;": "'", "&apos;": "'",
+                 "&lt;": "<", "&gt;": ">"}
+
+    def _clean_summary(raw: str) -> str:
+        if not raw:
+            return ""
+        s = _tag_re.sub(" ", raw)
+        for k, v in _entities.items():
+            s = s.replace(k, v)
+        s = _ws_re.sub(" ", s).strip()
+        # A one-liner is 180 chars at the outside; the CSS clamps visually
+        # to one line, this caps the payload so a wall of copy is never sent.
+        if len(s) > 180:
+            s = s[:177].rstrip() + "…"
+        return s
+
+    def _published_iso(entry) -> str:
+        # feedparser normalises to a UTC time.struct_time on published_parsed
+        # or updated_parsed. Prefer published; fall back to updated.
+        for key in ("published_parsed", "updated_parsed"):
+            ts = entry.get(key)
+            if ts:
+                try:
+                    return datetime.fromtimestamp(
+                        calendar.timegm(ts), tz=timezone.utc
+                    ).isoformat().replace("+00:00", "Z")
+                except (TypeError, ValueError, OverflowError):
+                    continue
+        return ""
 
     items = []
     for (name, iso, url) in _LIVE_FEEDS:
@@ -364,10 +404,19 @@ def live_feed():
                 title = (entry.get("title") or "").strip()
                 if not title:
                     continue
+                summary = _clean_summary(
+                    entry.get("summary") or entry.get("description") or ""
+                )
+                # A summary that just echoes the title adds noise, not
+                # information - drop it so the row stays a headline.
+                if summary and summary.lower().startswith(title.lower()[:60]):
+                    summary = ""
                 items.append({
                     "source": name,
                     "iso": iso,
                     "title": title[:160],
+                    "summary": summary,
+                    "published": _published_iso(entry),
                     "link": entry.get("link", ""),
                 })
         except Exception:                             # noqa: BLE001
