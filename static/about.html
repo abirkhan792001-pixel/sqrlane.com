@@ -261,6 +261,29 @@ h1,h2,h3,h4,p{margin:0}
 .not .k{font-size:14px; font-weight:500; letter-spacing:-.2px}
 .not .v{font-size:13px; line-height:19px; color:var(--muted); margin-top:3px}
 
+/* ---------- FAQ ----------
+   Native <details>/<summary> so a reader gets keyboard toggling and open-state
+   without a line of JS. One card per question, hairline border and 12px radius
+   like every other card on the page. The chevron rotates on [open]; a full CSS
+   accordion is not worth the extra state. */
+.faq{margin-top:32px; display:flex; flex-direction:column; gap:12px}
+.faq details{background:var(--card); border:1px solid var(--border);
+             border-radius:var(--r-md); box-shadow:var(--shadow-card);
+             overflow:hidden}
+.faq summary{list-style:none; cursor:pointer; padding:18px 20px;
+             display:flex; align-items:center; gap:14px;
+             font-size:15px; line-height:22px; font-weight:500;
+             letter-spacing:-.24px; color:var(--fg)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .q{flex:1}
+.faq summary .caret{flex:none; width:16px; height:16px; color:var(--faint);
+                    transition:transform .15s var(--ease)}
+.faq details[open] summary .caret{transform:rotate(180deg)}
+.faq details[open] summary{border-bottom:1px solid var(--border)}
+.faq .a{padding:16px 20px 20px; font-size:14px; line-height:21px;
+        color:var(--muted); max-width:66ch}
+.faq .a p + p{margin-top:10px}
+
 /* ---------- honest band ----------
    The same card rule as everything else on the page - hairline border, 12px
    radius, --shadow-card - which is bklit-ui's anatomy, it being a shadcn
@@ -563,6 +586,117 @@ h1,h2,h3,h4,p{margin:0}
     </div>
   </div>
 </section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="h32">The questions a first look tends to ask.</h2>
+      <p class="copy18">Same rule as the rest of the page &mdash; the honest answer,
+        even when the shorter answer would sell better.</p>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>
+          <span class="q">Is anything on the site actually running live?</span>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="a">
+          <p>Yes. The risk monitor pulls sixty free, keyless sources on every
+             run and classifies what comes back. Every routing decision, and
+             every drafted carrier and customer mail, is written per booking
+             by a model. The Rhine gauges on the how-it-works page read the
+             reference stations live.</p>
+          <p>What is authored is the seven bookings and the four disruptions,
+             so one can be shown on command rather than waited for.</p>
+        </div>
+      </details>
+      <details>
+        <summary>
+          <span class="q">Does this connect to a real TMS today?</span>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="a">
+          <p>No. Working through the TMS is the design, and the connector
+             owns the only read of the book and describes the write each
+             decision implies &mdash; but no vendor is contacted, no
+             credential is held, no endpoint is called. A write-back is a
+             description of a change, and it stays one.</p>
+          <p>Wiring a real TMS is on the far side of the integration and
+             trust wall. It is the single highest-value thing on the other
+             side of it.</p>
+        </div>
+      </details>
+      <details>
+        <summary>
+          <span class="q">Is anything ever sent from here?</span>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="a">
+          <p>Nothing. No email library and no transport of any kind is
+             imported anywhere in the app. A test parses every source file
+             and fails the build if one appears. Drafts and queued
+             write-backs both sit behind the same approval gate: a person
+             clicks, and the state changes in the browser.</p>
+        </div>
+      </details>
+      <details>
+        <summary>
+          <span class="q">Why is there no accuracy percentage anywhere?</span>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="a">
+          <p>Nothing here has been measured against real freight, so any
+             figure would be invented &mdash; and a fabricated number on a
+             prototype is the one thing this project refuses to produce.
+             The numbers you do see on the home page are counted from the
+             run: sources attempted, hours ahead of the international wires,
+             euros of exposure priced from each booking's own terms.</p>
+        </div>
+      </details>
+      <details>
+        <summary>
+          <span class="q">Which model is doing the deciding?</span>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="a">
+          <p>The provider swaps in one file, so the model behind the run
+             can move without the rest of the app noticing. The running
+             instance calls a serverless inference provider and picks a
+             model against the key at request time rather than hard-coding
+             one &mdash; a retired model name looks the same as a broken
+             key, so discovery does the picking. The dashboard names the
+             model that answered on every run.</p>
+        </div>
+      </details>
+      <details>
+        <summary>
+          <span class="q">Can I see it react to my own lanes?</span>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="a">
+          <p>The public demo runs on its authored screenplay so a
+             disruption lands on command. A tailored walk-through against
+             your corridors and a disruption you pick is a booked call
+             &mdash; the button under this section opens it.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section class="closer">
   <div class="wrap rv">
     <div>
@@ -607,6 +741,7 @@ h1,h2,h3,h4,p{margin:0}
         <ul>
           <li><a href="/how-it-works#sources">Data sources</a></li>
           <li><a href="/about#real">What's real</a></li>
+          <li><a href="/about#faq">FAQ</a></li>
           <li><a href="/whitepaper">Whitepaper</a></li>
         </ul>
       </div>
