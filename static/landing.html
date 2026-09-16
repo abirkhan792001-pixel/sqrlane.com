@@ -1116,111 +1116,45 @@ h1,h2,h3,h4,p{margin:0}
 }
 
 
-/* ---------- the sources grid, as one picture ---------- */
-/* Sixty sources across six families, drawn as a shuffled tile grid rather
-   than a sliding band. Each tile carries one of the pictograms defined by
-   the sources strip below (marks, not logos - the site's own rule already
-   forbids the second) and the source's own name. Tiles rest at a small
-   per-tile rotation and offset for the scattered-stack feel; on scroll the
-   whole grid fades in staggered; once in, tiles bob gently in place with
-   four out-of-phase float animations, so no two neighbours move in unison.
-   Under prefers-reduced-motion the tiles sit still. */
-.sgrid-wrap{margin-top:44px; position:relative; overflow:hidden;
-            background:linear-gradient(180deg,var(--card) 0%,var(--card-muted) 100%);
-            border:1px solid var(--border); border-radius:var(--r-lg);
-            box-shadow:var(--shadow-card); padding:56px 40px 64px}
-/* A soft vignette so tiles at the edges dissolve into the frame rather than
-   collide with it. pointer-events:none so the tiles under it are still
-   clickable and hoverable. */
-.sgrid-wrap::before{content:""; position:absolute; inset:0; pointer-events:none;
-  z-index:2;
-  background:radial-gradient(140% 90% at 50% 50%, transparent 55%,
-                             rgba(250,250,250,.94) 100%)}
-.sgrid{display:grid; grid-template-columns:repeat(6,1fr); gap:16px;
-       position:relative; z-index:1}
-
-.stile{position:relative; padding:18px 12px; background:var(--card);
-       border:1px solid var(--border); border-radius:12px;
-       box-shadow:0 1px 2px rgba(0,0,0,.04),0 6px 14px -8px rgba(0,0,0,.06);
-       display:flex; flex-direction:column; align-items:center; justify-content:center;
-       gap:9px; text-align:center; min-height:100px;
-       transform:rotate(var(--r,0deg)) translateY(var(--y,0px));
-       opacity:0;
-       transition:opacity .6s var(--ease), box-shadow .3s var(--ease);
-       will-change:transform, opacity}
-.sgrid.in .stile{opacity:1}
-.stile:hover{box-shadow:0 2px 4px rgba(0,0,0,.05),0 14px 26px -8px rgba(0,0,0,.14);
-             z-index:3}
-.stile .mk{width:26px; height:26px; color:var(--muted); flex:none;
-           fill:none; stroke:currentColor; stroke-width:1.7;
-           stroke-linecap:round; stroke-linejoin:round}
-.stile .nm{font-size:12.5px; line-height:16px; font-weight:600; letter-spacing:-.15px;
-           color:var(--fg)}
-.stile .lg{display:inline-block; font-size:9px; font-weight:600; letter-spacing:.06em;
-           text-transform:uppercase; color:var(--faint);
-           border:1px solid var(--border-strong); border-radius:3px;
-           padding:0 4px; line-height:14px; margin-left:4px; vertical-align:middle}
-
-/* Six per-column rotation/offset phases for the shuffled resting pose. */
-.stile:nth-child(6n+1){--r:-2deg; --y:4px}
-.stile:nth-child(6n+2){--r: 1deg; --y:-2px}
-.stile:nth-child(6n+3){--r:-3deg; --y:3px}
-.stile:nth-child(6n+4){--r: 2deg; --y:0px}
-.stile:nth-child(6n+5){--r:-1deg; --y:-3px}
-.stile:nth-child(6n+6){--r: 3deg; --y:2px}
-
-/* Staggered entrance - driven by --i inline on each tile so the delay is
-   per-tile rather than per-column. Only the transition delay uses it; the
-   float animation uses its own delay below. */
-.sgrid.in .stile{transition-delay:calc(var(--i,0) * 20ms)}
-
-/* Continuous float. Four keyframes cycled by nth-child so no two neighbours
-   bob together. Every keyframe preserves the per-tile rotation so the
-   animation only moves y - the shuffled rest pose stays intact. */
-@keyframes stile-float-a{
-  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
-  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) - 5px))}
-}
-@keyframes stile-float-b{
-  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
-  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) + 4px))}
-}
-@keyframes stile-float-c{
-  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
-  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) - 3px))}
-}
-@keyframes stile-float-d{
-  0%,100%{transform:rotate(var(--r,0deg)) translateY(var(--y,0px))}
-  50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) + 5px))}
-}
-.sgrid.in .stile{
-  animation:stile-float-a 7s ease-in-out infinite;
-  animation-delay:calc(1s + var(--i,0) * 90ms)
-}
-.sgrid.in .stile:nth-child(4n+2){animation-name:stile-float-b; animation-duration:7.6s}
-.sgrid.in .stile:nth-child(4n+3){animation-name:stile-float-c; animation-duration:6.2s}
-.sgrid.in .stile:nth-child(4n+4){animation-name:stile-float-d; animation-duration:8.1s}
-
-/* The honest line at the foot of the picture, the way the loop's
-   "Same record at both ends" line was. Reads over the vignette, so z-index. */
-.sgrid-note{margin-top:24px; display:flex; align-items:center; gap:12px;
-            font-size:13px; line-height:19px; color:var(--muted);
-            position:relative; z-index:3}
-.sgrid-note .line{flex:1; height:1px; background:var(--border-strong)}
-.sgrid-note b{color:var(--fg); font-weight:500}
-
-@media (max-width:1000px){
-  .sgrid{grid-template-columns:repeat(4,1fr)}
-  .sgrid-wrap{padding:44px 24px 48px}
-}
-@media (max-width:640px){
-  .sgrid{grid-template-columns:repeat(2,1fr); gap:12px}
-  .sgrid-wrap{padding:34px 16px 40px}
-  .stile{min-height:88px; padding:14px 10px}
-}
-@media (prefers-reduced-motion:reduce){
-  .stile,.sgrid.in .stile{animation:none !important; transition:none !important}
-  .sgrid.in .stile{opacity:1}
+/* ---------- the loop, as one picture ---------- */
+/* The whole product in a row of five: the record comes out, three agents act,
+   the record goes back. The two connector nodes are tinted the same on purpose
+   - that they are the same node is the entire claim. No prose here; the page
+   that explains it is one click away. */
+.loopdiag{margin-top:38px}
+.lnodes{margin:0; padding:0; list-style:none; display:grid; gap:0;
+        grid-template-columns:repeat(5,1fr); align-items:stretch}
+.ln{position:relative; padding:20px 18px 22px; border:1px solid var(--border);
+    background:var(--card); box-shadow:var(--shadow-card); border-right:0}
+.ln:first-child{border-radius:var(--r-md) 0 0 var(--r-md)}
+.ln:last-child{border-radius:0 var(--r-md) var(--r-md) 0; border-right:1px solid var(--border)}
+.ln .k{font-family:"Geist Mono",ui-monospace,monospace; font-size:11px; line-height:16px;
+       color:var(--faint)}
+.ln .t{display:block; margin-top:10px; font-size:15px; line-height:21px; font-weight:600;
+       letter-spacing:-.3px}
+.ln .s{display:block; margin-top:5px; font-size:12.5px; line-height:18px; color:var(--muted)}
+/* The arrow sits in the seam between two nodes, on the card colour, so the row
+   reads as one run rather than five tiles. */
+.ln + .ln::before{content:""; position:absolute; left:-5px; top:50%; width:9px; height:9px;
+                  margin-top:-5px; border-top:1.5px solid var(--border-strong);
+                  border-right:1.5px solid var(--border-strong); transform:rotate(45deg);
+                  background:var(--card); z-index:1}
+.ln.rec{background:var(--blue-100); border-color:var(--blue-400)}
+/* The arrow sits on the node it points into, so on the tinted end node it has
+   to carry that node's colour - a white diamond on a blue card reads as a gap
+   in the run rather than a step in it. */
+.ln.rec::before{background:var(--blue-100); border-color:var(--blue-400)}
+.ln.rec .k,.ln.rec .s{color:var(--blue)}
+.lback{margin-top:14px; display:flex; align-items:center; gap:12px; font-size:13px;
+       line-height:19px; color:var(--muted)}
+.lback .line{flex:1; height:1px; background:var(--border-strong)}
+.lback b{color:var(--fg); font-weight:500}
+@media (max-width:900px){
+  .lnodes{grid-template-columns:1fr}
+  .ln{border-right:1px solid var(--border); border-bottom:0}
+  .ln:first-child{border-radius:var(--r-md) var(--r-md) 0 0}
+  .ln:last-child{border-radius:0 0 var(--r-md) var(--r-md); border-bottom:1px solid var(--border)}
+  .ln + .ln::before{left:50%; top:-5px; margin:0 0 0 -5px; transform:rotate(135deg)}
 }
 
 /* ---------- the three numbers ---------- */
@@ -2569,62 +2503,50 @@ h1,h2,h3,h4,p{margin:0}
   </div>
 </section>
 
-<!-- ======================== SOURCES, AS ONE PICTURE ======================== -->
-<!-- Deliberately without explanation - the mechanism is /how-it-works' whole
-     job. Every mark below is one of the pictograms defined in the source
-     strip further down (via <use href="#mk-*">), and every tile carries the
-     source's own name. No logo is reproduced: the site's convention already
-     forbids it, and reading the same convention here keeps the two blocks
-     in step. -->
-<section class="section" id="sources-picture">
+<!-- ======================== THE LOOP, IN ONE PICTURE ======================== -->
+<!-- Deliberately without explanation. The mechanism is /how-it-works' whole
+     job; if this section starts describing it, there are two pages doing one
+     page's work and a reader has no reason to open the second. -->
+<section class="section" id="loop">
   <div class="wrap">
     <div class="head rv">
-      <span class="eyebrow">The terminal</span>
-      <h2 class="d2">Sixty sources. One terminal. Every run.</h2>
-      <p class="copy18">Incumbents mostly read the same trade wires. This one
-        reads across regional broadcasters and international wires, waterway
-        authorities and weather services, seismic networks and natural-hazard
-        feeds, government registers and central banks &mdash; because a lane
-        can be moved by any of them, and they arrive in that many different
-        formats.</p>
+      <span class="eyebrow">The loop</span>
+      <h2 class="d2">It opens and closes in the same place.</h2>
+      <p class="copy18">Risk platforms stop at the alert. Your TMS starts after the decision.
+        Between them sits a person re-keying the consequences, one booking at a time.</p>
     </div>
 
-    <div class="sgrid-wrap rv">
-      <div class="sgrid rv" role="list" aria-label="Sources SQRlane reads every run">
-        <div class="stile" role="listitem" style="--i:0"><svg class="mk"><use href="#mk-globe"/></svg><span class="nm">GDELT</span></div>
-        <div class="stile" role="listitem" style="--i:1"><svg class="mk"><use href="#mk-tower"/></svg><span class="nm">NDR Hamburg <span class="lg">de</span></span></div>
-        <div class="stile" role="listitem" style="--i:2"><svg class="mk"><use href="#mk-clock"/></svg><span class="nm">tagesschau <span class="lg">de</span></span></div>
-        <div class="stile" role="listitem" style="--i:3"><svg class="mk"><use href="#mk-dish"/></svg><span class="nm">DW <span class="lg">de</span></span></div>
-        <div class="stile" role="listitem" style="--i:4"><svg class="mk"><use href="#mk-signal"/></svg><span class="nm">NOS Nieuws <span class="lg">nl</span></span></div>
-        <div class="stile" role="listitem" style="--i:5"><svg class="mk"><use href="#mk-signal"/></svg><span class="nm">Rijnmond <span class="lg">nl</span></span></div>
-        <div class="stile" role="listitem" style="--i:6"><svg class="mk"><use href="#mk-paper"/></svg><span class="nm">Le Monde <span class="lg">fr</span></span></div>
-        <div class="stile" role="listitem" style="--i:7"><svg class="mk"><use href="#mk-hex"/></svg><span class="nm">France Info <span class="lg">fr</span></span></div>
-        <div class="stile" role="listitem" style="--i:8"><svg class="mk"><use href="#mk-tv"/></svg><span class="nm">RTVE <span class="lg">es</span></span></div>
-        <div class="stile" role="listitem" style="--i:9"><svg class="mk"><use href="#mk-tower"/></svg><span class="nm">BBC <span class="lg">ar</span></span></div>
-        <div class="stile" role="listitem" style="--i:10"><svg class="mk"><use href="#mk-drop"/></svg><span class="nm">Al Jazeera</span></div>
-        <div class="stile" role="listitem" style="--i:11"><svg class="mk"><use href="#mk-tv"/></svg><span class="nm">NHK <span class="lg">jp</span></span></div>
-        <div class="stile" role="listitem" style="--i:12"><svg class="mk"><use href="#mk-paper"/></svg><span class="nm">ANSA <span class="lg">it</span></span></div>
-        <div class="stile" role="listitem" style="--i:13"><svg class="mk"><use href="#mk-signal"/></svg><span class="nm">VRT NWS <span class="lg">nl</span></span></div>
-        <div class="stile" role="listitem" style="--i:14"><svg class="mk"><use href="#mk-anchor"/></svg><span class="nm">gCaptain</span></div>
-        <div class="stile" role="listitem" style="--i:15"><svg class="mk"><use href="#mk-anchor"/></svg><span class="nm">Splash 247</span></div>
-        <div class="stile" role="listitem" style="--i:16"><svg class="mk"><use href="#mk-anchor"/></svg><span class="nm">The Loadstar</span></div>
-        <div class="stile" role="listitem" style="--i:17"><svg class="mk"><use href="#mk-anchor"/></svg><span class="nm">FreightWaves</span></div>
-        <div class="stile" role="listitem" style="--i:18"><svg class="mk"><use href="#mk-gauge"/></svg><span class="nm">PEGELONLINE</span></div>
-        <div class="stile" role="listitem" style="--i:19"><svg class="mk"><use href="#mk-gauge"/></svg><span class="nm">Open-Meteo Flood</span></div>
-        <div class="stile" role="listitem" style="--i:20"><svg class="mk"><use href="#mk-wind"/></svg><span class="nm">Open-Meteo</span></div>
-        <div class="stile" role="listitem" style="--i:21"><svg class="mk"><use href="#mk-wave"/></svg><span class="nm">Open-Meteo Marine</span></div>
-        <div class="stile" role="listitem" style="--i:22"><svg class="mk"><use href="#mk-wind"/></svg><span class="nm">DWD warnings <span class="lg">de</span></span></div>
-        <div class="stile" role="listitem" style="--i:23"><svg class="mk"><use href="#mk-seismic"/></svg><span class="nm">USGS</span></div>
-        <div class="stile" role="listitem" style="--i:24"><svg class="mk"><use href="#mk-seismic"/></svg><span class="nm">EMSC</span></div>
-        <div class="stile" role="listitem" style="--i:25"><svg class="mk"><use href="#mk-sat"/></svg><span class="nm">NASA EONET</span></div>
-        <div class="stile" role="listitem" style="--i:26"><svg class="mk"><use href="#mk-sat"/></svg><span class="nm">GDACS</span></div>
-        <div class="stile" role="listitem" style="--i:27"><svg class="mk"><use href="#mk-wave"/></svg><span class="nm">NOAA NHC</span></div>
-        <div class="stile" role="listitem" style="--i:28"><svg class="mk"><use href="#mk-doc"/></svg><span class="nm">Federal Register</span></div>
-        <div class="stile" role="listitem" style="--i:29"><svg class="mk"><use href="#mk-fx"/></svg><span class="nm">Frankfurter <span class="lg">ecb</span></span></div>
-      </div>
-      <p class="sgrid-note">
+    <div class="loopdiag rv">
+      <ol class="lnodes">
+        <li class="ln rec">
+          <span class="k">00</span>
+          <span class="t">TMS link</span>
+          <span class="s">the book, read</span>
+        </li>
+        <li class="ln ">
+          <span class="k">01</span>
+          <span class="t">Risk</span>
+          <span class="s">sixty sources, six families</span>
+        </li>
+        <li class="ln ">
+          <span class="k">02</span>
+          <span class="t">Routing</span>
+          <span class="s">reroute, hold or leave it</span>
+        </li>
+        <li class="ln ">
+          <span class="k">03</span>
+          <span class="t">Comms</span>
+          <span class="s">carrier and customer mail</span>
+        </li>
+        <li class="ln rec">
+          <span class="k">04</span>
+          <span class="t">TMS link</span>
+          <span class="s">the change, queued</span>
+        </li>
+      </ol>
+      <p class="lback">
         <span class="line"></span>
-        <span>Free and keyless &mdash; and <b>every one of them read together</b></span>
+        <span>Same record at both ends &mdash; and <b>a person approves the write</b></span>
         <span class="line"></span>
       </p>
     </div>
