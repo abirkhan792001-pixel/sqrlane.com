@@ -1295,66 +1295,47 @@ h1,h2,h3,h4,p{margin:0}
 @media (max-width:900px){.kgrid{grid-template-columns:1fr}}
 
 /* ---------- FAQ ---------- */
-/* Two-column layout: the title stack on the left, the items in one
-   bordered container on the right, separated by hairline dividers
-   rather than by their own cards. Native <details> underneath, so it
-   works with no JS and each item is still individually anchor-linkable
-   (#faq-different, #faq-real, ...). The +/x toggle is a CSS-only
-   swap of two inline SVGs on the summary::after; no icon font, no
-   fetch. First item defaults to open. */
-.faq{padding:88px 0; border-top:1px solid var(--border)}
-.faq-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);
-          gap:64px; align-items:start}
-.faq-left{position:sticky; top:96px; padding-top:6px}
-.faq-left .eyebrow{display:inline-flex; align-items:center; gap:8px;
-                   margin-bottom:14px}
-.faq-left .eyebrow::before{content:""; width:8px; height:8px; background:var(--blue);
-                           border-radius:2px; display:inline-block}
-.faq-left h2{letter-spacing:-2.2px}
-.faq-help{margin-top:26px; font-size:15px; line-height:23px; color:var(--muted)}
-.faq-help a{color:var(--blue); text-decoration:none; font-weight:500}
-.faq-help a:hover{text-decoration:underline}
-
-.faq-list{background:var(--card); border:1px solid var(--border);
-          border-radius:var(--r-md); box-shadow:var(--shadow-card);
-          overflow:hidden}
+/* One section head above one bordered container - the same shape every
+   other section on this page uses (see #kpi, #integrations, #loop).
+   Items sit inside a single card with hairline dividers between them
+   rather than as their own cards, so the block reads as one list.
+   Native <details> underneath: works with no JS, each item is still
+   individually linkable (#faq-different, #faq-real, ...). The +/x
+   toggle is one span with two absolutely-positioned lines that cross;
+   opening rotates the whole slot 90deg and collapses the vertical
+   line to zero, so + becomes x smoothly rather than snapping. First
+   item defaults to open. */
+.faq-list{margin-top:38px; background:var(--card); border:1px solid var(--border);
+          border-radius:var(--r-md); box-shadow:var(--shadow-card); overflow:hidden}
 .faq-item{border-bottom:1px solid var(--border)}
 .faq-item:last-child{border-bottom:0}
-.faq-item[open]{background:var(--card)}
-.faq-item summary{list-style:none; padding:22px 28px; cursor:pointer;
+.faq-item summary{list-style:none; padding:22px 26px; cursor:pointer;
                   display:flex; align-items:center; gap:24px;
-                  font-size:17px; line-height:24px; font-weight:600;
-                  letter-spacing:-.34px; color:var(--fg);
+                  font-size:16.5px; line-height:24px; font-weight:600;
+                  letter-spacing:-.32px; color:var(--fg);
                   transition:background .15s var(--ease)}
 .faq-item summary:hover{background:color-mix(in srgb,var(--gray-100) 60%,transparent)}
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item summary::marker{content:""}
-/* The toggle is one 20px slot with two crossing lines. A single
-   horizontal line stays put; the vertical line rotates to horizontal on
-   open, so + becomes x smoothly rather than snapping. Same idea any
-   modern SaaS FAQ uses, and it costs one span in the summary. */
+/* Closed: two lines at 0deg and 90deg = +
+   Open : the whole slot rotates 45deg, so + becomes x. One transform,
+          no scaling, and the animation reads as a smooth quarter turn. */
 .faq-tog{margin-left:auto; width:22px; height:22px; position:relative; flex:none;
-         color:var(--muted); transition:transform .3s var(--ease)}
+         color:var(--muted);
+         transition:transform .3s var(--ease), color .3s var(--ease)}
 .faq-tog::before,.faq-tog::after{content:""; position:absolute; left:50%; top:50%;
                                  width:14px; height:1.6px; background:currentColor;
-                                 border-radius:1px; transform-origin:center;
-                                 transition:transform .3s var(--ease)}
+                                 border-radius:1px; transform-origin:center}
 .faq-tog::before{transform:translate(-50%,-50%)}
 .faq-tog::after{transform:translate(-50%,-50%) rotate(90deg)}
-.faq-item[open] .faq-tog{transform:rotate(90deg); color:var(--fg)}
-.faq-item[open] .faq-tog::after{transform:translate(-50%,-50%) rotate(90deg) scale(0)}
+.faq-item[open] .faq-tog{transform:rotate(45deg); color:var(--fg)}
 
-.faq-body{padding:0 28px 26px; font-size:15.5px; line-height:25px; color:var(--muted);
-          max-width:64ch}
+.faq-body{padding:0 26px 24px; font-size:15px; line-height:24px; color:var(--muted);
+          max-width:70ch}
 .faq-body p{margin:0}
-.faq-body p + p{margin-top:14px}
+.faq-body p + p{margin-top:12px}
 
-@media (max-width:900px){
-  .faq-grid{grid-template-columns:1fr; gap:36px}
-  .faq-left{position:static}
-}
 @media (max-width:640px){
-  .faq{padding:64px 0}
   .faq-item summary{padding:18px 20px; font-size:15.5px; line-height:22px; gap:16px}
   .faq-body{padding:0 20px 20px; font-size:14.5px; line-height:23px}
 }
@@ -2845,24 +2826,24 @@ h1,h2,h3,h4,p{margin:0}
 </section>
 
 <!-- ======================== FAQ ======================== -->
-<!-- Two-column FAQ: the title stack on the left, the items in one
-     bordered container on the right, separated by hairline dividers.
-     Native <details> underneath, so it works keyboard-first and with no
-     JS. Each item is individually linkable (#faq-different, #faq-real,
-     ...). First item is `open` by default so a first-time reader lands
-     on an answer rather than a wall of closed rows. -->
+<!-- Standard section shape: one head, one bordered container of items.
+     Same rhythm every other section on this page uses (eyebrow, d2, an
+     optional copy line, then the block). Native <details> underneath,
+     so it works keyboard-first and with no JS. Each item is
+     individually linkable (#faq-different, #faq-real, ...). First
+     item is `open` by default so a first-time reader lands on an
+     answer rather than a wall of closed rows. -->
 <section class="section faq" id="faq">
   <div class="wrap">
-    <div class="faq-grid">
-      <div class="faq-left rv">
-        <span class="eyebrow">FAQ</span>
-        <h2 class="d2">Frequently asked questions.</h2>
-        <p class="faq-help">Can&rsquo;t find what you&rsquo;re looking for?
-          <a href="#contact">Reach out to our team</a>.</p>
-      </div>
+    <div class="head rv">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="d2">Questions people ask before they book a call.</h2>
+      <p class="copy18">Six things that come up on nearly every call. If
+        yours isn&rsquo;t here, <a href="#contact" style="color:var(--fg); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px">book one</a> and ask it.</p>
+    </div>
 
-      <div class="faq-list rv">
-        <details class="faq-item" id="faq-different" open>
+    <div class="faq-list rv">
+      <details class="faq-item" id="faq-different" open>
           <summary>How is this different from a risk platform or a TMS?
             <span class="faq-tog" aria-hidden="true"></span></summary>
           <div class="faq-body">
@@ -2950,7 +2931,6 @@ h1,h2,h3,h4,p{margin:0}
               which Workers would ship live first.</p>
           </div>
         </details>
-      </div>
     </div>
   </div>
 </section>
