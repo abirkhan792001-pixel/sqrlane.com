@@ -4328,10 +4328,10 @@ h1,h2,h3,h4,p{margin:0}
 /* The five-step automation walkthrough. One IntersectionObserver watches
    each step block; when a step crosses the middle band of the viewport
    it becomes the active step, its .rule underlines, and the matching
-   right-hand panel fades in. Removing then re-adding .on inside a rAF
-   restarts the panel's staggered fade-in animation, which is what makes
-   scrolling back and forth replay the "agent doing the work" sequence
-   instead of showing it once and freezing.
+   right-hand panel fades in. `replay()` drops .on and re-adds it on the
+   next frame, which forces the .fx keyframes to restart - so scrolling
+   back and forth (and hovering the panel) replays the "agent doing the
+   work" sequence instead of freezing on the final state.
 
    Everything is legible without JS: the first step + first panel are
    already .on in the markup, so a reader whose browser has no
@@ -4340,6 +4340,32 @@ h1,h2,h3,h4,p{margin:0}
   var steps  = document.querySelectorAll(".autom-step");
   var panels = document.querySelectorAll(".autom-panel");
   if (!steps.length || !panels.length) return;
+
+  // Restart the .fx entry sequence on the panel without hiding it.
+  // Toggling the parent's .on class didn't reliably restart CSS
+  // animations - the browser batches remove+add within the same task
+  // and treats them as a no-op, so the children stayed on their final
+  // opacity of 1. Cancelling the animation on each .fx child, forcing
+  // a reflow, and clearing the inline style lets the CSS animation
+  // re-apply from 0%. This is the canonical restart pattern.
+  function replay(p) {
+    var fxes = p.querySelectorAll(".fx");
+    fxes.forEach(function (c) { c.style.animation = "none"; });
+    void p.offsetWidth;                                    // force reflow
+    fxes.forEach(function (c) { c.style.animation = ""; });
+  }
+
+  // Hover a panel to replay its sequence, on top of whatever the scroll
+  // observer is doing. Only fires on the panel currently .on, because
+  // non-active panels have pointer-events:none. Bound to mouseenter
+  // rather than pointerenter so a touch scroll does not silently
+  // restart the animation as the reader's finger passes over.
+  panels.forEach(function (p) {
+    p.addEventListener("mouseenter", function () {
+      if (p.classList.contains("on")) replay(p);
+    });
+  });
+
   if (!("IntersectionObserver" in window)) return;
 
   var current = "1";
@@ -4351,15 +4377,8 @@ h1,h2,h3,h4,p{margin:0}
     });
     panels.forEach(function (p) {
       var mine = p.getAttribute("data-panel") === id;
-      // Force the .fx keyframes to restart by dropping .on then adding
-      // it back on the next frame. Without this, scrolling back to a
-      // panel that already played its sequence just shows the final
-      // state - technically correct, but the point of the animation is
-      // that it plays as the reader lands on the step.
       p.classList.remove("on");
-      if (mine) {
-        requestAnimationFrame(function () { p.classList.add("on"); });
-      }
+      if (mine) requestAnimationFrame(function () { p.classList.add("on"); });
     });
   }
 
