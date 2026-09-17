@@ -329,7 +329,7 @@ h1,h2,h3,h4,p{margin:0}
          color:var(--green); font-weight:500}
 .lf-live-dot{width:6px; height:6px; border-radius:50%; background:var(--green);
              box-shadow:0 0 0 2px var(--green-100);
-             animation:lf-live-pulse 2s ease-in-out infinite}
+             animation:lf-live-pulse 1.2s ease-in-out infinite}
 @keyframes lf-live-pulse{
   0%,100%{box-shadow:0 0 0 3px var(--green-100)}
   50%    {box-shadow:0 0 0 4px color-mix(in srgb, var(--green) 30%, transparent)}
@@ -636,7 +636,7 @@ h1,h2,h3,h4,p{margin:0}
          pointer-events:none;
          background:linear-gradient(to bottom, transparent,
                     color-mix(in srgb, var(--blue) 9%, transparent) 45%, transparent)}
-.wk-scan.on{opacity:1; transition:transform 1.5s linear, opacity .3s var(--ease)}
+.wk-scan.on{opacity:1; transition:transform 0.9s linear, opacity .2s var(--ease)}
 
 /* A row landing on its decision. The badge swaps text and colour, so it gets
    one short lift to say the change was made rather than always having been
@@ -758,7 +758,7 @@ h1,h2,h3,h4,p{margin:0}
 .w-spin{width:0; height:11px; border-radius:50%; border:1.6px solid transparent;
         border-top-color:#fff; border-right-color:#fff; opacity:0;
         transition:width .2s var(--ease), opacity .2s var(--ease)}
-.w-approve.working .w-spin{width:11px; opacity:1; animation:w-spin .7s linear infinite}
+.w-approve.working .w-spin{width:11px; opacity:1; animation:w-spin .4s linear infinite}
 @keyframes w-spin{to{transform:rotate(360deg)}}
 .w-approve.done{background:var(--green)}
 @media (prefers-reduced-motion:reduce){
@@ -884,7 +884,7 @@ h1,h2,h3,h4,p{margin:0}
 .strip .strip-track{display:flex; width:max-content}
 /* .go is added by the script once the copies exist - without it the strip is
    a static list rather than a band sliding against empty space. */
-.strip .strip-track.go{animation:strip-slide 44s linear infinite; will-change:transform}
+.strip .strip-track.go{animation:strip-slide 26s linear infinite; will-change:transform}
 .strip .strip-view:hover .strip-track.go{animation-play-state:paused}
 @keyframes strip-slide{
   from{transform:translate3d(0,0,0)}
@@ -1219,7 +1219,7 @@ h1,h2,h3,h4,p{margin:0}
 .itile:nth-child(5n+5){--r:-0.8deg; --y:7px}
 
 /* Staggered fade-in - --i is set inline per tile. */
-.integ-grid.in .itile{transition-delay:calc(var(--i,0) * 30ms)}
+.integ-grid.in .itile{transition-delay:calc(var(--i,0) * 15ms)}
 
 /* Four float keyframes, cycled by nth-child so no two neighbours move
    together. Amplitude 8-11px so the block reads as MOVING rather than
@@ -1242,12 +1242,12 @@ h1,h2,h3,h4,p{margin:0}
   50%    {transform:rotate(var(--r,0deg)) translateY(calc(var(--y,0px) + 11px))}
 }
 .integ-grid.in .itile{
-  animation:itile-float-a 5.4s ease-in-out infinite;
-  animation-delay:calc(1s + var(--i,0) * 130ms)
+  animation:itile-float-a 3.2s ease-in-out infinite;
+  animation-delay:calc(.5s + var(--i,0) * 70ms)
 }
-.integ-grid.in .itile:nth-child(4n+2){animation-name:itile-float-b; animation-duration:6.1s}
-.integ-grid.in .itile:nth-child(4n+3){animation-name:itile-float-c; animation-duration:4.7s}
-.integ-grid.in .itile:nth-child(4n+4){animation-name:itile-float-d; animation-duration:6.6s}
+.integ-grid.in .itile:nth-child(4n+2){animation-name:itile-float-b; animation-duration:3.6s}
+.integ-grid.in .itile:nth-child(4n+3){animation-name:itile-float-c; animation-duration:2.8s}
+.integ-grid.in .itile:nth-child(4n+4){animation-name:itile-float-d; animation-duration:3.9s}
 
 /* The disclaimer, over the vignette so it stays legible. */
 .integ-note{margin-top:26px; font-size:12.5px; line-height:18px; color:var(--faint);
@@ -3231,6 +3231,7 @@ h1,h2,h3,h4,p{margin:0}
   }, { once: true });
 
   function play() {
+    try { vid.playbackRate = 1.6; } catch (e) {}
     var p = vid.play();
     if (p && p.catch) p.catch(function () {});
   }
@@ -3317,7 +3318,7 @@ h1,h2,h3,h4,p{margin:0}
   if (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || "")) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  var HOLD = 7000;                         // how long each clip is on screen
+  var HOLD = 4000;                         // how long each clip is on screen
   var vids = [].slice.call(reel.querySelectorAll(".reel-v"));
   if (!vids.length) return;
 
@@ -3363,6 +3364,7 @@ h1,h2,h3,h4,p{margin:0}
     load(v);
     if (v.readyState >= 2) normalise(v);
     else v.addEventListener("loadeddata", function () { normalise(v); }, { once: true });
+    try { v.playbackRate = 1.6; } catch (e) {}
     var playing = v.play();
     if (playing && playing.catch) playing.catch(function () {});
 
@@ -3374,7 +3376,7 @@ h1,h2,h3,h4,p{margin:0}
 
     /* Fetch the next one a beat early so its first frame is ready when it is
        its turn, and the crossfade does not land on a blank. */
-    setTimeout(function () { load(vids[(i + 1) % vids.length]); }, 1200);
+    setTimeout(function () { load(vids[(i + 1) % vids.length]); }, 700);
   }
 
   function advance() {
@@ -3519,7 +3521,7 @@ h1,h2,h3,h4,p{margin:0}
     scan.style.transform = "translateY(" + top + "px)";
     scan.classList.add("on");
     await wait(40);
-    scan.style.transition = "transform 1.5s linear, opacity .3s var(--ease)";
+    scan.style.transition = "transform 0.9s linear, opacity .2s var(--ease)";
     scan.style.transform = "translateY(" + (top + rows.length * 26) + "px)";
     await wait(1500);
     scan.classList.remove("on");
@@ -3695,7 +3697,7 @@ h1,h2,h3,h4,p{margin:0}
   function start() {
     if (timer) return;
     paint();
-    timer = setInterval(tick, 2400);
+    timer = setInterval(tick, 1400);
   }
   function stop() {
     if (!timer) return;
@@ -3830,7 +3832,7 @@ h1,h2,h3,h4,p{margin:0}
   function stop() { if (timer) { clearInterval(timer); timer = 0; } }
   function start() {
     if (timer || !items.length) return;
-    timer = setInterval(function () { at++; paint(); }, 4200);
+    timer = setInterval(function () { at++; paint(); }, 2400);
   }
 
   fetch("/api/live-feed", { cache: "no-store" })
