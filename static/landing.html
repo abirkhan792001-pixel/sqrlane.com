@@ -1270,198 +1270,129 @@ h1,h2,h3,h4,p{margin:0}
 }
 
 /* ---------- the five-step automation walkthrough ---------- */
-/* Two-column scrolly-tell: five step blocks stacked on the left, one
-   sticky preview on the right that swaps between five inline mocks.
-   The observer at the foot of the page toggles .on on the mid-viewport
-   step and the matching panel. Everything inside every mock is inline
-   HTML/SVG so a checkout without a network still renders every panel.
-   Each panel's children carry .fx + inline --n; when the panel becomes
-   .on the fade-in animation runs staggered from top to bottom, which
-   is what makes the block read as "the agent doing the work" rather
-   than "a static screenshot". */
+/* Two-column scrolly-tell. The left column is five step blocks with
+   the copy for each; the right column is one sticky workflow window
+   whose contents swap as the reader scrolls. Every panel shares the
+   same anatomy - an "Acme Inc." header row with an avatar and a Live
+   chip, then five workflow rows below - so the block reads as one
+   product doing five things rather than five different screenshots.
+   Each row carries an icon in a coloured square, a title, a subtitle
+   and an optional status chip; one row per panel is marked .active
+   and gets the "here is where the agent is now" highlight. */
 .autom{padding:104px 0}
 .autom-head{max-width:720px; margin:0 0 44px}
 .autom-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
             gap:80px; align-items:start}
 .autom-steps{display:flex; flex-direction:column}
 
-.autom-step{padding:44px 0; border-top:1px solid var(--border);
-            opacity:.42; transition:opacity .35s var(--ease)}
-.autom-step:first-child{border-top:0; padding-top:0}
-.autom-step:last-child{padding-bottom:0}
+.autom-step{padding:48px 0; border-top:1px solid var(--border);
+            opacity:.36; transition:opacity .35s var(--ease)}
+.autom-step:first-child{border-top:0; padding-top:6px}
+.autom-step:last-child{padding-bottom:12px}
 .autom-step.on{opacity:1}
-.autom-step .num{display:block; font-family:"Geist Mono",ui-monospace,monospace;
-                 font-size:15px; line-height:20px; font-weight:600;
-                 color:var(--blue); letter-spacing:.02em; margin-bottom:14px}
-.autom-step h3{font-size:28px; line-height:36px; font-weight:600; letter-spacing:-.9px;
+.autom-step h3{font-size:26px; line-height:34px; font-weight:600; letter-spacing:-.8px;
                color:var(--fg); margin-bottom:14px}
-.autom-step p{font-size:16.5px; line-height:26px; color:var(--muted); max-width:52ch}
-.autom-step .rule{display:block; margin-top:24px; width:0; height:2px;
-                  background:var(--blue); transition:width .55s var(--ease)}
-.autom-step.on .rule{width:56%}
+.autom-step p{font-size:16px; line-height:26px; color:var(--muted); max-width:52ch}
+/* Underline rule in the site's foreground colour rather than the accent
+   blue - the reader's cue is the copy going from muted to full, and a
+   subtle rule reinforces that without competing for attention. */
+.autom-step .rule{display:block; margin-top:26px; width:0; height:2px;
+                  background:var(--fg); border-radius:1px;
+                  transition:width .55s var(--ease)}
+.autom-step.on .rule{width:44%}
 
-.autom-viz{position:sticky; top:96px; min-height:540px}
+.autom-viz{position:sticky; top:96px; min-height:560px}
 .autom-viz-wrap{position:relative; border:1px solid var(--border);
-                border-radius:var(--r-md); background:var(--card);
-                box-shadow:var(--shadow-card); overflow:hidden; min-height:540px}
+                border-radius:14px; background:var(--card);
+                box-shadow:var(--shadow-card); overflow:hidden; min-height:560px}
 .autom-panel{position:absolute; inset:0; display:flex; flex-direction:column;
              opacity:0; transform:translateY(6px); pointer-events:none;
-             transition:opacity .35s var(--ease), transform .35s var(--ease)}
+             transition:opacity .4s var(--ease), transform .4s var(--ease)}
 .autom-panel.on{opacity:1; transform:none; pointer-events:auto}
 
-/* Agent chip - one small brand touch so the block reads as "an agent
-   doing this", not "a static screenshot". */
-.a-chip{display:inline-flex; align-items:center; gap:8px; padding:5px 11px 5px 9px;
-        background:color-mix(in srgb, var(--green-100) 60%, transparent);
-        border:1px solid var(--green-400); border-radius:999px;
-        font-size:11.5px; font-weight:600; letter-spacing:.02em; color:var(--green)}
-.a-chip .dot{width:6px; height:6px; border-radius:50%; background:var(--green);
+/* Header row: avatar + company name + Live chip. Same on every panel;
+   only the text changes. */
+.a-head{padding:16px 18px; display:flex; align-items:center; gap:11px;
+        border-bottom:1px solid var(--border)}
+.a-avatar{width:26px; height:26px; border-radius:6px; background:var(--fg);
+          color:#fff; display:flex; align-items:center; justify-content:center;
+          font-size:12px; font-weight:600; letter-spacing:-.2px; flex:none}
+.a-co{font-size:14px; font-weight:600; color:var(--fg); letter-spacing:-.24px}
+.a-live{margin-left:auto; display:inline-flex; align-items:center; gap:7px;
+        padding:4px 11px; border-radius:999px; background:var(--card-muted);
+        border:1px solid var(--border); font-size:11.5px; font-weight:500;
+        color:var(--muted); letter-spacing:-.05px}
+.a-live .dot{width:6px; height:6px; border-radius:50%; background:var(--green);
              animation:a-pulse 1.4s ease-in-out infinite}
 @keyframes a-pulse{
   0%,100%{transform:scale(1); opacity:1}
-  50%    {transform:scale(1.3); opacity:.5}
+  50%    {transform:scale(1.35); opacity:.5}
 }
 
-.a-head{padding:14px 16px 12px; display:flex; align-items:center; gap:10px;
-        border-bottom:1px solid var(--border); background:var(--card-muted)}
-.a-head .ttl{margin-left:auto; font-size:11px; color:var(--faint);
-             font-family:"Geist Mono",ui-monospace,monospace; letter-spacing:.06em;
-             text-transform:uppercase}
-
-.a-body{flex:1; padding:20px 20px 8px; display:flex; flex-direction:column; gap:11px;
+.a-body{flex:1; padding:14px; display:flex; flex-direction:column; gap:5px;
         overflow:hidden}
 
-.a-doing{margin-top:auto; padding:12px 16px; border-top:1px solid var(--border);
-         display:flex; align-items:center; gap:10px;
-         font-family:"Geist Mono",ui-monospace,monospace; font-size:11px;
-         letter-spacing:.06em; text-transform:uppercase; color:var(--faint);
-         background:var(--card-muted)}
-.a-doing .dt{width:6px; height:6px; border-radius:50%; background:var(--blue);
-             animation:a-blink 1s ease-in-out infinite}
-@keyframes a-blink{ 50%{opacity:.3} }
+/* Workflow rows. Icon square + text + optional status chip. The
+   .active row is the current stage - full opacity, muted background,
+   subtle border ring. The others sit at .55 opacity so the eye lands
+   on the active row without losing the rest of the flow. */
+.a-flow{display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center;
+        padding:12px 14px; border:1px solid transparent; border-radius:10px;
+        background:transparent; opacity:.55;
+        transition:opacity .3s var(--ease), background .3s var(--ease),
+                   border-color .3s var(--ease)}
+.a-flow.active{opacity:1; background:var(--card-muted); border-color:var(--border-strong)}
+.a-flow-mk{width:36px; height:36px; border-radius:8px; background:var(--gray-100);
+           display:flex; align-items:center; justify-content:center; flex:none;
+           color:var(--muted)}
+.a-flow-mk svg{width:16px; height:16px; fill:none; stroke:currentColor;
+               stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.a-flow.warn .a-flow-mk{background:var(--red-100); color:var(--red-ink)}
+.a-flow.info .a-flow-mk{background:var(--blue-100); color:var(--blue)}
+.a-flow.done .a-flow-mk{background:var(--green-100); color:var(--green)}
+.a-flow.amber .a-flow-mk{background:var(--amber-100); color:var(--amber)}
+.a-flow-txt{min-width:0}
+.a-flow-t{font-size:13.5px; font-weight:600; color:var(--fg); letter-spacing:-.22px;
+          line-height:19px}
+.a-flow-s{margin-top:3px; font-size:12px; color:var(--muted); line-height:16px}
+.a-flow-c{font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+          padding:3px 9px; border-radius:4px; background:var(--gray-100);
+          color:var(--muted); flex:none; white-space:nowrap}
+.a-flow-c.detected{background:var(--red-100); color:var(--red-ink)}
+.a-flow-c.warn    {background:var(--amber-100); color:var(--amber)}
+.a-flow-c.ok      {background:var(--green-100); color:var(--green)}
+.a-flow-c.info    {background:var(--blue-100); color:var(--blue)}
 
-/* One-shot staggered fade-in for children of the active panel. --n on
-   each child is the row index; when the panel gains .on the animation
-   runs from --n * 120ms. The animation is `both`, so children keep
-   their final opacity after playing. */
-.autom-panel.on .fx{animation:a-fx-in .55s var(--ease) both;
-                    animation-delay:calc(var(--n,0) * 120ms)}
+/* Staggered fade-in on every .fx row when the panel becomes .on.
+   Slower and longer-stepping than the earlier version (.55s -> .8s,
+   120ms -> 160ms) so the sequence reads as a workflow unfolding rather
+   than a screenshot landing. */
+.autom-panel.on .fx{animation:a-fx-in .8s var(--ease) both;
+                    animation-delay:calc(var(--n,0) * 160ms)}
 @keyframes a-fx-in{
-  from{opacity:0; transform:translateY(6px)}
+  from{opacity:0; transform:translateY(8px)}
   to  {opacity:1; transform:none}
 }
-
-.a-row{display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
-       padding:10px 12px; background:var(--card-muted);
-       border:1px solid var(--border); border-radius:var(--r-sm)}
-.a-row .k{font-size:12px; color:var(--muted); font-weight:500}
-.a-row .v{font-size:12px; font-family:"Geist Mono",ui-monospace,monospace; color:var(--fg);
-          display:inline-flex; align-items:center; gap:6px; justify-self:end}
-.a-row .ok{color:var(--green); font-weight:700}
-
-.a-email{padding:11px 12px; border:1px solid var(--border); border-radius:var(--r-sm);
-         background:var(--card-muted); display:flex; align-items:flex-start; gap:11px}
-.a-email .env{width:22px; height:22px; flex:none; color:var(--muted)}
-.a-email .txt{flex:1; min-width:0}
-.a-email .fm{font-size:10.5px; color:var(--faint); letter-spacing:.06em;
-             text-transform:uppercase; font-family:"Geist Mono",ui-monospace,monospace}
-.a-email .sub{margin-top:3px; font-size:13.5px; font-weight:600; color:var(--fg);
-              letter-spacing:-.2px; line-height:19px}
-
-.a-rate{display:grid; grid-template-columns:1fr auto; gap:4px 14px; padding:12px 14px;
-        background:var(--blue-100); border:1px solid var(--blue-400);
-        border-radius:var(--r-sm)}
-.a-rate .who{font-size:10.5px; color:var(--blue); letter-spacing:.06em;
-             text-transform:uppercase; font-family:"Geist Mono",ui-monospace,monospace}
-.a-rate .amt{grid-column:2; grid-row:1/3; align-self:center;
-             font-family:"Geist Mono",ui-monospace,monospace; font-size:22px;
-             font-weight:600; color:var(--blue); letter-spacing:-.4px}
-.a-rate .sub{font-size:11.5px; color:var(--muted)}
-
-.a-status{display:inline-flex; align-items:center; gap:5px; padding:2px 8px;
-          border-radius:4px; font-size:10.5px; font-weight:600; letter-spacing:.06em;
-          text-transform:uppercase}
-.a-status.booked{background:var(--green-100); color:var(--green)}
-
-.a-counter{padding:12px 14px; border:1px solid var(--border); border-radius:var(--r-sm);
-           background:var(--card-muted); display:flex; align-items:baseline; gap:12px}
-.a-counter .big{font-size:26px; font-weight:600; letter-spacing:-.5px;
-                font-family:"Geist Mono",ui-monospace,monospace; color:var(--fg)}
-.a-counter .lab{font-size:11.5px; color:var(--faint); letter-spacing:.05em;
-                text-transform:uppercase}
-
-.a-event{display:grid; grid-template-columns:auto 1fr auto; gap:11px; align-items:center;
-         padding:9px 12px; border:1px solid var(--border); border-radius:var(--r-sm);
-         background:var(--card-muted)}
-.a-event .who{font-size:10.5px; color:var(--faint); letter-spacing:.05em;
-              text-transform:uppercase; font-family:"Geist Mono",ui-monospace,monospace}
-.a-event .t{font-size:12.5px; color:var(--fg); font-weight:500; letter-spacing:-.15px}
-.a-event .sev{font-size:9.5px; padding:2px 6px; border-radius:3px; font-weight:600;
-              letter-spacing:.05em; text-transform:uppercase}
-.a-event .sev.hi{background:var(--red-100); color:var(--red-ink)}
-.a-event .sev.md{background:var(--amber-100); color:var(--amber)}
-
-.a-dec{padding:12px 14px; border:1px solid var(--border); border-radius:var(--r-sm);
-       background:var(--card-muted)}
-.a-dec .who{font-size:10.5px; color:var(--faint); letter-spacing:.05em;
-            text-transform:uppercase; font-family:"Geist Mono",ui-monospace,monospace}
-.a-dec .call{margin-top:5px; font-size:15px; font-weight:600; color:var(--fg);
-             letter-spacing:-.25px}
-.a-dec .call b{color:var(--blue); font-weight:600}
-.a-dec .why{margin-top:8px; font-size:12.5px; line-height:18px; color:var(--muted)}
-
-.a-drafts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-.a-draft{padding:10px 12px; border:1px solid var(--border); border-radius:var(--r-sm);
-         background:var(--card)}
-.a-draft .to{font-size:10px; color:var(--faint); letter-spacing:.06em;
-             text-transform:uppercase; font-family:"Geist Mono",ui-monospace,monospace}
-.a-draft .snip{margin-top:5px; font-size:11.5px; line-height:16px; color:var(--muted)}
-
-.a-queue{padding:12px 14px; border:1px dashed var(--border-strong); border-radius:var(--r-sm);
-         background:var(--card-muted)}
-.a-queue .lead{font-size:10.5px; color:var(--faint); letter-spacing:.06em;
-               text-transform:uppercase; margin-bottom:9px;
-               font-family:"Geist Mono",ui-monospace,monospace}
-.a-queue .fields{display:flex; flex-wrap:wrap; gap:6px}
-.a-queue .fld{font-family:"Geist Mono",ui-monospace,monospace; font-size:11px;
-              padding:3px 8px; border-radius:4px; background:var(--card);
-              border:1px solid var(--border); color:var(--muted)}
-.a-queue .gate{margin-top:10px; display:inline-block; font-size:10px; font-weight:600;
-               letter-spacing:.06em; text-transform:uppercase; color:var(--amber);
-               background:var(--amber-100); padding:3px 8px; border-radius:4px}
-
-.a-docs{display:grid; grid-template-columns:1.1fr 1.2fr; gap:12px}
-.a-pdf{padding:14px 12px; border:1px solid var(--border); border-radius:var(--r-sm);
-       background:var(--card); display:flex; flex-direction:column; gap:6px}
-.a-pdf .tag{font-family:"Geist Mono",ui-monospace,monospace; font-size:9.5px;
-            letter-spacing:.06em; color:var(--faint); text-transform:uppercase;
-            margin-bottom:6px}
-.a-pdf .band{height:5px; border-radius:2.5px; background:var(--gray-100)}
-.a-pdf .band.w1{width:82%}
-.a-pdf .band.w2{width:66%}
-.a-pdf .band.w3{width:74%}
-.a-pdf .band.w4{width:58%}
-.a-pdf .band.w5{width:70%}
-.a-pdf .band.w6{width:44%}
-.a-chks{display:flex; flex-direction:column; gap:8px}
 
 @media (max-width:900px){
   .autom-grid{grid-template-columns:1fr; gap:22px}
   .autom-steps{order:2}
-  .autom-viz{order:1; position:sticky; top:72px; min-height:460px}
-  .autom-viz-wrap{min-height:460px}
+  .autom-viz{order:1; position:sticky; top:72px; min-height:480px}
+  .autom-viz-wrap{min-height:480px}
   .autom-step.on .rule{width:100px}
 }
 @media (max-width:640px){
   .autom{padding:72px 0}
   .autom-step{padding:32px 0}
-  .autom-step h3{font-size:24px; line-height:30px; letter-spacing:-.6px}
+  .autom-step h3{font-size:22px; line-height:28px; letter-spacing:-.6px}
   .autom-step p{font-size:15px; line-height:23px}
-  .a-drafts{grid-template-columns:1fr}
-  .a-docs{grid-template-columns:1fr}
+  .a-flow{padding:10px 12px; gap:11px}
+  .a-flow-mk{width:32px; height:32px}
+  .a-flow-t{font-size:13px}
+  .a-flow-s{font-size:11.5px}
 }
 @media (prefers-reduced-motion:reduce){
-  .autom-step, .autom-panel, .autom-panel.on .fx, .a-chip .dot, .a-doing .dt{
+  .autom-step, .autom-panel, .autom-panel.on .fx, .a-live .dot{
     transition:none !important; animation:none !important
   }
   .autom-panel.on .fx{opacity:1; transform:none}
@@ -2932,15 +2863,13 @@ h1,h2,h3,h4,p{margin:0}
     <div class="autom-grid">
       <div class="autom-steps">
         <div class="autom-step on" data-step="1">
-          <span class="num">01</span>
           <h3>Rate Requests</h3>
-          <p>An email comes in asking for a rate. The SQRlane agent reads it,
-            checks the lane, adds your margins, and drafts the quote. Your team
+          <p>An email comes in asking for a rate. The agent reads it, checks
+            the lane, adds your margins, and drafts the quote. Your team
             reviews and sends.</p>
           <span class="rule"></span>
         </div>
         <div class="autom-step" data-step="2">
-          <span class="num">02</span>
           <h3>Booking</h3>
           <p>The customer says yes. The agent holds the booking with the
             carrier and writes every field into your TMS. Nothing is
@@ -2948,15 +2877,13 @@ h1,h2,h3,h4,p{margin:0}
           <span class="rule"></span>
         </div>
         <div class="autom-step" data-step="3">
-          <span class="num">03</span>
           <h3>Documents</h3>
           <p>Bills of lading and vendor invoices arrive as PDFs. The agent
-            pulls out the fields you need and puts them on the booking. No
-            shadow spreadsheet.</p>
+            pulls out the fields you need and reconciles the charges against
+            the quote. No shadow spreadsheet.</p>
           <span class="rule"></span>
         </div>
         <div class="autom-step" data-step="4">
-          <span class="num">04</span>
           <h3>Risk Watch</h3>
           <p>On every run, the agent reads sixty sources across news, weather,
             ports, gauges, hazards, and filings. If something is about to hit
@@ -2964,7 +2891,6 @@ h1,h2,h3,h4,p{margin:0}
           <span class="rule"></span>
         </div>
         <div class="autom-step" data-step="5">
-          <span class="num">05</span>
           <h3>Reroute and Comms</h3>
           <p>When a lane moves, the agent picks the best option for each
             booking, drafts the carrier and customer emails, and queues the
@@ -2975,169 +2901,258 @@ h1,h2,h3,h4,p{margin:0}
 
       <div class="autom-viz">
         <div class="autom-viz-wrap">
+
           <!-- Panel 01 - Rate Requests -->
           <div class="autom-panel on" data-panel="1">
             <div class="a-head">
-              <span class="a-chip"><span class="dot"></span>SQRlane Agent</span>
-              <span class="ttl">Rate request</span>
+              <div class="a-avatar">A</div>
+              <div class="a-co">Acme Inc.</div>
+              <div class="a-live"><span class="dot"></span>Live</div>
             </div>
             <div class="a-body">
-              <div class="a-email fx" style="--n:0">
-                <svg class="env" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="5" width="18" height="14" rx="2"/>
-                  <path d="M3.5 6.5 12 13l8.5-6.5"/>
-                </svg>
-                <div class="txt">
-                  <div class="fm">From Acme Logistics &middot; 09:14</div>
-                  <div class="sub">Rate request Shanghai to Munich, 3x40'HC</div>
+              <div class="a-flow info fx" style="--n:0">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Rate request received</div>
+                  <div class="a-flow-s">Bavaria Drivetrain &middot; Shanghai to Munich, 3x40'HC</div>
+                </div>
+                <div class="a-flow-c info">Received</div>
+              </div>
+              <div class="a-flow info fx" style="--n:1">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Lane matched to your book</div>
+                  <div class="a-flow-s">CNSHA to DEMUC &middot; DAP &middot; 32 days transit</div>
+                </div>
+                <div class="a-flow-c info">Matched</div>
+              </div>
+              <div class="a-flow info fx" style="--n:2">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><circle cx="7.5" cy="7.5" r="2.4"/><circle cx="16.5" cy="16.5" r="2.4"/><path d="M5 19 19 5"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Margin applied</div>
+                  <div class="a-flow-s">12% over the base MSC rate on the lane</div>
+                </div>
+                <div class="a-flow-c info">Priced</div>
+              </div>
+              <div class="a-flow done active fx" style="--n:3">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 13h6M9 16h4"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Quote drafted</div>
+                  <div class="a-flow-s">$8,420 &middot; fuel and THC included</div>
+                </div>
+                <div class="a-flow-c ok">Drafted</div>
+              </div>
+              <div class="a-flow fx" style="--n:4">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Ready for review</div>
+                  <div class="a-flow-s">Waiting on you</div>
                 </div>
               </div>
-              <div class="a-row fx" style="--n:1">
-                <span class="k">Origin</span><span class="v">CNSHA Shanghai</span></div>
-              <div class="a-row fx" style="--n:2">
-                <span class="k">Destination</span><span class="v">DEMUC Munich</span></div>
-              <div class="a-row fx" style="--n:3">
-                <span class="k">Commodity</span><span class="v">Auto parts, non-haz</span></div>
-              <div class="a-row fx" style="--n:4">
-                <span class="k">Incoterms</span><span class="v">DAP &middot; 3x40'HC</span></div>
-              <div class="a-rate fx" style="--n:5">
-                <span class="who">Drafted quote</span>
-                <span class="amt">$8,420</span>
-                <span class="sub">32 days transit &middot; fuel + THC included</span>
-              </div>
             </div>
-            <div class="a-doing"><span class="dt"></span>Reading email &middot; drafting quote</div>
           </div>
 
           <!-- Panel 02 - Booking -->
           <div class="autom-panel" data-panel="2">
             <div class="a-head">
-              <span class="a-chip"><span class="dot"></span>SQRlane Agent</span>
-              <span class="ttl">Booking</span>
+              <div class="a-avatar">A</div>
+              <div class="a-co">Acme Inc.</div>
+              <div class="a-live"><span class="dot"></span>Live</div>
             </div>
             <div class="a-body">
-              <div class="a-row fx" style="--n:0">
-                <span class="k">Booking ref</span><span class="v">SHP-4821</span></div>
-              <div class="a-row fx" style="--n:1">
-                <span class="k">Vessel</span><span class="v">MSC Lucia</span></div>
-              <div class="a-row fx" style="--n:2">
-                <span class="k">Voyage</span><span class="v">24W westbound</span></div>
-              <div class="a-row fx" style="--n:3">
-                <span class="k">POL &raquo; POD</span><span class="v">Shanghai &raquo; Rotterdam</span></div>
-              <div class="a-row fx" style="--n:4">
-                <span class="k">ETA</span><span class="v">14 Oct 2026</span></div>
-              <div class="a-row fx" style="--n:5">
-                <span class="k">Container</span><span class="v">3x40'HC</span></div>
-              <div class="a-row fx" style="--n:6">
-                <span class="k">Status</span>
-                <span class="v"><span class="a-status booked">Booked</span></span></div>
+              <div class="a-flow info fx" style="--n:0">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Customer confirmed</div>
+                  <div class="a-flow-s">Bavaria Drivetrain &middot; PO 4421</div>
+                </div>
+                <div class="a-flow-c info">Accepted</div>
+              </div>
+              <div class="a-flow info fx" style="--n:1">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M3 15h18l-2.5 5H5.5Z"/><path d="M7 15v-5h10v5"/><path d="M12 10V5"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Sailing selected</div>
+                  <div class="a-flow-s">MSC Lucia &middot; Voyage 24W &middot; ETA 14 Oct</div>
+                </div>
+                <div class="a-flow-c info">Selected</div>
+              </div>
+              <div class="a-flow info fx" style="--n:2">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M10 14l-2 2a3 3 0 1 1-4-4l3-3"/><path d="M14 10l2-2a3 3 0 1 1 4 4l-3 3"/><path d="M9 15l6-6"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Slot reserved with the carrier</div>
+                  <div class="a-flow-s">3x40'HC &middot; 45 tonnes per box</div>
+                </div>
+                <div class="a-flow-c info">Reserved</div>
+              </div>
+              <div class="a-flow done active fx" style="--n:3">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="8" rx="1.5"/><path d="M8 8V6M12 8V6M16 8V6"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Booking written to your TMS</div>
+                  <div class="a-flow-s">SHP-4821 &middot; all 12 fields matched</div>
+                </div>
+                <div class="a-flow-c ok">Written</div>
+              </div>
+              <div class="a-flow fx" style="--n:4">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Ready for review</div>
+                  <div class="a-flow-s">Waiting on you</div>
+                </div>
+              </div>
             </div>
-            <div class="a-doing"><span class="dt"></span>Writing to TMS &middot; SHP-4821</div>
           </div>
 
           <!-- Panel 03 - Documents -->
           <div class="autom-panel" data-panel="3">
             <div class="a-head">
-              <span class="a-chip"><span class="dot"></span>SQRlane Agent</span>
-              <span class="ttl">Documents</span>
+              <div class="a-avatar">A</div>
+              <div class="a-co">Acme Inc.</div>
+              <div class="a-live"><span class="dot"></span>Live</div>
             </div>
             <div class="a-body">
-              <div class="a-docs">
-                <div class="a-pdf fx" style="--n:0">
-                  <div class="tag">Bill of lading &middot; MSCU-2481</div>
-                  <div class="band w1"></div>
-                  <div class="band w2"></div>
-                  <div class="band w3"></div>
-                  <div class="band w4"></div>
-                  <div class="band w5"></div>
-                  <div class="band w6"></div>
+              <div class="a-flow info fx" style="--n:0">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h6M9 15h6M9 18h4"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Bill of lading received</div>
+                  <div class="a-flow-s">MSCU-2481.pdf &middot; MSC EDI feed</div>
                 </div>
-                <div class="a-chks">
-                  <div class="a-row fx" style="--n:1">
-                    <span class="k">Consignee</span><span class="v">Acme GmbH <span class="ok">&check;</span></span></div>
-                  <div class="a-row fx" style="--n:2">
-                    <span class="k">BL number</span><span class="v">MSCU-2481 <span class="ok">&check;</span></span></div>
-                  <div class="a-row fx" style="--n:3">
-                    <span class="k">Container</span><span class="v">3x40'HC <span class="ok">&check;</span></span></div>
-                  <div class="a-row fx" style="--n:4">
-                    <span class="k">Weight</span><span class="v">28,400 kg <span class="ok">&check;</span></span></div>
-                  <div class="a-row fx" style="--n:5">
-                    <span class="k">HS code</span><span class="v">8708.29 <span class="ok">&check;</span></span></div>
+                <div class="a-flow-c info">Received</div>
+              </div>
+              <div class="a-flow info fx" style="--n:1">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5 20 20"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Fields extracted</div>
+                  <div class="a-flow-s">Consignee, containers, weight, HS 8708.29</div>
+                </div>
+                <div class="a-flow-c info">Parsed</div>
+              </div>
+              <div class="a-flow info fx" style="--n:2">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="8" rx="1.5"/><path d="M8 8V6M12 8V6M16 8V6"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Written to the booking</div>
+                  <div class="a-flow-s">SHP-4821 &middot; five fields updated</div>
+                </div>
+                <div class="a-flow-c info">Written</div>
+              </div>
+              <div class="a-flow done active fx" style="--n:3">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Invoice reconciled to the quote</div>
+                  <div class="a-flow-s">7 of 8 lines matched &middot; 1 flagged for review</div>
+                </div>
+                <div class="a-flow-c ok">Matched</div>
+              </div>
+              <div class="a-flow fx" style="--n:4">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">One line for you</div>
+                  <div class="a-flow-s">Waiting on you</div>
                 </div>
               </div>
             </div>
-            <div class="a-doing"><span class="dt"></span>Extracting fields &middot; onto SHP-4821</div>
           </div>
 
           <!-- Panel 04 - Risk Watch -->
           <div class="autom-panel" data-panel="4">
             <div class="a-head">
-              <span class="a-chip"><span class="dot"></span>SQRlane Agent</span>
-              <span class="ttl">Risk watch</span>
+              <div class="a-avatar">A</div>
+              <div class="a-co">Acme Inc.</div>
+              <div class="a-live"><span class="dot"></span>Live</div>
             </div>
             <div class="a-body">
-              <div class="a-counter fx" style="--n:0">
-                <span class="big">60</span>
-                <span class="lab">of 60 sources read on this run</span>
+              <div class="a-flow info fx" style="--n:0">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18M3 12h18"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">60 sources read this run</div>
+                  <div class="a-flow-s">Six families &middot; no keys &middot; every 5 minutes</div>
+                </div>
+                <div class="a-flow-c info">Live</div>
               </div>
-              <div class="a-event fx" style="--n:1">
-                <span class="who">NDR Hamburg</span>
-                <span class="t">Warning strike at Port of Hamburg, 07 Aug</span>
-                <span class="sev hi">High</span>
+              <div class="a-flow warn active fx" style="--n:1">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M12 3 22 20H2Z"/><path d="M12 10v4M12 17v.5"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Strike at Port of Hamburg</div>
+                  <div class="a-flow-s">NDR Hamburg &middot; 23h before the international wires</div>
+                </div>
+                <div class="a-flow-c detected">Detected</div>
               </div>
-              <div class="a-event fx" style="--n:2">
-                <span class="who">PEGELONLINE</span>
-                <span class="t">Kaub gauge at 74 cm, restricted draft</span>
-                <span class="sev md">Med</span>
+              <div class="a-flow amber fx" style="--n:2">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M12 3s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13z"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Kaub gauge at 74 cm</div>
+                  <div class="a-flow-s">PEGELONLINE &middot; 800 tonne restriction below 80 cm</div>
+                </div>
+                <div class="a-flow-c warn">Warning</div>
               </div>
-              <div class="a-event fx" style="--n:3">
-                <span class="who">Federal Register</span>
-                <span class="t">Section 301 tariff filing on inputs</span>
-                <span class="sev md">Med</span>
+              <div class="a-flow amber fx" style="--n:3">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 13h6M9 16h4"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Section 301 tariff filing on inputs</div>
+                  <div class="a-flow-s">Federal Register &middot; effective 30 days from today</div>
+                </div>
+                <div class="a-flow-c warn">Warning</div>
+              </div>
+              <div class="a-flow warn fx" style="--n:4">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="12" height="9" rx="1"/><path d="M15 10h4l2 3v3h-6"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">3 shipments exposed</div>
+                  <div class="a-flow-s">SHP-4821 &middot; SHP-4823 &middot; SHP-4825</div>
+                </div>
+                <div class="a-flow-c detected">Exposed</div>
               </div>
             </div>
-            <div class="a-doing"><span class="dt"></span>Watching sources &middot; every run</div>
           </div>
 
           <!-- Panel 05 - Reroute and Comms -->
           <div class="autom-panel" data-panel="5">
             <div class="a-head">
-              <span class="a-chip"><span class="dot"></span>SQRlane Agent</span>
-              <span class="ttl">Decision &middot; comms</span>
+              <div class="a-avatar">A</div>
+              <div class="a-co">Acme Inc.</div>
+              <div class="a-live"><span class="dot"></span>Live</div>
             </div>
             <div class="a-body">
-              <div class="a-dec fx" style="--n:0">
-                <div class="who">SHP-4821 &middot; Shanghai to Munich</div>
-                <div class="call">REROUTE via <b>Rotterdam</b></div>
-                <div class="why">Slack of 4 days covers the 2-day alternate. HAM
-                  is expected out 3 to 5 days, so RTM is the least-late option.</div>
+              <div class="a-flow warn active fx" style="--n:0">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M12 3 22 20H2Z"/><path d="M12 10v4M12 17v.5"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Strike at Port of Hamburg</div>
+                  <div class="a-flow-s">NDR Hamburg, 23h before the wires</div>
+                </div>
+                <div class="a-flow-c detected">Detected</div>
               </div>
-              <div class="a-drafts">
-                <div class="a-draft fx" style="--n:1">
-                  <div class="to">Draft &middot; carrier</div>
-                  <div class="snip">Discharge change request. HAM to RTM. Please
-                    confirm slot on connecting service.</div>
+              <div class="a-flow info fx" style="--n:1">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="12" height="9" rx="1"/><path d="M15 10h4l2 3v3h-6"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">SHP-4821, Shanghai to Munich</div>
+                  <div class="a-flow-s">4 days slack &middot; Rotterdam alternate adds 2 days</div>
                 </div>
-                <div class="a-draft fx" style="--n:2">
-                  <div class="to">Draft &middot; customer</div>
-                  <div class="snip">Following the port disruption, we are
-                    rerouting to Rotterdam. Revised ETA below.</div>
-                </div>
+                <div class="a-flow-c info">Analysed</div>
               </div>
-              <div class="a-queue fx" style="--n:3">
-                <div class="lead">Queued to TMS</div>
-                <div class="fields">
-                  <span class="fld">port_of_discharge: RTM</span>
-                  <span class="fld">routing_code: R-RTM-ALT</span>
-                  <span class="fld">eta: 04 Nov</span>
-                  <span class="fld">booking_status: rerouted</span>
+              <div class="a-flow info fx" style="--n:2">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Carrier and customer mail</div>
+                  <div class="a-flow-s">Revised ETA to Bavaria Drivetrain</div>
                 </div>
-                <span class="gate">Queued, not written</span>
+                <div class="a-flow-c ok">Drafted</div>
+              </div>
+              <div class="a-flow amber fx" style="--n:3">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="8" rx="1.5"/><path d="M8 8V6M12 8V6M16 8V6"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Discharge port DEHAM to NLRTM</div>
+                  <div class="a-flow-s">On the booking &middot; 4 fields queued</div>
+                </div>
+                <div class="a-flow-c warn">Queued</div>
+              </div>
+              <div class="a-flow fx" style="--n:4">
+                <div class="a-flow-mk"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div>
+                <div class="a-flow-txt">
+                  <div class="a-flow-t">Three write-backs, three mails</div>
+                  <div class="a-flow-s">Waiting on you</div>
+                </div>
               </div>
             </div>
-            <div class="a-doing"><span class="dt"></span>Deciding &middot; drafting &middot; queueing</div>
           </div>
+
         </div>
       </div>
     </div>
@@ -4375,11 +4390,18 @@ h1,h2,h3,h4,p{margin:0}
     steps.forEach(function (s) {
       s.classList.toggle("on", s.getAttribute("data-step") === id);
     });
+    // Synchronous toggle - rAF-deferred add lets two panels end up .on
+    // when the observer fires twice in quick succession during a fast
+    // scroll (each activate() queues its own rAF, and the deferred adds
+    // don't cancel each other). The staggered .fx animation is restarted
+    // by replay() on the new panel instead.
+    var active = null;
     panels.forEach(function (p) {
       var mine = p.getAttribute("data-panel") === id;
-      p.classList.remove("on");
-      if (mine) requestAnimationFrame(function () { p.classList.add("on"); });
+      p.classList.toggle("on", mine);
+      if (mine) active = p;
     });
+    if (active) replay(active);
   }
 
   // Mid-viewport band: the step whose block sits between 42% down and
