@@ -240,14 +240,9 @@ h1,h2,h3,h4,p{margin:0}
 
    .reel is display:none until the script finds a clip that will actually
    play. That is deliberate - an empty black band is worse than no band. */
-/* The band runs taller than the clip strictly needs, so object-fit:cover shows
-   more of each 16:9 frame instead of a tight middle slice - the clips are wide
-   and short, so on a full-width band cover fills the width and crops hard top
-   and bottom, and a taller band buys back that vertical crop. It still stops
-   above the board mock (.shot, ~555px down): the wash below fades the footage
-   out by ~470px so a taller band never bleeds beside the board. Measure .shot's
-   top before changing either the height or that fade. */
-.reel{display:none; position:absolute; inset:0 0 auto; height:560px; z-index:0;
+/* Height stops just above the board mock. Losing the caption line under the
+   buttons shortened the hero - measure .shot's top before changing this. */
+.reel{display:none; position:absolute; inset:0 0 auto; height:440px; z-index:0;
       overflow:hidden; pointer-events:none}
 .reel.on{display:block}
 .reel-clips{position:absolute; inset:0}
@@ -271,35 +266,15 @@ h1,h2,h3,h4,p{margin:0}
    the band goes back to looking like plain page - which is exactly what the
    first version of this did. */
 .reel-wash{position:absolute; inset:0;
-  /* Stops are anchored in px from the band's top, not in %, so they stay locked
-     to the copy and the board mock (both fixed in px) instead of drifting when
-     the band height changes. The linear fade reaches --bg by ~470px, just above
-     .shot, so the taller band's extra footage never shows beside the board. */
   background:
-    radial-gradient(760px 340px at 50% 300px,
-      rgba(250,250,250,.74) 0,
-      rgba(250,250,250,.60) 150px,
-      rgba(250,250,250,.16) 290px,
-      rgba(250,250,250,0) 370px),
-    linear-gradient(to bottom,
-      rgba(250,250,250,.32) 0,
-      rgba(250,250,250,0) 130px,
-      rgba(250,250,250,.50) 360px,
-      rgba(250,250,250,.90) 430px,
-      var(--bg) 470px)}
+    radial-gradient(700px 300px at 50% 46%, rgba(250,250,250,.74) 0%,
+                    rgba(250,250,250,.60) 50%, rgba(250,250,250,.16) 80%,
+                    rgba(250,250,250,0) 100%),
+    linear-gradient(to bottom, rgba(250,250,250,.30) 0%, rgba(250,250,250,0) 26%,
+                    rgba(250,250,250,.62) 84%, var(--bg) 100%)}
 
 @media (max-width:640px){
-  /* Narrow screens crop the clip on its sides, not top and bottom, so the band
-     stays short and keeps the original %-based wash - the desktop px wash above
-     is tuned to the taller desktop band and would sit wrong on a short one. */
   .reel{height:340px}
-  .reel-wash{
-    background:
-      radial-gradient(700px 300px at 50% 46%, rgba(250,250,250,.74) 0%,
-                      rgba(250,250,250,.60) 50%, rgba(250,250,250,.16) 80%,
-                      rgba(250,250,250,0) 100%),
-      linear-gradient(to bottom, rgba(250,250,250,.30) 0%, rgba(250,250,250,0) 26%,
-                      rgba(250,250,250,.62) 84%, var(--bg) 100%)}
 }
 /* No motion, no video: the script never requests a clip, and the hero's own
    gradient carries the band on its own. */
@@ -1219,7 +1194,7 @@ h1,h2,h3,h4,p{margin:0}
    wash heaviest where the copy sits, so near-black Geist keeps its contrast.
 
    The prefix is not decoration. This page already owns .reel/.reel-v/
-   .reel-wash for the hero, whose rule is height:560px and inset:0 0 auto -
+   .reel-wash for the hero, whose rule is height:440px and inset:0 0 auto -
    reusing the name would have given this band the hero's height and left the
    section's lower half uncovered. Two classes one letter apart have cost this
    repo twice already (.k/.kcard, .mk/.sysmk); a full prefix is cheaper than
@@ -3003,9 +2978,6 @@ h1,h2,h3,h4,p{margin:0}
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   var HOLD = 7000;                         // how long each clip is on screen
-  var SPEED = 0.7;                         // eased below real-time - the stock
-                                           // clips run fast for background motion
-  function rate(v) { try { v.playbackRate = SPEED; } catch (e) {} }
   var vids = [].slice.call(reel.querySelectorAll(".reel-v"));
   if (!vids.length) return;
 
@@ -3049,9 +3021,8 @@ h1,h2,h3,h4,p{margin:0}
   function show(i) {
     var v = vids[i];
     load(v);
-    rate(v);
     if (v.readyState >= 2) normalise(v);
-    else v.addEventListener("loadeddata", function () { normalise(v); rate(v); }, { once: true });
+    else v.addEventListener("loadeddata", function () { normalise(v); }, { once: true });
     var playing = v.play();
     if (playing && playing.catch) playing.catch(function () {});
 
