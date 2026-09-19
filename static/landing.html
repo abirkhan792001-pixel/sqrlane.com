@@ -222,7 +222,11 @@ h1,h2,h3,h4,p{margin:0}
   pointer-events:none}
 .hero .wrap{position:relative; z-index:1}
 .hero h1{margin:22px auto 0; max-width:15ch}
-.hero .sub{margin:22px auto 0; max-width:60ch}
+/* Balanced, because this block is three lines at the desktop measure and an
+   unbalanced last line reads as an accident: the sub-head's closing clause
+   was landing two words alone under a full line. Where the property is not
+   supported the browser wraps as it always did, so nothing depends on it. */
+.hero .sub{margin:22px auto 0; max-width:60ch; text-wrap:balance}
 .hero .cta{margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
 .hero .under{margin-top:16px; font-size:13px; line-height:18px; color:var(--faint)}
 
@@ -1570,10 +1574,27 @@ h1,h2,h3,h4,p{margin:0}
   <div class="wrap">
     <h1 class="d1">AI Agents for freight forwarders.</h1>
 
+    <!-- The sub-head carries the positioning, the loop and the gate, in that
+         order, and each clause is doing a job:
+
+           * "Not another screen to watch" is the gap. The risk tools this is
+             aimed past stop at the alert, which means they hand you one more
+             thing to read - and the next clause hands the watching back.
+           * "the bookings already in your TMS" is the framing that must never
+             quietly go missing: the agents work the system of record, they do
+             not keep a second book. The black banner above carries the
+             disclosure that this build's connector is a demo one.
+           * "You approve every one" is the gate, stated as a feature. Every
+             message and every write waits for a person, and that is the
+             responsible design rather than a missing piece.
+
+         Kept deliberately out of it: any figure (nothing here is measured),
+         any language (the edge is breadth, not one rehearsed trick), and any
+         phrasing borrowed off a competitor's page. -->
     <p class="sub copy18">
-      Agents that work your bookings &mdash; watch the lane, decide, write the mail,
-      put the change on the record in your
-      <b style="color:var(--fg);font-weight:500">TMS</b>. You approve.
+      Not another screen to watch. Agents work the bookings already in your
+      <b style="color:var(--fg);font-weight:500">TMS</b> &mdash; they watch the lane,
+      decide, draft the mail, and put the change on the record. You approve every one.
     </p>
 
     <div class="cta">
