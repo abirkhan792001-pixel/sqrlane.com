@@ -243,42 +243,23 @@ h1,h2,h3,h4,p{margin:0}
 /* Height stops just above the board mock. Losing the caption line under the
    buttons shortened the hero - measure .shot's top before changing this. */
 .reel{display:none; position:absolute; inset:0 0 auto; height:440px; z-index:0;
-      overflow:hidden; pointer-events:none;
-      /* How far back off the band the footage is drawn. See .reel-clips - the
-         scale and the fade under it are one setting in two properties. */
-      --reel-zoom:.9}
+      overflow:hidden; pointer-events:none}
 .reel.on{display:block}
+/* Full bleed, and it stays that way. Two attempts to crop the footage less
+   have now been made and both are reverted, so treat this as settled:
 
-/* The footage is drawn a notch smaller than the band it sits in, which takes
-   the edge off how hard a 596px-wide clip is magnified across a 1440px hero.
+     * a taller band (3bd2dc0, 560px with a px-anchored wash, reverted by
+       218a465) - which does genuinely show more of each frame, at the cost of
+       the hero's proportions;
+     * drawing the clips smaller inside the band, at scale(.9) with their
+       edges masked (2026-09-19, reverted the same day). object-fit:cover is
+       already the least zoom that covers the band, so scaling down shows the
+       same crop drawn smaller and uncovers ~5% of the band; the mask that hid
+       that seam is what put the pale corners on the hero.
 
-   It cannot be done by loosening the fit. object-fit:cover is already the
-   least zoom that covers the band, so there is no slack in it: the only way
-   further out is to draw the whole thing smaller, and that uncovers ~5% of
-   the band on whichever axis is binding - the sides on a desktop, top and
-   bottom on a phone, because cover crops the other one. A hard edge there
-   reads as a broken element, not as a smaller picture.
-
-   So the clips dissolve a little before their own edge instead. The mask is
-   two gradients intersected, one per axis, because which axis is exposed
-   depends on the viewport. Scale and fade are a pair: take the scale back to
-   1 and the fade is eating footage for nothing; push it below .9 without
-   widening the fade and the seam comes back.
-
-   The other way to crop less is to make the band taller, which genuinely
-   shows more of each frame rather than the same frame smaller. It was tried
-   on 2026-09-17 (3bd2dc0, at 560px with a px-anchored wash) and reverted the
-   same day (218a465), so it is a settled question: the band is 440px and the
-   hero's proportions are not what gets spent on the footage. */
-.reel-clips{position:absolute; inset:0;
-  transform:scale(var(--reel-zoom, .9)); transform-origin:50% 50%;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
-  mask-image:
-    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
-  -webkit-mask-composite:source-in; mask-composite:intersect}
+   What controls how present the footage is is TARGET in the reel script and
+   the alphas in .reel-wash below - not its geometry. */
+.reel-clips{position:absolute; inset:0}
 .reel-v{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
         opacity:0; transition:opacity 1.1s var(--ease)}
 /* The one on screen, at the opacity the script worked out for it. One fixed
@@ -297,14 +278,30 @@ h1,h2,h3,h4,p{margin:0}
 /* Every stop here is a partial alpha, never `var(--bg)` itself. A single
    opaque stop anywhere in the radial paints the footage out completely and
    the band goes back to looking like plain page - which is exactly what the
-   first version of this did. */
+   first version of this did.
+
+   The stops are not evenly spent, and which one pays is measured rather than
+   guessed. The radial's core is what the headline and the sub-head sit on, so
+   it stays where it is; its outer stop is near nothing, because the sides and
+   corners are footage nobody is reading over. The band's top is light for the
+   same reason - the copy starts a third of the way down, so a heavy stop up
+   there only whites out sky. The bottom carries the most because the sub-head
+   is the page's tightest type, sits low in the band, and is the thing that
+   pays first here: worst pixel behind its box, over a full rotation at 1280,
+   is 4.84:1 against a 4.5 floor, with the headline at 7.54:1.
+
+   Measured 2026-09-19 against the four clips: this opened the corners from
+   165 to 128 mean luminance - visibly more footage - and moved the sub-head's
+   worst case from 4.72 to 4.84, because what was given away at the edges was
+   bought back under the copy. Re-measure both if a stop moves; the two
+   directions are easy to confuse. */
 .reel-wash{position:absolute; inset:0;
   background:
     radial-gradient(700px 300px at 50% 46%, rgba(250,250,250,.74) 0%,
-                    rgba(250,250,250,.60) 50%, rgba(250,250,250,.16) 80%,
+                    rgba(250,250,250,.60) 50%, rgba(250,250,250,.04) 80%,
                     rgba(250,250,250,0) 100%),
-    linear-gradient(to bottom, rgba(250,250,250,.30) 0%, rgba(250,250,250,0) 26%,
-                    rgba(250,250,250,.62) 84%, var(--bg) 100%)}
+    linear-gradient(to bottom, rgba(250,250,250,.12) 0%, rgba(250,250,250,0) 26%,
+                    rgba(250,250,250,.68) 84%, var(--bg) 100%)}
 
 @media (max-width:640px){
   .reel{height:340px}
