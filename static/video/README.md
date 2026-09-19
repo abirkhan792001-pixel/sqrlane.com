@@ -1,14 +1,15 @@
 # static/video — the background clips
 
-Footage plays behind four blocks. The landing hero rotates three clips, one at
+Footage plays behind five blocks. The landing hero rotates four clips, one at
 a time, crossfading; the landing page's closer holds a single one behind the
 sign-up block; `/how-it-works` and `/product` each hold a single one behind
-their page head. `src/app.py` serves this directory at `/video/<name>.mp4`, so neither
+their page head, and `/product` a second behind its closer. `src/app.py` serves
+this directory at `/video/<name>.mp4`, so no
 page fetches anything from another host — the same promise the self-hosted fonts
 keep, and `tests/test_the_pages_keep_their_promises.py` fails the build if a
 clip is ever pointed at a CDN.
 
-All six clips are committed. `04-control-room.mp4` was not, until
+All eight clips are committed. `04-control-room.mp4` was not, until
 2026-09-06: `.gitignore` carried an explicit rule for it, written when the clip
 was genuinely unused ("unused by the reel, and too close to the page background
 to work on a light hero"), and nobody removed the rule when `/how-it-works` was
@@ -22,7 +23,9 @@ exactly as they do without it - so removing one breaks nothing.
 
 **These are watermarked comp files** - 01 to 04 and 06 are iStock comps carrying
 a Getty mark, 05 is a Filmsupply comp carrying a FILMSUPPLY mark across the
-centre of frame. They were
+centre of frame, 07 carries a fainter mark over the hull, and 08 is a
+Shutterstock preview carrying a SHUTTERSTOCK mark across the middle of the
+frame - readable on screen at the opacity the hero gives it. They were
 committed on the owner's instruction, over a flagged objection: comps are
 licensed for layout evaluation, not publication, and the watermark is visible
 in the frame. Replace them with licensed downloads under the same filenames.
@@ -37,6 +40,8 @@ in the frame. Replace them with licensed downloads under the same filenames.
 | `04-control-room.mp4` | an operations desk at a data wall (**graded darker**) | `/how-it-works` |
 | `05-port-aerial.mp4` | an aerial view of a container port | the landing closer |
 | `06-assembly-line.mp4` | robot arms working a car body down a line | `/product` |
+| `07-ship-at-sea.mp4` | a container ship at sea from above | `/product`'s closer |
+| `08-air-cargo-night.mp4` | air freight loaded at a stand at night | the landing hero |
 
 Drop files with those names in and they play. Nothing else needs changing: every
 block measures the clip's own first frame and works out the opacity that puts it
