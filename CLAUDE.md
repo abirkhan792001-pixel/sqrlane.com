@@ -1671,7 +1671,7 @@ Scope creep is the failure mode here. None of these are in this build:
   anyway and show a small note. Never crash the demo.
 - **Never commit `.env`.** If it's about to be staged, stop.
 - **The hero reel is decoration, and decoration may not be load-bearing.** The home
-  page plays three clips behind the hero, one at a time. Every part of it is
+  page plays four clips behind the hero, one at a time. Every part of it is
   additive: the markup renders nothing when the clips are absent, the script
   reveals the band only after a clip has actually produced a frame (a 404 and a
   codec the browser refuses both look like success until you wait for `playing`),
@@ -1688,6 +1688,18 @@ Scope creep is the failure mode here. None of these are in this build:
   the bright one was invisible. Measuring rather than hand-tuning is also what
   lets the footage be swapped without a re-tune. A clip over ~160 luminance
   cannot carry this hero at all; one was dropped for that reason.
+
+  **Taking the wash off was tried on 2026-09-19 and reverted the same day.**
+  It is the one change that cannot be made in isolation: with nothing between
+  the clip and the copy, near-black type on photography measures **1.68:1 on
+  the headline and 1.00:1 on the sub-head** - the sub-head being literally the
+  same value as the frame behind it. Fading the clips back does not rescue it
+  either (still 4.04:1 and 1.83:1 at a 225 composite), because footage carrying
+  both black shadows and white containers has no single dark ink that works
+  over it. A dark band with light type does work, and was built and measured,
+  but it is a different-looking page and the owner chose this one. So: the wash
+  is not decoration on top of the footage, it is what lets the hero be light at
+  all. Change its alphas, never its existence.
 - **Both pages are set in Geist**, served from `static/fonts/` — the same typographic
   scale the dashboard's colour tokens came from, so the two pages read as one product.
   Self-hosted, never a CDN: an external font request is one more thing that can fail in

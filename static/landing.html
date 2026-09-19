@@ -222,7 +222,11 @@ h1,h2,h3,h4,p{margin:0}
   pointer-events:none}
 .hero .wrap{position:relative; z-index:1}
 .hero h1{margin:22px auto 0; max-width:15ch}
-.hero .sub{margin:22px auto 0; max-width:60ch}
+/* Balanced, because this block is three lines at the desktop measure and an
+   unbalanced last line reads as an accident: the sub-head's closing clause
+   was landing two words alone under a full line. Where the property is not
+   supported the browser wraps as it always did, so nothing depends on it. */
+.hero .sub{margin:22px auto 0; max-width:60ch; text-wrap:balance}
 .hero .cta{margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
 .hero .under{margin-top:16px; font-size:13px; line-height:18px; color:var(--faint)}
 
@@ -243,42 +247,23 @@ h1,h2,h3,h4,p{margin:0}
 /* Height stops just above the board mock. Losing the caption line under the
    buttons shortened the hero - measure .shot's top before changing this. */
 .reel{display:none; position:absolute; inset:0 0 auto; height:440px; z-index:0;
-      overflow:hidden; pointer-events:none;
-      /* How far back off the band the footage is drawn. See .reel-clips - the
-         scale and the fade under it are one setting in two properties. */
-      --reel-zoom:.9}
+      overflow:hidden; pointer-events:none}
 .reel.on{display:block}
+/* Full bleed, and it stays that way. Two attempts to crop the footage less
+   have now been made and both are reverted, so treat this as settled:
 
-/* The footage is drawn a notch smaller than the band it sits in, which takes
-   the edge off how hard a 596px-wide clip is magnified across a 1440px hero.
+     * a taller band (3bd2dc0, 560px with a px-anchored wash, reverted by
+       218a465) - which does genuinely show more of each frame, at the cost of
+       the hero's proportions;
+     * drawing the clips smaller inside the band, at scale(.9) with their
+       edges masked (2026-09-19, reverted the same day). object-fit:cover is
+       already the least zoom that covers the band, so scaling down shows the
+       same crop drawn smaller and uncovers ~5% of the band; the mask that hid
+       that seam is what put the pale corners on the hero.
 
-   It cannot be done by loosening the fit. object-fit:cover is already the
-   least zoom that covers the band, so there is no slack in it: the only way
-   further out is to draw the whole thing smaller, and that uncovers ~5% of
-   the band on whichever axis is binding - the sides on a desktop, top and
-   bottom on a phone, because cover crops the other one. A hard edge there
-   reads as a broken element, not as a smaller picture.
-
-   So the clips dissolve a little before their own edge instead. The mask is
-   two gradients intersected, one per axis, because which axis is exposed
-   depends on the viewport. Scale and fade are a pair: take the scale back to
-   1 and the fade is eating footage for nothing; push it below .9 without
-   widening the fade and the seam comes back.
-
-   The other way to crop less is to make the band taller, which genuinely
-   shows more of each frame rather than the same frame smaller. It was tried
-   on 2026-09-17 (3bd2dc0, at 560px with a px-anchored wash) and reverted the
-   same day (218a465), so it is a settled question: the band is 440px and the
-   hero's proportions are not what gets spent on the footage. */
-.reel-clips{position:absolute; inset:0;
-  transform:scale(var(--reel-zoom, .9)); transform-origin:50% 50%;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
-  mask-image:
-    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
-  -webkit-mask-composite:source-in; mask-composite:intersect}
+   What controls how present the footage is is TARGET in the reel script and
+   the alphas in .reel-wash below - not its geometry. */
+.reel-clips{position:absolute; inset:0}
 .reel-v{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
         opacity:0; transition:opacity 1.1s var(--ease)}
 /* The one on screen, at the opacity the script worked out for it. One fixed
@@ -297,14 +282,30 @@ h1,h2,h3,h4,p{margin:0}
 /* Every stop here is a partial alpha, never `var(--bg)` itself. A single
    opaque stop anywhere in the radial paints the footage out completely and
    the band goes back to looking like plain page - which is exactly what the
-   first version of this did. */
+   first version of this did.
+
+   The stops are not evenly spent, and which one pays is measured rather than
+   guessed. The radial's core is what the headline and the sub-head sit on, so
+   it stays where it is; its outer stop is near nothing, because the sides and
+   corners are footage nobody is reading over. The band's top is light for the
+   same reason - the copy starts a third of the way down, so a heavy stop up
+   there only whites out sky. The bottom carries the most because the sub-head
+   is the page's tightest type, sits low in the band, and is the thing that
+   pays first here: worst pixel behind its box, over a full rotation at 1280,
+   is 4.84:1 against a 4.5 floor, with the headline at 7.54:1.
+
+   Measured 2026-09-19 against the four clips: this opened the corners from
+   165 to 128 mean luminance - visibly more footage - and moved the sub-head's
+   worst case from 4.72 to 4.84, because what was given away at the edges was
+   bought back under the copy. Re-measure both if a stop moves; the two
+   directions are easy to confuse. */
 .reel-wash{position:absolute; inset:0;
   background:
     radial-gradient(700px 300px at 50% 46%, rgba(250,250,250,.74) 0%,
-                    rgba(250,250,250,.60) 50%, rgba(250,250,250,.16) 80%,
+                    rgba(250,250,250,.60) 50%, rgba(250,250,250,.04) 80%,
                     rgba(250,250,250,0) 100%),
-    linear-gradient(to bottom, rgba(250,250,250,.30) 0%, rgba(250,250,250,0) 26%,
-                    rgba(250,250,250,.62) 84%, var(--bg) 100%)}
+    linear-gradient(to bottom, rgba(250,250,250,.12) 0%, rgba(250,250,250,0) 26%,
+                    rgba(250,250,250,.68) 84%, var(--bg) 100%)}
 
 @media (max-width:640px){
   .reel{height:340px}
@@ -543,26 +544,76 @@ h1,h2,h3,h4,p{margin:0}
              color:var(--fg)}
 .ov-chart .s{font-size:10.5px; color:var(--faint); line-height:15px;
              margin-top:1px}
-.ov-chart .plot{margin-top:8px; width:100%; height:96px;
-                display:block; overflow:visible}
-.ov-chart .grid line{stroke:var(--border); stroke-width:1}
-.ov-chart .axis{fill:var(--faint); font-size:9.5px;
+/* Only the things that survive being stretched live in the SVG: the
+   gridlines, the area fill and the line. Everything that has to stay round
+   or readable - the dots, the axis figures, the day labels, the tooltip - is
+   HTML sitting on top of it.
+
+   That split is the fix for what this chart used to be. It was one SVG with
+   preserveAspectRatio="none", so the viewBox was squashed to the element's
+   box on each axis independently: at 1280 the plot measures 482x96 against a
+   400x100 viewBox, which is 1.205 across and 0.96 down. Every r=2.6 dot came
+   out 8.19px wide and 6.53px tall - an ellipse - the text was stretched 26%
+   horizontally, and a horizontal stroke was drawn thinner than a vertical
+   one. At 375 the plot is 275x96 and the distortion inverts: the same dots
+   render 4.68x6.53, taller than they are wide. There is no viewBox that
+   fixes that, because the element's aspect ratio changes with the viewport
+   and the viewBox's cannot.
+
+   So the SVG keeps preserveAspectRatio="none" - deliberately - and is given
+   a 0..100 viewBox on both axes, which makes every coordinate in it a
+   percentage of the plot box. The HTML on top is positioned in those same
+   percentages. Nothing has to know the pixel size, and the labels cannot
+   drift off their points the way the old flex row did: it padded itself 22
+   CSS px to clear an axis drawn at 22 *viewBox* units, which is 26.5px at
+   1280 and 15.1px at 375. */
+.ov-chart .ovc-body{display:flex; gap:6px; margin-top:8px}
+.ov-chart .ovc-axis{position:relative; flex:none; width:13px; height:112px}
+.ov-chart .ovc-axis span{position:absolute; right:0; transform:translateY(-50%);
+                font-size:9.5px; line-height:1; color:var(--faint);
                 font-family:"Geist Mono",ui-monospace,monospace;
                 font-variant-numeric:tabular-nums; letter-spacing:.02em}
+/* The plot and the day labels share this column, so they share a width and
+   a left edge - the labels line up by construction rather than by arithmetic. */
+.ov-chart .ovc-col{flex:1; min-width:0}
+.ov-chart .ovc-plot{position:relative; height:112px}
+.ov-chart .plot{display:block; width:100%; height:100%}
+/* Strokes are declared in CSS pixels and held there by non-scaling-stroke,
+   which is what keeps a 1px gridline 1px on both axes under the stretch. */
+.ov-chart .grid line{stroke:var(--border); stroke-width:1;
+                     vector-effect:non-scaling-stroke}
 .ov-chart .line{fill:none; stroke:var(--blue); stroke-width:1.6;
-                stroke-linecap:round; stroke-linejoin:round}
+                stroke-linejoin:round; stroke-linecap:round;
+                vector-effect:non-scaling-stroke}
 .ov-chart .area{fill:url(#ov-area-fill)}
-.ov-chart .dot{fill:var(--card); stroke:var(--blue); stroke-width:1.6}
-.ov-chart .dot.on{fill:var(--blue); stroke:var(--blue);
-                  filter:drop-shadow(0 2px 4px color-mix(in srgb,var(--blue) 40%,transparent))}
-.ov-chart .peak{fill:var(--red)}
-.ov-chart .tip{opacity:0; transition:opacity .35s var(--ease)}
-.ov-chart .tip.on{opacity:1}
-.ov-chart .tip rect{fill:var(--fg); rx:5}
-.ov-chart .tip text{fill:#fff; font-size:10px;
-                    font-family:"Geist Mono",ui-monospace,monospace;
-                    font-variant-numeric:tabular-nums}
-.ov-chart .tip .lab{font-family:"Geist",sans-serif; font-weight:500}
+.ov-chart .ovc-dot{position:absolute; width:6px; height:6px; box-sizing:border-box;
+                border-radius:50%; background:var(--card);
+                border:1.6px solid var(--blue); transform:translate(-50%,-50%)}
+.ov-chart .ovc-dot.on{width:8px; height:8px; background:var(--blue);
+                box-shadow:0 2px 4px color-mix(in srgb,var(--blue) 40%,transparent)}
+/* The tooltip sits above its point, and the plot carries a clear top band
+   (values run 30%-90%) so it has somewhere to be. Both of the obvious
+   placements are wrong here and were tried: the original was at y=-18 in a
+   viewBox starting at 0, so it printed itself over the subtitle; hung below
+   the point instead it covers Friday, completely at 375 where the label is
+   nearly half a band wider than the gap. Above the maximum is the one region
+   on this chart that is empty by definition. */
+.ov-chart .ovc-tip{position:absolute; transform:translate(-50%,-100%);
+                margin-top:-10px; padding:3px 8px; border-radius:5px;
+                background:var(--fg); color:#fff; white-space:nowrap;
+                font-size:10px; line-height:14px;
+                font-family:"Geist Mono",ui-monospace,monospace;
+                font-variant-numeric:tabular-nums;
+                opacity:0; transition:opacity .35s var(--ease)}
+.ov-chart .ovc-tip.on{opacity:1}
+.ov-chart .ovc-tip::after{content:""; position:absolute; left:50%; top:100%;
+                width:7px; height:7px; margin:-4px 0 0 -3.5px; border-radius:1px;
+                background:var(--fg); transform:rotate(45deg)}
+.ov-chart .ovc-tip b{font-family:"Geist",sans-serif; font-weight:500}
+.ov-chart .ovc-days{display:grid; grid-template-columns:repeat(8,1fr);
+                text-align:center; padding-top:4px;
+                font-family:"Geist Mono",ui-monospace,monospace;
+                font-size:9.5px; color:var(--faint); letter-spacing:.02em}
 
 /* The donut of source families. Two rings by design: an outer ring of
    segments coloured by family and an inner label with the total. The 60
@@ -1168,7 +1219,7 @@ h1,h2,h3,h4,p{margin:0}
 .ln .s{display:block; margin-top:5px; font-size:12.5px; line-height:18px; color:var(--muted)}
 /* The arrow sits in the seam between two nodes, on the card colour, so the row
    reads as one run rather than five tiles. */
-.ln + .ln::before{content:""; position:absolute; left:-5px; top:50%; width:9px; height:9px;
+.ln + .ln::before{content:""; position:absolute; left:-5px; top:60%; width:9px; height:9px;
                   margin-top:-5px; border-top:1.5px solid var(--border-strong);
                   border-right:1.5px solid var(--border-strong); transform:rotate(45deg);
                   background:var(--card); z-index:1}
@@ -1214,6 +1265,56 @@ h1,h2,h3,h4,p{margin:0}
 .knote{margin-top:20px; font-size:12.5px; line-height:19px; color:var(--faint)}
 .knote b{color:var(--fg); font-weight:500}
 @media (max-width:900px){.kgrid{grid-template-columns:1fr}}
+
+/* ---------- FAQ ---------- */
+/* One section head above one bordered container - the same shape every
+   other section on this page uses (see #kpi, #integrations, #loop).
+   Items sit inside a single card with hairline dividers between them
+   rather than as their own cards, so the block reads as one list.
+   Native <details> underneath: works with no JS, each item is still
+   individually linkable (#faq-different, #faq-real, ...). The +/x
+   toggle is one span with two absolutely-positioned lines that cross;
+   opening rotates the whole slot 90deg and collapses the vertical
+   line to zero, so + becomes x smoothly rather than snapping. First
+   item defaults to open. */
+.faq-list{margin-top:38px; background:var(--card); border:1px solid var(--border);
+          border-radius:var(--r-md); box-shadow:var(--shadow-card); overflow:hidden}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:0}
+.faq-item summary{list-style:none; padding:22px 26px; cursor:pointer;
+                  display:flex; align-items:center; gap:24px;
+                  font-size:16.5px; line-height:24px; font-weight:600;
+                  letter-spacing:-.32px; color:var(--fg);
+                  transition:background .15s var(--ease)}
+.faq-item summary:hover{background:color-mix(in srgb,var(--gray-100) 60%,transparent)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::marker{content:""}
+/* Closed: two lines at 0deg and 90deg = +
+   Open : the whole slot rotates 45deg, so + becomes x. One transform,
+          no scaling, and the animation reads as a smooth quarter turn. */
+.faq-tog{margin-left:auto; width:22px; height:22px; position:relative; flex:none;
+         color:var(--muted);
+         transition:transform .3s var(--ease), color .3s var(--ease)}
+.faq-tog::before,.faq-tog::after{content:""; position:absolute; left:50%; top:50%;
+                                 width:14px; height:1.6px; background:currentColor;
+                                 border-radius:1px; transform-origin:center}
+.faq-tog::before{transform:translate(-50%,-50%)}
+.faq-tog::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq-item[open] .faq-tog{transform:rotate(45deg); color:var(--fg)}
+
+.faq-body{padding:0 26px 24px; font-size:15px; line-height:24px; color:var(--muted);
+          max-width:70ch}
+.faq-body p{margin:0}
+.faq-body p + p{margin-top:12px}
+/* Each answer routes to the page that owns the question rather than
+   answering it twice - see the section comment below. */
+.faq-body a{color:var(--fg); text-decoration:underline;
+            text-decoration-thickness:1px; text-underline-offset:3px}
+
+@media (max-width:640px){
+  .faq-item summary{padding:18px 20px; font-size:15.5px; line-height:22px; gap:16px}
+  .faq-body{padding:0 20px 20px; font-size:14.5px; line-height:23px}
+}
 
 /* ---------- signup (a placeholder, and it says so) ---------- */
 .signup{border-top:1px solid var(--border); background:var(--card); padding:88px 0;
@@ -1523,10 +1624,29 @@ h1,h2,h3,h4,p{margin:0}
   <div class="wrap">
     <h1 class="d1">AI Agents for freight forwarders.</h1>
 
+    <!-- The sub-head is the loop, and nothing else. It carried an opener
+         ("Not another screen to watch") and a closer ("You approve every
+         one") until the owner cut both on 2026-09-19 - so what is left says
+         what the agents do, once.
+
+         The one clause in it that is not description is "the bookings already
+         in your TMS", and that is the framing that must never quietly go
+         missing: the agents work the system of record, they do not keep a
+         second book. The black banner above carries the disclosure that this
+         build's connector is a demo one.
+
+         Note what is gone with the closer: the approval gate is no longer
+         stated on the first screen. It is still the product's own claim and
+         still on the page further down, but if a later edit is looking for
+         somewhere to say it again, here is where it used to be.
+
+         Kept deliberately out of it: any figure (nothing here is measured),
+         any language (the edge is breadth, not one rehearsed trick), and any
+         phrasing borrowed off a competitor's page. -->
     <p class="sub copy18">
-      Agents that work your bookings &mdash; watch the lane, decide, write the mail,
-      put the change on the record in your
-      <b style="color:var(--fg);font-weight:500">TMS</b>. You approve.
+      Agents work the bookings already in your
+      <b style="color:var(--fg);font-weight:500">TMS</b> &mdash; they watch the lane,
+      decide, draft the mail, and put the change on the record.
     </p>
 
     <div class="cta">
@@ -1718,57 +1838,72 @@ h1,h2,h3,h4,p{margin:0}
               <div class="ms"><div class="l">Model decisions</div><div class="v blue tabular">3/3</div></div>
             </div>
 
-            <!-- The week, plotted. Active-disruptions per day is straight
-                 out of data/simulation.json: 0, 1, 2, 4, 3, 4, 2, 2. The
-                 tooltip on Thursday is the peak the copy calls out. -->
+            <!-- The week, plotted. Active-disruptions per day is straight out
+                 of data/simulation.json - 0, 1, 2, 4, 3, 4, 2, 2 - which is
+                 that file's timeline replayed: the strike lands on Tuesday,
+                 the Rhine on Wednesday, the Red Sea and its Suez knock-on on
+                 Thursday, and two clear on Sunday. The tooltip sits on the
+                 Thursday peak the copy calls out.
+
+                 Every coordinate below is a percentage of the plot box, in
+                 the SVG and in the HTML over it alike, which is what lets the
+                 two stay registered to each other at any width - see the CSS.
+                 The eight days are band centres, (i + 0.5) / 8, so each point
+                 sits in the middle of its day rather than on the boundary
+                 between two, and the day labels are a grid of eight equal
+                 columns under the same box.
+
+                 Values map y = 90 - 15v, so 0 sits at 90% and the 4 at 30%. The top
+                 three-tenths are left clear on purpose: that is where the
+                 callout goes, and it is the only band on the chart no reading
+                 can occupy. The segments are straight because the readings are
+                 daily counts: a spline through them would draw values at
+                 hours nothing was measured. -->
             <div class="ov-chart" aria-hidden="true">
               <div class="h">Board exposure across the week</div>
               <div class="s">Active disruptions per day &middot; from data/simulation.json</div>
-              <svg class="plot" viewBox="0 0 400 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="ov-area-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0"    stop-color="#006bff" stop-opacity=".22"/>
-                    <stop offset="0.85" stop-color="#006bff" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <g class="grid">
-                  <line x1="22" y1="80" x2="392" y2="80"/>
-                  <line x1="22" y1="62" x2="392" y2="62"/>
-                  <line x1="22" y1="44" x2="392" y2="44"/>
-                  <line x1="22" y1="26" x2="392" y2="26"/>
-                  <line x1="22" y1="8"  x2="392" y2="8"/>
-                </g>
-                <text class="axis" x="14" y="83" text-anchor="end">0</text>
-                <text class="axis" x="14" y="47" text-anchor="end">2</text>
-                <text class="axis" x="14" y="11" text-anchor="end">4</text>
-                <path class="area" d="M22,80 L75,62 L128,44 L181,8 L233,26 L286,8 L339,44 L392,44 L392,88 L22,88 Z"/>
-                <path class="line" d="M22,80 L75,62 L128,44 L181,8 L233,26 L286,8 L339,44 L392,44"/>
-                <circle class="dot"  cx="22"  cy="80" r="2.6"/>
-                <circle class="dot"  cx="75"  cy="62" r="2.6"/>
-                <circle class="dot"  cx="128" cy="44" r="2.6"/>
-                <circle class="dot on" cx="181" cy="8"  r="3.4"/>
-                <circle class="dot"  cx="233" cy="26" r="2.6"/>
-                <circle class="dot"  cx="286" cy="8"  r="2.6"/>
-                <circle class="dot"  cx="339" cy="44" r="2.6"/>
-                <circle class="dot"  cx="392" cy="44" r="2.6"/>
-                <!-- Tooltip. Text is anchor="middle" and the rect is
-                     centered on the Thursday dot (x=181), so lengthening or
-                     shortening the label does not push it off the peak.
-                     Width is deliberately generous - preserveAspectRatio=
-                     "none" on the parent SVG stretches text horizontally
-                     so a rect sized to the *nominal* string overflows in
-                     practice. -->
-                <g class="tip on" transform="translate(129 -18)">
-                  <rect x="0" y="0" width="104" height="20"/>
-                  <text x="52" y="14" text-anchor="middle"><tspan class="lab">Thu</tspan> &middot; 4 active</text>
-                </g>
-              </svg>
-              <div style="display:flex; justify-content:space-between;
-                          font-family:'Geist Mono',ui-monospace,monospace;
-                          font-size:9.5px; color:var(--faint);
-                          padding:2px 0 0 22px; letter-spacing:.02em">
-                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span>
-                <span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span>
+              <div class="ovc-body">
+                <div class="ovc-axis">
+                  <span style="top:30%">4</span>
+                  <span style="top:60%">2</span>
+                  <span style="top:90%">0</span>
+                </div>
+                <div class="ovc-col">
+                  <div class="ovc-plot">
+                    <svg class="plot" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="ov-area-fill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0"    stop-color="#006bff" stop-opacity=".22"/>
+                          <stop offset="0.85" stop-color="#006bff" stop-opacity="0"/>
+                        </linearGradient>
+                      </defs>
+                      <g class="grid">
+                        <line x1="0" y1="90" x2="100" y2="90"/>
+                        <line x1="0" y1="75" x2="100" y2="75"/>
+                        <line x1="0" y1="60" x2="100" y2="60"/>
+                        <line x1="0" y1="45" x2="100" y2="45"/>
+                        <line x1="0" y1="30" x2="100" y2="30"/>
+                      </g>
+                      <path class="area" d="M6.25,90 L18.75,75 L31.25,60 L43.75,30 L56.25,45
+                                            L68.75,30 L81.25,60 L93.75,60 L93.75,100 L6.25,100 Z"/>
+                      <path class="line" d="M6.25,90 L18.75,75 L31.25,60 L43.75,30 L56.25,45
+                                            L68.75,30 L81.25,60 L93.75,60"/>
+                    </svg>
+                    <i class="ovc-dot"    style="left:6.25%;  top:90%"></i>
+                    <i class="ovc-dot"    style="left:18.75%; top:75%"></i>
+                    <i class="ovc-dot"    style="left:31.25%; top:60%"></i>
+                    <i class="ovc-dot on" style="left:43.75%; top:30%"></i>
+                    <i class="ovc-dot"    style="left:56.25%; top:45%"></i>
+                    <i class="ovc-dot"    style="left:68.75%; top:30%"></i>
+                    <i class="ovc-dot"    style="left:81.25%; top:60%"></i>
+                    <i class="ovc-dot"    style="left:93.75%; top:60%"></i>
+                    <div class="ovc-tip on" style="left:43.75%; top:30%"><b>Thu</b> &middot; 4 active</div>
+                  </div>
+                  <div class="ovc-days">
+                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span>
+                    <span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -2643,6 +2778,137 @@ h1,h2,h3,h4,p{margin:0}
   </div>
 </section>
 
+<!-- ============================ FAQ ============================ -->
+<!-- Ported from claude/hopeful-ride-ryulsf, where it was written and then
+     reworked twice (1fd5e4a, 0761e9c, ec3dd25) but never merged - PR #97
+     went in before it existed.
+
+     Two things were changed on the way in, both because the page it came
+     from is not the page it landed on:
+
+       * It said the systems the connector plugs into are "named on the
+         landing page above". They are not: the vendor row above is the
+         apps a decision is currently re-typed into - Outlook, Slack,
+         WhatsApp, the shadow spreadsheet - which is the problem, not an
+         integration list. That answer points at /product now, where the
+         connector's targets actually are, and where the disclaimer that
+         none of them is connected lives with them.
+       * The head said six things "come up on nearly every call". No calls
+         have happened. That is the invented-traction sentence this project
+         refuses, in its softest form, so it says what it is instead.
+
+     Every answer links to the page that owns its question rather than
+     answering it in full here - the site's rule is that no page answers
+     another page's question, and an FAQ is the one block that will break
+     it by accident. Keep the answers short enough to be a route.
+
+     Native <details>: works with no JS, and each item is linkable on its
+     own id (#faq-real and so on). -->
+<section class="section faq" id="faq">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="d2">Questions worth asking before you book a call.</h2>
+      <p class="copy18">Six it should answer without one. If yours isn&rsquo;t
+        here, <a href="#contact" style="color:var(--fg); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px">book one</a> and ask it.</p>
+    </div>
+
+    <div class="faq-list rv">
+      <details class="faq-item" id="faq-different" open>
+        <summary>How is this different from a risk platform or a TMS?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>Risk platforms stop at the alert. Your TMS starts after the
+            decision. Between them a person re-keys the consequences
+            &mdash; a booking amendment, a discharge port change, a
+            customer email &mdash; one booking at a time.</p>
+          <p>SQRlane closes that gap: it reads the world, reasons against
+            the booking, drafts the mail, and queues the change back on
+            the record. Same record at both ends, one gate on every write.
+            <a href="/how-it-works">How a decision is actually made</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-real">
+        <summary>Is any of this actually real, or is it a mock?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>The risk detection is real. On every run the terminal reads
+            sixty free, keyless sources across six families &mdash;
+            regional wires, river gauges, port weather and sea state,
+            seismic and natural-hazard feeds, government filings and
+            reference rates. The reasoning is a real model call against
+            a real event.</p>
+          <p>Shipments are synthetic, so a disruption can be shown on
+            demand instead of waiting for one. The TMS link is a demo
+            connector: the near end is built, the far end is the
+            integration work. Nothing is ever sent, and nothing is ever
+            written. <a href="/about">The full ledger of what is real
+            here</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-tms">
+        <summary>Does it connect to my TMS today?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>Not today. The connector is modelled end to end &mdash; the
+            read path is the only door to the book, and every
+            Worker&rsquo;s action is queued as a change to the booking it
+            came from &mdash; but no vendor is contacted, no credential
+            is stored, and no endpoint is called.</p>
+          <p>The systems it is built to point at are
+            <a href="/product#systems">named on the product page</a>.
+            Wiring a real one is the single highest-value piece of work on
+            the far side of the integration wall.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-send">
+        <summary>Will it send emails or make changes on its own?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>No. Every outbound action &mdash; carrier mail, customer
+            mail, booking amendment, queued field change &mdash; carries
+            a <b>DRAFT / QUEUED</b> status until you approve it, one
+            item or a selected batch at a time.</p>
+          <p>There is no email library, no SMTP and no TMS endpoint
+            anywhere in the code for a rogue send or write to reach. A
+            test fails the build if one appears.
+            <a href="/product">The gate, and what sits behind it</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-data">
+        <summary>Where is my data processed?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>The prototype calls a US inference provider today. The
+            <a href="/whitepaper">whitepaper</a> covers what shipping this
+            on a per-token serverless provider in Europe would take &mdash;
+            with the specific models and prices we would run against.</p>
+          <p>There is no customer data on this build. Shipments are
+            synthetic and the reasoning trail is discarded with the run.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-next">
+        <summary>What&rsquo;s the next step &mdash; pricing, pilot, timeline?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>The prototype is not for sale. What&rsquo;s worth showing is
+            the shape of the workflow when reading, deciding, drafting
+            and writing back are one loop &mdash; before pricing, before
+            integrations, and before a pilot.</p>
+          <p>Book a call and we&rsquo;ll walk through what a pilot would
+            look like against your own book: which lanes, which TMS, and
+            which Workers would ship live first.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ================ BOOK A DEMO (CLOSER, PLACEHOLDER) ================ -->
 <!-- One closing block, not two. The page used to end on a final CTA and then a
      signup a screen later, both asking for the same thing in different words. -->
@@ -3300,11 +3566,19 @@ h1,h2,h3,h4,p{margin:0}
   /* pane -> [sidebar item's data-nav it lights, how long it holds].
      Overview's hold is 0 because its own animation decides when it is done.
      Using the data-nav name rather than a numeric index means adding more
-     sidebar items above cannot silently shift what lights up. */
+     sidebar items above cannot silently shift what lights up.
+
+     A hold is reading time, so it is set against what the pane actually asks
+     a person to read. Reasoning was 6600 and is 4400: it carries three short
+     lines and two figures, which is the same density as the risk pane beside
+     it, and it was sitting a third longer than that for no reason anyone
+     could name. Drafts is longer than its text needs because the approve
+     button's own 2750ms plays inside its hold - shorten that one and the
+     button is still mid-press when the pane leaves. */
   var WINDOWS = [
     ["overview",  "overview",  0],
     ["risk",      "risk",   4400],
-    ["reasoning", "reasoning", 6600],
+    ["reasoning", "reasoning", 4400],
     ["drafts",    "approvals", 4600],
     ["tms",       "tms",    5200],
     ["margin",    "tms",    6800],
