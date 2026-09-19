@@ -540,26 +540,76 @@ h1,h2,h3,h4,p{margin:0}
              color:var(--fg)}
 .ov-chart .s{font-size:10.5px; color:var(--faint); line-height:15px;
              margin-top:1px}
-.ov-chart .plot{margin-top:8px; width:100%; height:96px;
-                display:block; overflow:visible}
-.ov-chart .grid line{stroke:var(--border); stroke-width:1}
-.ov-chart .axis{fill:var(--faint); font-size:9.5px;
+/* Only the things that survive being stretched live in the SVG: the
+   gridlines, the area fill and the line. Everything that has to stay round
+   or readable - the dots, the axis figures, the day labels, the tooltip - is
+   HTML sitting on top of it.
+
+   That split is the fix for what this chart used to be. It was one SVG with
+   preserveAspectRatio="none", so the viewBox was squashed to the element's
+   box on each axis independently: at 1280 the plot measures 482x96 against a
+   400x100 viewBox, which is 1.205 across and 0.96 down. Every r=2.6 dot came
+   out 8.19px wide and 6.53px tall - an ellipse - the text was stretched 26%
+   horizontally, and a horizontal stroke was drawn thinner than a vertical
+   one. At 375 the plot is 275x96 and the distortion inverts: the same dots
+   render 4.68x6.53, taller than they are wide. There is no viewBox that
+   fixes that, because the element's aspect ratio changes with the viewport
+   and the viewBox's cannot.
+
+   So the SVG keeps preserveAspectRatio="none" - deliberately - and is given
+   a 0..100 viewBox on both axes, which makes every coordinate in it a
+   percentage of the plot box. The HTML on top is positioned in those same
+   percentages. Nothing has to know the pixel size, and the labels cannot
+   drift off their points the way the old flex row did: it padded itself 22
+   CSS px to clear an axis drawn at 22 *viewBox* units, which is 26.5px at
+   1280 and 15.1px at 375. */
+.ov-chart .ovc-body{display:flex; gap:6px; margin-top:8px}
+.ov-chart .ovc-axis{position:relative; flex:none; width:13px; height:112px}
+.ov-chart .ovc-axis span{position:absolute; right:0; transform:translateY(-50%);
+                font-size:9.5px; line-height:1; color:var(--faint);
                 font-family:"Geist Mono",ui-monospace,monospace;
                 font-variant-numeric:tabular-nums; letter-spacing:.02em}
+/* The plot and the day labels share this column, so they share a width and
+   a left edge - the labels line up by construction rather than by arithmetic. */
+.ov-chart .ovc-col{flex:1; min-width:0}
+.ov-chart .ovc-plot{position:relative; height:112px}
+.ov-chart .plot{display:block; width:100%; height:100%}
+/* Strokes are declared in CSS pixels and held there by non-scaling-stroke,
+   which is what keeps a 1px gridline 1px on both axes under the stretch. */
+.ov-chart .grid line{stroke:var(--border); stroke-width:1;
+                     vector-effect:non-scaling-stroke}
 .ov-chart .line{fill:none; stroke:var(--blue); stroke-width:1.6;
-                stroke-linecap:round; stroke-linejoin:round}
+                stroke-linejoin:round; stroke-linecap:round;
+                vector-effect:non-scaling-stroke}
 .ov-chart .area{fill:url(#ov-area-fill)}
-.ov-chart .dot{fill:var(--card); stroke:var(--blue); stroke-width:1.6}
-.ov-chart .dot.on{fill:var(--blue); stroke:var(--blue);
-                  filter:drop-shadow(0 2px 4px color-mix(in srgb,var(--blue) 40%,transparent))}
-.ov-chart .peak{fill:var(--red)}
-.ov-chart .tip{opacity:0; transition:opacity .35s var(--ease)}
-.ov-chart .tip.on{opacity:1}
-.ov-chart .tip rect{fill:var(--fg); rx:5}
-.ov-chart .tip text{fill:#fff; font-size:10px;
-                    font-family:"Geist Mono",ui-monospace,monospace;
-                    font-variant-numeric:tabular-nums}
-.ov-chart .tip .lab{font-family:"Geist",sans-serif; font-weight:500}
+.ov-chart .ovc-dot{position:absolute; width:6px; height:6px; box-sizing:border-box;
+                border-radius:50%; background:var(--card);
+                border:1.6px solid var(--blue); transform:translate(-50%,-50%)}
+.ov-chart .ovc-dot.on{width:8px; height:8px; background:var(--blue);
+                box-shadow:0 2px 4px color-mix(in srgb,var(--blue) 40%,transparent)}
+/* The tooltip sits above its point, and the plot carries a clear top band
+   (values run 30%-90%) so it has somewhere to be. Both of the obvious
+   placements are wrong here and were tried: the original was at y=-18 in a
+   viewBox starting at 0, so it printed itself over the subtitle; hung below
+   the point instead it covers Friday, completely at 375 where the label is
+   nearly half a band wider than the gap. Above the maximum is the one region
+   on this chart that is empty by definition. */
+.ov-chart .ovc-tip{position:absolute; transform:translate(-50%,-100%);
+                margin-top:-10px; padding:3px 8px; border-radius:5px;
+                background:var(--fg); color:#fff; white-space:nowrap;
+                font-size:10px; line-height:14px;
+                font-family:"Geist Mono",ui-monospace,monospace;
+                font-variant-numeric:tabular-nums;
+                opacity:0; transition:opacity .35s var(--ease)}
+.ov-chart .ovc-tip.on{opacity:1}
+.ov-chart .ovc-tip::after{content:""; position:absolute; left:50%; top:100%;
+                width:7px; height:7px; margin:-4px 0 0 -3.5px; border-radius:1px;
+                background:var(--fg); transform:rotate(45deg)}
+.ov-chart .ovc-tip b{font-family:"Geist",sans-serif; font-weight:500}
+.ov-chart .ovc-days{display:grid; grid-template-columns:repeat(8,1fr);
+                text-align:center; padding-top:4px;
+                font-family:"Geist Mono",ui-monospace,monospace;
+                font-size:9.5px; color:var(--faint); letter-spacing:.02em}
 
 /* The donut of source families. Two rings by design: an outer ring of
    segments coloured by family and an inner label with the total. The 60
@@ -1165,7 +1215,7 @@ h1,h2,h3,h4,p{margin:0}
 .ln .s{display:block; margin-top:5px; font-size:12.5px; line-height:18px; color:var(--muted)}
 /* The arrow sits in the seam between two nodes, on the card colour, so the row
    reads as one run rather than five tiles. */
-.ln + .ln::before{content:""; position:absolute; left:-5px; top:50%; width:9px; height:9px;
+.ln + .ln::before{content:""; position:absolute; left:-5px; top:60%; width:9px; height:9px;
                   margin-top:-5px; border-top:1.5px solid var(--border-strong);
                   border-right:1.5px solid var(--border-strong); transform:rotate(45deg);
                   background:var(--card); z-index:1}
@@ -1715,57 +1765,72 @@ h1,h2,h3,h4,p{margin:0}
               <div class="ms"><div class="l">Model decisions</div><div class="v blue tabular">3/3</div></div>
             </div>
 
-            <!-- The week, plotted. Active-disruptions per day is straight
-                 out of data/simulation.json: 0, 1, 2, 4, 3, 4, 2, 2. The
-                 tooltip on Thursday is the peak the copy calls out. -->
+            <!-- The week, plotted. Active-disruptions per day is straight out
+                 of data/simulation.json - 0, 1, 2, 4, 3, 4, 2, 2 - which is
+                 that file's timeline replayed: the strike lands on Tuesday,
+                 the Rhine on Wednesday, the Red Sea and its Suez knock-on on
+                 Thursday, and two clear on Sunday. The tooltip sits on the
+                 Thursday peak the copy calls out.
+
+                 Every coordinate below is a percentage of the plot box, in
+                 the SVG and in the HTML over it alike, which is what lets the
+                 two stay registered to each other at any width - see the CSS.
+                 The eight days are band centres, (i + 0.5) / 8, so each point
+                 sits in the middle of its day rather than on the boundary
+                 between two, and the day labels are a grid of eight equal
+                 columns under the same box.
+
+                 Values map y = 90 - 15v, so 0 sits at 90% and the 4 at 30%. The top
+                 three-tenths are left clear on purpose: that is where the
+                 callout goes, and it is the only band on the chart no reading
+                 can occupy. The segments are straight because the readings are
+                 daily counts: a spline through them would draw values at
+                 hours nothing was measured. -->
             <div class="ov-chart" aria-hidden="true">
               <div class="h">Board exposure across the week</div>
               <div class="s">Active disruptions per day &middot; from data/simulation.json</div>
-              <svg class="plot" viewBox="0 0 400 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="ov-area-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0"    stop-color="#006bff" stop-opacity=".22"/>
-                    <stop offset="0.85" stop-color="#006bff" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <g class="grid">
-                  <line x1="22" y1="80" x2="392" y2="80"/>
-                  <line x1="22" y1="62" x2="392" y2="62"/>
-                  <line x1="22" y1="44" x2="392" y2="44"/>
-                  <line x1="22" y1="26" x2="392" y2="26"/>
-                  <line x1="22" y1="8"  x2="392" y2="8"/>
-                </g>
-                <text class="axis" x="14" y="83" text-anchor="end">0</text>
-                <text class="axis" x="14" y="47" text-anchor="end">2</text>
-                <text class="axis" x="14" y="11" text-anchor="end">4</text>
-                <path class="area" d="M22,80 L75,62 L128,44 L181,8 L233,26 L286,8 L339,44 L392,44 L392,88 L22,88 Z"/>
-                <path class="line" d="M22,80 L75,62 L128,44 L181,8 L233,26 L286,8 L339,44 L392,44"/>
-                <circle class="dot"  cx="22"  cy="80" r="2.6"/>
-                <circle class="dot"  cx="75"  cy="62" r="2.6"/>
-                <circle class="dot"  cx="128" cy="44" r="2.6"/>
-                <circle class="dot on" cx="181" cy="8"  r="3.4"/>
-                <circle class="dot"  cx="233" cy="26" r="2.6"/>
-                <circle class="dot"  cx="286" cy="8"  r="2.6"/>
-                <circle class="dot"  cx="339" cy="44" r="2.6"/>
-                <circle class="dot"  cx="392" cy="44" r="2.6"/>
-                <!-- Tooltip. Text is anchor="middle" and the rect is
-                     centered on the Thursday dot (x=181), so lengthening or
-                     shortening the label does not push it off the peak.
-                     Width is deliberately generous - preserveAspectRatio=
-                     "none" on the parent SVG stretches text horizontally
-                     so a rect sized to the *nominal* string overflows in
-                     practice. -->
-                <g class="tip on" transform="translate(129 -18)">
-                  <rect x="0" y="0" width="104" height="20"/>
-                  <text x="52" y="14" text-anchor="middle"><tspan class="lab">Thu</tspan> &middot; 4 active</text>
-                </g>
-              </svg>
-              <div style="display:flex; justify-content:space-between;
-                          font-family:'Geist Mono',ui-monospace,monospace;
-                          font-size:9.5px; color:var(--faint);
-                          padding:2px 0 0 22px; letter-spacing:.02em">
-                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span>
-                <span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span>
+              <div class="ovc-body">
+                <div class="ovc-axis">
+                  <span style="top:30%">4</span>
+                  <span style="top:60%">2</span>
+                  <span style="top:90%">0</span>
+                </div>
+                <div class="ovc-col">
+                  <div class="ovc-plot">
+                    <svg class="plot" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="ov-area-fill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0"    stop-color="#006bff" stop-opacity=".22"/>
+                          <stop offset="0.85" stop-color="#006bff" stop-opacity="0"/>
+                        </linearGradient>
+                      </defs>
+                      <g class="grid">
+                        <line x1="0" y1="90" x2="100" y2="90"/>
+                        <line x1="0" y1="75" x2="100" y2="75"/>
+                        <line x1="0" y1="60" x2="100" y2="60"/>
+                        <line x1="0" y1="45" x2="100" y2="45"/>
+                        <line x1="0" y1="30" x2="100" y2="30"/>
+                      </g>
+                      <path class="area" d="M6.25,90 L18.75,75 L31.25,60 L43.75,30 L56.25,45
+                                            L68.75,30 L81.25,60 L93.75,60 L93.75,100 L6.25,100 Z"/>
+                      <path class="line" d="M6.25,90 L18.75,75 L31.25,60 L43.75,30 L56.25,45
+                                            L68.75,30 L81.25,60 L93.75,60"/>
+                    </svg>
+                    <i class="ovc-dot"    style="left:6.25%;  top:90%"></i>
+                    <i class="ovc-dot"    style="left:18.75%; top:75%"></i>
+                    <i class="ovc-dot"    style="left:31.25%; top:60%"></i>
+                    <i class="ovc-dot on" style="left:43.75%; top:30%"></i>
+                    <i class="ovc-dot"    style="left:56.25%; top:45%"></i>
+                    <i class="ovc-dot"    style="left:68.75%; top:30%"></i>
+                    <i class="ovc-dot"    style="left:81.25%; top:60%"></i>
+                    <i class="ovc-dot"    style="left:93.75%; top:60%"></i>
+                    <div class="ovc-tip on" style="left:43.75%; top:30%"><b>Thu</b> &middot; 4 active</div>
+                  </div>
+                  <div class="ovc-days">
+                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span>
+                    <span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span>
+                  </div>
+                </div>
               </div>
             </div>
 
