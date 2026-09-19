@@ -48,6 +48,39 @@ block measures the clip's own first frame and works out the opacity that puts it
 at a fixed weight behind the copy, so replacement footage of any brightness
 composites correctly without a re-tune.
 
+**The landing hero is the exception, and it is the opposite of the rest.** Since
+2026-09-19 it has no wash over the footage: the owner asked for the clip crisp
+and edge to edge, and near-black type cannot sit on photography without one
+(measured at 1.68:1 on the headline, 1.00:1 on the sub-head). So that band went
+dark and its type went light, and its four clips — 01, 02, 03 and 08 — are
+**graded dark in the file** to suit it. They are not interchangeable with the
+clips on the other blocks any more: drop one of these into `/product`'s light
+header and it will read as a black rectangle.
+
+Their grade is a scale and a hard ceiling, applied in RGB, so every channel has
+a real cap:
+
+```
+ffmpeg -i <source> -an -vf "lutrgb=r='min(val*S,150)':g='min(val*S,150)':b='min(val*S,150)'" \
+       -c:v libx264 -crf 30 -preset slow -pix_fmt yuv420p -movflags +faststart <out>
+```
+
+`S` is chosen per clip to land them all on a mean near 53 (0.44, 0.47, 0.37 for
+01/02/03). Two things were learned doing it, both of which cost an hour:
+
+- **`curves` cannot enforce a ceiling.** It interpolates its control points
+  with a spline, which overshoots between them, so a curve ending at 0.46
+  produced pixels well above it. `lutrgb` with a `min()` is exact.
+- **A luma-only cap is not a cap.** Capping Y in `lutyuv` while leaving chroma
+  alone lets saturated highlights — sodium lamps, landing lights — come back
+  over the ceiling once the decoder converts to RGB. Cap in RGB.
+- **Even an RGB cap leaks a little.** 4:2:0 chroma is reconstructed on decode,
+  so small bright points return above whatever the file was capped at: about
+  1.5% of `08-air-cargo-night.mp4`'s pixels clear 119 however hard it is
+  graded. That is why the hero's script fades a clip by its **95th-percentile
+  brightness** as well as its mean, and takes whichever answer is smaller.
+  A file grade alone will not hold this.
+
 **The opacity re-tunes itself; the wash does not.** The landing closer's wash was
 measured against `05-port-aerial.mp4` specifically - its lower half is held clean
 because that clip, at the opacity the script gives it, dropped the block's
@@ -70,11 +103,18 @@ enough. Re-measure, do not assume.
   Worth doing rather than shipping the source - these are served **through the
   serverless function**, not off a CDN, so every megabyte is one the function
   has to stream.
-- **Prefer footage that is not near-white.** The page background is `#fafafa`,
-  and the scripts aim every clip at a composite of 152 against that 250. A clip
+- **Prefer footage that is not near-white.** This is about the four blocks that
+  are still light — the landing closer, `/how-it-works`, `/product` and its
+  closer. Their page background is `#fafafa`, and their scripts aim every clip
+  at a composite of 152 against that 250. A clip
   brighter than 152 cannot get there at all: the derived opacity is capped at
   1, and capping it does not darken anything — it only stops the arithmetic
   asking for more than opaque.
+
+  On the landing hero the rule inverts: its ground is `#0e1013`, it aims a
+  composite of 64, and what disqualifies a clip there is a **bright** one —
+  blown sky, white superstructure, a snowfield — because light type pays for
+  highlights, not for averages.
 
   `04-control-room.mp4` is the worked example. It arrived at **176** mean
   luminance, was cut from the landing rotation for reading as a dead beat

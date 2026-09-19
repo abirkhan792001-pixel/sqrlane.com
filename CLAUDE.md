@@ -1671,7 +1671,7 @@ Scope creep is the failure mode here. None of these are in this build:
   anyway and show a small note. Never crash the demo.
 - **Never commit `.env`.** If it's about to be staged, stop.
 - **The hero reel is decoration, and decoration may not be load-bearing.** The home
-  page plays three clips behind the hero, one at a time. Every part of it is
+  page plays four clips behind the hero, one at a time. Every part of it is
   additive: the markup renders nothing when the clips are absent, the script
   reveals the band only after a clip has actually produced a frame (a 404 and a
   codec the browser refuses both look like success until you wait for `playing`),
@@ -1679,15 +1679,31 @@ Scope creep is the failure mode here. None of these are in this build:
   connection opt out entirely, and only the clip on screen is fetched. **Never
   let anything on that first screen depend on a clip arriving.**
 
-  Two things were measured rather than eyeballed, and both are in the CSS
-  comments. The wash over the footage uses partial alphas at every stop — one
-  opaque `var(--bg)` stop paints the reel out completely, which is what the
-  first version did. And each clip's opacity is computed at runtime from its
-  own first frame, because the four supplied clips ran 113 to 179 mean
-  luminance against a 250 page: at any single opacity the dark one shouted and
-  the bright one was invisible. Measuring rather than hand-tuning is also what
-  lets the footage be swapped without a re-tune. A clip over ~160 luminance
-  cannot carry this hero at all; one was dropped for that reason.
+  **The hero band is dark, and the rest of the page is not.** That is not drift.
+  It went dark on 2026-09-19, on the owner's instruction to take every mask,
+  gradient and overlay off the footage and let the clip run crisp and edge to
+  edge. With nothing between the clip and the copy, near-black type on
+  photography measured **1.68:1 on the headline and 1.00:1 on the sub-head** —
+  the sub-head being literally the same value as the frame behind it. Fading
+  the clips back did not fix it either, because footage carrying both black
+  shadows and white containers has no single ink colour that works over it. So
+  the contrast moved to a **ground**: `--hero-bg` on `.hero-band`, painted
+  under the reel, with light type over it. The ground is what keeps the reel
+  additive — no clip, no network, reduced motion, and the band is flat dark
+  with the pitch at 17:1 on it.
+
+  Three things are measured rather than eyeballed, and all are in the CSS
+  comments. The band's height is its content's, never px, so the footage
+  covers whatever the copy wraps to at any width. Each clip's opacity is
+  computed at runtime from its own first frame — but from **two** numbers, its
+  mean *and* its 95th-percentile brightness, taking whichever asks for less.
+  The mean alone is what a light page needed; on a dark band it is the
+  **highlights** that break light type, and the darkest clip by mean is the one
+  whose landing lights punch through. And the four hero clips are **graded dark
+  in the file** (`lutrgb` with a hard RGB ceiling — `curves` overshoots its own
+  control points and a luma-only cap leaks through chroma). They are no longer
+  interchangeable with the clips on the four light blocks.
+  `static/video/README.md` carries the recipe and what it cost to find.
 - **Both pages are set in Geist**, served from `static/fonts/` — the same typographic
   scale the dashboard's colour tokens came from, so the two pages read as one product.
   Self-hosted, never a CDN: an external font request is one more thing that can fail in

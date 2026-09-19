@@ -60,6 +60,23 @@
      needs. This clears it at 4.84:1. Marks keep --red; only text moves. */
   --red-ink:#d60019;
 
+  /* The hero band's ground. The pitch sits on dark since 2026-09-19, when the
+     wash over the footage was removed: with nothing between the clip and the
+     copy, dark type on photography measured 1.68:1 on the headline and 1.00:1
+     on the sub-head, and no ink colour fixes that on footage carrying both
+     black shadows and white containers. So the contrast comes from the ground
+     instead, and the type is light.
+
+     The ground is a real background, not a veil over the clip - it paints
+     under the reel, which is what keeps the reel additive. A checkout with no
+     clips, a metered connection and prefers-reduced-motion all render this
+     band as flat dark with the copy perfectly legible on it, exactly as they
+     rendered it flat light before. */
+  --hero-bg:#0e1013;
+  --hero-sub:#eef1f5;      /* near-white: over the footage's own
+                              highlights a dimmer grey costs ~1.6x the
+                              ratio, which is the whole margin */
+
   --r-sm:6px; --r-md:12px; --r-lg:16px;
 
   --shadow-card:0 2px 2px rgba(0,0,0,.04);
@@ -214,35 +231,58 @@ h1,h2,h3,h4,p{margin:0}
 .nav-links a.on{background:var(--gray-100); color:var(--fg)}
 
 /* ---------- hero ---------- */
-.hero{padding:88px 0 0; text-align:center; position:relative; overflow:hidden}
-.hero::before{content:""; position:absolute; inset:0 0 auto; height:520px; z-index:0;
+.hero{text-align:center; position:relative}
+
+/* The band: the ground, the footage and the pitch, in that order. Its height
+   is its content's, which is the point - the copy wraps to four lines on a
+   phone and to two on a desktop, and a band measured in px would have to be
+   guessed twice and would still be wrong the first time a word changes. The
+   reel below is inset:0 against this, so the footage fills whatever the copy
+   needs and the band's bottom edge lands under the buttons at every width. */
+.hero-band{position:relative; overflow:hidden; padding:88px 0 76px;
+           background:var(--hero-bg)}
+/* A little light from above, so the ground is not a flat rectangle where the
+   footage is faint or absent. Under the reel, like the ground itself. */
+.hero-band::before{content:""; position:absolute; inset:0; z-index:0;
   background:
-    radial-gradient(680px 300px at 50% -40px, rgba(0,107,255,.07), transparent 70%),
-    linear-gradient(to bottom, rgba(255,255,255,.9), transparent);
+    radial-gradient(680px 320px at 50% -40px, rgba(0,107,255,.18), transparent 70%),
+    linear-gradient(to bottom, rgba(255,255,255,.05), transparent 40%);
   pointer-events:none}
 .hero .wrap{position:relative; z-index:1}
-.hero h1{margin:22px auto 0; max-width:15ch}
-.hero .sub{margin:22px auto 0; max-width:60ch}
+.hero-band h1{margin:22px auto 0; max-width:15ch; color:#fff}
+.hero-band .sub{margin:22px auto 0; max-width:60ch; color:var(--hero-sub)}
+.hero-band .sub b{color:#fff}
 .hero .cta{margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
-.hero .under{margin-top:16px; font-size:13px; line-height:18px; color:var(--faint)}
+
+/* The buttons invert with the band. The primary was near-black on light and
+   would disappear here, so it becomes the light one; the secondary keeps its
+   outline shape but draws it in light. Both are scoped to the band so the
+   same classes elsewhere on the page are untouched. */
+.hero-band .btn-primary{background:#fff; color:#0a0a0a}
+.hero-band .btn-primary:hover{background:var(--gray-200)}
+.hero-band .btn-secondary{background:rgba(255,255,255,.08); color:#fff;
+                          border-color:rgba(255,255,255,.28)}
+.hero-band .btn-secondary:hover{background:rgba(255,255,255,.16)}
 
 /* ---------- hero background reel ---------- */
-/* Four clips behind the hero, one at a time. Borrowed anatomy: a full-bleed
-   muted loop under the pitch, advancing on its own. What is not borrowed
-   is the dark scrim over white type -
-   this page is light, its type is near-black, and the one thing a background
-   may not do is cost the headline its contrast.
+/* Four clips behind the pitch, one at a time: a full-bleed muted loop,
+   advancing on its own, on a dark ground with light type over it.
 
-   So the footage is pushed back rather than dimmed: low opacity, a light wash
-   over it that is strongest exactly where the copy sits, and the hero's own
-   gradient still on top. The result reads as movement behind the page rather
-   than as a video the page is sitting on.
+   That is the opposite of how this started, and the reason is in the tokens
+   above: the page is light and its type was near-black, so the footage had to
+   be pushed back under a wash heaviest where the copy sat. The wash was
+   removed on the owner's instruction, and with nothing in between, near-black
+   type on photography is unreadable - measured, not assumed. Light type on a
+   dark ground needs nothing in between, which is why this ends up being the
+   version with no overlay in it at all.
 
    .reel is display:none until the script finds a clip that will actually
-   play. That is deliberate - an empty black band is worse than no band. */
-/* Height stops just above the board mock. Losing the caption line under the
-   buttons shortened the hero - measure .shot's top before changing this. */
-.reel{display:none; position:absolute; inset:0 0 auto; height:440px; z-index:0;
+   play - and it now sits on a ground rather than on the page, so the state
+   where no clip loads is a dark band, not an empty grey one. */
+/* inset:0 against .hero-band, so the footage is exactly as tall as the copy
+   needs at any width. There is no px height here any more, and adding one
+   back means guessing the copy's wrap at every breakpoint. */
+.reel{display:none; position:absolute; inset:0; z-index:0;
       overflow:hidden; pointer-events:none}
 .reel.on{display:block}
 /* Full bleed, and it stays that way. Two attempts to crop the footage less
@@ -257,57 +297,42 @@ h1,h2,h3,h4,p{margin:0}
        same crop drawn smaller and uncovers ~5% of the band; the mask that hid
        that seam is what put the pale corners on the hero.
 
-   What controls how present the footage is is TARGET in the reel script and
-   the alphas in .reel-wash below - not its geometry. */
+   What controls how present the footage is is TARGET in the reel script -
+   not its geometry, and, since 2026-09-19, not an overlay either. */
 .reel-clips{position:absolute; inset:0}
 .reel-v{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
         opacity:0; transition:opacity 1.1s var(--ease)}
 /* The one on screen, at the opacity the script worked out for it. One fixed
    value cannot work here: measured on the four clips, mean frame luminance
-   runs 113 to 179 out of 255, so against a 250-luminance page the darkest
-   lands twice as hard as the brightest. At a single 0.62 the terminal aerial
-   dominated the headline while the control-room clip was three RGB points off
-   the background - invisible. So each clip gets its own, computed from its
-   own first frame. The fallback is only for the case where the measurement
-   itself fails. */
-.reel-v.on{opacity:var(--v-op, .55)}
+   runs 49 to 142 out of 255, so against a single ground the brightest lands
+   three times as hard as the darkest. So each clip gets its own, computed
+   from its own first frame. The fallback is only for the case where the
+   measurement itself fails - and it is low, because on this ground a clip
+   that comes in too strong takes the copy with it. */
+.reel-v.on{opacity:var(--v-op, .45)}
 
-/* The wash. A flat overlay would grey the whole band; this is heaviest under
-   the copy column and lets the footage come through at the edges, which is
-   what keeps it reading as a photograph rather than a tint. */
-/* Every stop here is a partial alpha, never `var(--bg)` itself. A single
-   opaque stop anywhere in the radial paints the footage out completely and
-   the band goes back to looking like plain page - which is exactly what the
-   first version of this did.
+/* There is no overlay over the footage, and there is no longer anything that
+   wants to be one. The wash that used to sit here - a radial heaviest under
+   the copy, over a linear that dissolved the band into the page - was removed
+   on the owner's instruction on 2026-09-19, along with the edge mask of the
+   day before. Both were the same thing: a white fade over the picture.
 
-   The stops are not evenly spent, and which one pays is measured rather than
-   guessed. The radial's core is what the headline and the sub-head sit on, so
-   it stays where it is; its outer stop is near nothing, because the sides and
-   corners are footage nobody is reading over. The band's top is light for the
-   same reason - the copy starts a third of the way down, so a heavy stop up
-   there only whites out sky. The bottom carries the most because the sub-head
-   is the page's tightest type, sits low in the band, and is the thing that
-   pays first here: worst pixel behind its box, over a full rotation at 1280,
-   is 4.84:1 against a 4.5 floor, with the headline at 7.54:1.
+   It is worth knowing what removing it cost, because it is what forced the
+   dark band. Measured over a full rotation of the four clips, worst pixel
+   behind each element's box, with the page still light and its type still
+   near-black: the headline read 1.68:1 at 1280 and 1.59:1 at 375, and the
+   sub-head 1.00:1 at both - the same value as the footage behind it, which is
+   what invisible measures. Fading the clips right back did not fix it either
+   (at a 225 composite the sub-head was still 4.04:1 and 1.83:1), because
+   footage carrying both black shadows and white containers has no single ink
+   colour that works over it.
 
-   Measured 2026-09-19 against the four clips: this opened the corners from
-   165 to 128 mean luminance - visibly more footage - and moved the sub-head's
-   worst case from 4.72 to 4.84, because what was given away at the edges was
-   bought back under the copy. Re-measure both if a stop moves; the two
-   directions are easy to confuse. */
-.reel-wash{position:absolute; inset:0;
-  background:
-    radial-gradient(700px 300px at 50% 46%, rgba(250,250,250,.74) 0%,
-                    rgba(250,250,250,.60) 50%, rgba(250,250,250,.04) 80%,
-                    rgba(250,250,250,0) 100%),
-    linear-gradient(to bottom, rgba(250,250,250,.12) 0%, rgba(250,250,250,0) 26%,
-                    rgba(250,250,250,.68) 84%, var(--bg) 100%)}
+   So the contrast moved to the ground. Do not put a veil back: if the footage
+   is competing with the copy, the lever is the grade in the clip file and
+   TARGET below, both of which move the whole band together. */
 
-@media (max-width:640px){
-  .reel{height:340px}
-}
-/* No motion, no video: the script never requests a clip, and the hero's own
-   gradient carries the band on its own. */
+/* No motion, no video: the script never requests a clip, and the band's own
+   ground carries it. */
 @media (prefers-reduced-motion:reduce){
   .reel{display:none !important}
 }
@@ -1219,12 +1244,15 @@ h1,h2,h3,h4,p{margin:0}
 .signup > .wrap{position:relative; z-index:1}
 
 /* ---------- the closer's background clip ---------- */
-/* One clip behind the sign-up block, treated as the hero reel and the
-   /how-it-works header are: pushed back rather than dimmed, under a light
-   wash heaviest where the copy sits, so near-black Geist keeps its contrast.
+/* One clip behind the sign-up block, treated as the /how-it-works header is:
+   pushed back rather than dimmed, under a light wash heaviest where the copy
+   sits, so near-black Geist keeps its contrast. The hero no longer works this
+   way - its wash was removed on 2026-09-19 - so this block and that one are
+   deliberately no longer the same treatment, and the contrast note below is
+   this block's own.
 
-   The prefix is not decoration. This page already owns .reel/.reel-v/
-   .reel-wash for the hero, whose rule is height:440px and inset:0 0 auto -
+   The prefix is not decoration. This page already owns .reel/.reel-v for the
+   hero, whose rule is height:440px and inset:0 0 auto -
    reusing the name would have given this band the hero's height and left the
    section's lower half uncovered. Two classes one letter apart have cost this
    repo twice already (.k/.kcard, .mk/.sysmk); a full prefix is cheaper than
@@ -1387,7 +1415,7 @@ h1,h2,h3,h4,p{margin:0}
      but four lines of black bar is too much weight above the fold. */
   .banner{font-size:12px; line-height:17px; padding:8px 0; text-align:left}
   .section{padding:64px 0}
-  .hero{padding-top:60px}
+  .hero-band{padding:60px 0 56px}
   .d1{font-size:38px; line-height:42px; letter-spacing:-1.6px}
   .d2{font-size:30px; line-height:36px; letter-spacing:-1.2px}
   .h32{font-size:26px; line-height:32px; letter-spacing:-1px}
@@ -1466,21 +1494,24 @@ h1,h2,h3,h4,p{margin:0}
 
 <!-- ======================== HERO ======================== -->
 <section class="hero">
-  <!-- The background reel. Four clips, one at a time, crossfading - the
-       anatomy is Zeit AI's hero; the treatment is ours, because a dark
-       full-bleed video under light Geist type would be a different product's
-       page. So the footage is washed back into --bg and the copy keeps the
-       contrast it had.
+ <div class="hero-band">
+  <!-- The background reel. Four clips, one at a time, crossfading, on a dark
+       ground with light type over it.
+
+       That ground is the whole reason this works without a veil over the
+       footage. It is a background on the band, painted under the reel, so the
+       clip sits on it rather than under anything - and the copy's contrast
+       comes from it whether a clip ever arrives or not.
 
        Three things make it safe to put moving pictures behind a pitch:
 
          * It is additive. The markup below renders nothing at all when the
            clips are missing (a fresh checkout has none - see /video in app.py)
-           and the hero looks exactly as it did. Nothing on screen depends on
-           a fetch that can fail, which is the same rule the rest of the page
-           follows.
+           and the band is simply flat dark with the pitch on it. Nothing on
+           screen depends on a fetch that can fail, which is the same rule the
+           rest of the page follows.
          * It respects prefers-reduced-motion: no video is even requested, and
-           the gradient alone stands in.
+           the ground alone stands in.
          * What is in the rotation is a measurement, not a preference. The
            operations desk at a data wall (04-control-room.mp4) is not here: it
            measured 176 mean luminance against this page's 250, so even at the
@@ -1514,7 +1545,6 @@ h1,h2,h3,h4,p{margin:0}
       <video class="reel-v" autoplay muted playsinline loop preload="none"
              data-src="/video/08-air-cargo-night.mp4" data-label="Air freight loaded overnight at a stand"></video>
     </div>
-    <div class="reel-wash"></div>
   </div>
 
   <div class="wrap">
@@ -1523,7 +1553,7 @@ h1,h2,h3,h4,p{margin:0}
     <p class="sub copy18">
       Agents that work your bookings &mdash; watch the lane, decide, write the mail,
       put the change on the record in your
-      <b style="color:var(--fg);font-weight:500">TMS</b>. You approve.
+      <b style="font-weight:500">TMS</b>. You approve.
     </p>
 
     <div class="cta">
@@ -1533,7 +1563,10 @@ h1,h2,h3,h4,p{margin:0}
           <path d="M5 12h13M12 5l7 7-7 7"/></svg></a>
       <a class="btn btn-secondary btn-lg" href="/product">See the product</a>
     </div>
+  </div>
+ </div>
 
+  <div class="wrap">
     <!-- A rendering of the actual board, drawn in HTML so it stays sharp. -->
     <div class="shot" data-walk>
       <!-- Floating live-feed card. Fetches /api/live-feed once, rotates
@@ -3057,28 +3090,61 @@ h1,h2,h3,h4,p{margin:0}
      number also means this survives the footage being replaced, which it will
      be - these values would otherwise have to be re-tuned by eye every time.
 
-     TARGET is where the composite should land against the page's own 250.
-     Clamped at both ends: below .3 nothing is visible however dark the clip,
-     and above .85 a mid-tone clip starts competing with the type. */
-  var TARGET = 152, PAGE = 250;
+     TARGET is where the composite should land, and GROUND is what the clip is
+     composited onto - the band's background, not the page. Both went dark on
+     2026-09-19: the formula is the same one, re-aimed, so a clip still lands
+     at a fixed weight whatever it is footage of. Keep them in step with
+     --hero-bg; a ground the script does not know about is a composite it
+     cannot compute.
+
+     A mean is not enough on a dark band, and this is the thing that took
+     longest to get right. TARGET aims a clip's *average*, and what breaks
+     light type is a clip's *highlights* - a white container, a landing light,
+     a floodlit tailplane. The night air-freight clip is the worked example:
+     it is the darkest of the four by mean, so aiming the mean asked for the
+     highest opacity of any of them, which then drove its lights straight
+     through the sub-head. Graded down in the file it still did, because 4:2:0
+     chroma is reconstructed on decode and small bright points come back above
+     whatever ceiling the grade set - 1.5% of its pixels clear 119 however
+     hard the file is capped.
+
+     So the opacity is whichever of two answers is smaller: the one that puts
+     the average on TARGET, and the one that keeps the bright end under CEIL.
+     CEIL is where a highlight can sit and still carry the sub-head's ink at
+     4.5:1. The bright end is read as the 95th percentile of the sampled
+     frame, not its maximum: the sample is a 32x18 downscale, so a value there
+     is already an average of a region, and a region of light is what type has
+     to survive - a single specular pixel is not.
+
+     Keep TARGET, GROUND and CEIL in step with --hero-bg and --hero-sub. A
+     ground or an ink the script does not know about is a composite it cannot
+     compute. */
+  var TARGET = 64, GROUND = 16, CEIL = 105;
   function normalise(v) {
-    var lum;
+    var lum, bright;
     try {
       var c = document.createElement("canvas");
       c.width = 32; c.height = 18;
       var x = c.getContext("2d");
       x.drawImage(v, 0, 0, 32, 18);
-      var d = x.getImageData(0, 0, 32, 18).data, sum = 0;
+      var d = x.getImageData(0, 0, 32, 18).data, sum = 0, all = [];
       for (var k = 0; k < d.length; k += 4) {
-        sum += 0.2126 * d[k] + 0.7152 * d[k + 1] + 0.0722 * d[k + 2];
+        var y = 0.2126 * d[k] + 0.7152 * d[k + 1] + 0.0722 * d[k + 2];
+        all.push(y);
+        sum += y;
       }
-      lum = sum / (d.length / 4);
+      lum = sum / all.length;
+      all.sort(function (a, b) { return a - b; });
+      bright = all[Math.floor(all.length * 0.95)];
     } catch (e) {
       return;                       // leave the CSS fallback in place
     }
-    if (lum >= PAGE - 1) return;    // a clip brighter than the page: leave it
-    var op = (PAGE - TARGET) / (PAGE - lum);
-    v.style.setProperty("--v-op", Math.max(0.3, Math.min(0.85, op)).toFixed(3));
+    if (lum <= GROUND + 1) return;  // a clip darker than the ground: leave it
+    var op = (TARGET - GROUND) / (lum - GROUND);
+    if (bright > GROUND + 1) {
+      op = Math.min(op, (CEIL - GROUND) / (bright - GROUND));
+    }
+    v.style.setProperty("--v-op", Math.max(0.25, Math.min(0.65, op)).toFixed(3));
   }
 
   function show(i) {
