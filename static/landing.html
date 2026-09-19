@@ -243,9 +243,42 @@ h1,h2,h3,h4,p{margin:0}
 /* Height stops just above the board mock. Losing the caption line under the
    buttons shortened the hero - measure .shot's top before changing this. */
 .reel{display:none; position:absolute; inset:0 0 auto; height:440px; z-index:0;
-      overflow:hidden; pointer-events:none}
+      overflow:hidden; pointer-events:none;
+      /* How far back off the band the footage is drawn. See .reel-clips - the
+         scale and the fade under it are one setting in two properties. */
+      --reel-zoom:.9}
 .reel.on{display:block}
-.reel-clips{position:absolute; inset:0}
+
+/* The footage is drawn a notch smaller than the band it sits in, which takes
+   the edge off how hard a 596px-wide clip is magnified across a 1440px hero.
+
+   It cannot be done by loosening the fit. object-fit:cover is already the
+   least zoom that covers the band, so there is no slack in it: the only way
+   further out is to draw the whole thing smaller, and that uncovers ~5% of
+   the band on whichever axis is binding - the sides on a desktop, top and
+   bottom on a phone, because cover crops the other one. A hard edge there
+   reads as a broken element, not as a smaller picture.
+
+   So the clips dissolve a little before their own edge instead. The mask is
+   two gradients intersected, one per axis, because which axis is exposed
+   depends on the viewport. Scale and fade are a pair: take the scale back to
+   1 and the fade is eating footage for nothing; push it below .9 without
+   widening the fade and the seam comes back.
+
+   The other way to crop less is to make the band taller, which genuinely
+   shows more of each frame rather than the same frame smaller. It was tried
+   on 2026-09-17 (3bd2dc0, at 560px with a px-anchored wash) and reverted the
+   same day (218a465), so it is a settled question: the band is 440px and the
+   hero's proportions are not what gets spent on the footage. */
+.reel-clips{position:absolute; inset:0;
+  transform:scale(var(--reel-zoom, .9)); transform-origin:50% 50%;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-composite:source-in; mask-composite:intersect}
 .reel-v{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
         opacity:0; transition:opacity 1.1s var(--ease)}
 /* The one on screen, at the opacity the script worked out for it. One fixed
@@ -1451,23 +1484,38 @@ h1,h2,h3,h4,p{margin:0}
            follows.
          * It respects prefers-reduced-motion: no video is even requested, and
            the gradient alone stands in.
-         * Three clips, not four. A fourth - an operations desk at a data wall -
+         * What is in the rotation is a measurement, not a preference. The
+           operations desk at a data wall (04-control-room.mp4) is not here: it
            measured 176 mean luminance against this page's 250, so even at the
            opacity ceiling it composited to within a few points of plain
-           background: a dead beat in the rotation. It is still in
+           background - a dead beat between two darker clips. It is still in
            static/video/; it would work on a dark hero and does not work here.
+           The night air-freight clip that is here measures 49, the darkest of
+           the set, and needed no grading for the opposite reason: the script
+           reads its first frame and fades it back to .497, further than any of
+           the others, and it lands on the same 152 as the rest.
          * Only the clip on screen is loaded. preload="none" on all four, and
            the next one is asked for a beat before it is needed, so the page
            does not pull several megabytes to render a first screen that is
-           readable without any of it. -->
+           readable without any of it.
+
+       autoplay sits alongside the script's own play() rather than instead of
+       it, and costs nothing at load: there is no src here to autoplay, only a
+       data-src the script assigns when a clip's turn comes. It is the belt to
+       that braces - where a play() promise is refused, the attribute still
+       starts the clip. The one thing it changes is that the clip fetched a
+       beat early would run in the background, so load() pauses anything that
+       starts playing out of turn. -->
   <div class="reel" data-reel aria-hidden="true">
     <div class="reel-clips">
-      <video class="reel-v" muted playsinline loop preload="none"
+      <video class="reel-v" autoplay muted playsinline loop preload="none"
              data-src="/video/01-container-yard.mp4" data-label="A container yard from above"></video>
-      <video class="reel-v" muted playsinline loop preload="none"
+      <video class="reel-v" autoplay muted playsinline loop preload="none"
              data-src="/video/02-terminal-queue.mp4" data-label="Trucks queued at a terminal gate"></video>
-      <video class="reel-v" muted playsinline loop preload="none"
+      <video class="reel-v" autoplay muted playsinline loop preload="none"
              data-src="/video/03-road-corridor.mp4" data-label="A road corridor, seen from the air"></video>
+      <video class="reel-v" autoplay muted playsinline loop preload="none"
+             data-src="/video/08-air-cargo-night.mp4" data-label="Air freight loaded overnight at a stand"></video>
     </div>
     <div class="reel-wash"></div>
   </div>
@@ -2978,13 +3026,31 @@ h1,h2,h3,h4,p{margin:0}
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   var HOLD = 7000;                         // how long each clip is on screen
+  /* Real time, set on every turn rather than once, because a browser that
+     reloads a src can drop the rate back and a clip running at a different
+     speed from the others is the sort of thing nobody spots and everybody
+     feels.
+
+     It is 1 on purpose. Easing the reel to 0.7 was tried on 2026-09-17 and
+     reverted the same day (3bd2dc0, reverted by 218a465), along with a taller
+     band - so slowing this down is a decision that has already been taken
+     once, and taking it again needs the owner to ask for it. */
+  var RATE = 1;
   var vids = [].slice.call(reel.querySelectorAll(".reel-v"));
   if (!vids.length) return;
 
   var at = -1, timer = null, started = false;
 
   function load(v) {
-    if (!v.src) v.src = v.getAttribute("data-src");
+    if (v.src) return;
+    v.src = v.getAttribute("data-src");
+    /* The elements carry autoplay, so the clip fetched a beat before its turn
+       would start playing where it is - off screen, decoding for nobody. It is
+       stopped the moment it starts, which leaves autoplay doing only the job
+       it is here for: covering a play() the browser refused. */
+    v.addEventListener("play", function () {
+      if (vids[at] !== v) { try { v.pause(); } catch (e) {} }
+    });
   }
 
   /* Each clip is faded to sit at the same weight behind the copy, whatever it
@@ -3023,6 +3089,7 @@ h1,h2,h3,h4,p{margin:0}
     load(v);
     if (v.readyState >= 2) normalise(v);
     else v.addEventListener("loadeddata", function () { normalise(v); }, { once: true });
+    try { v.playbackRate = RATE; } catch (e) {}
     var playing = v.play();
     if (playing && playing.catch) playing.catch(function () {});
 
