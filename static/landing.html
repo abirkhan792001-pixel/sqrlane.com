@@ -3385,11 +3385,19 @@ h1,h2,h3,h4,p{margin:0}
   /* pane -> [sidebar item's data-nav it lights, how long it holds].
      Overview's hold is 0 because its own animation decides when it is done.
      Using the data-nav name rather than a numeric index means adding more
-     sidebar items above cannot silently shift what lights up. */
+     sidebar items above cannot silently shift what lights up.
+
+     A hold is reading time, so it is set against what the pane actually asks
+     a person to read. Reasoning was 6600 and is 4400: it carries three short
+     lines and two figures, which is the same density as the risk pane beside
+     it, and it was sitting a third longer than that for no reason anyone
+     could name. Drafts is longer than its text needs because the approve
+     button's own 2750ms plays inside its hold - shorten that one and the
+     button is still mid-press when the pane leaves. */
   var WINDOWS = [
     ["overview",  "overview",  0],
     ["risk",      "risk",   4400],
-    ["reasoning", "reasoning", 6600],
+    ["reasoning", "reasoning", 4400],
     ["drafts",    "approvals", 4600],
     ["tms",       "tms",    5200],
     ["margin",    "tms",    6800],
