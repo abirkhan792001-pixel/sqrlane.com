@@ -1266,6 +1266,56 @@ h1,h2,h3,h4,p{margin:0}
 .knote b{color:var(--fg); font-weight:500}
 @media (max-width:900px){.kgrid{grid-template-columns:1fr}}
 
+/* ---------- FAQ ---------- */
+/* One section head above one bordered container - the same shape every
+   other section on this page uses (see #kpi, #integrations, #loop).
+   Items sit inside a single card with hairline dividers between them
+   rather than as their own cards, so the block reads as one list.
+   Native <details> underneath: works with no JS, each item is still
+   individually linkable (#faq-different, #faq-real, ...). The +/x
+   toggle is one span with two absolutely-positioned lines that cross;
+   opening rotates the whole slot 90deg and collapses the vertical
+   line to zero, so + becomes x smoothly rather than snapping. First
+   item defaults to open. */
+.faq-list{margin-top:38px; background:var(--card); border:1px solid var(--border);
+          border-radius:var(--r-md); box-shadow:var(--shadow-card); overflow:hidden}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:0}
+.faq-item summary{list-style:none; padding:22px 26px; cursor:pointer;
+                  display:flex; align-items:center; gap:24px;
+                  font-size:16.5px; line-height:24px; font-weight:600;
+                  letter-spacing:-.32px; color:var(--fg);
+                  transition:background .15s var(--ease)}
+.faq-item summary:hover{background:color-mix(in srgb,var(--gray-100) 60%,transparent)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::marker{content:""}
+/* Closed: two lines at 0deg and 90deg = +
+   Open : the whole slot rotates 45deg, so + becomes x. One transform,
+          no scaling, and the animation reads as a smooth quarter turn. */
+.faq-tog{margin-left:auto; width:22px; height:22px; position:relative; flex:none;
+         color:var(--muted);
+         transition:transform .3s var(--ease), color .3s var(--ease)}
+.faq-tog::before,.faq-tog::after{content:""; position:absolute; left:50%; top:50%;
+                                 width:14px; height:1.6px; background:currentColor;
+                                 border-radius:1px; transform-origin:center}
+.faq-tog::before{transform:translate(-50%,-50%)}
+.faq-tog::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq-item[open] .faq-tog{transform:rotate(45deg); color:var(--fg)}
+
+.faq-body{padding:0 26px 24px; font-size:15px; line-height:24px; color:var(--muted);
+          max-width:70ch}
+.faq-body p{margin:0}
+.faq-body p + p{margin-top:12px}
+/* Each answer routes to the page that owns the question rather than
+   answering it twice - see the section comment below. */
+.faq-body a{color:var(--fg); text-decoration:underline;
+            text-decoration-thickness:1px; text-underline-offset:3px}
+
+@media (max-width:640px){
+  .faq-item summary{padding:18px 20px; font-size:15.5px; line-height:22px; gap:16px}
+  .faq-body{padding:0 20px 20px; font-size:14.5px; line-height:23px}
+}
+
 /* ---------- signup (a placeholder, and it says so) ---------- */
 .signup{border-top:1px solid var(--border); background:var(--card); padding:88px 0;
         text-align:center; position:relative; overflow:hidden}
@@ -2725,6 +2775,137 @@ h1,h2,h3,h4,p{margin:0}
 
     <p class="knote">From one run on the Hamburg strike, over synthetic bookings.
       <b>Not customer results</b> &mdash; there are none yet.</p>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<!-- Ported from claude/hopeful-ride-ryulsf, where it was written and then
+     reworked twice (1fd5e4a, 0761e9c, ec3dd25) but never merged - PR #97
+     went in before it existed.
+
+     Two things were changed on the way in, both because the page it came
+     from is not the page it landed on:
+
+       * It said the systems the connector plugs into are "named on the
+         landing page above". They are not: the vendor row above is the
+         apps a decision is currently re-typed into - Outlook, Slack,
+         WhatsApp, the shadow spreadsheet - which is the problem, not an
+         integration list. That answer points at /product now, where the
+         connector's targets actually are, and where the disclaimer that
+         none of them is connected lives with them.
+       * The head said six things "come up on nearly every call". No calls
+         have happened. That is the invented-traction sentence this project
+         refuses, in its softest form, so it says what it is instead.
+
+     Every answer links to the page that owns its question rather than
+     answering it in full here - the site's rule is that no page answers
+     another page's question, and an FAQ is the one block that will break
+     it by accident. Keep the answers short enough to be a route.
+
+     Native <details>: works with no JS, and each item is linkable on its
+     own id (#faq-real and so on). -->
+<section class="section faq" id="faq">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="d2">Questions worth asking before you book a call.</h2>
+      <p class="copy18">Six it should answer without one. If yours isn&rsquo;t
+        here, <a href="#contact" style="color:var(--fg); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px">book one</a> and ask it.</p>
+    </div>
+
+    <div class="faq-list rv">
+      <details class="faq-item" id="faq-different" open>
+        <summary>How is this different from a risk platform or a TMS?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>Risk platforms stop at the alert. Your TMS starts after the
+            decision. Between them a person re-keys the consequences
+            &mdash; a booking amendment, a discharge port change, a
+            customer email &mdash; one booking at a time.</p>
+          <p>SQRlane closes that gap: it reads the world, reasons against
+            the booking, drafts the mail, and queues the change back on
+            the record. Same record at both ends, one gate on every write.
+            <a href="/how-it-works">How a decision is actually made</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-real">
+        <summary>Is any of this actually real, or is it a mock?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>The risk detection is real. On every run the terminal reads
+            sixty free, keyless sources across six families &mdash;
+            regional wires, river gauges, port weather and sea state,
+            seismic and natural-hazard feeds, government filings and
+            reference rates. The reasoning is a real model call against
+            a real event.</p>
+          <p>Shipments are synthetic, so a disruption can be shown on
+            demand instead of waiting for one. The TMS link is a demo
+            connector: the near end is built, the far end is the
+            integration work. Nothing is ever sent, and nothing is ever
+            written. <a href="/about">The full ledger of what is real
+            here</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-tms">
+        <summary>Does it connect to my TMS today?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>Not today. The connector is modelled end to end &mdash; the
+            read path is the only door to the book, and every
+            Worker&rsquo;s action is queued as a change to the booking it
+            came from &mdash; but no vendor is contacted, no credential
+            is stored, and no endpoint is called.</p>
+          <p>The systems it is built to point at are
+            <a href="/product#systems">named on the product page</a>.
+            Wiring a real one is the single highest-value piece of work on
+            the far side of the integration wall.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-send">
+        <summary>Will it send emails or make changes on its own?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>No. Every outbound action &mdash; carrier mail, customer
+            mail, booking amendment, queued field change &mdash; carries
+            a <b>DRAFT / QUEUED</b> status until you approve it, one
+            item or a selected batch at a time.</p>
+          <p>There is no email library, no SMTP and no TMS endpoint
+            anywhere in the code for a rogue send or write to reach. A
+            test fails the build if one appears.
+            <a href="/product">The gate, and what sits behind it</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-data">
+        <summary>Where is my data processed?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>The prototype calls a US inference provider today. The
+            <a href="/whitepaper">whitepaper</a> covers what shipping this
+            on a per-token serverless provider in Europe would take &mdash;
+            with the specific models and prices we would run against.</p>
+          <p>There is no customer data on this build. Shipments are
+            synthetic and the reasoning trail is discarded with the run.</p>
+        </div>
+      </details>
+
+      <details class="faq-item" id="faq-next">
+        <summary>What&rsquo;s the next step &mdash; pricing, pilot, timeline?
+          <span class="faq-tog" aria-hidden="true"></span></summary>
+        <div class="faq-body">
+          <p>The prototype is not for sale. What&rsquo;s worth showing is
+            the shape of the workflow when reading, deciding, drafting
+            and writing back are one loop &mdash; before pricing, before
+            integrations, and before a pilot.</p>
+          <p>Book a call and we&rsquo;ll walk through what a pilot would
+            look like against your own book: which lanes, which TMS, and
+            which Workers would ship live first.</p>
+        </div>
+      </details>
+    </div>
   </div>
 </section>
 
