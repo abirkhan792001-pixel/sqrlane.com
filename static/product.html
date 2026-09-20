@@ -154,7 +154,9 @@ h1,h2,h3,h4,p{margin:0}
 .phead .wrap{position:relative; z-index:1}
 .phead .in{max-width:720px}
 .phead h1{margin-top:16px}
-.phead .copy18{margin-top:18px; max-width:60ch}
+/* 680px rather than a ch measure: this paragraph is the page's whole pitch
+   and runs long, and a little extra leading keeps four lines of it legible. */
+.phead .copy18{margin-top:18px; max-width:680px; line-height:29px}
 .phead .goal{margin-top:22px; display:inline-flex; align-items:center; gap:9px;
              padding:7px 13px 7px 11px; border-radius:999px; background:var(--card);
              border:1px solid var(--border-strong); box-shadow:var(--shadow-card);
@@ -543,9 +545,8 @@ h1,h2,h3,h4,p{margin:0}
   <div class="wrap">
     <div class="in rv">
       <span class="eyebrow">Product</span>
-      <h1 class="d2">Every workflow your desk runs. And ready when a lane moves.</h1>
-      <p class="copy18">SQRlane ships as fourteen pre-configured agents on the bookings in your TMS. Nine of them run the everyday desk &mdash; quoting, booking, tracking, documents, invoices, customs. Five watch the world and act when a lane moves. Every action lands back on the record it came from, and nothing lands without you.</p>
-      <p class="goal"><span class="chip blue">This page</span> <b>the two halves, one book, one gate</b></p>
+      <h1 class="d2">AI agents built for how freight forwarding actually works.</h1>
+      <p class="copy18">SQRlane deploys 14 pre-configured AI agents directly into your TMS &mdash; 9 automate your everyday desk (quoting, docs, tracking, customs), and 5 watch the world to act when a lane moves. Every action logs back to your TMS, and nothing executes without your approval.</p>
     </div>
   </div>
 </section>

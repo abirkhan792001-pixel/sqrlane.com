@@ -141,8 +141,12 @@ Two things follow, and both are easy to undo by accident:
 - **The four doors are gone** (2026-09-05). The nav routes to all four pages
   from every page, so the home page no longer repeats them.
 - **Every page says its own job on itself**, in a chip under the headline
-  (`.goal` on the four; the hero copy on home). If a new section cannot be filed
-  under the page's stated job, it belongs on a different page.
+  (`.goal` on `/how-it-works`, `/use-cases` and `/about`; the hero copy on home).
+  If a new section cannot be filed under the page's stated job, it belongs on a
+  different page. **`/product` no longer carries one** - the chip was removed on
+  2026-09-20 on the owner's instruction when that hero was rewritten, so its job
+  is stated by the hero copy the way home's is. The other three still have it,
+  and a page without one has nothing to file a new section against.
 
 The pages are self-contained files as before — same tokens, same self-hosted Geist,
 same nav and footer, nothing loaded off-origin. `tests/test_the_pages_keep_their_promises.py`
