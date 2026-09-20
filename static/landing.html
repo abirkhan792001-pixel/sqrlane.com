@@ -1267,63 +1267,123 @@ h1,h2,h3,h4,p{margin:0}
 @media (max-width:900px){.kgrid{grid-template-columns:1fr}}
 
 /* ---------- FAQ ---------- */
-/* One section head above one bordered container - the same shape every
-   other section on this page uses (see #kpi, #integrations, #loop).
-   Items sit inside a single card with hairline dividers between them
-   rather than as their own cards, so the block reads as one list.
-   Native <details> underneath: works with no JS, each item is still
-   individually linkable (#faq-different, #faq-real, ...). The +/x
-   toggle is one span with two absolutely-positioned lines that cross;
-   opening rotates the whole slot 90deg and collapses the vertical
-   line to zero, so + becomes x smoothly rather than snapping. First
-   item defaults to open. */
-.faq-list{margin-top:38px; background:var(--card); border:1px solid var(--border);
-          border-radius:var(--r-md); box-shadow:var(--shadow-card); overflow:hidden}
-.faq-item{border-bottom:1px solid var(--border)}
-.faq-item:last-child{border-bottom:0}
-.faq-item summary{list-style:none; padding:22px 26px; cursor:pointer;
+/* Two columns: the categories on a sticky rail, one category's questions
+   beside it. Every value below is this page's own token - there is no
+   utility framework here, so bg-white is var(--card), the light border is
+   var(--border), rounded-xl is var(--r-md) and the neutral fill behind an
+   open answer is var(--gray-100).
+
+   It degrades to the stacked list it replaced. Tabs need JS to mean
+   anything, so the shell only becomes a tab layout once the script has run
+   and added .js: without it the rail is hidden, every category renders
+   under its own label, and the native <details> still open and close. That
+   is why the category labels are still in the markup - they are not dead
+   weight, they are the no-JS heading. */
+.faq-shell{margin-top:38px; display:grid; grid-template-columns:196px 1fr;
+           gap:52px; align-items:start}
+
+/* The rail. Sticky under the nav, which is itself sticky at top:0 - the
+   offset is that bar's height plus a little air, so a tab never sits under
+   it while the questions scroll. */
+.faq-nav{position:sticky; top:88px; display:flex; flex-direction:column; gap:2px}
+.faq-tab{appearance:none; -webkit-appearance:none; background:none; border:0;
+         border-left:2px solid var(--border); border-radius:0;
+         padding:9px 0 9px 16px; text-align:left; cursor:pointer;
+         font-family:inherit; font-size:14px; line-height:20px; font-weight:450;
+         letter-spacing:-.1px; color:var(--faint);
+         transition:color .2s var(--ease), border-color .2s var(--ease)}
+.faq-tab:hover{color:var(--muted)}
+/* Active: the indicator bar and the weight move together. One of them alone
+   is easy to miss on a rail of five. */
+.faq-tab.on{color:var(--fg); font-weight:600; border-left-color:var(--fg)}
+.faq-tab:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+
+.faq-panels{min-width:0}
+.faq-cat{display:flex; align-items:center; gap:12px; margin-bottom:13px;
+         font-family:"Geist Mono",ui-monospace,monospace; font-size:11px;
+         letter-spacing:.07em; text-transform:uppercase; color:var(--faint)}
+.faq-cat::after{content:""; flex:1; height:1px; background:var(--border)}
+.faq-group + .faq-group{margin-top:34px}
+
+/* Each question is its own card rather than a row in one long one, so an
+   open answer can take the neutral fill and keep its corners. */
+.faq-item{background:var(--card); border:1px solid var(--border);
+          border-radius:var(--r-md); box-shadow:var(--shadow-card);
+          transition:background .3s ease-in-out, border-color .3s ease-in-out,
+                     box-shadow .3s ease-in-out}
+.faq-item + .faq-item{margin-top:10px}
+.faq-item summary{list-style:none; padding:18px 22px; cursor:pointer;
                   display:flex; align-items:center; gap:24px;
-                  font-size:16.5px; line-height:24px; font-weight:600;
-                  letter-spacing:-.32px; color:var(--fg);
-                  transition:background .15s var(--ease)}
-.faq-item summary:hover{background:color-mix(in srgb,var(--gray-100) 60%,transparent)}
+                  font-size:16px; line-height:24px; font-weight:600;
+                  letter-spacing:-.3px; color:var(--fg)}
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item summary::marker{content:""}
-/* Closed: two lines at 0deg and 90deg = +
-   Open : the whole slot rotates 45deg, so + becomes x. One transform,
-          no scaling, and the animation reads as a smooth quarter turn. */
+.faq-item:hover{border-color:var(--border-strong)}
+/* Open: the soft fill, and the border gives way to it so the card reads as
+   one filled container rather than a tinted box inside an outline. */
+.faq-item.expanded,.faq-shell:not(.js) .faq-item[open]{
+          background:var(--gray-100); border-color:transparent; box-shadow:none}
+
 .faq-tog{margin-left:auto; width:22px; height:22px; position:relative; flex:none;
          color:var(--muted);
-         transition:transform .3s var(--ease), color .3s var(--ease)}
+         transition:transform .3s ease-in-out, color .3s ease-in-out}
 .faq-tog::before,.faq-tog::after{content:""; position:absolute; left:50%; top:50%;
                                  width:14px; height:1.6px; background:currentColor;
                                  border-radius:1px; transform-origin:center}
 .faq-tog::before{transform:translate(-50%,-50%)}
 .faq-tog::after{transform:translate(-50%,-50%) rotate(90deg)}
-.faq-item[open] .faq-tog{transform:rotate(45deg); color:var(--fg)}
+/* + becomes x on one quarter turn of the whole slot. */
+.faq-item.expanded .faq-tog,.faq-shell:not(.js) .faq-item[open] .faq-tog{
+         transform:rotate(45deg); color:var(--fg)}
 
-.faq-body{padding:0 26px 24px; font-size:15px; line-height:24px; color:var(--muted);
-          max-width:70ch}
+/* The height transition. A <details> renders nothing while it is closed, so
+   there is no height to animate from - the 0fr/1fr grid gives it one, and
+   the script keeps a closing item open until the transition has finished.
+   Scoped to .js because without the script the base 0fr would collapse an
+   open answer to nothing. */
+.faq-shell.js .faq-reveal{display:grid; grid-template-rows:0fr;
+         transition:grid-template-rows .3s ease-in-out}
+.faq-shell.js .faq-item.expanded .faq-reveal{grid-template-rows:1fr}
+.faq-reveal > .faq-body{min-height:0; overflow:hidden}
+
+.faq-body{padding:0 22px 20px; font-size:15px; line-height:24px;
+          color:var(--muted); max-width:70ch}
 .faq-body p{margin:0}
 .faq-body p + p{margin-top:12px}
-/* Grouped since 2026-09-19: five categories, one card each, with a rule
-   running off the label so the groups read as sections of one list rather
-   than five separate blocks. */
-.faq-groups{margin-top:38px}   /* the gap the single card used to carry */
-.faq-group + .faq-group{margin-top:34px}
-.faq-group .faq-list{margin-top:13px}
-.faq-cat{display:flex; align-items:center; gap:12px;
-         font-family:"Geist Mono",ui-monospace,monospace; font-size:11px;
-         letter-spacing:.07em; text-transform:uppercase; color:var(--faint)}
-.faq-cat::after{content:""; flex:1; height:1px; background:var(--border)}
 /* Each answer routes to the page that owns the question rather than
    answering it twice - see the section comment below. */
 .faq-body a{color:var(--fg); text-decoration:underline;
             text-decoration-thickness:1px; text-underline-offset:3px}
 
+/* With the script: the rail carries the category, so the label above each
+   group would be saying it twice. */
+.faq-shell.js .faq-cat{display:none}
+.faq-shell.js .faq-group{display:none; opacity:0;
+         transition:opacity .2s ease}
+.faq-shell.js .faq-group.on{display:block; opacity:1}
+.faq-shell:not(.js) .faq-nav{display:none}
+.faq-shell:not(.js){grid-template-columns:1fr}
+
+/* The rail becomes a scrolling strip - five tabs stacked above the answers
+   would push the first question off the screen on a phone. */
+@media (max-width:860px){
+  .faq-shell{grid-template-columns:1fr; gap:22px}
+  .faq-nav{position:static; flex-direction:row; gap:4px; overflow-x:auto;
+           scrollbar-width:none; border-bottom:1px solid var(--border)}
+  .faq-nav::-webkit-scrollbar{display:none}
+  .faq-tab{border-left:0; border-bottom:2px solid transparent;
+           padding:8px 12px 10px; margin-bottom:-1px; white-space:nowrap}
+  .faq-tab.on{border-bottom-color:var(--fg)}
+}
 @media (max-width:640px){
-  .faq-item summary{padding:18px 20px; font-size:15.5px; line-height:22px; gap:16px}
-  .faq-body{padding:0 20px 20px; font-size:14.5px; line-height:23px}
+  .faq-item summary{padding:16px 18px; font-size:15.5px; line-height:22px; gap:16px}
+  .faq-body{padding:0 18px 18px; font-size:14.5px; line-height:23px}
+}
+/* Someone who asked for less motion still gets the state change, just not
+   the travel. */
+@media (prefers-reduced-motion:reduce){
+  .faq-shell.js .faq-reveal,.faq-item,.faq-tog,.faq-shell.js .faq-group{
+           transition-duration:.01ms}
 }
 
 /* ---------- signup (a placeholder, and it says so) ---------- */
@@ -2823,39 +2883,55 @@ h1,h2,h3,h4,p{margin:0}
         <a href="#contact" style="color:var(--fg); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px">book one</a> and ask it.</p>
     </div>
 
-    <div class="faq-groups rv">
+    <!-- The rail is real buttons in a tablist, not links: it switches a
+         panel rather than navigating, and a keyboard has to reach it. -->
+    <div class="faq-shell rv" data-faq>
+      <div class="faq-nav" role="tablist" aria-label="FAQ categories">
+        <button class="faq-tab on" type="button" role="tab" data-tab="general"
+                aria-selected="true" aria-controls="faqp-general">General</button>
+        <button class="faq-tab" type="button" role="tab" data-tab="capabilities"
+                aria-selected="false" aria-controls="faqp-capabilities">Capabilities</button>
+        <button class="faq-tab" type="button" role="tab" data-tab="security"
+                aria-selected="false" aria-controls="faqp-security">Security &amp; Privacy</button>
+        <button class="faq-tab" type="button" role="tab" data-tab="pricing"
+                aria-selected="false" aria-controls="faqp-pricing">Pricing &amp; Support</button>
+        <button class="faq-tab" type="button" role="tab" data-tab="technical"
+                aria-selected="false" aria-controls="faqp-technical">Technical</button>
+      </div>
+
+      <div class="faq-panels">
       <!-- General -->
-      <div class="faq-group">
+      <div class="faq-group on" id="faqp-general" role="tabpanel" data-panel="general">
         <p class="faq-cat">General</p>
         <div class="faq-list">
           <details class="faq-item" id="faq-what" open>
             <summary>What is SQRlane?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Agents that work your bookings where they already live. They
                 watch everything that moves a lane, work out which bookings
                 are exposed, decide whether to reroute or hold each one with
                 the reasoning recorded, draft the carrier and customer mail,
                 and queue the change onto the booking.</p>
               <p>You approve. The record updates.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-who">
             <summary>Who is it for?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Mid-size forwarders running ocean and inland lanes, where one
                 ops desk is the bridge between a disruption and the booking
                 system &mdash; and where that bridge is a person re-keying
                 consequences one booking at a time.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-different">
             <summary>How is this different from a risk platform or a TMS?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Risk platforms stop at the alert. Your TMS starts after the
                 decision. Between them a person re-keys the consequences
                 &mdash; a booking amendment, a discharge port change, a
@@ -2864,19 +2940,19 @@ h1,h2,h3,h4,p{margin:0}
                 the booking, drafts the mail, and writes back to the same
                 record. <a href="/how-it-works">How a decision is actually
                 made</a>.</p>
-            </div>
+            </div></div>
           </details>
         </div>
       </div>
 
       <!-- Capabilities -->
-      <div class="faq-group">
+      <div class="faq-group" id="faqp-capabilities" role="tabpanel" data-panel="capabilities">
         <p class="faq-cat">Capabilities</p>
         <div class="faq-list">
           <details class="faq-item" id="faq-watch">
             <summary>What does it actually watch?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Sixty free, keyless sources in six families, read together on
                 every run: regional and international wires, river gauges,
                 port weather and sea state, seismic and natural-hazard feeds,
@@ -2885,13 +2961,13 @@ h1,h2,h3,h4,p{margin:0}
               <p>Prose goes to the model. A gust, a wave height, a magnitude
                 and a water level go to a threshold &mdash; cheaper,
                 repeatable, and it cannot invent a severity.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-decide">
             <summary>How does it decide to reroute or hold?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>It maps each candidate route&rsquo;s chokepoints against the
                 risk that is live right now, then weighs the schedule slack
                 the booking has against the transit a reroute adds and the
@@ -2899,26 +2975,26 @@ h1,h2,h3,h4,p{margin:0}
               <p>Every call comes with a justification in plain words and a
                 recorded trail &mdash; which event moved it, which options
                 were on the table, and why this one won.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-writeback">
             <summary>What does it put back on the booking?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>The exception on the booking, the new discharge port, the
                 routing code, the revised ETA, the booking status, and each
                 drafted mail filed on the communication log.</p>
               <p>Every change names the Worker that produced it. A booking
                 that should stay on plan produces nothing at all, which is a
                 real answer rather than an omission.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-send">
             <summary>Will it send emails or change bookings on its own?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>No, and that is the design rather than a missing piece. Every
                 outbound action &mdash; carrier mail, customer mail, booking
                 amendment, queued field change &mdash; waits for a person.</p>
@@ -2926,41 +3002,41 @@ h1,h2,h3,h4,p{margin:0}
                 one go, with the count on the button so you always see what
                 you are signing off.
                 <a href="/product">The gate, and what sits behind it</a>.</p>
-            </div>
+            </div></div>
           </details>
         </div>
       </div>
 
       <!-- Security & Privacy -->
-      <div class="faq-group">
+      <div class="faq-group" id="faqp-security" role="tabpanel" data-panel="security">
         <p class="faq-cat">Security &amp; Privacy</p>
         <div class="faq-list">
           <details class="faq-item" id="faq-data">
             <summary>Where is our data processed?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Bookings are read through your own system of record and used
                 to answer the run in front of them. The
                 <a href="/whitepaper">whitepaper</a> sets out the model
                 options in detail, including European per-token providers,
                 what each one costs per cycle, and the difference between
                 hosting in Europe and a model that is European in origin.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-training">
             <summary>Do you train models on our bookings?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>No. Your data answers your run. It is not training material,
                 and it is not pooled with anyone else&rsquo;s book.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-audit">
             <summary>Can we see why the agent did what it did?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Every action is attributable on the booking it belongs to:
                 the event that triggered it, the options weighed, the
                 reasoning behind the call, the Worker that produced it and
@@ -2968,62 +3044,62 @@ h1,h2,h3,h4,p{margin:0}
               <p>An agent that cannot show its working is one nobody on a desk
                 will trust twice, so the trail is part of the record rather
                 than a log somewhere else.</p>
-            </div>
+            </div></div>
           </details>
         </div>
       </div>
 
       <!-- Pricing & Support -->
-      <div class="faq-group">
+      <div class="faq-group" id="faqp-pricing" role="tabpanel" data-panel="pricing">
         <p class="faq-cat">Pricing &amp; Support</p>
         <div class="faq-list">
           <details class="faq-item" id="faq-pricing">
             <summary>How is it priced?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>It depends on the size of your book and which Workers you
                 turn on &mdash; a desk running a few exposed lanes is a
                 different shape from one triaging a whole book daily.</p>
               <p>Book a call and we will scope it against your own lanes
                 rather than quote you a number that fits somebody
                 else&rsquo;s.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-start">
             <summary>What does getting started look like?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>A scoping call on your lanes, then a pilot on a slice of the
                 book: we map your fields, tune the thresholds to the
                 corridors you actually sail, and run it alongside the desk so
                 you can read the decisions before any of them move a
                 booking.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-support">
             <summary>What support comes with it?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Onboarding is done with you rather than handed to you. The
                 same people who wire it up stay on the desk through the
                 pilot, because the first weeks are where the thresholds and
                 the tone of the drafts get tuned to how you actually
                 work.</p>
-            </div>
+            </div></div>
           </details>
         </div>
       </div>
 
       <!-- Technical -->
-      <div class="faq-group">
+      <div class="faq-group" id="faqp-technical" role="tabpanel" data-panel="technical">
         <p class="faq-cat">Technical</p>
         <div class="faq-list">
           <details class="faq-item" id="faq-connect">
             <summary>How does it connect to our TMS?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Through the system of record itself. Bookings are read out of
                 it &mdash; one read path, so the board is a view of your book
                 rather than a second copy of it &mdash; and every change goes
@@ -3032,13 +3108,13 @@ h1,h2,h3,h4,p{margin:0}
                 routing code, ETA, booking status, communication log, each
                 with its direction and its author.
                 <a href="/product#systems">The systems it points at</a>.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-sources">
             <summary>What happens when a source is down or slow?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Nothing that matters. Every source is its own small reader
                 inside a shared time budget, and the families are read at the
                 same time rather than in turn, so sixty sources cost about
@@ -3046,13 +3122,13 @@ h1,h2,h3,h4,p{margin:0}
               <p>One that is down, slow or has changed shape is reported
                 failed against its own name and skipped. No single feed can
                 hold up a run or take the board with it.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-wrong">
             <summary>What stops it getting a decision wrong?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Arithmetic never goes to the model. Which chokepoints a route
                 touches, the transit an alternate adds, whether it fits the
                 slack and what the revised ETA is are all computed. The model
@@ -3062,13 +3138,13 @@ h1,h2,h3,h4,p{margin:0}
                 action, and if the provider is unreachable the decision falls
                 back to transparent rules and says so on the card. Every one
                 of those is written into the booking&rsquo;s trail.</p>
-            </div>
+            </div></div>
           </details>
 
           <details class="faq-item" id="faq-europe">
             <summary>Can the model run in Europe?
               <span class="faq-tog" aria-hidden="true"></span></summary>
-            <div class="faq-body">
+            <div class="faq-reveal"><div class="faq-body">
               <p>Yes &mdash; one module is the only door to the provider, so
                 moving inference is a configuration change rather than a
                 rebuild.</p>
@@ -3076,9 +3152,10 @@ h1,h2,h3,h4,p{margin:0}
                 models with their per-token prices, and keeps two things
                 apart that are often blurred: where a model is hosted, and
                 where it came from.</p>
-            </div>
+            </div></div>
           </details>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -3831,6 +3908,83 @@ h1,h2,h3,h4,p{margin:0}
   } else {
     loop();
   }
+})();
+
+/* The FAQ: a tab rail and animated accordions.
+
+   The section is written to work without any of this - five labelled groups
+   of native <details> - and the script upgrades it in place. Adding .js is
+   the first thing it does, because every rule that hides a panel or collapses
+   an answer is scoped to that class. If this file fails to parse, the FAQ is
+   a long list rather than a broken one.
+
+   Two things here are not decoration:
+
+   The <details> click is taken over. Its own open/close is instant, and a
+   height transition needs the content rendered before it starts and still
+   rendered until it ends - a closing one has to stay open until the
+   transition finishes or it vanishes mid-animation. So opening sets `open`
+   and waits a frame before the class that animates it, and closing animates
+   first and drops `open` on transitionend.
+
+   The fallback timer exists because transitionend does not fire when the
+   element is not visible - switch tabs mid-close and the item would be left
+   open with no class, which reads as a dead question the next time that tab
+   is opened. */
+(function () {
+  var shell = document.querySelector("[data-faq]");
+  if (!shell) return;
+  shell.classList.add("js");
+
+  var tabs = [].slice.call(shell.querySelectorAll(".faq-tab"));
+  var panels = [].slice.call(shell.querySelectorAll(".faq-group"));
+
+  function show(name) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("data-tab") === name;
+      t.classList.toggle("on", on);
+      t.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    panels.forEach(function (g) {
+      var on = g.getAttribute("data-panel") === name;
+      if (!on) { g.classList.remove("on"); return; }
+      /* display and opacity cannot change in the same frame - the element
+         has to be laid out before the fade has anything to travel from. */
+      g.classList.add("on");
+      g.style.opacity = "0";
+      requestAnimationFrame(function () { g.style.opacity = ""; });
+    });
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () { show(t.getAttribute("data-tab")); });
+  });
+
+  [].slice.call(shell.querySelectorAll(".faq-item")).forEach(function (item) {
+    var reveal = item.querySelector(".faq-reveal");
+    var summary = item.querySelector("summary");
+    if (!reveal || !summary) return;
+
+    if (item.open) item.classList.add("expanded");   // whatever starts open
+
+    summary.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (item.classList.contains("expanded")) {
+        item.classList.remove("expanded");
+        var shut = function () { item.open = false; };
+        var t = setTimeout(shut, 420);
+        reveal.addEventListener("transitionend", function done(ev) {
+          if (ev.propertyName !== "grid-template-rows") return;
+          reveal.removeEventListener("transitionend", done);
+          clearTimeout(t);
+          shut();
+        });
+      } else {
+        item.open = true;
+        requestAnimationFrame(function () { item.classList.add("expanded"); });
+      }
+    });
+  });
 })();
 
 /* The five-stage workflow cycler.
