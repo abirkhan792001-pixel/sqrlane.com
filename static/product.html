@@ -64,6 +64,7 @@ body{
 ::selection{background:color-mix(in srgb,var(--blue) 20%,transparent)}
 a{color:inherit; text-decoration:none}
 h1,h2,h3,h4,p{margin:0}
+button{font-family:inherit}
 .mono{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
       font-feature-settings:normal}
 .tabular{font-variant-numeric:tabular-nums}
@@ -191,126 +192,93 @@ h1,h2,h3,h4,p{margin:0}
 @media (prefers-reduced-motion:reduce){.reel{display:none !important}}
 
 /* ==============================================================
-   FEATURE SHOWCASE - the two-column pair.
+   THE DESK SHOWCASE - an interactive tab bar + work window.
 
-   Left: the systems the desk already runs on, drawn as an orbit
-   round the SQRlane core - the "connected ecosystem". Right: the
-   agent work window - one trigger running to a queued record,
-   every step gated - as a dark product "device".
+   Left: a vertical list of the four everyday-desk categories.
+   Right: a dark product "device" that swaps its scenario when a
+   category is chosen - the trigger that fires it, the agents that
+   pick it up, and the drafted or queued action waiting for a
+   person at the end.
 
-   Both are self-contained: inline SVG marks, CSS-only motion,
-   nothing fetched from another host. Motion stands down entirely
-   under prefers-reduced-motion at the foot of this block.
+   Honesty: the nine agents in these four categories replay
+   authored data, so each carries a `Scripted` tag - the animated
+   "working" pulse is the flow running, not a live-reasoning claim.
+   The three live agents (Risk, Routing, Comms) are the half below.
+
+   Self-contained: inline-SVG marks, CSS-only motion, nothing
+   off-origin. Motion stands down under prefers-reduced-motion at
+   the foot of this block, where the final state is shown instead.
    ============================================================== */
-.showcase{margin-top:34px; display:grid; grid-template-columns:1fr; gap:24px}
-@media (min-width:980px){.showcase{grid-template-columns:1fr 1fr}}
-
-.feat{position:relative; display:flex; flex-direction:column;
-      background:var(--card); border:1px solid var(--border);
-      border-radius:var(--r-lg); box-shadow:var(--shadow-card); overflow:hidden;
-      transition:box-shadow .25s var(--ease), transform .25s var(--ease)}
-.feat:hover{box-shadow:var(--shadow-lift); transform:translateY(-2px)}
-.feat-hd{padding:26px 26px 4px}
-.feat-hd .eyebrow{margin-bottom:12px}
-.feat-hd h3{font-size:20px; line-height:26px; letter-spacing:-.5px; font-weight:600}
-.feat-hd p{margin-top:9px; font-size:13.5px; line-height:20px; color:var(--muted); max-width:44ch}
-.feat-viz{position:relative; flex:1; display:flex; flex-direction:column;
-          justify-content:center}
-
-/* ---- left: the orbit ---- */
-.orbit-wrap{padding:12px 22px 24px}
-.orbit{position:relative; width:100%; max-width:340px; margin:6px auto 0; aspect-ratio:1/1}
-.orbit-ring{position:absolute; border-radius:50%; pointer-events:none}
-.orbit-ring.r1{inset:3%;  border:1px dashed var(--border-strong); animation:spin 46s linear infinite}
-.orbit-ring.r2{inset:19%; border:1px solid var(--border);         animation:spin 66s linear infinite reverse}
-.orbit-svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible; z-index:1}
-.orbit-svg .wire{stroke:var(--border-strong); stroke-width:1.2; fill:none}
-.orbit-svg .spoke{stroke:var(--blue); stroke-width:1.7; fill:none; opacity:.9;
-                  stroke-linecap:round; stroke-dasharray:4 108;
-                  animation:flow 2.7s linear infinite}
-.orbit-svg .spoke.s2{animation-delay:.55s}
-.orbit-svg .spoke.s3{animation-delay:1.1s}
-.orbit-svg .spoke.s4{animation-delay:1.65s}
-.orbit-svg .spoke.s5{animation-delay:2.2s}
-@keyframes flow{to{stroke-dashoffset:112}}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.core{position:absolute; left:50%; top:50%; width:76px; height:76px;
-      transform:translate(-50%,-50%); z-index:3;
-      border-radius:20px; background:var(--fg); color:#fff;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
-      box-shadow:0 12px 26px -10px rgba(0,0,0,.5), 0 0 0 6px var(--card), 0 0 0 7px var(--border)}
-.core svg{width:22px; height:22px}
-.core b{font-size:9px; font-weight:600; letter-spacing:-.2px}
-.core::after{content:""; position:absolute; inset:-6px; border-radius:24px;
-             border:1.5px solid var(--blue); opacity:0; animation:ping 3.2s ease-out infinite}
-@keyframes ping{0%{transform:scale(.86); opacity:.55} 78%,100%{transform:scale(1.5); opacity:0}}
-
-.node{position:absolute; z-index:2; transform:translate(-50%,-50%);
-      display:flex; flex-direction:column; align-items:center; gap:7px; width:88px}
-.node .ic{width:44px; height:44px; border-radius:13px; background:var(--card);
-          border:1px solid var(--border-strong); box-shadow:var(--shadow-card);
-          display:flex; align-items:center; justify-content:center; color:var(--fg);
-          animation:float 5.5s var(--ease) infinite}
-.node .ic svg{width:21px; height:21px; fill:none; stroke:currentColor; stroke-width:1.7;
-              stroke-linecap:round; stroke-linejoin:round}
-.node .lb{font-size:10.5px; line-height:13px; font-weight:500; color:var(--muted);
-          white-space:nowrap; letter-spacing:-.1px}
-@keyframes float{0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)}}
-.node.n1{left:50%;   top:17.1%}
-.node.n2{left:81.3%; top:39.8%}
-.node.n3{left:69.4%; top:76.7%}
-.node.n4{left:30.6%; top:76.7%}
-.node.n5{left:18.7%; top:39.8%}
-.node.n2 .ic{animation-delay:.6s}
-.node.n3 .ic{animation-delay:1.2s}
-.node.n4 .ic{animation-delay:1.8s}
-.node.n5 .ic{animation-delay:2.4s}
-.orbit-note{margin:22px auto 0; max-width:42ch; text-align:center;
-            font-size:12px; line-height:17px; color:var(--faint)}
-.orbit-note b{color:var(--muted); font-weight:600}
-@media (max-width:420px){
-  .orbit{max-width:300px}
-  .node{width:72px}
-  .node .lb{font-size:9.5px}
+.desk{margin-top:34px; display:grid; grid-template-columns:1fr; gap:22px}
+@media (min-width:980px){
+  .desk{grid-template-columns:minmax(0,4fr) minmax(0,8fr); gap:28px; align-items:start}
 }
 
-/* ---- right: the agent work window (a dark product device) ---- */
+/* ---- left: the category tab bar ---- */
+.desk-nav{display:flex; flex-direction:column; gap:10px}
+.desk-tab{position:relative; display:grid; grid-template-columns:auto 1fr auto;
+          align-items:start; gap:12px; width:100%; text-align:left;
+          padding:15px 15px; border:1px solid var(--border); border-radius:var(--r-md);
+          background:var(--card); box-shadow:var(--shadow-card); cursor:pointer; color:var(--fg);
+          transition:border-color .2s var(--ease), box-shadow .2s var(--ease),
+                     transform .2s var(--ease)}
+.desk-tab:hover{border-color:var(--border-strong); transform:translateX(2px)}
+.desk-tab:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.desk-tab[aria-selected="true"]{border-color:var(--fg); box-shadow:var(--shadow-lift)}
+.desk-tab .tnum{width:26px; height:26px; border-radius:7px; background:var(--gray-100);
+                color:var(--muted); font-family:"Geist Mono",ui-monospace,monospace;
+                font-size:11px; font-weight:600; flex:none;
+                display:flex; align-items:center; justify-content:center}
+.desk-tab[aria-selected="true"] .tnum{background:var(--fg); color:#fff}
+.desk-tab .tbody{min-width:0}
+.desk-tab .ttl{display:block; font-size:15px; font-weight:600; letter-spacing:-.3px}
+.desk-tab .tsub{display:block; margin-top:3px; font-size:12.5px; line-height:17px; color:var(--muted)}
+.desk-tab .tmeta{margin-top:10px; display:flex; align-items:center; gap:8px}
+.desk-tab .tcount{font-size:11.5px; color:var(--faint)}
+.desk-tab .tmode{font-size:9px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+                 color:var(--muted); background:var(--gray-100); border-radius:4px; padding:2px 6px}
+.desk-tab .tchev{width:16px; height:16px; align-self:center; color:var(--faint); flex:none;
+                 opacity:0; transform:translateX(-4px);
+                 transition:opacity .2s var(--ease), transform .2s var(--ease)}
+.desk-tab[aria-selected="true"] .tchev{opacity:1; transform:none; color:var(--fg)}
+@media (max-width:600px){
+  .desk-tab .tsub{display:none}
+  .desk-tab{padding:13px 14px}
+}
+
+/* ---- right: the dark work window ---- */
+.desk-window{position:relative}
+.desk-panel{display:none}
+.desk-panel.on{display:flex; flex-direction:column}
+
 .workwin{
   --wbg:#15131e; --wcard:rgba(255,255,255,.05); --wcard2:rgba(255,255,255,.03);
   --wborder:rgba(255,255,255,.11); --wfg:#f3f2f8; --wmut:#b4b0c4; --wfaint:#8b8799;
-  --wamber:#ffcf87; --wgreen:#7fe0a3; --wviolet:#9a83ff;
+  --wamber:#ffcf87; --wgreen:#7fe0a3; --wviolet:#9a83ff; --wcool:#aebbff;
   position:relative; padding:20px 20px 18px; color:var(--wfg);
   background:
     radial-gradient(120% 78% at 84% -12%, #322a4e 0%, rgba(21,19,30,0) 54%),
     radial-gradient(120% 90% at -12% 112%, #2a2038 0%, rgba(21,19,30,0) 55%),
     var(--wbg);
-  display:flex; flex-direction:column; gap:11px; min-height:440px}
+  border-radius:var(--r-lg); box-shadow:var(--shadow-lift);
+  gap:11px; min-height:496px}
 .wc{position:relative; background:var(--wcard); border:1px solid var(--wborder);
     border-radius:14px; padding:13px 14px;
     backdrop-filter:blur(7px) saturate(120%); -webkit-backdrop-filter:blur(7px) saturate(120%)}
-/* the traveling active-step highlight - the three cards lit in turn, so the
-   flow reads as live without a full re-entrance loop. */
-.wc.step{animation:wstep 8.4s var(--ease) infinite}
-.wc.s-1{animation-delay:0s}
-.wc.s-2{animation-delay:2.8s}
-.wc.s-3{animation-delay:5.6s}
-@keyframes wstep{
-  0%,30%,100%{border-color:var(--wborder); box-shadow:none}
-  8%,22%{border-color:rgba(154,131,255,.55);
-         box-shadow:0 0 0 1px rgba(154,131,255,.35), 0 8px 22px -10px rgba(120,90,255,.6)}
-}
 .wc-head{display:flex; align-items:center; gap:10px}
 .wtx{min-width:0}
 .wtile{width:34px; height:34px; border-radius:9px; flex:none; display:flex;
        align-items:center; justify-content:center; position:relative}
 .wtile svg{width:18px; height:18px}
 .wtile.mail{background:#e8f0ff; color:#2b6fff}
+.wtile.doc{background:#fdeee0; color:#c8632a}
+.wtile.ship{background:#e2f3ff; color:#1f74b5}
+.wtile.inv{background:#eae6ff; color:#6a4fd6}
 .wtile.spark{background:linear-gradient(135deg,#3a2f5c,#231b38); color:#c9bcff;
              border:1px solid rgba(255,255,255,.14)}
 .wtile.spark svg{fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round}
-.wtile.mail svg{fill:none; stroke:currentColor; stroke-width:1.8;
-                stroke-linecap:round; stroke-linejoin:round}
+.wtile.mail svg,.wtile.doc svg,.wtile.ship svg,.wtile.inv svg{
+  fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 .wtile.badge::after{content:"1"; position:absolute; top:-5px; right:-5px; width:15px; height:15px;
                     border-radius:50%; background:var(--red); color:#fff; font-size:9px;
                     font-weight:700; display:flex; align-items:center; justify-content:center;
@@ -322,32 +290,39 @@ h1,h2,h3,h4,p{margin:0}
 .wchip{display:inline-flex; align-items:center; gap:4px; padding:2px 7px; border-radius:5px;
        font-size:9.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
        background:rgba(255,255,255,.07); color:var(--wmut)}
-.wchip.live{background:rgba(60,200,120,.14); color:var(--wgreen)}
-.wchip.live .d{width:5px; height:5px; border-radius:50%; background:var(--wgreen);
-               box-shadow:0 0 0 3px rgba(60,200,120,.16)}
 .wchip.q{background:rgba(255,180,80,.13); color:var(--wamber)}
+.wchip.done{background:rgba(120,150,255,.14); color:var(--wcool)}
+.wchip.warn{background:rgba(255,140,110,.15); color:#ffb59d}
 .wchip.mono{font-family:"Geist Mono",ui-monospace,monospace; text-transform:none;
             letter-spacing:0; background:rgba(255,255,255,.06); color:var(--wmut)}
+.wchip.work{background:rgba(154,131,255,.15); color:#c8bcff}
+.wchip.work .d{width:5px; height:5px; border-radius:50%; background:var(--wviolet);
+               animation:wpulse 1.15s var(--ease) infinite}
+@keyframes wpulse{0%,100%{opacity:1; box-shadow:0 0 0 0 rgba(154,131,255,.5)}
+                  60%{opacity:.45; box-shadow:0 0 0 5px rgba(154,131,255,0)}}
 .wc-body{margin-top:9px; font-size:12.5px; line-height:18px; color:var(--wmut)}
+.wc-body b{color:var(--wfg); font-weight:600}
 .wc-row{margin-top:11px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
-/* progress shimmer on the working card */
+/* progress shimmer on the reading step */
 .wbar{margin-top:10px; height:5px; border-radius:3px; overflow:hidden;
       background:rgba(255,255,255,.08); position:relative}
 .wbar::after{content:""; position:absolute; inset:0 auto 0 0; width:42%; border-radius:3px;
              background:linear-gradient(90deg, rgba(154,131,255,0), var(--wviolet), rgba(154,131,255,0));
              animation:sweep 1.9s var(--ease) infinite}
 @keyframes sweep{0%{transform:translateX(-120%)} 100%{transform:translateX(320%)}}
-/* the mail preview inside the draft card */
+/* the mail preview inside a draft step */
 .wmail{margin-top:10px; border:1px solid var(--wborder); border-radius:10px;
        background:var(--wcard2); padding:11px 12px}
 .wmail .mh{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--wfaint);
            padding-bottom:8px; border-bottom:1px solid var(--wborder)}
 .wmail .mh b{color:var(--wfg); font-weight:600}
 .wmail .mb{margin-top:8px; font-size:12px; line-height:17px; color:var(--wmut)}
-.wc-cta{margin-top:11px; display:flex; align-items:center; justify-content:space-between; gap:10px}
-.wbtn{display:inline-flex; align-items:center; gap:6px; height:30px; padding:0 14px;
-      border-radius:8px; background:#fff; color:#17151f; font-size:12px; font-weight:600;
-      border:0; cursor:default; box-shadow:0 6px 16px -8px rgba(120,90,255,.7); font-family:inherit;
+/* the action row */
+.deskcta{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:0 2px}
+.deskcta .gatenote{font-size:11px; color:var(--wfaint)}
+.wbtn{display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 15px;
+      border-radius:9px; background:#fff; color:#17151f; font-size:12px; font-weight:600;
+      border:0; cursor:default; box-shadow:0 6px 16px -8px rgba(120,90,255,.7);
       animation:approvepulse 3.4s var(--ease) infinite}
 .wbtn svg{width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2.4;
           stroke-linecap:round; stroke-linejoin:round}
@@ -368,30 +343,32 @@ h1,h2,h3,h4,p{margin:0}
                     stroke-linecap:round; stroke-linejoin:round}
 .wwin-foot{margin:12px 2px 0; font-size:10.5px; line-height:15px; color:var(--wfaint);
            text-align:center}
+
+/* the staggered entrance, re-run every time a panel is shown */
+.desk-panel .anim{opacity:0; transform:translateY(9px)}
+.desk-panel.on .anim{animation:stepin .45s var(--ease) both;
+                     animation-delay:calc(var(--d,0)*.09s)}
+@keyframes stepin{from{opacity:0; transform:translateY(9px)} to{opacity:1; transform:none}}
+
 @media (prefers-reduced-motion:reduce){
-  .orbit-ring,.orbit-svg .spoke,.core::after,.node .ic,
-  .wc.step,.wbar::after,.wbtn,.wwin-input .cur{animation:none !important}
-  .orbit-svg .spoke{opacity:.55}
+  .desk-panel .anim{opacity:1; transform:none; animation:none !important}
+  .wchip.work .d,.wbar::after,.wbtn,.wwin-input .cur{animation:none !important}
 }
 
 /* ==============================================================
-   The bucket grid. This is what carries the fourteen-agent
-   roster: the desk collapsed to four categories per half, and
-   the individual agents are revealed by hovering (desktop) or
-   tapping (touch) a bucket.
+   The bucket grid. This carries the risk-half roster: four
+   categories, the individual agents revealed by hovering
+   (desktop) or tapping (touch) a bucket.
 
    Buckets carry their own tag - the mode chip - because the
    honesty rule says the tag must be visible at a glance and not
-   only after an interaction. A bucket whose agents are all
-   scripted reads Scripted; one that mixes modes reads them all.
-   The individual agents inside carry their own chips too, so the
-   claim is checkable at both levels.
+   only after an interaction. The individual agents inside carry
+   their own chips too, so the claim is checkable at both levels.
 
    Hover-to-reveal is only bound where hover is real (`@media
    (hover:hover)`), so a touch user does not have to fight a
-   flicker on tap. Everywhere else the reveal is a click, handled
-   in one small script at the foot of the page; `focus-within`
-   also opens the bucket, so keyboard tab through the grid works.
+   flicker on tap. `focus-within` also opens the bucket, so
+   keyboard tab through the grid works.
    ============================================================== */
 .buckets{margin-top:34px; display:grid; gap:16px;
          grid-template-columns:repeat(4,1fr)}
@@ -419,10 +396,6 @@ h1,h2,h3,h4,p{margin:0}
 .bkt .count{font-size:12px; color:var(--faint); margin-left:auto}
 .bkt .count b{font-weight:600; color:var(--muted)}
 
-/* The reveal. max-height animates cleanly and, more importantly, keeps the
-   default layout free of the revealed content - no ghost box in the grid
-   before it opens. The value is a ceiling, not a target; each bucket sizes
-   to its own content once open. */
 .bkt .agents{max-height:0; opacity:0; overflow:hidden;
              transition:max-height .35s var(--ease), opacity .25s var(--ease),
                         margin-top .35s var(--ease);
@@ -432,8 +405,6 @@ h1,h2,h3,h4,p{margin:0}
   max-height:640px; opacity:1; margin-top:16px;
 }
 @media (hover:hover){
-  /* Only on real hover; touch does not fire :hover, and treating a tap-hold
-     as a hover flicker is exactly what this rule keeps out. */
   .bkt:hover .agents{max-height:640px; opacity:1; margin-top:16px}
 }
 .bkt .agents ul{list-style:none; margin:0; padding:12px 0 0;
@@ -444,9 +415,6 @@ h1,h2,h3,h4,p{margin:0}
 .bkt .agents .an{font-size:13.5px; font-weight:500; letter-spacing:-.2px}
 .bkt .agents .ar{grid-column:1/-1; font-size:12px; line-height:17px; color:var(--muted)}
 
-/* An affordance so a first-time reader knows a bucket has more inside. The
-   caret rotates when the bucket is open, which is what makes clicking or
-   hovering feel like a switch rather than a no-op. */
 .bkt .caret{width:14px; height:14px; color:var(--faint); margin-left:2px;
             transition:transform .25s var(--ease); flex:none; align-self:center}
 .bkt.is-open .caret{transform:rotate(180deg)}
@@ -454,21 +422,12 @@ h1,h2,h3,h4,p{margin:0}
   .bkt:hover .caret{transform:rotate(180deg)}
 }
 
-/* Live buckets in Part 2 wear a green left-hand rule to match the roster
-   convention every other page carries. The whole point of the tag being
-   visible without interaction. */
 .bkt.is-live{border-left:3px solid var(--green)}
 .bkt.is-demo{border-left:3px solid var(--amber)}
 
 @media (max-width:1000px){.buckets{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:600px){.buckets{grid-template-columns:1fr}}
 
-/* ============================================================
-   The two-part frame. Part one and Part two share the same
-   inner structure - a head, a bucket grid, and a footnote - so
-   the two halves read as symmetrical rather than as one long
-   section followed by an appendix.
-   ============================================================ */
 .part-hd{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
 .part-hd .num{font-family:"Geist Mono",ui-monospace,monospace; font-size:12px;
               letter-spacing:.06em; text-transform:uppercase; color:var(--faint);
@@ -710,301 +669,319 @@ h1,h2,h3,h4,p{margin:0}
 </section>
 
 <!-- ============================================================
-     FEATURE SHOWCASE - the two cards. Left: how the agents plug
-     into the systems the desk already runs on. Right: how one
-     trigger runs through to a queued TMS record, with a person
-     on the gate.
+     PART ONE - the everyday desk, made interactive. Pick a
+     category on the left; the work window on the right swaps to
+     that category's scenario - trigger, the agents that pick it
+     up, and the drafted or queued action waiting for a person.
      ============================================================ -->
-<section class="section flush" id="showcase" style="padding-top:48px">
-  <div class="wrap">
-    <div class="head rv">
-      <span class="eyebrow">The product</span>
-      <h2 class="h32">Connected to your stack. Watched by you.</h2>
-      <p class="copy18">One card shows how the agents plug into the systems the desk already
-        runs on. The other shows a single trigger running to a queued record &mdash; with you
-        on the gate.</p>
-    </div>
-
-    <div class="showcase">
-
-      <!-- ---- LEFT: connected agent ecosystem ---- -->
-      <article class="feat rv">
-        <div class="feat-hd">
-          <span class="eyebrow">Connected ecosystem</span>
-          <h3>Seamless integration &amp; multi-agent sync</h3>
-          <p>How SQRlane agents connect to the systems your desk already runs on &mdash; and
-            hand work between each other, all on the same booking.</p>
-        </div>
-        <div class="feat-viz">
-          <div class="orbit-wrap">
-            <div class="orbit" aria-hidden="true">
-              <div class="orbit-ring r1"></div>
-              <div class="orbit-ring r2"></div>
-
-              <svg class="orbit-svg" viewBox="0 0 340 340" preserveAspectRatio="xMidYMid meet">
-                <!-- static wires -->
-                <line class="wire" x1="170" y1="170" x2="170"   y2="58"/>
-                <line class="wire" x1="170" y1="170" x2="276.5" y2="135.4"/>
-                <line class="wire" x1="170" y1="170" x2="235.9" y2="260.6"/>
-                <line class="wire" x1="170" y1="170" x2="104.1" y2="260.6"/>
-                <line class="wire" x1="170" y1="170" x2="63.5"  y2="135.4"/>
-                <!-- the pulse travelling each wire toward the core -->
-                <line class="spoke s1" x1="170" y1="170" x2="170"   y2="58"/>
-                <line class="spoke s2" x1="170" y1="170" x2="276.5" y2="135.4"/>
-                <line class="spoke s3" x1="170" y1="170" x2="235.9" y2="260.6"/>
-                <line class="spoke s4" x1="170" y1="170" x2="104.1" y2="260.6"/>
-                <line class="spoke s5" x1="170" y1="170" x2="63.5"  y2="135.4"/>
-              </svg>
-
-              <!-- the SQRlane core -->
-              <div class="core">
-                <svg viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.1"
-                     stroke-linecap="round"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg>
-                <b>SQRlane</b>
-              </div>
-
-              <!-- the integration nodes. Pictograms of what each KIND of system
-                   is - no logo is reproduced, the same convention the sources
-                   and systems strips already state. -->
-              <div class="node n1"><span class="ic"><svg viewBox="0 0 24 24">
-                <rect x="3" y="7.5" width="18" height="9" rx="1"/><path d="M8 7.5v9M12 7.5v9M16 7.5v9"/>
-              </svg></span><span class="lb">CargoWise</span></div>
-
-              <div class="node n2"><span class="ic"><svg viewBox="0 0 24 24">
-                <path d="M3.5 15h17l-2.5 5H6z"/><path d="M8 15V9.5h8V15"/><path d="M12 9.5V5.5"/>
-              </svg></span><span class="lb">Maersk Spot</span></div>
-
-              <div class="node n3"><span class="ic"><svg viewBox="0 0 24 24">
-                <path d="M4 20.5h16"/><path d="M7 20.5V5h13"/><path d="M7 5H4"/><path d="M15 5v5"/>
-                <rect x="12.6" y="10" width="4.8" height="3.4" rx=".7"/>
-              </svg></span><span class="lb">HHLA</span></div>
-
-              <div class="node n4"><span class="ic"><svg viewBox="0 0 24 24">
-                <path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z"/>
-                <path d="M14 3.5V8h4"/><path d="M9 13h6M9 16.5h6"/>
-              </svg></span><span class="lb">PDF scans</span></div>
-
-              <div class="node n5"><span class="ic"><svg viewBox="0 0 24 24">
-                <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.6 6.5 12 12l8.4-5.5"/>
-              </svg></span><span class="lb">Outlook</span></div>
-            </div>
-            <p class="orbit-note"><b>Built to point at</b> the systems the desk already runs on
-              &mdash; a demo connector today, with none of these wired up yet.</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- ---- RIGHT: the agent work window ---- -->
-      <article class="feat rv">
-        <div class="feat-hd">
-          <span class="eyebrow">Live action flow</span>
-          <h3>Human-in-the-loop automation</h3>
-          <p>Real-time visibility from an automatic trigger to a queued TMS record &mdash;
-            every step drafted or queued, and gated on you.</p>
-        </div>
-        <div class="feat-viz workwin" aria-hidden="true">
-
-          <!-- 1 · the trigger -->
-          <div class="wc wc-trigger step s-1">
-            <div class="wc-head">
-              <span class="wtile mail badge"><svg viewBox="0 0 24 24">
-                <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.6 6.5 12 12l8.4-5.5"/>
-              </svg></span>
-              <div class="wtx">
-                <div class="wt">Automatic trigger &middot; 07:15</div>
-                <div class="wsub">Carrier pre-alert &middot; inbound mail</div>
-              </div>
-            </div>
-            <p class="wc-body">SHP-001 arriving Hamburg &mdash; matched to the booking on the board.</p>
-          </div>
-
-          <!-- 2 · the agent working the record -->
-          <div class="wc wc-agent step s-2">
-            <div class="wc-head">
-              <span class="wtile spark"><svg viewBox="0 0 20 20">
-                <path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
-              <div class="wtx">
-                <div class="wt">Routing Worker</div>
-                <div class="wsub">weighed slack vs added transit vs delay</div>
-              </div>
-              <div class="wmeta"><span class="wchip live"><span class="d"></span>Live</span></div>
-            </div>
-            <div class="wbar"></div>
-            <p class="wc-body">&rarr; Booking updated &mdash; discharge port, routing code, revised ETA.</p>
-            <div class="wc-row">
-              <span class="wchip mono">SHP-001</span>
-              <span class="wchip q">Queued &mdash; not written</span>
-            </div>
-          </div>
-
-          <!-- 3 · the drafted output, gated -->
-          <div class="wc wc-draft step s-3">
-            <div class="wc-head">
-              <span class="wtile spark"><svg viewBox="0 0 20 20">
-                <path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
-              <div class="wtx">
-                <div class="wt">Comms Worker</div>
-                <div class="wsub">draft confirmation for Bavaria Drivetrain</div>
-              </div>
-              <div class="wmeta"><span class="wchip live"><span class="d"></span>Live</span></div>
-            </div>
-            <div class="wmail">
-              <div class="mh"><span>To</span> <b>Katrin Vogel</b> <span>&middot; Inbound Logistics</span></div>
-              <p class="mb">Dear Katrin Vogel,<br>I can confirm the revised arrival window for
-                your automotive parts, and the routing behind the change&hellip;</p>
-            </div>
-            <div class="wc-cta">
-              <span class="wchip q">Draft &mdash; not sent</span>
-              <button class="wbtn" type="button" tabindex="-1">Approve
-                <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></button>
-            </div>
-          </div>
-
-          <!-- the input bar -->
-          <div class="wwin-input">
-            <span class="cur"></span>
-            <span class="ph">What would you like to do&hellip;</span>
-            <span class="go"><svg viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span>
-          </div>
-
-          <p class="wwin-foot">Depicted: the agent work window. Every step is drafted or queued
-            and waits for you &mdash; nothing is sent, nothing is written.</p>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     PART ONE - the everyday desk. Nothing about risk, disruption
-     or reroutes on this half: the point of the split is that
-     these workflows are what the desk runs on a Tuesday, and
-     they do not need a strike to justify their existence.
-     ============================================================ -->
-<section class="section" id="everyday">
+<section class="section flush" id="everyday" style="padding-top:48px">
   <div class="wrap">
     <div class="head rv">
       <div class="part-hd">
         <span class="num">Part one</span>
         <span class="eyebrow">The everyday desk &middot; nine agents</span>
       </div>
-      <h2 class="h32" style="margin-top:14px">Your desk, running itself.</h2>
-      <p class="copy18">Quoting, booking, tracking, documents, invoices, customs
-        &mdash; pre-configured against the shape of a forwarder&rsquo;s day. Each
-        agent reads what came in, drafts what needs to go out, and puts the
-        change on the booking. No second book, no new tool to keep, and no
-        message ever sent without you.</p>
+      <h2 class="h32" style="margin-top:14px">Pick a category. Watch it work.</h2>
+      <p class="copy18">Quoting, booking, tracking, documents, invoices, customs &mdash;
+        pre-configured against a forwarder&rsquo;s day. Choose a desk on the left and the work
+        window shows the flow: what triggers it, which agents pick it up, and the drafted or
+        queued action waiting for you at the end.</p>
     </div>
 
-    <div class="buckets rv">
-      <!-- 01 Quotes & rates -->
-      <article class="bkt" tabindex="0" data-bkt>
-        <div class="bkt-head">
-          <span class="num">01</span>
-          <h3>Quotes &amp; rates</h3>
-        </div>
-        <p class="tagline">Rate lookups and drafted quotes on the lanes your carriers price.</p>
-        <div class="meta">
-          <span class="chip">Scripted</span>
-          <span class="count"><b>2</b> agents
-            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9l6 6 6-6"/></svg>
+    <div class="desk rv">
+      <!-- LEFT: the category tab bar -->
+      <div class="desk-nav" role="tablist" aria-label="Desk categories" aria-orientation="vertical">
+        <button class="desk-tab" role="tab" id="tab-quotes" aria-controls="p-quotes"
+                aria-selected="true" tabindex="0">
+          <span class="tnum">01</span>
+          <span class="tbody">
+            <span class="ttl">Quotes &amp; rates</span>
+            <span class="tsub">Rate lookups and drafted quotes on the lanes your carriers price.</span>
+            <span class="tmeta"><span class="tcount">2 agents</span><span class="tmode">Scripted</span></span>
           </span>
-        </div>
-        <div class="agents" aria-hidden="true">
-          <ul>
-            <li><span class="an">Rate Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Rate lookups across the carriers on a lane.</span></li>
-            <li><span class="an">RFQ Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Reads an inbound rate request and drafts the quote back.</span></li>
-          </ul>
-        </div>
-      </article>
+          <svg class="tchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
 
-      <!-- 02 Bookings & documents -->
-      <article class="bkt" tabindex="0" data-bkt>
-        <div class="bkt-head">
-          <span class="num">02</span>
-          <h3>Bookings &amp; documents</h3>
-        </div>
-        <p class="tagline">Carrier bookings on the record, and every document field where it belongs.</p>
-        <div class="meta">
-          <span class="chip">Scripted</span>
-          <span class="count"><b>2</b> agents
-            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9l6 6 6-6"/></svg>
+        <button class="desk-tab" role="tab" id="tab-book" aria-controls="p-book"
+                aria-selected="false" tabindex="-1">
+          <span class="tnum">02</span>
+          <span class="tbody">
+            <span class="ttl">Bookings &amp; documents</span>
+            <span class="tsub">Carrier bookings on the record, and every document field where it belongs.</span>
+            <span class="tmeta"><span class="tcount">2 agents</span><span class="tmode">Scripted</span></span>
           </span>
-        </div>
-        <div class="agents" aria-hidden="true">
-          <ul>
-            <li><span class="an">Booking Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Holds the carrier booking on the TMS record, and the amendment when the itinerary changes.</span></li>
-            <li><span class="an">Docs Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Field extraction from bills of lading and invoices, back onto the booking.</span></li>
-          </ul>
-        </div>
-      </article>
+          <svg class="tchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
 
-      <!-- 03 Shipments & inbox -->
-      <article class="bkt" tabindex="0" data-bkt>
-        <div class="bkt-head">
-          <span class="num">03</span>
-          <h3>Shipments &amp; inbox</h3>
-        </div>
-        <p class="tagline">Position and milestones, routine mail, and the answers to what&rsquo;s on the board.</p>
-        <div class="meta">
-          <span class="chip">Scripted</span>
-          <span class="count"><b>3</b> agents
-            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9l6 6 6-6"/></svg>
+        <button class="desk-tab" role="tab" id="tab-ship" aria-controls="p-ship"
+                aria-selected="false" tabindex="-1">
+          <span class="tnum">03</span>
+          <span class="tbody">
+            <span class="ttl">Shipments &amp; inbox</span>
+            <span class="tsub">Position and milestones, routine mail, and the answers to what&rsquo;s on the board.</span>
+            <span class="tmeta"><span class="tcount">3 agents</span><span class="tmode">Scripted</span></span>
           </span>
-        </div>
-        <div class="agents" aria-hidden="true">
-          <ul>
-            <li><span class="an">Milestones Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Position and milestones, tied back to the TMS booking.</span></li>
-            <li><span class="an">Inbox Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Triages inbound carrier and customer mail, and drafts the reply.</span></li>
-            <li><span class="an">Assistant</span><span class="chip">Scripted</span>
-              <span class="ar">Answers questions about what is on the board.</span></li>
-          </ul>
-        </div>
-      </article>
+          <svg class="tchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
 
-      <!-- 04 Billing & customs -->
-      <article class="bkt" tabindex="0" data-bkt>
-        <div class="bkt-head">
-          <span class="num">04</span>
-          <h3>Billing &amp; customs</h3>
-        </div>
-        <p class="tagline">Invoice reconciliation and entry checks against the discharge country.</p>
-        <div class="meta">
-          <span class="chip">Scripted</span>
-          <span class="count"><b>2</b> agents
-            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9l6 6 6-6"/></svg>
+        <button class="desk-tab" role="tab" id="tab-bill" aria-controls="p-bill"
+                aria-selected="false" tabindex="-1">
+          <span class="tnum">04</span>
+          <span class="tbody">
+            <span class="ttl">Billing &amp; customs</span>
+            <span class="tsub">Invoice reconciliation and entry checks against the discharge country.</span>
+            <span class="tmeta"><span class="tcount">2 agents</span><span class="tmode">Scripted</span></span>
           </span>
+          <svg class="tchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <!-- RIGHT: the dark work window, one panel per category -->
+      <div class="desk-window">
+
+        <!-- 01 · Quotes & rates -->
+        <div class="desk-panel workwin on" id="p-quotes" role="tabpanel"
+             aria-labelledby="tab-quotes" aria-hidden="true">
+          <div class="wc wc-trigger anim" style="--d:0">
+            <div class="wc-head">
+              <span class="wtile mail badge"><svg viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.6 6.5 12 12l8.4-5.5"/></svg></span>
+              <div class="wtx">
+                <div class="wt">Automatic trigger &middot; Outlook</div>
+                <div class="wsub">Email from Sarah Miller &middot; rate request</div>
+              </div>
+            </div>
+            <p class="wc-body">&ldquo;Can you quote <b>1&times;40HC, Shanghai &rarr; Hamburg</b>?&rdquo;</p>
+          </div>
+
+          <div class="wc anim" style="--d:1">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">Rate Worker</div>
+                <div class="wsub">priced against the carrier rates on the lane</div></div>
+              <div class="wmeta"><span class="wchip work"><span class="d"></span>Working</span>
+                <span class="wchip">Scripted</span></div>
+            </div>
+            <div class="wbar"></div>
+            <p class="wc-body">Read the request into fields and priced the lane &mdash; three carrier options.</p>
+            <div class="wc-row"><span class="wchip done">3 rate options</span></div>
+          </div>
+
+          <div class="wc anim" style="--d:2">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">RFQ Worker</div>
+                <div class="wsub">drafted the quote back to Sarah Miller</div></div>
+              <div class="wmeta"><span class="wchip">Scripted</span></div>
+            </div>
+            <div class="wmail">
+              <div class="mh"><span>To</span> <b>Sarah Miller</b> <span>&middot; quote</span></div>
+              <p class="mb">Thanks for the enquiry &mdash; on Shanghai &rarr; Hamburg we can offer three
+                options, port to port, with a 7-day validity&hellip;</p>
+            </div>
+            <div class="wc-row"><span class="wchip q">Draft &mdash; not sent</span></div>
+          </div>
+
+          <div class="deskcta anim" style="--d:3">
+            <span class="gatenote">Waits for you</span>
+            <button class="wbtn" type="button" tabindex="-1">Approve &amp; send
+              <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></button>
+          </div>
+
+          <div class="wwin-input anim" style="--d:4">
+            <span class="cur"></span>
+            <span class="ph">What would you like to do&hellip;</span>
+            <span class="go"><svg viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span>
+          </div>
+          <p class="wwin-foot">Depicted. These two agents replay authored data &mdash; the tag is
+            <b>Scripted</b>. Nothing is sent.</p>
         </div>
-        <div class="agents" aria-hidden="true">
-          <ul>
-            <li><span class="an">Invoice Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Reconciles the carrier invoice against the rate that was agreed.</span></li>
-            <li><span class="an">Customs Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Checks the entry for the discharge country, and escalates what needs a person.</span></li>
-          </ul>
+
+        <!-- 02 · Bookings & documents -->
+        <div class="desk-panel workwin" id="p-book" role="tabpanel"
+             aria-labelledby="tab-book" aria-hidden="true" hidden>
+          <div class="wc wc-trigger anim" style="--d:0">
+            <div class="wc-head">
+              <span class="wtile doc badge"><svg viewBox="0 0 24 24">
+                <path d="M7 3.5h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z"/>
+                <path d="M14 3.5V8h4"/><path d="M9 13h6M9 16.5h4"/></svg></span>
+              <div class="wtx">
+                <div class="wt">Automatic trigger &middot; PDF inbox</div>
+                <div class="wsub">Attachment received</div>
+              </div>
+            </div>
+            <p class="wc-body"><b>HAWB-812-4567-8901.pdf</b> &mdash; house waybill, arrived unstructured.</p>
+          </div>
+
+          <div class="wc anim" style="--d:1">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">Docs Worker</div>
+                <div class="wsub">field extraction from the waybill</div></div>
+              <div class="wmeta"><span class="wchip work"><span class="d"></span>Working</span>
+                <span class="wchip">Scripted</span></div>
+            </div>
+            <div class="wbar"></div>
+            <p class="wc-body">Pulled the fields off the PDF &mdash; <b>3 pieces, 360 kg</b>, consignee,
+              HS code and incoterm.</p>
+            <div class="wc-row"><span class="wchip done">Extracted</span></div>
+          </div>
+
+          <div class="wc anim" style="--d:2">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">Booking Worker</div>
+                <div class="wsub">auto-populated the booking record</div></div>
+              <div class="wmeta"><span class="wchip">Scripted</span></div>
+            </div>
+            <p class="wc-body">Mapped the extracted fields onto the booking and queued them to the
+              TMS &mdash; file <b>SC-01007-3198</b>.</p>
+            <div class="wc-row"><span class="wchip mono">SC-01007-3198</span>
+              <span class="wchip q">Queued &mdash; not written</span></div>
+          </div>
+
+          <div class="deskcta anim" style="--d:3">
+            <span class="gatenote">Read-only</span>
+            <button class="wbtn" type="button" tabindex="-1">View record
+              <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/>
+                <circle cx="12" cy="12" r="2.6"/></svg></button>
+          </div>
+
+          <div class="wwin-input anim" style="--d:4">
+            <span class="cur"></span>
+            <span class="ph">What would you like to do&hellip;</span>
+            <span class="go"><svg viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span>
+          </div>
+          <p class="wwin-foot">Depicted. The extraction is real work; the write is
+            <b>queued to a demo connector</b> &mdash; nothing is written.</p>
         </div>
-      </article>
+
+        <!-- 03 · Shipments & inbox -->
+        <div class="desk-panel workwin" id="p-ship" role="tabpanel"
+             aria-labelledby="tab-ship" aria-hidden="true" hidden>
+          <div class="wc wc-trigger anim" style="--d:0">
+            <div class="wc-head">
+              <span class="wtile ship badge"><svg viewBox="0 0 24 24">
+                <path d="M3.5 15h17l-2.5 5H6z"/><path d="M8 15V9.5h8V15"/><path d="M12 9.5V5.5"/></svg></span>
+              <div class="wtx">
+                <div class="wt">Automatic trigger &middot; HHLA</div>
+                <div class="wsub">Terminal pre-alert</div>
+              </div>
+            </div>
+            <p class="wc-body"><b>SHP-001</b> arriving Hamburg &mdash; <b>+12h</b> against the schedule.</p>
+          </div>
+
+          <div class="wc anim" style="--d:1">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">Milestones Worker</div>
+                <div class="wsub">position &amp; revised ETA on the booking</div></div>
+              <div class="wmeta"><span class="wchip work"><span class="d"></span>Working</span>
+                <span class="wchip">Scripted</span></div>
+            </div>
+            <div class="wbar"></div>
+            <p class="wc-body">Logged the +12h. The booking keeps its slack, so the ETA is revised &mdash;
+              no reroute &mdash; and queued to the TMS.</p>
+            <div class="wc-row"><span class="wchip q">Queued &mdash; not written</span></div>
+          </div>
+
+          <div class="wc anim" style="--d:2">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">Inbox Worker</div>
+                <div class="wsub">drafted the revised arrival notice</div></div>
+              <div class="wmeta"><span class="wchip">Scripted</span></div>
+            </div>
+            <div class="wmail">
+              <div class="mh"><span>To</span> <b>Katrin Vogel</b> <span>&middot; Bavaria Drivetrain</span></div>
+              <p class="mb">Dear Katrin Vogel,<br>A short note on your inbound &mdash; the revised arrival
+                window is now&hellip;</p>
+            </div>
+            <div class="wc-row"><span class="wchip q">Draft &mdash; not sent</span></div>
+          </div>
+
+          <div class="deskcta anim" style="--d:3">
+            <span class="gatenote">Waits for you</span>
+            <button class="wbtn" type="button" tabindex="-1">Approve
+              <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></button>
+          </div>
+
+          <div class="wwin-input anim" style="--d:4">
+            <span class="cur"></span>
+            <span class="ph">What would you like to do&hellip;</span>
+            <span class="go"><svg viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span>
+          </div>
+          <p class="wwin-foot">Depicted. The ETA write is <b>queued, not written</b>; the notice is
+            <b>drafted, not sent</b>. A person releases both.</p>
+        </div>
+
+        <!-- 04 · Billing & customs -->
+        <div class="desk-panel workwin" id="p-bill" role="tabpanel"
+             aria-labelledby="tab-bill" aria-hidden="true" hidden>
+          <div class="wc wc-trigger anim" style="--d:0">
+            <div class="wc-head">
+              <span class="wtile inv badge"><svg viewBox="0 0 24 24">
+                <path d="M6 3.5h12v17l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z"/><path d="M9 8h6M9 11.5h6M9 15h4"/></svg></span>
+              <div class="wtx">
+                <div class="wt">Automatic trigger &middot; carrier invoice</div>
+                <div class="wsub">Inbound document</div>
+              </div>
+            </div>
+            <p class="wc-body">Carrier invoice <b>#INV-9921</b> received against a booked shipment.</p>
+          </div>
+
+          <div class="wc anim" style="--d:1">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">Invoice Worker</div>
+                <div class="wsub">reconciled against the agreed rate</div></div>
+              <div class="wmeta"><span class="wchip work"><span class="d"></span>Working</span>
+                <span class="wchip">Scripted</span></div>
+            </div>
+            <div class="wbar"></div>
+            <p class="wc-body">Matched every line to the rate card &mdash; <b>one surcharge line was never
+              quoted</b>. Flagged before payment.</p>
+            <div class="wc-row"><span class="wchip warn">1 discrepancy</span></div>
+          </div>
+
+          <div class="wc anim" style="--d:2">
+            <div class="wc-head">
+              <span class="wtile spark"><svg viewBox="0 0 20 20"><path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6"/></svg></span>
+              <div class="wtx"><div class="wt">Customs Worker</div>
+                <div class="wsub">entry checks against the discharge country</div></div>
+              <div class="wmeta"><span class="wchip">Scripted</span></div>
+            </div>
+            <p class="wc-body">Ran the entry against the discharge-country rules. A novel exception, so it
+              <b>escalates</b> rather than files.</p>
+            <div class="wc-row"><span class="wchip warn">Escalated to a person</span></div>
+          </div>
+
+          <div class="deskcta anim" style="--d:3">
+            <span class="gatenote">Waits for you</span>
+            <button class="wbtn" type="button" tabindex="-1">Approve payment
+              <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 6"/></svg></button>
+          </div>
+
+          <div class="wwin-input anim" style="--d:4">
+            <span class="cur"></span>
+            <span class="ph">What would you like to do&hellip;</span>
+            <span class="go"><svg viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span>
+          </div>
+          <p class="wwin-foot">Depicted. The discrepancy and the entry are surfaced for a person &mdash;
+            nothing is paid or filed automatically.</p>
+        </div>
+
+      </div>
     </div>
 
-    <p class="foot-note rv">Nine of the fourteen. <b>Each is a scripted panel today
-      &mdash; the tag on the card is the honesty.</b> The shape is real: the content
-      each renders comes from the active booking, and every draft, amendment and
-      queued write-back sits behind the same gate as the live half below.</p>
+    <p class="foot-note rv">Nine of the fourteen. <b>Each of these agents is a scripted panel today
+      &mdash; the tag on every card is the honesty.</b> The shape is real: the content each renders
+      comes from the active booking, and every draft and queued write-back sits behind the same gate
+      as the live half below.</p>
   </div>
 </section>
 
@@ -1470,10 +1447,56 @@ h1,h2,h3,h4,p{margin:0}
   items.forEach(function (el) { io.observe(el); });
 })();
 
-/* The bucket toggle. Hover-to-reveal is bound in CSS on hover-capable devices;
-   on touch and via keyboard this handles the click. Also opens on Enter/Space
-   for the article which is focusable, and closes on Escape. Nothing broken
-   without JS: the CSS hover rule and :focus-within already open the bucket. */
+/* The desk showcase: a vertical tablist driving the dark work window. Toggling
+   a panel from display:none to flex restarts its staggered CSS entrance, so the
+   flow re-plays each time a category is chosen. Nothing here is required to read
+   the page - without JS the first panel is shown and the rest carry `hidden`. */
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  if (!tabs.length) return;
+
+  function panelFor(tab) { return document.getElementById(tab.getAttribute("aria-controls")); }
+
+  function activate(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      var p = panelFor(t);
+      if (!p) return;
+      if (on) {
+        p.hidden = false;
+        p.classList.add("on");
+        p.setAttribute("aria-hidden", "false");
+        void p.offsetWidth;           /* reflow: re-run the entrance animation */
+      } else {
+        p.classList.remove("on");
+        p.setAttribute("aria-hidden", "true");
+        p.hidden = true;
+      }
+    });
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { activate(tab, false); });
+    tab.addEventListener("keydown", function (e) {
+      var next;
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+      else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === "Home") next = tabs[0];
+      else if (e.key === "End") next = tabs[tabs.length - 1];
+      else return;
+      e.preventDefault();
+      activate(next, true);
+    });
+  });
+})();
+
+/* The bucket toggle (Part two). Hover-to-reveal is bound in CSS on hover-capable
+   devices; on touch and via keyboard this handles the click. Opens on
+   Enter/Space and closes on Escape. Nothing broken without JS: the CSS hover
+   rule and :focus-within already open the bucket. */
 (function () {
   var buckets = document.querySelectorAll("[data-bkt]");
   if (!buckets.length) return;
@@ -1486,10 +1509,6 @@ h1,h2,h3,h4,p{margin:0}
 
   buckets.forEach(function (bkt) {
     bkt.addEventListener("click", function (e) {
-      /* A click on a real link or button inside the bucket should not toggle
-         the bucket too - but there is nothing interactive in there today.
-         The guard is here so a future <a> or <button> inside .agents does not
-         quietly collapse its own parent. */
       if (e.target.closest("a, button")) return;
       toggle(bkt);
     });
