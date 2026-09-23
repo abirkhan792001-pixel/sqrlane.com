@@ -353,6 +353,21 @@ class NamingASystemIsNotClaimingOne(unittest.TestCase):
                                   "Without that line a row of vendor names is an "
                                   "integration claim this build cannot support.")
 
+    def test_the_home_page_integration_tree_disclaims_its_names(self):
+        # WHERE_NAMED holds one block per page, and on the home page that is
+        # the apps block. The integration tree (2026-09-23) names systems too,
+        # as what the connector is built to point at - the stronger claim of
+        # the two - so it is held to the same three sentences, in its own block.
+        html = LANDING.read_text(encoding="utf-8")
+        start = html.find('<section class="section itree" id="stack">')
+        self.assertGreaterEqual(start, 0, "the integration tree is gone - drop this test with it")
+        block = " ".join(html[start:html.find("</section>", start)].split())
+        self.assertTrue([n for n in NAMED_SYSTEMS if n in block], "the tree names nothing")
+        for required in self.REQUIRED:
+            self.assertIn(required, block,
+                          "the integration tree names systems and has to say, in the "
+                          "same block, that none of them is reached.")
+
     def test_no_named_system_appears_in_the_sources_band(self):
         """The sources band is what the Risk Monitor reads. None of these is read."""
         carriers = [p for p in MARKETING

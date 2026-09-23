@@ -116,7 +116,7 @@ answer another page's question**:
 
 | Page | The one thing it lands | Owns, exclusively |
 |---|---|---|
-| `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the loop as **one picture with no explanation**, the three run figures, the book-a-demo block |
+| `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the integration tree, the FAQ, the book-a-demo block |
 | `/product` | Fourteen Workers on one book, every action gated | the roster and its LIVE/SCRIPTED/DEMO tags, the write-back field map, the approval gate, the systems the connector points at |
 | `/how-it-works` | How a decision is actually made | prose-to-the-model vs numbers-to-a-threshold, the five stages, the live Rhine gauges, the source table |
 | `/use-cases` | Four disruptions, four different calls | the four scenarios and their board outcomes |
@@ -124,20 +124,26 @@ answer another page's question**:
 
 Two things follow, and both are easy to undo by accident:
 
-- **The home page's loop diagram must stay a picture.** The moment it starts
-  explaining the stages, `/how-it-works` is doing nobody's work and a reader has no
-  reason to open it.
-- **The three-number band on the home page is the one place a figure is
-  headlined, and every one of them is traceable.** 60 is counted by
-  `expected_sources()` before anything is read; 23h is derived from the event's
-  own trail (1,380 minutes to the wires); EUR 46,500 is `cost_of()` over each
-  booking's authored terms, chosen against doing nothing. The note under them
-  says they are run figures on synthetic bookings and **not customer
-  outcomes** - that sentence is the price of having the band, because the
-  obvious version of it ("90% automated", "15x ROI", "+12% GP per TEU") would
-  be invented on a prototype with no baseline and nobody using it. If a figure
-  is ever added there that cannot be traced to code or committed data, delete
-  it rather than looking for a source.
+- **The loop picture and the three-number band came off the home page on
+  2026-09-23**, on the owner's instruction, and the **integration tree**
+  (`#stack`) took their place: SQRlane on top, CargoWise / SAP TM / Oracle OTM /
+  Descartes underneath, one drawn branch per system that lights on hover. Two
+  rules hold it. **The vendors' own marks are shown**, on the owner's instruction
+  and against the older no-logo rule the /product strip still follows: SAP and
+  Oracle are inlined from CC0 SVG data (`simple-icons` / `@iconify-json/logos`
+  on npm, the only place this sandbox can reach), CargoWise and Descartes are
+  set in text until someone supplies their official SVGs - never redraw one from
+  memory. And because a real logo makes the card read as a live integration,
+  **the disclaimer sits in the same block as the names** ("None of these is connected
+  ... no vendor, no credential, no endpoint, and nothing is ever written");
+  `test_the_home_page_integration_tree_disclaims_its_names` fails without it,
+  and was checked by deleting the clause. The brief asked for "Read-only API"
+  and "Integration scope tailored to your stack during onboarding"; the first is
+  not what the product does (it reads *and* queues write-backs) and the second
+  promises an onboarding that does not exist, so neither is on the page. The
+  run figures that band carried (60 sources, 23h, EUR 46,500) are no longer
+  headlined on the home page; if they come back, the "not customer outcomes"
+  line comes with them.
 - **The manual-drain band and the cost stack** (2026-09-23, on the owner's
   instruction, after an Ekho layer-stack reference). They were built dark first and
   the owner sent them back: same light theme and tokens as the page, no gradient,
