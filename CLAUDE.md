@@ -132,8 +132,9 @@ Two things follow, and both are easy to undo by accident:
   and against the older no-logo rule the /product strip still follows: SAP and
   Oracle are inlined from CC0 SVG data (`simple-icons` / `@iconify-json/logos`
   on npm, the only place this sandbox can reach), CargoWise and Descartes are
-  set in text until someone supplies their official SVGs - never redraw one from
-  memory. And because a real logo makes the card read as a live integration,
+  PNGs cropped from a reference screenshot, on the owner's instruction, because
+  no official file was reachable - low resolution, so swap in the official SVGs
+  when someone supplies them. Never redraw one from memory. And because a real logo makes the card read as a live integration,
   **the disclaimer sits in the same block as the names** ("None of these is connected
   ... no vendor, no credential, no endpoint, and nothing is ever written");
   `test_the_home_page_integration_tree_disclaims_its_names` fails without it,
