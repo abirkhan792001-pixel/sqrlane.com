@@ -139,8 +139,10 @@ Two things follow, and both are easy to undo by accident:
   is ever added there that cannot be traced to code or committed data, delete
   it rather than looking for a source.
 - **The manual-drain band and the cost stack** (2026-09-23, on the owner's
-  instruction, after an Ekho layer-stack reference) are the one dark band on the
-  page, colours scoped to `.drain`. The brief for it asked for per-shipment hours,
+  instruction, after an Ekho layer-stack reference). They were built dark first and
+  the owner sent them back: same light theme and tokens as the page, no gradient,
+  no monospace, no numbers on the planes, the active state the page's near-black
+  rather than an accent. The brief for it asked for per-shipment hours,
   document counts, an "80%" and a "3-6 month ramp" scaled to 600 shipments a month,
   plus five dollar callouts under the stack. **None had a source, so none shipped.**
   The four cards are Grade A rows from `docs/problem-brief.md` with the source
