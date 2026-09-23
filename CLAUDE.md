@@ -146,11 +146,12 @@ Two things follow, and both are easy to undo by accident:
   document counts, an "80%" and a "3-6 month ramp" scaled to 600 shipments a month,
   plus five dollar callouts under the stack. **None had a source, so none shipped.**
   The four figures are Grade A rows from `docs/problem-brief.md`, laid out as one
-  divided row (number, one line, source) - the source under each is what makes them
-  third-party context rather than a second headline band, so it stays even though
-  the explanatory note under the row was cut on the owner's instruction. The stack
+  divided row (number and one line). The owner asked for the per-figure sources to
+  come off; one short `Sources:` line under the row keeps the attribution, and it
+  is what makes them third-party context rather than a second headline band - so
+  if the row is edited, keep that line. The stack
   was cut to three steps in plain words (storage fees, last-minute rebooking,
-  unhappy customers); its callouts carry no market number, and the one that names
+  customer impact), drawn as SVG slabs with real side faces rather than CSS planes; its callouts carry no market number, and the one that names
   a figure is SHP-001's authored slack, tagged `synthetic booking`. Keep both rules
   if the band is edited.
 - **The four doors are gone** (2026-09-05). The nav routes to all four pages

@@ -1563,7 +1563,7 @@ h1,h2,h3,h4,p{margin:0}
 .dr-val{font-size:48px; line-height:52px; letter-spacing:-2.2px; font-weight:600;
   font-variant-numeric:tabular-nums; white-space:nowrap}
 .dr-t{margin-top:16px; font-size:16px; line-height:24px; font-weight:500; letter-spacing:-.32px}
-.dr-src{margin-top:6px; font-size:12px; line-height:16px; color:var(--faint)}
+.dr-srcs{margin-top:14px; font-size:12px; line-height:16px; color:var(--faint)}
 
 /* ---------- part 2: the sticky stack ---------- */
 .dr-track{position:relative; height:220vh}
@@ -1594,20 +1594,30 @@ h1,h2,h3,h4,p{margin:0}
 .dr-step.on .dr-sub{color:var(--muted)}
 .dr-step.on .dr-body{grid-template-rows:1fr; opacity:1}
 
-.dr-stack{position:relative; width:100%; max-width:440px; height:380px; perspective:1000px}
-.dr-stack::before{content:""; position:absolute; left:50%; top:-10px; bottom:-10px;
-  border-left:1px dashed var(--gray-400)}
-.dr-lay{position:absolute; left:50%; top:50%; width:176px; height:176px; margin:-88px 0 0 -88px;
-  transform-style:preserve-3d; transition:transform .55s var(--ease)}
-.dr-plane{position:absolute; inset:0; border-radius:10px;
-  background:var(--card); border:1px solid var(--gray-500);
-  box-shadow:6px 6px 0 -1px var(--gray-100), 6px 6px 0 0 var(--gray-500);
-  transform:rotateX(60deg) rotateZ(-45deg);
-  transition:background .4s, border-color .4s, box-shadow .4s}
-.dr-lab{position:absolute; left:calc(100% + 56px); top:50%; transform:translateY(-50%);
-  font-size:13px; font-weight:500; color:var(--faint); font-variant-numeric:tabular-nums; transition:color .3s}
-.dr-lay.on .dr-plane{background:var(--fg); border-color:var(--fg);
-  box-shadow:6px 6px 0 -1px #404040, 6px 6px 0 0 var(--fg)}
+.dr-stack{position:relative; width:100%; max-width:460px; height:420px}
+.dr-stack::before{content:""; position:absolute; left:50%; top:0; bottom:0;
+  border-left:1px dashed var(--gray-500)}
+/* Each layer is a real slab - top face, two side faces, a seam line - drawn
+   as SVG so every edge is a crisp 1px stroke and the depth is geometry, not
+   a shadow. Colour lives here so the switch between states can transition. */
+.dr-lay{position:absolute; left:50%; top:50%; width:302px; height:122px; margin:-61px 0 0 -151px;
+  transition:transform .55s var(--ease)}
+.dr-slab{display:block; overflow:visible}
+.dr-slab path{stroke:#6f6f6f; stroke-width:1; stroke-linejoin:miter; vector-effect:non-scaling-stroke;
+  transition:fill .35s, stroke .35s}
+.dr-top{fill:#f7f7f7}
+.dr-hatch{fill:url(#dr-hatch-l); stroke:none !important}
+.dr-fl{fill:#e3e3e3}
+.dr-fr{fill:#cfcfcf}
+.dr-mid{fill:none; stroke:#8f8f8f !important}
+.dr-lay.on .dr-slab path{stroke:#171717}
+.dr-lay.on .dr-top{fill:#171717}
+.dr-lay.on .dr-hatch{fill:url(#dr-hatch-d)}
+.dr-lay.on .dr-fl{fill:#2e2e2e}
+.dr-lay.on .dr-fr{fill:#0a0a0a}
+.dr-lay.on .dr-mid{stroke:#5a5a5a !important}
+.dr-lab{position:absolute; left:calc(100% + 22px); top:61px; transform:translateY(-50%);
+  font-size:15px; font-weight:500; color:var(--faint); font-variant-numeric:tabular-nums; transition:color .3s}
 .dr-lay.on .dr-lab{color:var(--fg)}
 
 .dr-insight{width:100%; max-width:440px; margin-top:22px; min-height:94px;
@@ -1637,7 +1647,7 @@ h1,h2,h3,h4,p{margin:0}
   .dr-step button{padding:0; cursor:default}
   .dr-n,.dr-st{color:var(--fg)} .dr-sub{color:var(--muted)}
   .dr-body{grid-template-rows:1fr; opacity:1}
-  .dr-mini{display:block; width:56px; height:44px; margin-bottom:10px}
+  .dr-mini{display:block; width:60px; height:48px; margin-bottom:12px}
   .dr-mob-ins{display:block; margin-top:12px; padding-top:12px; border-top:1px solid var(--border);
     font-size:13px; line-height:20px; color:var(--fg)}
 }
@@ -1650,7 +1660,7 @@ h1,h2,h3,h4,p{margin:0}
   .dr-left .d2{font-size:30px; line-height:36px}
 }
 @media (prefers-reduced-motion:reduce){
-  .dr-lay,.dr-plane,.dr-body{transition:none}
+  .dr-lay,.dr-slab path,.dr-body{transition:none}
   .dr-fade{animation:none}
 }
 </style>
@@ -2583,24 +2593,21 @@ h1,h2,h3,h4,p{margin:0}
         <div class="dr-card">
           <p class="dr-val"><span data-count="60">60</span>%</p>
           <p class="dr-t">Of the workday is coordination</p>
-          <p class="dr-src">Asana, Anatomy of Work 2022</p>
         </div>
         <div class="dr-card">
           <p class="dr-val">~<span data-count="25">25</span></p>
           <p class="dr-t">App switches a day</p>
-          <p class="dr-src">Asana, Anatomy of Work 2022</p>
         </div>
         <div class="dr-card">
           <p class="dr-val"><span data-count="200">200</span>+</p>
           <p class="dr-t">Interactions for one shipment</p>
-          <p class="dr-src">Maersk shipment trace, 2014</p>
         </div>
         <div class="dr-card">
           <p class="dr-val">&lt;<span data-count="40">40</span>%</p>
           <p class="dr-t">Of forwarders run a forwarding system</p>
-          <p class="dr-src">Magaya, 2025 survey of 71 forwarders</p>
         </div>
       </div>
+      <p class="dr-srcs">Sources: Asana (2022), Maersk (2014), Magaya (2025).</p>
     </div>
   </div>
 
@@ -2613,7 +2620,7 @@ h1,h2,h3,h4,p{margin:0}
             <p class="copy18">Every delay costs more the longer it takes to decide.</p>
             <ol class="dr-steps">
         <li class="dr-step on" data-i="0" data-insight="The fee is not set by the decision. It is set by how long the decision takes." data-synth="0">
-          <svg class="dr-mini" viewBox="0 0 56 40" aria-hidden="true"><path d="M28 22 L50 28 L28 34 L6 28 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 13 L50 19 L28 25 L6 19 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 4 L50 10 L28 16 L6 10 Z" fill="#171717" stroke="#171717" stroke-width="1"/></svg>
+          <svg class="dr-mini" viewBox="0 0 60 48" aria-hidden="true"><path d="M4 33 L30 41 L30 45 L4 37 Z" fill="#e3e3e3" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 41 L56 33 L56 37 L30 45 Z" fill="#cfcfcf" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 25 L56 33 L30 41 L4 33 Z" fill="#f7f7f7" stroke="#6f6f6f" stroke-width=".8"/><path d="M4 21 L30 29 L30 33 L4 25 Z" fill="#e3e3e3" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 29 L56 21 L56 25 L30 33 Z" fill="#cfcfcf" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 13 L56 21 L30 29 L4 21 Z" fill="#f7f7f7" stroke="#6f6f6f" stroke-width=".8"/><path d="M4 9 L30 17 L30 21 L4 13 Z" fill="#2e2e2e" stroke="#171717" stroke-width=".8"/><path d="M30 17 L56 9 L56 13 L30 21 Z" fill="#0a0a0a" stroke="#171717" stroke-width=".8"/><path d="M30 1 L56 9 L30 17 L4 9 Z" fill="#171717" stroke="#171717" stroke-width=".8"/></svg>
           <button type="button" aria-controls="dr-insight">
             <span class="dr-n">01</span>
             <span><span class="dr-st">Storage fees</span><span class="dr-sub">charged per container, per day</span>
@@ -2622,7 +2629,7 @@ h1,h2,h3,h4,p{margin:0}
           <p class="dr-mob-ins">The fee is not set by the decision. It is set by how long the decision takes.</p>
         </li>
         <li class="dr-step" data-i="1" data-insight="Example: SHP-001 moved to Rotterdam the day the strike hit. Two days longer, inside its four days of spare time." data-synth="1">
-          <svg class="dr-mini" viewBox="0 0 56 40" aria-hidden="true"><path d="M28 22 L50 28 L28 34 L6 28 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 13 L50 19 L28 25 L6 19 Z" fill="#171717" stroke="#171717" stroke-width="1"/><path d="M28 4 L50 10 L28 16 L6 10 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/></svg>
+          <svg class="dr-mini" viewBox="0 0 60 48" aria-hidden="true"><path d="M4 33 L30 41 L30 45 L4 37 Z" fill="#e3e3e3" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 41 L56 33 L56 37 L30 45 Z" fill="#cfcfcf" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 25 L56 33 L30 41 L4 33 Z" fill="#f7f7f7" stroke="#6f6f6f" stroke-width=".8"/><path d="M4 21 L30 29 L30 33 L4 25 Z" fill="#2e2e2e" stroke="#171717" stroke-width=".8"/><path d="M30 29 L56 21 L56 25 L30 33 Z" fill="#0a0a0a" stroke="#171717" stroke-width=".8"/><path d="M30 13 L56 21 L30 29 L4 21 Z" fill="#171717" stroke="#171717" stroke-width=".8"/><path d="M4 9 L30 17 L30 21 L4 13 Z" fill="#e3e3e3" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 17 L56 9 L56 13 L30 21 Z" fill="#cfcfcf" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 1 L56 9 L30 17 L4 9 Z" fill="#f7f7f7" stroke="#6f6f6f" stroke-width=".8"/></svg>
           <button type="button" aria-controls="dr-insight">
             <span class="dr-n">02</span>
             <span><span class="dr-st">Last-minute rebooking</span><span class="dr-sub">new carrier, new slot, new rate</span>
@@ -2631,10 +2638,10 @@ h1,h2,h3,h4,p{margin:0}
           <p class="dr-mob-ins">Example: SHP-001 moved to Rotterdam the day the strike hit. Two days longer, inside its four days of spare time. <span class="dr-tag">synthetic booking</span></p>
         </li>
         <li class="dr-step" data-i="2" data-insight="SQRlane drafts the customer email the moment it makes the call. A person sends it." data-synth="0">
-          <svg class="dr-mini" viewBox="0 0 56 40" aria-hidden="true"><path d="M28 22 L50 28 L28 34 L6 28 Z" fill="#171717" stroke="#171717" stroke-width="1"/><path d="M28 13 L50 19 L28 25 L6 19 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 4 L50 10 L28 16 L6 10 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/></svg>
+          <svg class="dr-mini" viewBox="0 0 60 48" aria-hidden="true"><path d="M4 33 L30 41 L30 45 L4 37 Z" fill="#2e2e2e" stroke="#171717" stroke-width=".8"/><path d="M30 41 L56 33 L56 37 L30 45 Z" fill="#0a0a0a" stroke="#171717" stroke-width=".8"/><path d="M30 25 L56 33 L30 41 L4 33 Z" fill="#171717" stroke="#171717" stroke-width=".8"/><path d="M4 21 L30 29 L30 33 L4 25 Z" fill="#e3e3e3" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 29 L56 21 L56 25 L30 33 Z" fill="#cfcfcf" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 13 L56 21 L30 29 L4 21 Z" fill="#f7f7f7" stroke="#6f6f6f" stroke-width=".8"/><path d="M4 9 L30 17 L30 21 L4 13 Z" fill="#e3e3e3" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 17 L56 9 L56 13 L30 21 Z" fill="#cfcfcf" stroke="#6f6f6f" stroke-width=".8"/><path d="M30 1 L56 9 L30 17 L4 9 Z" fill="#f7f7f7" stroke="#6f6f6f" stroke-width=".8"/></svg>
           <button type="button" aria-controls="dr-insight">
             <span class="dr-n">03</span>
-            <span><span class="dr-st">Unhappy customers</span><span class="dr-sub">missed dates, lost trust</span>
+            <span><span class="dr-st">Customer impact</span><span class="dr-sub">missed dates, lost trust</span>
               <span class="dr-body"><p><span>When customers hear about a delay from someone else first, they stop trusting you.</span></p></span></span>
           </button>
           <p class="dr-mob-ins">SQRlane drafts the customer email the moment it makes the call. A person sends it.</p>
@@ -2643,9 +2650,10 @@ h1,h2,h3,h4,p{margin:0}
           </div>
           <div class="dr-right">
             <div class="dr-stack" aria-hidden="true">
-        <div class="dr-lay on" data-i="0"><div class="dr-plane"></div><span class="dr-lab">01</span></div>
-        <div class="dr-lay" data-i="1"><div class="dr-plane"></div><span class="dr-lab">02</span></div>
-        <div class="dr-lay" data-i="2"><div class="dr-plane"></div><span class="dr-lab">03</span></div>
+            <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><pattern id="dr-hatch-l" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-opacity=".09" stroke-width="1"/></pattern><pattern id="dr-hatch-d" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><line x1="0" y1="0" x2="0" y2="6" stroke="#fff" stroke-opacity=".10" stroke-width="1"/></pattern></defs></svg>
+        <div class="dr-lay on" data-i="0"><svg class="dr-slab" viewBox="0 0 302 120" width="302" height="120"><path class="dr-fl" d="M1 51 L151 101 L151 119 L1 69 Z"/><path class="dr-fr" d="M151 101 L301 51 L301 69 L151 119 Z"/><path class="dr-mid" d="M1 60.0 L151 110.0 L301 60.0"/><path class="dr-top" d="M1 51 L151 1 L301 51 L151 101 Z"/><path class="dr-hatch" d="M1 51 L151 1 L301 51 L151 101 Z"/></svg><span class="dr-lab">01</span></div>
+        <div class="dr-lay" data-i="1"><svg class="dr-slab" viewBox="0 0 302 120" width="302" height="120"><path class="dr-fl" d="M1 51 L151 101 L151 119 L1 69 Z"/><path class="dr-fr" d="M151 101 L301 51 L301 69 L151 119 Z"/><path class="dr-mid" d="M1 60.0 L151 110.0 L301 60.0"/><path class="dr-top" d="M1 51 L151 1 L301 51 L151 101 Z"/><path class="dr-hatch" d="M1 51 L151 1 L301 51 L151 101 Z"/></svg><span class="dr-lab">02</span></div>
+        <div class="dr-lay" data-i="2"><svg class="dr-slab" viewBox="0 0 302 120" width="302" height="120"><path class="dr-fl" d="M1 51 L151 101 L151 119 L1 69 Z"/><path class="dr-fr" d="M151 101 L301 51 L301 69 L151 119 Z"/><path class="dr-mid" d="M1 60.0 L151 110.0 L301 60.0"/><path class="dr-top" d="M1 51 L151 1 L301 51 L151 101 Z"/><path class="dr-hatch" d="M1 51 L151 1 L301 51 L151 101 Z"/></svg><span class="dr-lab">03</span></div>
             </div>
             <div class="dr-insight" id="dr-insight" aria-live="polite">
               <span class="dr-ik">01 &middot; Insight</span>
@@ -4157,7 +4165,7 @@ h1,h2,h3,h4,p{margin:0}
   var box = document.getElementById("dr-insight");
   var N = steps.length, active = -1;
   var desktop = window.matchMedia("(min-width: 1024px)");
-  var GAP = 70, LIFT = 40;
+  var GAP = 92, LIFT = 34;
 
   function paint(i) {
     if (i === active) return;
