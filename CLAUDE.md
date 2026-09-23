@@ -145,11 +145,14 @@ Two things follow, and both are easy to undo by accident:
   rather than an accent. The brief for it asked for per-shipment hours,
   document counts, an "80%" and a "3-6 month ramp" scaled to 600 shipments a month,
   plus five dollar callouts under the stack. **None had a source, so none shipped.**
-  The four cards are Grade A rows from `docs/problem-brief.md` with the source
-  printed on each card and a line saying none is a SQRlane figure; that makes them
-  third-party context, not a second headline band. The stack's callouts carry no
-  market number - where one names a figure it is an authored term on SHP-001 or
-  SHP-002, tagged `synthetic booking`. Keep both rules if the band is edited.
+  The four figures are Grade A rows from `docs/problem-brief.md`, laid out as one
+  divided row (number, one line, source) - the source under each is what makes them
+  third-party context rather than a second headline band, so it stays even though
+  the explanatory note under the row was cut on the owner's instruction. The stack
+  was cut to three steps in plain words (storage fees, last-minute rebooking,
+  unhappy customers); its callouts carry no market number, and the one that names
+  a figure is SHP-001's authored slack, tagged `synthetic booking`. Keep both rules
+  if the band is edited.
 - **The four doors are gone** (2026-09-05). The nav routes to all four pages
   from every page, so the home page no longer repeats them.
 - **Every page says its own job on itself**, in a chip under the headline
