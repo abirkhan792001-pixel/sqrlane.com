@@ -128,9 +128,13 @@ Two things follow, and both are easy to undo by accident:
   2026-09-23**, on the owner's instruction, and the **integration tree**
   (`#stack`) took their place: SQRlane on top, CargoWise / SAP TM / Oracle OTM /
   Descartes underneath, one drawn branch per system that lights on hover. Two
-  rules hold it. **Names in the page's type, never a vendor logo** - a real mark
-  on a page about a connector reads as an integration none of them has. And **the
-  disclaimer sits in the same block as the names** ("None of these is connected
+  rules hold it. **The vendors' own marks are shown**, on the owner's instruction
+  and against the older no-logo rule the /product strip still follows: SAP and
+  Oracle are inlined from CC0 SVG data (`simple-icons` / `@iconify-json/logos`
+  on npm, the only place this sandbox can reach), CargoWise and Descartes are
+  set in text until someone supplies their official SVGs - never redraw one from
+  memory. And because a real logo makes the card read as a live integration,
+  **the disclaimer sits in the same block as the names** ("None of these is connected
   ... no vendor, no credential, no endpoint, and nothing is ever written");
   `test_the_home_page_integration_tree_disclaims_its_names` fails without it,
   and was checked by deleting the clause. The brief asked for "Read-only API"
