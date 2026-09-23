@@ -1232,6 +1232,12 @@ h1,h2,h3,h4,p{margin:0}
   transition:transform .25s var(--ease), border-color .25s, box-shadow .25s}
 .it-name{font-size:24px; line-height:30px; font-weight:600; letter-spacing:-.8px; color:var(--fg)}
 .it-sub{font-size:13px; line-height:18px; color:var(--faint)}
+/* SAP and Oracle carry their own marks (CC0 SVG data from the simple-icons /
+   gilbarbara "logos" sets, inlined so nothing is fetched). CargoWise and
+   Descartes are set as text until their official files are supplied. */
+.it-mark{display:block; width:auto}
+.it-mark-sap{height:44px}
+.it-mark-oracle{height:22px; margin:11px 0}
 .it-kid.on{transform:translateY(-2px); border-color:var(--fg);
   box-shadow:0 0 0 1px var(--fg), 0 10px 24px -12px rgba(0,0,0,.25)}
 .it-kid:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
@@ -1257,6 +1263,8 @@ h1,h2,h3,h4,p{margin:0}
   .it-kid::before{content:""; position:absolute; left:-20px; top:50%; width:20px;
     border-top:1px solid var(--gray-400)}
   .it-name{font-size:20px}
+  .it-mark-sap{height:32px}
+  .it-mark-oracle{height:16px; margin:8px 0}
 }
 @media (prefers-reduced-motion:reduce){
   .it-base{transition:none; stroke-dashoffset:0}
@@ -2942,10 +2950,10 @@ h1,h2,h3,h4,p{margin:0}
         <span class="it-name">CargoWise</span><span class="it-sub">Forwarding platform</span>
       </li>
       <li class="it-kid" tabindex="0" data-i="1">
-        <span class="it-name">SAP</span><span class="it-sub">SAP TM</span>
+        <svg class="it-mark it-mark-sap" viewBox="0 0 512 254" role="img" aria-label="SAP"><title>SAP</title><defs><linearGradient id="it-sap-grad" x1="50%" x2="50%" y1="0%" y2="100.002%"><stop offset="0%" stop-color="#00aeef"/><stop offset="21.2%" stop-color="#0097dc"/><stop offset="51.9%" stop-color="#007cc5"/><stop offset="79.2%" stop-color="#006cb8"/><stop offset="100%" stop-color="#0066b3"/></linearGradient></defs><path fill="url(#it-sap-grad)" d="M0 253.281h258.764L512 0H0z"/><path fill="#fff" d="M303.848 50.656H253.28l.17 118.93l-44.032-118.975h-43.66l-37.587 99.36c-3.996-25.283-30.135-34.007-50.702-40.542c-13.581-4.362-27.996-10.779-27.85-17.87c.113-5.82 7.712-11.218 22.813-10.413c10.131.546 19.08 1.362 36.883 9.962l17.505-30.506c-16.233-8.263-38.679-13.48-57.084-13.497h-.113c-21.461 0-39.331 6.95-50.408 18.405C11.493 73.502 7.328 83.667 7.16 94.907c-.282 15.467 5.386 26.432 17.296 35.195c10.064 7.374 22.936 12.158 34.277 15.67c13.987 4.334 25.413 8.105 25.272 16.131c-.112 2.927-1.216 5.662-3.32 7.869c-3.49 3.602-8.837 4.953-16.239 5.1c-14.28.303-24.86-1.943-41.724-11.91l-15.574 30.9c16.846 9.58 34.728 14.386 55.047 14.386l4.57-.034c17.685-.32 32.037-4.559 43.44-13.733c.654-.524 1.239-1.053 1.847-1.588l-1.914 9.862l42.664-.135l7.655-19.599c8.048 2.747 17.2 4.267 26.915 4.267c9.467 0 18.371-1.441 26.268-4.03l5.336 19.362l76.547.073l.186-44.68h16.289c39.371 0 62.645-20.037 62.645-53.639c-.013-37.423-22.638-53.723-70.795-53.723zM187.372 152.318c-5.882 0-11.398-1.025-16.142-2.826l15.962-50.403h.31l15.703 50.544c-4.728 1.689-10.115 2.685-15.839 2.685zm119.436-28.959h-11.11V82.74h11.116c14.803 0 26.623 4.93 26.623 20.048c-.013 15.647-11.82 20.572-26.623 20.572"/></svg><span class="it-sub">SAP TM</span>
       </li>
       <li class="it-kid" tabindex="0" data-i="2">
-        <span class="it-name">Oracle</span><span class="it-sub">Oracle OTM</span>
+        <svg class="it-mark it-mark-oracle" viewBox="0 0 512 67" role="img" aria-label="Oracle"><title>Oracle</title><path fill="#ea1b22" d="M221.034 43.303h33.832l-17.889-28.781l-32.833 52.037h-14.942l39.935-62.508c1.736-2.525 4.63-4.051 7.84-4.051c3.104 0 5.998 1.473 7.682 3.946l40.093 62.613H269.81l-7.05-11.628h-34.253zM376.251 54.93V.631h-12.68v59.614c0 1.631.631 3.21 1.841 4.42s2.841 1.894 4.63 1.894h57.825l7.472-11.628zm-209.78-9.734c12.313 0 22.31-9.944 22.31-22.256c0-12.313-9.997-22.31-22.31-22.31h-55.473v65.93h12.676v-54.3h41.956c5.893 0 10.628 4.789 10.628 10.682c0 5.892-4.735 10.68-10.628 10.68l-35.747-.052l37.851 32.99h18.416l-25.466-21.362zM32.97 66.559C14.77 66.56 0 51.827 0 33.622C0 15.416 14.77.632 32.97.632h38.32c18.204 0 32.963 14.784 32.963 32.99c0 18.205-14.759 32.937-32.964 32.937zm37.468-11.628c11.791 0 21.341-9.524 21.341-21.31S82.228 12.26 70.437 12.26h-36.62c-11.787 0-21.342 9.576-21.342 21.362S22.03 54.93 33.816 54.93zm240.78 11.628c-18.204 0-32.99-14.732-32.99-32.937c0-18.206 14.786-32.99 32.99-32.99h45.514l-7.42 11.628H312.06c-11.786 0-21.362 9.576-21.362 21.362s9.576 21.309 21.362 21.309h45.723l-7.472 11.628zm155.06-11.628c-9.734 0-17.995-6.524-20.52-15.522h54.194l7.471-11.628h-61.665c2.525-8.945 10.786-15.521 20.52-15.521h37.2L511 .63h-45.565c-18.205 0-32.99 14.785-32.99 32.99s14.785 32.938 32.99 32.938h39.094L512 54.931z"/></svg><span class="it-sub">Oracle OTM</span>
       </li>
       <li class="it-kid" tabindex="0" data-i="3">
         <span class="it-name">Descartes</span><span class="it-sub">Logistics platform</span>
