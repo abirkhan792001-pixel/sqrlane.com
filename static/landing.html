@@ -1531,6 +1531,128 @@ h1,h2,h3,h4,p{margin:0}
   .hero .cta,.final .cta{flex-direction:column}
 }
 
+
+/* ==================================================================
+   THE MANUAL DRAIN + THE COST OF ACTING LATE
+
+   Same light theme as the rest of the page, same type: nothing in this
+   band is monospace, and the active state is the page's own near-black
+   rather than an accent colour, the way the loop's active stage is.
+
+   Two rules this band keeps that its brief did not:
+     * Every figure in the metrics grid is third-party research with
+       its source printed on the card, and every one is a Grade A row
+       in docs/problem-brief.md. The brief asked for per-shipment hours,
+       document counts and a percentage scaled to 600 shipments a month;
+       none of those inputs has a source, so none of them is here.
+     * The stack's callouts carry no market figure. Where one names a
+       number it is an authored term on a synthetic booking
+       (data/shipments.json), and it says so beside it.
+   ================================================================== */
+.drain{background:var(--card); border-top:1px solid var(--border)}
+
+/* ---------- part 1: the metrics ---------- */
+.dr-metrics{padding:72px 0 32px}
+.dr-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-top:40px}
+.dr-card{background:var(--bg); border:1px solid var(--border); border-radius:var(--r-md);
+  padding:24px 22px 18px; display:flex; flex-direction:column; min-height:228px}
+.dr-val{font-size:48px; line-height:52px; letter-spacing:-2.2px; font-weight:600;
+  font-variant-numeric:tabular-nums; white-space:nowrap}
+.dr-val small,.dr-val em{font-style:normal; font-size:18px; letter-spacing:-.4px;
+  font-weight:500; color:var(--faint)}
+.dr-val small{margin-left:4px}
+.dr-val em{margin-right:6px}
+.dr-t{margin-top:14px; font-size:15px; line-height:22px; font-weight:600; letter-spacing:-.3px}
+.dr-d{margin:6px 0 16px; font-size:13px; line-height:19px; color:var(--muted)}
+.dr-src{margin-top:auto; padding-top:14px; border-top:1px solid var(--border);
+  font-size:12px; line-height:17px; color:var(--faint)}
+.dr-note{margin-top:18px; font-size:13px; line-height:20px; color:var(--faint); max-width:80ch}
+.dr-note b{color:var(--muted); font-weight:500}
+
+/* ---------- part 2: the sticky stack ---------- */
+.dr-track{position:relative; height:250vh}
+.dr-sticky{position:sticky; top:80px; height:calc(100vh - 80px); display:flex; align-items:center}
+.dr-cols{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:48px; align-items:center; width:100%}
+.dr-left{grid-column:span 6}
+.dr-right{grid-column:span 6; display:flex; flex-direction:column; align-items:center}
+.dr-left .d2{font-size:40px; line-height:46px}
+.dr-left .copy18{margin-top:14px; max-width:46ch}
+
+.dr-steps{list-style:none; margin:28px 0 0; padding:0; border-top:1px solid var(--border)}
+.dr-step{position:relative; border-bottom:1px solid var(--border)}
+.dr-step button{all:unset; box-sizing:border-box; display:grid; grid-template-columns:40px 1fr;
+  width:100%; padding:14px 0 14px 14px; cursor:pointer}
+.dr-step button:focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:4px}
+.dr-step::before{content:""; position:absolute; left:0; top:12px; bottom:12px; width:2px;
+  border-radius:2px; background:var(--gray-300); transition:background .3s}
+.dr-n{font-size:13px; line-height:24px; font-weight:500; color:var(--faint);
+  font-variant-numeric:tabular-nums; transition:color .3s}
+.dr-st{font-size:18px; line-height:24px; font-weight:600; letter-spacing:-.36px;
+  color:var(--faint); transition:color .3s}
+.dr-sub{display:block; font-size:13px; line-height:20px; color:var(--faint); margin-top:2px}
+.dr-body{display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s var(--ease), opacity .3s; opacity:0}
+.dr-body > p{overflow:hidden; font-size:14px; line-height:21px; color:var(--muted)}
+.dr-body > p span{display:block; padding-top:8px}
+.dr-step.on::before{background:var(--fg)}
+.dr-step.on .dr-n,.dr-step.on .dr-st{color:var(--fg)}
+.dr-step.on .dr-sub{color:var(--muted)}
+.dr-step.on .dr-body{grid-template-rows:1fr; opacity:1}
+
+.dr-stack{position:relative; width:100%; max-width:440px; height:420px; perspective:1000px}
+.dr-stack::before{content:""; position:absolute; left:50%; top:-10px; bottom:-10px;
+  border-left:1px dashed var(--gray-400)}
+.dr-lay{position:absolute; left:50%; top:50%; width:176px; height:176px; margin:-88px 0 0 -88px;
+  transform-style:preserve-3d; transition:transform .55s var(--ease)}
+.dr-plane{position:absolute; inset:0; border-radius:10px;
+  background:var(--card); border:1px solid var(--gray-500);
+  box-shadow:6px 6px 0 -1px var(--gray-100), 6px 6px 0 0 var(--gray-500);
+  transform:rotateX(60deg) rotateZ(-45deg);
+  transition:background .4s, border-color .4s, box-shadow .4s}
+.dr-lab{position:absolute; left:calc(100% + 56px); top:50%; transform:translateY(-50%);
+  font-size:13px; font-weight:500; color:var(--faint); font-variant-numeric:tabular-nums; transition:color .3s}
+.dr-lay.on .dr-plane{background:var(--fg); border-color:var(--fg);
+  box-shadow:6px 6px 0 -1px #404040, 6px 6px 0 0 var(--fg)}
+.dr-lay.on .dr-lab{color:var(--fg)}
+
+.dr-insight{width:100%; max-width:440px; margin-top:22px; min-height:94px;
+  background:var(--bg); border:1px solid var(--border); border-radius:var(--r-md); padding:16px}
+.dr-insight .dr-ik{font-size:12px; line-height:16px; font-weight:500; color:var(--faint)}
+.dr-insight p{margin-top:6px; font-size:14px; line-height:21px; color:var(--fg)}
+.dr-tag{display:inline-block; margin-left:6px; font-size:11px; line-height:16px; padding:1px 6px;
+  border:1px solid var(--border-strong); border-radius:4px; color:var(--muted); vertical-align:1px}
+.dr-fade{animation:drFade .45s ease both}
+@keyframes drFade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+.dr-mini{display:none}
+.dr-coda{padding:0 0 72px}
+.dr-coda p{font-size:14px; line-height:21px; color:var(--muted); max-width:70ch}
+.dr-coda a{color:var(--fg); border-bottom:1px solid var(--border-strong)}
+
+@media (max-width:1023px){
+  .dr-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dr-track{height:auto}
+  .dr-sticky{position:static; height:auto; display:block; padding:24px 0 8px}
+  .dr-cols{display:block}
+  .dr-right{display:none}
+  .dr-steps{border-top:0; display:grid; gap:14px}
+  .dr-step{border:1px solid var(--border); border-radius:var(--r-md); background:var(--bg); padding:16px}
+  .dr-step::before{display:none}
+  .dr-step button{padding:0; cursor:default}
+  .dr-n,.dr-st{color:var(--fg)} .dr-sub{color:var(--muted)}
+  .dr-body{grid-template-rows:1fr; opacity:1}
+  .dr-mini{display:block; width:56px; height:44px; margin-bottom:10px}
+  .dr-mob-ins{display:block; margin-top:12px; padding-top:12px; border-top:1px solid var(--border);
+    font-size:13px; line-height:20px; color:var(--fg)}
+}
+@media (min-width:1024px){ .dr-mob-ins{display:none} }
+@media (max-width:640px){
+  .dr-grid{grid-template-columns:1fr}
+  .dr-metrics{padding:64px 0 24px}
+  .dr-left .d2{font-size:30px; line-height:36px}
+}
+@media (prefers-reduced-motion:reduce){
+  .dr-lay,.dr-plane,.dr-body{transition:none}
+  .dr-fade{animation:none}
+}
 </style>
 </head>
 <body>
@@ -2435,6 +2557,140 @@ h1,h2,h3,h4,p{margin:0}
         <span class="src"><svg class="mk"><use href="#mk-doc"/></svg>Federal Register</span>
         <span class="src"><svg class="mk"><use href="#mk-fx"/></svg>Frankfurter <span class="lg">ecb</span></span>
       </div>
+    </div>
+  </div>
+</section>
+<!-- ================ THE MANUAL DRAIN + THE COST OF ACTING LATE ================
+     Two parts, one dark band. Part 1 is four third-party figures, each with its
+     source on the card (all Grade A in docs/problem-brief.md). Part 2 is a sticky
+     layer stack: scroll the band and the five cost lines light up in turn, the
+     plane on the right rising with its line. Under 1024px the stack collapses
+     into five plain cards, each with the stack in miniature.
+
+     Without JS the numbers print their final values and the first step is lit;
+     the script only adds the count-up and the scroll sync.
+     ============================================================================ -->
+<section class="drain" id="drain" aria-labelledby="dr-h1">
+  <div class="dr-metrics">
+    <div class="wrap">
+      <div class="head rv">
+        <span class="eyebrow">The manual freight drain</span>
+        <h2 class="d2" id="dr-h1" style="text-wrap:balance">Manual ops scale faster than your margin.</h2>
+        <p class="copy18">Every new customer brings the same by-hand work with it. The usual fix is
+          another hire, so cost grows with volume and the bigger account makes the margin worse.</p>
+      </div>
+
+      <div class="dr-grid rv">
+        <div class="dr-card">
+          <p class="dr-val"><span data-count="60">60</span><small>%</small></p>
+          <p class="dr-t">Coordination, not the work</p>
+          <p class="dr-d">Of the working day goes to chasing status, searching for information and switching apps.</p>
+          <p class="dr-src">Asana, Anatomy of Work Index 2022</p>
+        </div>
+        <div class="dr-card">
+          <p class="dr-val"><em>~</em><span data-count="25">25</span><small>switches/day</small></p>
+          <p class="dr-t">App switching</p>
+          <p class="dr-d">Across about ten apps, plus roughly four hours a week spent re-orienting after them.</p>
+          <p class="dr-src">Asana, Anatomy of Work Index 2022</p>
+        </div>
+        <div class="dr-card">
+          <p class="dr-val"><span data-count="200">200</span><small>+ interactions</small></p>
+          <p class="dr-t">One shipment</p>
+          <p class="dr-d">Around thirty parties touched a single refrigerated container from East Africa to Europe.</p>
+          <p class="dr-src">Maersk shipment trace, 2014</p>
+        </div>
+        <div class="dr-card">
+          <p class="dr-val"><em>under</em><span data-count="40">40</span><small>%</small></p>
+          <p class="dr-t">Running a forwarding system at all</p>
+          <p class="dr-d">Of forwarders use a forwarding management system. Only 23% have digitised three quarters of their processes.</p>
+          <p class="dr-src">Magaya, State of Digitization in Freight Forwarding 2025 (n=71)</p>
+        </div>
+      </div>
+      <p class="dr-note rv">Third-party research, sourced on each card. <b>None of these is a SQRlane figure.</b>
+        Coordination that needs judgement, like a rate or a reroute, is the job. Moving the same fact
+        from one app to another is not, and that is the part SQRlane takes.</p>
+    </div>
+  </div>
+
+  <div class="dr-track" id="dr-track">
+    <div class="dr-sticky">
+      <div class="wrap" style="width:100%">
+        <div class="dr-cols">
+          <div class="dr-left">
+            <h2 class="d2" style="text-wrap:balance">The cost of acting late.</h2>
+            <p class="copy18">One disruption bills on several lines at once, and every one of them grows
+              with the time it takes to decide.</p>
+            <ol class="dr-steps">
+        <li class="dr-step on" data-i="0" data-insight="Charged per container, per day: the day the call gets made sets the bill, not the call itself." data-synth="0">
+          <svg class="dr-mini" viewBox="0 0 56 44" aria-hidden="true"><path d="M28 28.0 L50 34.0 L28 40.0 L6 34.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 21.5 L50 27.5 L28 33.5 L6 27.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 15.0 L50 21.0 L28 27.0 L6 21.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 8.5 L50 14.5 L28 20.5 L6 14.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 2.0 L50 8.0 L28 14.0 L6 8.0 Z" fill="#171717" stroke="#171717" stroke-width="1"/></svg>
+          <button type="button" aria-controls="dr-insight">
+            <span class="dr-n">01</span>
+            <span><span class="dr-st">Detention &amp; demurrage</span><span class="dr-sub">per container, per day</span>
+              <span class="dr-body"><p><span>Free time at the terminal runs out while the booking waits for a decision. After that, every box is charged by the day.</span></p></span></span>
+          </button>
+          <p class="dr-mob-ins">Charged per container, per day: the day the call gets made sets the bill, not the call itself.</p>
+        </li>
+        <li class="dr-step" data-i="1" data-insight="The same box on the same lane costs more the later it moves. SQRlane decides on the run that sees the disruption." data-synth="0">
+          <svg class="dr-mini" viewBox="0 0 56 44" aria-hidden="true"><path d="M28 28.0 L50 34.0 L28 40.0 L6 34.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 21.5 L50 27.5 L28 33.5 L6 27.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 15.0 L50 21.0 L28 27.0 L6 21.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 8.5 L50 14.5 L28 20.5 L6 14.5 Z" fill="#171717" stroke="#171717" stroke-width="1"/><path d="M28 2.0 L50 8.0 L28 14.0 L6 8.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/></svg>
+          <button type="button" aria-controls="dr-insight">
+            <span class="dr-n">02</span>
+            <span><span class="dr-st">Equipment premiums</span><span class="dr-sub">surcharges on scarce capacity</span>
+              <span class="dr-body"><p><span>When a lane closes, every desk rebooks at once. Whoever asks late pays spot for whatever space is left.</span></p></span></span>
+          </button>
+          <p class="dr-mob-ins">The same box on the same lane costs more the later it moves. SQRlane decides on the run that sees the disruption.</p>
+        </li>
+        <li class="dr-step" data-i="2" data-insight="Hamburg strike, SHP-001: rerouted to Rotterdam for +2 days against 4 days of slack, with the change queued on the booking." data-synth="1">
+          <svg class="dr-mini" viewBox="0 0 56 44" aria-hidden="true"><path d="M28 28.0 L50 34.0 L28 40.0 L6 34.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 21.5 L50 27.5 L28 33.5 L6 27.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 15.0 L50 21.0 L28 27.0 L6 21.0 Z" fill="#171717" stroke="#171717" stroke-width="1"/><path d="M28 8.5 L50 14.5 L28 20.5 L6 14.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 2.0 L50 8.0 L28 14.0 L6 8.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/></svg>
+          <button type="button" aria-controls="dr-insight">
+            <span class="dr-n">03</span>
+            <span><span class="dr-st">Rebooking &amp; reallocation</span><span class="dr-sub">new carrier, new window, new rate</span>
+              <span class="dr-body"><p><span>A new discharge port means a new routing code, a new ETA and an amended booking, each typed in again by hand.</span></p></span></span>
+          </button>
+          <p class="dr-mob-ins">Hamburg strike, SHP-001: rerouted to Rotterdam for +2 days against 4 days of slack, with the change queued on the booking. <span class="dr-tag">synthetic booking</span></p>
+        </li>
+        <li class="dr-step" data-i="3" data-insight="SHP-002, reefer pharma: EUR 14,000 a day once late, EUR 180,000 of cold chain at risk in a port transfer. So it holds, and says why." data-synth="1">
+          <svg class="dr-mini" viewBox="0 0 56 44" aria-hidden="true"><path d="M28 28.0 L50 34.0 L28 40.0 L6 34.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 21.5 L50 27.5 L28 33.5 L6 27.5 Z" fill="#171717" stroke="#171717" stroke-width="1"/><path d="M28 15.0 L50 21.0 L28 27.0 L6 21.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 8.5 L50 14.5 L28 20.5 L6 14.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 2.0 L50 8.0 L28 14.0 L6 8.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/></svg>
+          <button type="button" aria-controls="dr-insight">
+            <span class="dr-n">04</span>
+            <span><span class="dr-st">Downstream delays</span><span class="dr-sub">warehouse, last-mile, production</span>
+              <span class="dr-body"><p><span>A late box holds up more than the box: a dock slot, a truck, an assembly line waiting on parts.</span></p></span></span>
+          </button>
+          <p class="dr-mob-ins">SHP-002, reefer pharma: EUR 14,000 a day once late, EUR 180,000 of cold chain at risk in a port transfer. So it holds, and says why. <span class="dr-tag">synthetic booking</span></p>
+        </li>
+        <li class="dr-step" data-i="4" data-insight="The customer email is drafted in the same run as the decision, and waits for a person to send it." data-synth="0">
+          <svg class="dr-mini" viewBox="0 0 56 44" aria-hidden="true"><path d="M28 28.0 L50 34.0 L28 40.0 L6 34.0 Z" fill="#171717" stroke="#171717" stroke-width="1"/><path d="M28 21.5 L50 27.5 L28 33.5 L6 27.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 15.0 L50 21.0 L28 27.0 L6 21.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 8.5 L50 14.5 L28 20.5 L6 14.5 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/><path d="M28 2.0 L50 8.0 L28 14.0 L6 8.0 Z" fill="#ffffff" stroke="#c9c9c9" stroke-width="1"/></svg>
+          <button type="button" aria-controls="dr-insight">
+            <span class="dr-n">05</span>
+            <span><span class="dr-st">Customer impact</span><span class="dr-sub">SLA penalties, service recovery</span>
+              <span class="dr-body"><p><span>A shipper who hears about a disruption from someone else stops trusting the forwarder, whatever happens to the box.</span></p></span></span>
+          </button>
+          <p class="dr-mob-ins">The customer email is drafted in the same run as the decision, and waits for a person to send it.</p>
+        </li>
+            </ol>
+          </div>
+          <div class="dr-right">
+            <div class="dr-stack" aria-hidden="true">
+        <div class="dr-lay on" data-i="0"><div class="dr-plane"></div><span class="dr-lab">01</span></div>
+        <div class="dr-lay" data-i="1"><div class="dr-plane"></div><span class="dr-lab">02</span></div>
+        <div class="dr-lay" data-i="2"><div class="dr-plane"></div><span class="dr-lab">03</span></div>
+        <div class="dr-lay" data-i="3"><div class="dr-plane"></div><span class="dr-lab">04</span></div>
+        <div class="dr-lay" data-i="4"><div class="dr-plane"></div><span class="dr-lab">05</span></div>
+            </div>
+            <div class="dr-insight" id="dr-insight" aria-live="polite">
+              <span class="dr-ik">01 &middot; Insight</span>
+              <p>Charged per container, per day: the day the call gets made sets the bill, not the call itself.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dr-coda">
+    <div class="wrap">
+      <p>Every line above is billed by the day. SHP-001 and SHP-002 are synthetic bookings from the
+        Hamburg scenario; their terms are authored, not customer data.
+        <a href="/use-cases">See the four scenarios</a>.</p>
     </div>
   </div>
 </section>
@@ -3889,6 +4145,101 @@ h1,h2,h3,h4,p{margin:0}
       "anywhere in the app - the same reason the Comms Agent drafts but cannot send.";
     note.style.color = "var(--muted)";
   });
+})();
+</script>
+<script>
+/* The manual drain: count-up on the four figures, and the sticky stack.
+   Both only ever enhance - the HTML already prints every final number
+   and lights step 01, so a page with no JS reads the same, minus motion. */
+(function () {
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- count-up. Writes textContent straight from a rAF loop, once per
+     figure, the first time its card is on screen. */
+  var nums = document.querySelectorAll(".drain [data-count]");
+  if (!reduce && "IntersectionObserver" in window) {
+    var fmt = function (n) { return n.toLocaleString("en-US"); };
+    var run = function (el) {
+      var target = +el.getAttribute("data-count"), t0 = null, dur = 2000;
+      var step = function (t) {
+        if (t0 === null) t0 = t;
+        var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3); /* easeOut */
+        el.textContent = fmt(Math.round(target * e));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    nums.forEach(function (el) { el.textContent = "0"; });
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { run(e.target); cio.unobserve(e.target); }
+      });
+    }, { threshold: 0.6 });
+    nums.forEach(function (el) { cio.observe(el); });
+  }
+
+  /* ---- the stack. Progress through the 250vh track picks one of five
+     steps; the step list, the planes and the insight card follow it. */
+  var track = document.getElementById("dr-track");
+  if (!track) return;
+  var steps = track.querySelectorAll(".dr-step");
+  var lays = track.querySelectorAll(".dr-lay");
+  var box = document.getElementById("dr-insight");
+  var N = steps.length, active = -1;
+  var desktop = window.matchMedia("(min-width: 1024px)");
+  var GAP = 50, LIFT = 44;
+
+  function paint(i) {
+    if (i === active) return;
+    active = i;
+    steps.forEach(function (s, k) { s.classList.toggle("on", k === i); });
+    lays.forEach(function (l, k) {
+      /* The stack opens at the active plane: everything above it rises, so
+         the lit plane is never hidden under its neighbour. */
+      var y = (k - (N - 1) / 2) * GAP + (k < i ? -LIFT : 0) + (k > i ? 10 : 0) - (k === i ? 6 : 0);
+      l.style.transform = "translateY(" + y + "px)";
+      l.style.zIndex = String(k === i ? N + 1 : N - k);
+      l.classList.toggle("on", k === i);
+    });
+    var s = steps[i], n = ("0" + (i + 1)).slice(-2);
+    box.innerHTML = '<span class="dr-ik">' + n + " &middot; Insight</span><p>" +
+      s.getAttribute("data-insight") +
+      (s.getAttribute("data-synth") === "1" ? ' <span class="dr-tag">synthetic booking</span>' : "") +
+      "</p>";
+    if (!reduce) { box.classList.remove("dr-fade"); void box.offsetWidth; box.classList.add("dr-fade"); }
+  }
+
+  function range() {
+    var top = track.getBoundingClientRect().top + window.pageYOffset;
+    return { top: top, span: Math.max(1, track.offsetHeight - window.innerHeight) };
+  }
+
+  var queued = false;
+  function onScroll() {
+    queued = false;
+    if (!desktop.matches) return;
+    var r = range();
+    var p = (window.pageYOffset - r.top) / r.span;
+    p = Math.min(0.9999, Math.max(0, p));
+    paint(Math.floor(p * N));
+  }
+  window.addEventListener("scroll", function () {
+    if (!queued) { queued = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  window.addEventListener("resize", onScroll);
+
+  /* Clicking a step scrolls to the middle of its slice of the track, so the
+     scroll position and the lit step can never disagree. */
+  steps.forEach(function (s, i) {
+    s.querySelector("button").addEventListener("click", function () {
+      if (!desktop.matches) return;
+      var r = range();
+      window.scrollTo({ top: r.top + ((i + 0.5) / N) * r.span, behavior: reduce ? "auto" : "smooth" });
+    });
+  });
+
+  paint(0);
+  onScroll();
 })();
 </script>
 </body>

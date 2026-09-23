@@ -116,7 +116,7 @@ answer another page's question**:
 
 | Page | The one thing it lands | Owns, exclusively |
 |---|---|---|
-| `/` | There is a gap, and this closes it | the hero, the sources ticker, the apps a decision is re-typed into, the loop as **one picture with no explanation**, the three run figures, the book-a-demo block |
+| `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the loop as **one picture with no explanation**, the three run figures, the book-a-demo block |
 | `/product` | Fourteen Workers on one book, every action gated | the roster and its LIVE/SCRIPTED/DEMO tags, the write-back field map, the approval gate, the systems the connector points at |
 | `/how-it-works` | How a decision is actually made | prose-to-the-model vs numbers-to-a-threshold, the five stages, the live Rhine gauges, the source table |
 | `/use-cases` | Four disruptions, four different calls | the four scenarios and their board outcomes |
@@ -138,6 +138,18 @@ Two things follow, and both are easy to undo by accident:
   be invented on a prototype with no baseline and nobody using it. If a figure
   is ever added there that cannot be traced to code or committed data, delete
   it rather than looking for a source.
+- **The manual-drain band and the cost stack** (2026-09-23, on the owner's
+  instruction, after an Ekho layer-stack reference). They were built dark first and
+  the owner sent them back: same light theme and tokens as the page, no gradient,
+  no monospace, no numbers on the planes, the active state the page's near-black
+  rather than an accent. The brief for it asked for per-shipment hours,
+  document counts, an "80%" and a "3-6 month ramp" scaled to 600 shipments a month,
+  plus five dollar callouts under the stack. **None had a source, so none shipped.**
+  The four cards are Grade A rows from `docs/problem-brief.md` with the source
+  printed on each card and a line saying none is a SQRlane figure; that makes them
+  third-party context, not a second headline band. The stack's callouts carry no
+  market number - where one names a figure it is an authored term on SHP-001 or
+  SHP-002, tagged `synthetic booking`. Keep both rules if the band is edited.
 - **The four doors are gone** (2026-09-05). The nav routes to all four pages
   from every page, so the home page no longer repeats them.
 - **Every page says its own job on itself**, in a chip under the headline
