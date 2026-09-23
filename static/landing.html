@@ -1200,75 +1200,73 @@ h1,h2,h3,h4,p{margin:0}
 }
 
 
-/* ---------- the loop, as one picture ---------- */
-/* The whole product in a row of five: the record comes out, three agents act,
-   the record goes back. The two connector nodes are tinted the same on purpose
-   - that they are the same node is the entire claim. No prose here; the page
-   that explains it is one click away. */
-.loopdiag{margin-top:38px}
-.lnodes{margin:0; padding:0; list-style:none; display:grid; gap:0;
-        grid-template-columns:repeat(5,1fr); align-items:stretch}
-.ln{position:relative; padding:20px 18px 22px; border:1px solid var(--border);
-    background:var(--card); box-shadow:var(--shadow-card); border-right:0}
-.ln:first-child{border-radius:var(--r-md) 0 0 var(--r-md)}
-.ln:last-child{border-radius:0 var(--r-md) var(--r-md) 0; border-right:1px solid var(--border)}
-.ln .k{font-family:"Geist Mono",ui-monospace,monospace; font-size:11px; line-height:16px;
-       color:var(--faint)}
-.ln .t{display:block; margin-top:10px; font-size:15px; line-height:21px; font-weight:600;
-       letter-spacing:-.3px}
-.ln .s{display:block; margin-top:5px; font-size:12.5px; line-height:18px; color:var(--muted)}
-/* The arrow sits in the seam between two nodes, on the card colour, so the row
-   reads as one run rather than five tiles. */
-.ln + .ln::before{content:""; position:absolute; left:-5px; top:60%; width:9px; height:9px;
-                  margin-top:-5px; border-top:1.5px solid var(--border-strong);
-                  border-right:1.5px solid var(--border-strong); transform:rotate(45deg);
-                  background:var(--card); z-index:1}
-.ln.rec{background:var(--blue-100); border-color:var(--blue-400)}
-/* The arrow sits on the node it points into, so on the tinted end node it has
-   to carry that node's colour - a white diamond on a blue card reads as a gap
-   in the run rather than a step in it. */
-.ln.rec::before{background:var(--blue-100); border-color:var(--blue-400)}
-.ln.rec .k,.ln.rec .s{color:var(--blue)}
-.lback{margin-top:14px; display:flex; align-items:center; gap:12px; font-size:13px;
-       line-height:19px; color:var(--muted)}
-.lback .line{flex:1; height:1px; background:var(--border-strong)}
-.lback b{color:var(--fg); font-weight:500}
-@media (max-width:900px){
-  .lnodes{grid-template-columns:1fr}
-  .ln{border-right:1px solid var(--border); border-bottom:0}
-  .ln:first-child{border-radius:var(--r-md) var(--r-md) 0 0}
-  .ln:last-child{border-radius:0 0 var(--r-md) var(--r-md); border-bottom:1px solid var(--border)}
-  .ln + .ln::before{left:50%; top:-5px; margin:0 0 0 -5px; transform:rotate(135deg)}
-}
+/* ---------- the integration tree ---------- */
+/* SQRlane on top, the systems of record it is built to point at underneath,
+   joined by a drawn branch per system. Names in the page's own type, never a
+   vendor's logo: a reproduced mark on a page about a connector reads as an
+   integration none of these has. The disclaimer lives in this block, with the
+   names, and tests/test_the_pages_keep_their_promises.py holds it there.
 
-/* ---------- the three numbers ---------- */
-/* Big figures, the way every B2B page does it - except that each of these can
-   be traced to code or committed data, and the note underneath says they are
-   run figures rather than customer outcomes. That note is the price of having
-   the band at all; do not trim it. */
-.kpi{background:var(--card)}
-.kgrid{margin-top:40px; display:grid; gap:16px; grid-template-columns:repeat(3,1fr)}
-/* .kcard, not .k - the page already uses .k for the field label inside a TMS
-   write-back row, and a bare .k here reached into it and gave every label a
-   card's border, background and 26px of padding. Same trap as .mk/.sysmk on
-   the dashboard: grep a class before claiming it. */
-.kcard{display:flex; flex-direction:column; padding:28px 24px 26px; border-radius:var(--r-md);
-       border:1px solid var(--border); background:var(--bg)}
-.kv{font-size:52px; line-height:56px; font-weight:600; letter-spacing:-2.6px;
-    font-variant-numeric:tabular-nums}
-/* The unit rides small beside the figure, so 23 and 46,500 stay the thing the
-   eye lands on rather than competing with "h" and "EUR". */
-.kv u{text-decoration:none; font-size:24px; font-weight:500; letter-spacing:-.8px;
-      color:var(--faint)}
-.kl{margin-top:12px; font-size:15px; line-height:22px; font-weight:600; letter-spacing:-.3px}
-.kd{margin-top:6px; font-size:13px; line-height:19px; color:var(--muted)}
-.knote{margin-top:20px; font-size:12.5px; line-height:19px; color:var(--faint)}
-.knote b{color:var(--fg); font-weight:500}
-@media (max-width:900px){.kgrid{grid-template-columns:1fr}}
+   The branches are one SVG, drawn by the script from where the cards really
+   are, so they cannot drift from the layout. Without JS there are no lines
+   and the cards still read. */
+.itree{background:var(--card)}
+.itree .head{text-align:center; margin:0 auto}
+.it-stage{position:relative; margin-top:48px}
+.it-hub{position:relative; z-index:1; width:340px; max-width:100%; margin:0 auto;
+  padding:34px 24px 26px; text-align:center; background:var(--fg); color:#fff;
+  border:1px solid var(--fg); border-radius:var(--r-md);
+  box-shadow:12px 12px 0 var(--gray-200)}
+.it-logo{display:inline-flex; align-items:center; gap:12px; font-size:30px; line-height:36px;
+  font-weight:600; letter-spacing:-1.2px}
+.it-logo .mark{display:inline-grid; place-items:center; width:40px; height:40px;
+  border-radius:9px; background:#fff}
+.it-logo .mark path{stroke:var(--fg)}
+.it-badge{display:inline-block; margin-top:16px; padding:3px 10px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.22); font-size:12px; line-height:18px; color:#d4d4d4}
+.it-kids{position:relative; z-index:1; list-style:none; margin:96px 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px}
+.it-kid{height:132px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; background:var(--card); border:1px solid var(--gray-400); border-radius:var(--r-md);
+  cursor:default; outline:none;
+  transition:transform .25s var(--ease), border-color .25s, box-shadow .25s}
+.it-name{font-size:24px; line-height:30px; font-weight:600; letter-spacing:-.8px; color:var(--fg)}
+.it-sub{font-size:13px; line-height:18px; color:var(--faint)}
+.it-kid.on{transform:translateY(-2px); border-color:var(--fg);
+  box-shadow:0 0 0 1px var(--fg), 0 10px 24px -12px rgba(0,0,0,.25)}
+.it-kid:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
+.it-lines{position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none}
+.it-lines path{fill:none; stroke-width:1; vector-effect:non-scaling-stroke}
+.it-base{stroke:var(--gray-400); stroke-dasharray:1; stroke-dashoffset:1;
+  transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1), stroke .25s}
+.it-lines.drawn .it-base{stroke-dashoffset:0}
+.it-flow{stroke:var(--fg); stroke-width:1.5; stroke-dasharray:4 7; opacity:0;
+  transition:opacity .25s; animation:itFlow 1s linear infinite}
+.it-flow.on{opacity:1}
+@keyframes itFlow{to{stroke-dashoffset:-11}}
+.it-foot{margin:36px auto 0; max-width:62ch; text-align:center; font-size:13px; line-height:20px;
+  color:var(--faint)}
+@media (max-width:900px){
+  .it-hub{width:100%; box-shadow:8px 8px 0 var(--gray-200)}
+  .it-lines{display:none}
+  /* One continuous rail down the left, one tick into each card. */
+  .it-kids{grid-template-columns:1fr; gap:12px; margin-top:28px; padding-left:28px}
+  .it-kids::before{content:""; position:absolute; left:8px; top:-28px; bottom:66px;
+    border-left:1px solid var(--gray-400)}
+  .it-kid{position:relative; height:auto; padding:22px 16px; flex-direction:row; justify-content:space-between}
+  .it-kid::before{content:""; position:absolute; left:-20px; top:50%; width:20px;
+    border-top:1px solid var(--gray-400)}
+  .it-name{font-size:20px}
+}
+@media (prefers-reduced-motion:reduce){
+  .it-base{transition:none; stroke-dashoffset:0}
+  .it-flow{animation:none; stroke-dasharray:none}
+  .it-kid{transition:none}
+}
 
 /* ---------- FAQ ---------- */
 /* One section head above one bordered container - the same shape every
-   other section on this page uses (see #kpi, #integrations, #loop).
+   other section on this page uses (see #integrations).
    Items sit inside a single card with hairline dividers between them
    rather than as their own cards, so the block reads as one list.
    Native <details> underneath: works with no JS, each item is still
@@ -2920,95 +2918,44 @@ h1,h2,h3,h4,p{margin:0}
   </div>
 </section>
 
-<!-- ======================== THE LOOP, IN ONE PICTURE ======================== -->
-<!-- Deliberately without explanation. The mechanism is /how-it-works' whole
-     job; if this section starts describing it, there are two pages doing one
-     page's work and a reader has no reason to open the second. -->
-<section class="section" id="loop">
+<!-- ======================== THE INTEGRATION TREE ======================== -->
+<!-- Replaced the loop picture and the three run figures on 2026-09-23, on the
+     owner's instruction. SQRlane on top, the systems it is built to point at
+     below. Names, not logos; the disclaimer sits in the same block as the
+     names, and the promise test reads it from there. -->
+<section class="section itree" id="stack">
   <div class="wrap">
     <div class="head rv">
-      <span class="eyebrow">The loop</span>
-      <h2 class="d2">It opens and closes in the same place.</h2>
-      <p class="copy18">Risk platforms stop at the alert. Your TMS starts after the decision.
-        Between them sits a person re-keying the consequences, one booking at a time.</p>
+      <span class="eyebrow">Explore your stack</span>
+      <h2 class="d2" style="text-wrap:balance">Works through the TMS you already run.</h2>
     </div>
 
-    <div class="loopdiag rv">
-      <ol class="lnodes">
-        <li class="ln rec">
-          <span class="k">00</span>
-          <span class="t">TMS link</span>
-          <span class="s">the book, read</span>
-        </li>
-        <li class="ln ">
-          <span class="k">01</span>
-          <span class="t">Risk</span>
-          <span class="s">sixty sources, six families</span>
-        </li>
-        <li class="ln ">
-          <span class="k">02</span>
-          <span class="t">Routing</span>
-          <span class="s">reroute, hold or leave it</span>
-        </li>
-        <li class="ln ">
-          <span class="k">03</span>
-          <span class="t">Comms</span>
-          <span class="s">carrier and customer mail</span>
-        </li>
-        <li class="ln rec">
-          <span class="k">04</span>
-          <span class="t">TMS link</span>
-          <span class="s">the change, queued</span>
-        </li>
-      </ol>
-      <p class="lback">
-        <span class="line"></span>
-        <span>Same record at both ends &mdash; and <b>a person approves the write</b></span>
-        <span class="line"></span>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ======================== THE THREE NUMBERS ======================== -->
-<!-- Big figure, short label, one line. The shape every B2B page uses.
-     The difference is that each of these can be traced:
-
-       60      counted by expected_sources() before anything is read
-       23h     the event's own trail - 1,380 minutes to the wires
-       46,500  cost_of() over each booking's authored terms
-
-     The one line under the band is not decoration. These are run figures on
-     synthetic bookings, not customer results, and the scenario has to travel
-     with the euro figure because the same board is EUR 614,600 under a Red Sea
-     closure. Keep it short, keep it there. -->
-<section class="section kpi" id="kpi">
-  <div class="wrap">
-    <div class="head rv">
-      <span class="eyebrow">On one run</span>
-      <h2 class="d2">Three numbers, all of them counted.</h2>
-    </div>
-
-    <div class="kgrid rv">
-      <div class="kcard">
-        <p class="kv">60</p>
-        <p class="kl">live sources, every run</p>
-        <p class="kd">Six families, no API keys.</p>
+    <div class="it-stage rv" data-itree>
+      <svg class="it-lines" aria-hidden="true"></svg>
+      <div class="it-hub">
+        <span class="it-logo"><span class="mark"><svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+          <path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6" stroke-width="2.1" stroke-linecap="round"/></svg></span>SQRlane</span>
+        <br><span class="it-badge">Reads the book, queues the change</span>
       </div>
-      <div class="kcard">
-        <p class="kv">23<u>h</u></p>
-        <p class="kl">ahead of the wires</p>
-        <p class="kd">Computed from the event's own trail.</p>
-      </div>
-      <div class="kcard">
-        <p class="kv"><u>EUR</u> 46,500</p>
-        <p class="kl">exposure avoided</p>
-        <p class="kd">Priced per booking against doing nothing.</p>
-      </div>
+      <ul class="it-kids">
+      <li class="it-kid on" tabindex="0" data-i="0">
+        <span class="it-name">CargoWise</span><span class="it-sub">Forwarding platform</span>
+      </li>
+      <li class="it-kid" tabindex="0" data-i="1">
+        <span class="it-name">SAP</span><span class="it-sub">SAP TM</span>
+      </li>
+      <li class="it-kid" tabindex="0" data-i="2">
+        <span class="it-name">Oracle</span><span class="it-sub">Oracle OTM</span>
+      </li>
+      <li class="it-kid" tabindex="0" data-i="3">
+        <span class="it-name">Descartes</span><span class="it-sub">Logistics platform</span>
+      </li>
+      </ul>
     </div>
 
-    <p class="knote">From one run on the Hamburg strike, over synthetic bookings.
-      <b>Not customer results</b> &mdash; there are none yet.</p>
+    <p class="it-foot">Built to point at the system of record you already run.
+      None of these is connected in this build: no vendor, no credential, no endpoint,
+      and nothing is ever written.</p>
   </div>
 </section>
 
@@ -4218,6 +4165,66 @@ h1,h2,h3,h4,p{margin:0}
 
   paint(0);
   onScroll();
+})();
+</script>
+<script>
+/* The integration tree: draw one branch from the hub to each card, measured
+   from the layout, and light the branch of whichever card is hovered or
+   focused. Nothing here is needed to read the section. */
+(function () {
+  var stage = document.querySelector("[data-itree]");
+  if (!stage) return;
+  var svg = stage.querySelector(".it-lines");
+  var hub = stage.querySelector(".it-hub");
+  var kids = stage.querySelectorAll(".it-kid");
+  var NS = "http://www.w3.org/2000/svg";
+  var base = [], flow = [], active = 0;
+  /* Two layers, not one: the branches share a trunk, so a grey branch drawn
+     after the lit one would paint straight over it. */
+  var gBase = document.createElementNS(NS, "g"), gFlow = document.createElementNS(NS, "g");
+  svg.appendChild(gBase); svg.appendChild(gFlow);
+
+  function draw() {
+    var r = stage.getBoundingClientRect(), h = hub.getBoundingClientRect();
+    var hx = h.left + h.width / 2 - r.left, hy = h.bottom - r.top;
+    var ky = kids[0].getBoundingClientRect().top - r.top;
+    var mid = Math.round(hy + (ky - hy) / 2) + 0.5;
+    kids.forEach(function (k, i) {
+      var b = k.getBoundingClientRect();
+      var kx = Math.round(b.left + b.width / 2 - r.left) + 0.5;
+      var d = "M" + (Math.round(hx) + 0.5) + " " + hy + " V" + mid + " H" + kx + " V" + ky;
+      if (!base[i]) {
+        base[i] = document.createElementNS(NS, "path");
+        base[i].setAttribute("class", "it-base");
+        base[i].setAttribute("pathLength", "1");
+        flow[i] = document.createElementNS(NS, "path");
+        flow[i].setAttribute("class", "it-flow");
+        gBase.appendChild(base[i]); gFlow.appendChild(flow[i]);
+      }
+      base[i].setAttribute("d", d); flow[i].setAttribute("d", d);
+    });
+    svg.setAttribute("viewBox", "0 0 " + r.width + " " + r.height);
+  }
+
+  function light(i) {
+    active = i;
+    kids.forEach(function (k, j) { k.classList.toggle("on", j === i); });
+    flow.forEach(function (f, j) { f.classList.toggle("on", j === i); });
+  }
+
+  kids.forEach(function (k, i) {
+    k.addEventListener("mouseenter", function () { light(i); });
+    k.addEventListener("focus", function () { light(i); });
+  });
+
+  draw(); light(active);
+  window.addEventListener("resize", draw);
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { draw(); svg.classList.add("drawn"); io.disconnect(); }
+    }, { threshold: 0.3 });
+    io.observe(stage);
+  } else { svg.classList.add("drawn"); }
 })();
 </script>
 </body>
