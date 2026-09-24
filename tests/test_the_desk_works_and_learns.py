@@ -182,11 +182,11 @@ class TheWorkersTalk(_TempLessons):
 
 
     def test_the_use_cases_stage_says_only_what_the_desk_did(self):
-        """/use-cases plays six inbox jobs as the agents handle them. Each line it
-        prints - a step's result, a queued record, a draft's subject and body, an
-        escalation - must be what this run produced for that mail. The "working"
-        labels are the page's own and are not checked: they are the pause before
-        the real line lands."""
+        """/use-cases draws six inbox jobs as product mocks from #uc-scenes. Every
+        line a mock prints - a step's result, a queued record, a draft's subject,
+        recipient and body, an escalation - must be what this run produced for that
+        mail. Titles, one-line descriptions and "working" labels are the page's own
+        and are not checked; they describe, they do not quote."""
         import json
         import re
         page = (ROOT / "static" / "use-cases.html").read_text()

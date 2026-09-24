@@ -138,31 +138,37 @@ answer another page's question**:
 |---|---|---|
 | `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the integration tree, the FAQ, the book-a-demo block |
 | `/product` | Sixteen Workers on one book, every action gated | the roster in two parts (the everyday desk in five groups, then the risk half) and its LIVE/SCRIPTED/DEMO tags, how the agents talk and learn (`#talk`), the write-back field map, the approval gate, the systems the connector points at |
-| `/use-cases` | Six everyday jobs, then four disruptions | the six inbox jobs played in the agent window (`#everyday`), the four scenarios and their board outcomes (`#cases`) |
+| `/use-cases` | Six everyday jobs, then four disruptions | one card grid: the six inbox jobs as cropped product mocks (`#everyday`), then the four scenarios and their boards (`#cases`) |
 | `/about` | What is real here and what is not | the live/synthetic/demo ledger, the honest quote, the modelled desk, the non-goals |
 
-**`/use-cases` leads with the everyday desk** (rebuilt 2026-09-24, on the owner's
-instruction, after a reference reel from an inbox-automation product - content and motion
-taken, colours not). Part one is a rail of six jobs beside one agent window that plays
-each the way the agents handle it: the trigger mail lands, each agent card arrives
-"working" with a shimmer and resolves into the real line, and the job ends on a draft
-(`Draft — not sent`, Approve - never Send) or an escalation, then dissolves into the
-next. Below it, with no heading of its own (the old "One board. Four different
-answers." intro and the "Pick one and watch it run" closing bar were removed on the
-owner's instruction), the four disruptions sit as a card grid whose boards light booking
-by booking when they scroll into view. Three rules hold it:
+**`/use-cases` is one card grid, everyday desk first** (2026-09-24, on the owner's
+instruction, rebuilt twice the same day: first as a single agent window after an
+inbox-automation reel, then as the bento grid on Peec AI's site - layout and motion taken,
+colours, names and content ours). Under the unchanged hero, two runs of cards, two to a
+row with the widths alternating: **the six everyday jobs**, then **the four disruptions**.
+Each card is a title, two lines, and a cropped product mock that fades out at its foot.
+The everyday mocks come in three compositions, chosen per scene by `layout`:
 
-- **Every line the window prints is the desk's own output.** The scenes live as JSON in
+- **stack** - the mail tilted at the back, the draft (or escalation) over it, a dark pill
+  up top for what was queued. The pill sits clear of the draft's `Draft — not sent` chip
+  on purpose: that chip is the one line on the card that must always show.
+- **checklist** - each agent's step as a ticked row, the draft blurred and fading behind.
+- **focus** - the steps as a column, the one that matters picked out in black.
+
+The disruption cards keep their boards, now in a panel, lighting booking by booking. On
+arrival a card's layers rise and un-blur back to front, ticks fill in order, the key row
+darkens last and the pill lands; hover lifts the front layer. Three rules hold it:
+
+- **Every word in an everyday mock is the desk's own output.** The cards are drawn from
   `#uc-scenes`, and `test_the_use_cases_stage_says_only_what_the_desk_did` replays the
   inbox and fails on any step result, record, draft subject, recipient, body line or
-  escalation the agents did not produce. Only the "working" labels are the page's own.
-  Checked by changing one price and watching it fail. Lines with a date in them are
-  avoided, because the bookings age forward weekly and a quoted date would drift.
-- **Motion is one vocabulary**: fade, 10px rise and a clearing blur, one easing
-  (`--out`), a slow per-job tint behind glass. It pauses off screen and on a hidden tab,
-  and `prefers-reduced-motion` gets the finished job with no autoplay and no shimmer.
-- **Without JS nothing is missing from the grid**: the pre-play board state only exists
-  under `.uc-js`, which the page sets on itself, so the markup always holds the answer.
+  escalation the agents did not produce. Checked by changing one price and watching it
+  fail. Lines with a date in them are avoided, because the bookings age forward weekly.
+- **Reduced motion, or no observer, gets every card finished**; the pre-arrival state
+  exists only under `.bx-js`, which the page sets on itself.
+- **Mock heights are measured, not guessed.** At phone width the text wraps harder, so the
+  mock grows to keep the draft's gate above the fade. Re-check a 390px screen after
+  changing any mock's content.
 
 **`/how-it-works` is gone, and three things went with it** (2026-09-24, on the owner's
 instruction). Its nav and footer links are off every page, the footer's *Data sources*

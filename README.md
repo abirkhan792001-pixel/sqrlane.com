@@ -125,7 +125,7 @@ or go straight to **http://127.0.0.1:8000/app** and press **Inject Hamburg strik
 |---|---|
 | `/` | Home — the gap, the cost of acting late, the systems it works through, the FAQ |
 | `/product` | The sixteen Workers, how they talk and learn, the write-back map, the approval gate |
-| `/use-cases` | Six everyday jobs played as the agents handle them, then four disruptions over one board |
+| `/use-cases` | One card grid: six everyday jobs as product mocks drawn from the agents' real output, then four disruptions over one board |
 | `/about` | What is real here and what is not, and the desk it is modelled on |
 | `/whitepaper` | The technical paper |
 | `/app` | The dashboard. This is the demo, and the button lives here |

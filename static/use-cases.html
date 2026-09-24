@@ -229,205 +229,172 @@ h1,h2,h3,h4,p{margin:0}
 .part-hd .num.on{background:var(--green-100); color:var(--green)}
 
 /* ==================================================================
-   PART ONE - the stage. A rail of six jobs beside one agent window
-   that plays the selected job the way the agents handle it: the
-   trigger lands, each agent card arrives "working", resolves into
-   the real line, and the job ends on a draft or an escalation. Then
-   everything dissolves and the next job starts.
+   THE USE CASES - one bento grid, after the card grid on Peec AI's
+   site (layout and motion taken; colours, content and names ours).
 
-   Motion rules, all in one place so they stay consistent:
-     * enter = fade + 10px rise + a 6px blur that clears. Nothing pops.
-     * one easing (--out) for everything that arrives.
-     * "working" text shimmers; the real line crossfades in over it.
-     * the window's glow shifts colour per job, slowly, behind glass.
-   prefers-reduced-motion gets the finished state of the chosen job,
-   no autoplay, no shimmer. Every class is prefixed uc-.
+   Two cards a row, the widths alternating so the grid never reads as
+   a table. Each card is a title, two lines, and a cropped product
+   mock that fades out at the card's foot. The mocks come in three
+   compositions, all drawn from the same scene data the tests hold to
+   a real run (#uc-scenes):
+
+     stack      the mail, tilted at the back; the draft or escalation
+                over it; a dark pill for what was queued
+     checklist  each agent's step as a ticked row; the draft behind it,
+                blurred and fading, like a list you are not reading yet
+     focus      the steps as a column of rows, the one that matters
+                picked out in black, the rest receding
+
+   Motion, all of it on arrival: layers rise and un-blur back to
+   front, ticks fill in order, the key row darkens last, the pill
+   lands. Hover lifts the front layer a few pixels. Reduced motion,
+   or no JS, gets the finished card. Every class is prefixed bx- (or
+   uc- for the boards, kept from before).
    ================================================================== */
 :root{--out:cubic-bezier(.22,1,.36,1)}
-.uc-stage{margin-top:36px; display:grid; grid-template-columns:minmax(0,.86fr) minmax(0,1.24fr);
-          gap:28px; align-items:start}
 
-.uc-rail{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px}
-.uc-job{position:relative; width:100%; display:grid; grid-template-columns:30px minmax(0,1fr);
-        gap:0 12px; padding:14px 16px 16px; text-align:left; font:inherit; color:inherit;
-        background:transparent; border:1px solid transparent; border-radius:var(--r-md);
-        cursor:pointer; transition:background-color .35s var(--out), border-color .35s var(--out),
-        box-shadow .35s var(--out)}
-.uc-job:hover{background:rgba(255,255,255,.6)}
-.uc-job:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
-.uc-job .n{grid-row:1/3; width:26px; height:26px; border-radius:var(--r-sm);
-           display:flex; align-items:center; justify-content:center;
-           font-family:"Geist Mono",ui-monospace,monospace; font-size:11.5px;
-           background:var(--gray-100); color:var(--faint);
-           transition:background-color .35s var(--out), color .35s var(--out)}
-.uc-job .t{font-size:15px; line-height:22px; font-weight:600; letter-spacing:-.2px; padding-top:2px;
-           color:var(--muted); transition:color .35s var(--out)}
-.uc-job .l{display:grid; grid-template-rows:0fr; transition:grid-template-rows .45s var(--out),
-           opacity .45s var(--out); opacity:0}
-.uc-job .l > span{overflow:hidden; font-size:13px; line-height:19px; color:var(--muted)}
-.uc-job .bar{position:absolute; left:58px; right:16px; bottom:7px; height:2px; border-radius:2px;
-             background:var(--gray-200); overflow:hidden; opacity:0; transition:opacity .3s}
-.uc-job .bar i{display:block; height:100%; width:0; background:var(--fg); border-radius:2px}
-.uc-job.on{background:var(--card); border-color:var(--border); box-shadow:var(--shadow-card)}
-.uc-job.on .n{background:var(--fg); color:#fff}
-.uc-job.on .t{color:var(--fg)}
-.uc-job.on .l{grid-template-rows:1fr; opacity:1; padding-top:4px}
-.uc-job.on .bar{opacity:1}
+.bx-sec{padding:40px 0 72px}
+.bx-label{display:flex; align-items:center; gap:10px; margin:40px 0 14px;
+          font-size:12px; line-height:16px; font-weight:500; letter-spacing:.06em;
+          text-transform:uppercase; color:var(--faint)}
+.bx-label:first-child{margin-top:0}
+.bx-label span{font-family:"Geist Mono",ui-monospace,monospace; letter-spacing:0;
+               text-transform:none; padding:2px 7px; border-radius:4px; background:var(--gray-100)}
+.bx-label::after{content:""; flex:1; height:1px; background:var(--border)}
 
-.uc-win{position:relative; isolation:isolate; overflow:hidden; display:flex; flex-direction:column;
-        height:620px; border:1px solid var(--border); border-radius:var(--r-lg);
-        background:var(--card); box-shadow:var(--shadow-lift)}
-.uc-glow,.uc-glow::after{position:absolute; z-index:-1; border-radius:50%; filter:blur(64px);
-        opacity:.55; transition:background-color 1.4s var(--out)}
-.uc-glow{width:70%; height:55%; right:-18%; top:-14%; background:var(--gray-300)}
-.uc-glow::after{content:""; width:90%; height:90%; left:-120%; top:120%;
-                background:var(--gray-200)}
-.uc-win[data-tint="blue"]  .uc-glow{background:var(--blue-400)}
-.uc-win[data-tint="blue"]  .uc-glow::after{background:var(--blue-100)}
-.uc-win[data-tint="green"] .uc-glow{background:var(--green-400)}
-.uc-win[data-tint="green"] .uc-glow::after{background:var(--green-100)}
-.uc-win[data-tint="amber"] .uc-glow{background:var(--amber-400)}
-.uc-win[data-tint="amber"] .uc-glow::after{background:var(--amber-100)}
+.bx-grid{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:12px}
+.bx{grid-column:span 6; position:relative; display:flex; flex-direction:column; overflow:hidden;
+    padding:36px 40px 0; background:var(--card); border:1px solid var(--border);
+    border-radius:var(--r-lg); box-shadow:var(--shadow-card)}
+.bx.s5{grid-column:span 5} .bx.s7{grid-column:span 7}
+.bx.off{background:var(--card-muted)}
+.bx h3{font-size:20px; line-height:28px; letter-spacing:-.5px; font-weight:600}
+.bx .ds{margin-top:8px; max-width:40ch; font-size:16px; line-height:25px; color:var(--muted)}
+.bx .kind{display:flex; gap:8px; margin-bottom:12px}
 
-.uc-win-h{display:flex; align-items:center; gap:10px; padding:11px 16px;
-          border-bottom:1px solid var(--border); font-size:12.5px; line-height:18px;
-          background:rgba(255,255,255,.72); backdrop-filter:blur(10px)}
-.uc-dots{display:flex; gap:5px} .uc-dots i{width:8px; height:8px; border-radius:50%; background:var(--gray-300)}
-.uc-win-t{font-weight:600}
-.uc-win-s{margin-left:auto; display:flex; align-items:center; gap:7px; color:var(--faint)}
-.uc-pulse{width:6px; height:6px; border-radius:50%; background:var(--green);
-          box-shadow:0 0 0 0 rgba(16,125,50,.35); animation:ucPulse 1.8s ease-out infinite}
-.uc-win.idle .uc-pulse{background:var(--gray-500); animation:none}
-@keyframes ucPulse{0%{box-shadow:0 0 0 0 rgba(16,125,50,.35)}100%{box-shadow:0 0 0 7px rgba(16,125,50,0)}}
+/* The mock: fixed height, cropped, fading out at the foot. */
+.bx-m{position:relative; height:390px; margin-top:28px;
+      -webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);
+              mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
+.bx-dots{position:absolute; inset:10% 4% 0 4%;
+         background-image:radial-gradient(var(--gray-300) 1px,transparent 1.2px);
+         background-size:11px 11px; opacity:.8;
+         -webkit-mask-image:radial-gradient(closest-side,#000 30%,transparent);
+                 mask-image:radial-gradient(closest-side,#000 30%,transparent)}
 
-.uc-trigger{padding:14px 16px 0; min-height:92px}
-/* Cards stack from the top, under the trigger, as they do in a real agent
-   window. When a job runs longer than the window, the feed follows the
-   newest card with a smooth scroll, and only then does its top edge fade -
-   a mask on a feed that has not scrolled would just be a grey band. */
-.uc-feed{flex:1; min-height:0; padding:12px 16px 14px; display:flex; flex-direction:column;
-         gap:10px; overflow:hidden; scroll-behavior:smooth}
-.uc-feed > *{flex:none}
-.uc-feed.scrolled{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 36px);
-                          mask-image:linear-gradient(to bottom,transparent 0,#000 36px)}
-.uc-win-f{display:flex; align-items:center; gap:8px; padding:11px 16px; font-size:12px; line-height:17px;
-          color:var(--faint); border-top:1px solid var(--border); background:rgba(255,255,255,.72);
-          backdrop-filter:blur(10px)}
+/* A layer. Arrives from below, blurred, and settles. --r tilts it. */
+.bx-l{position:absolute; rotate:var(--r,0deg);
+      transition:opacity .8s var(--out), translate .9s var(--out), filter .8s var(--out),
+                 scale .4s var(--out), box-shadow .4s var(--out);
+      transition-delay:var(--d,0s)}
+.bx-js .bx:not(.in) .bx-l{opacity:0; translate:0 22px; filter:blur(10px)}
+.bx:hover .bx-l.front{scale:1.015; box-shadow:var(--shadow-lift)}
 
-/* enter / leave */
-.uc-in{opacity:0; transform:translateY(10px) scale(.985); filter:blur(6px);
-       transition:opacity .6s var(--out), transform .75s var(--out), filter .6s var(--out)}
-.uc-in.on{opacity:1; transform:none; filter:blur(0)}
-.uc-leave{opacity:0 !important; transform:translateY(-8px) !important; filter:blur(8px) !important;
-          transition-duration:.55s !important}
+.bx-panel{background:var(--card); border:1px solid var(--border); border-radius:12px;
+          box-shadow:0 1px 1px rgba(0,0,0,.02),0 10px 24px -8px rgba(0,0,0,.08)}
+.bx-ph{display:flex; align-items:center; gap:8px; padding:12px 14px; font-size:13px;
+       line-height:18px; font-weight:500; border-bottom:1px solid var(--border)}
+.bx-ph .c{color:var(--faint); font-weight:400}
+.bx-ph .r{margin-left:auto; font-size:11.5px; color:var(--faint); font-weight:400;
+          display:flex; gap:6px; align-items:center}
+.bx-ph .r b{font-weight:500; color:var(--muted); padding:2px 6px; border-radius:5px;
+            background:var(--gray-100)}
 
-/* the trigger */
-.uc-tc{display:grid; grid-template-columns:38px minmax(0,1fr); gap:12px; align-items:center;
-       padding:11px 13px; border:1px solid var(--border); border-radius:var(--r-md);
-       background:rgba(255,255,255,.82); backdrop-filter:blur(8px); box-shadow:var(--shadow-card)}
-.uc-ic{position:relative; width:38px; height:38px; border-radius:10px; background:var(--gray-100);
+/* the mail */
+.bx-mail{display:grid; grid-template-columns:36px minmax(0,1fr); gap:12px; padding:14px 16px}
+.bx-ic{position:relative; width:36px; height:36px; border-radius:10px; background:var(--gray-100);
        display:flex; align-items:center; justify-content:center; color:var(--fg)}
-.uc-ic b{position:absolute; top:-4px; right:-4px; min-width:16px; height:16px; padding:0 4px;
-         border-radius:999px; background:var(--red); color:#fff; font-size:10px; line-height:16px;
-         font-weight:600; text-align:center; box-shadow:0 0 0 2px var(--card)}
-.uc-tc .src{font-size:11px; line-height:15px; color:var(--faint)}
-.uc-tc .fr{font-size:13px; line-height:18px; font-weight:600; margin-top:1px}
-.uc-tc .sb{font-size:13px; line-height:18px; color:var(--muted); overflow:hidden;
-           text-overflow:ellipsis; white-space:nowrap}
+.bx-ic b{position:absolute; top:-4px; right:-4px; min-width:16px; height:16px; border-radius:999px;
+         background:var(--red); color:#fff; font-size:10px; line-height:16px; font-weight:600;
+         text-align:center; box-shadow:0 0 0 2px var(--card)}
+.bx-mail .s{font-size:11px; line-height:15px; color:var(--faint)}
+.bx-mail .f{font-size:14px; line-height:20px; font-weight:600}
+.bx-mail .t{font-size:13px; line-height:18px; color:var(--muted)}
 
-/* an agent card */
-.uc-card{flex:none; padding:11px 13px 12px; border:1px solid var(--border); border-radius:var(--r-md);
-         background:rgba(255,255,255,.86); backdrop-filter:blur(8px); box-shadow:var(--shadow-card)}
-.uc-who{display:flex; align-items:center; gap:8px; font-size:12px; line-height:16px; font-weight:600}
-.uc-av{width:18px; height:18px; border-radius:5px; background:var(--fg); flex:none;
-       display:flex; align-items:center; justify-content:center}
-.uc-st{margin-left:auto; font-weight:400; color:var(--faint); font-size:11.5px}
-.uc-txt{display:grid; margin-top:7px; font-size:13px; line-height:19px}
-.uc-txt > span{grid-area:1/1; transition:opacity .5s var(--out), filter .5s var(--out),
-               transform .5s var(--out)}
-.uc-txt .d{opacity:0; filter:blur(5px); transform:translateY(3px); color:var(--fg)}
-.uc-card.done .uc-txt .w{opacity:0; filter:blur(5px)}
-.uc-card.done .uc-txt .d{opacity:1; filter:none; transform:none}
-.uc-card.warn.done .uc-txt .d{color:var(--amber)}
-.uc-rec{display:inline-flex; align-items:center; gap:7px; margin-top:8px; padding:3px 8px;
-        border-radius:var(--r-sm); background:var(--gray-100); font-size:11.5px; line-height:16px}
-.uc-rec b{font-family:"Geist Mono",ui-monospace,monospace; font-weight:500}
-.uc-rec span{color:var(--faint)}
+/* the draft */
+.bx-draft{padding:14px 16px 12px; font-size:12.5px; line-height:18px}
+.bx-draft .h{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--faint)}
+.bx-draft .to{margin-top:8px; font-weight:600; color:var(--fg)}
+.bx-draft .cc{color:var(--faint); font-size:11.5px}
+.bx-draft .sj{margin-top:6px; font-weight:600; color:var(--fg)}
+.bx-draft .ln{margin-top:2px; color:var(--muted)}
+.bx-gate{display:flex; align-items:center; gap:8px; margin-top:12px}
+.bx-ap{margin-left:auto; display:inline-flex; align-items:center; gap:6px; height:28px; padding:0 12px;
+       border-radius:7px; background:var(--fg); color:#fff; font-size:12px; font-weight:500}
+.bx-esc{padding:14px 16px; border-left:3px solid var(--amber); font-size:13px; line-height:19px}
+.bx-esc .lab{font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; font-weight:600;
+             color:var(--amber)}
+.bx-esc .tx{margin-top:4px; color:var(--fg)}
 
-.uc-shim{background:linear-gradient(90deg,var(--gray-600) 0%,var(--gray-600) 38%,var(--fg) 50%,
-         var(--gray-600) 62%,var(--gray-600) 100%); background-size:260% 100%;
-         -webkit-background-clip:text; background-clip:text; color:transparent;
-         animation:ucShim 1.7s linear infinite}
-@keyframes ucShim{from{background-position:100% 0}to{background-position:-160% 0}}
+.bx-av{width:18px; height:18px; border-radius:5px; background:var(--fg); flex:none;
+       display:inline-flex; align-items:center; justify-content:center}
 
-/* the ending: a draft, or an escalation */
-.uc-grow{display:grid; grid-template-rows:0fr; transition:grid-template-rows .6s var(--out)}
-.uc-grow > div{overflow:hidden; min-height:0}
-.uc-card.done .uc-grow{grid-template-rows:1fr}
-.uc-mail{margin-top:9px; padding:10px 12px; border:1px solid var(--border); border-radius:10px;
-         background:var(--card); font-size:12.5px; line-height:18px}
-.uc-mail .to{font-weight:600}
-.uc-mail .cc{color:var(--faint); font-size:11.5px}
-.uc-mail .sj{margin-top:6px; font-weight:600}
-.uc-mail .ln{color:var(--muted); margin-top:2px}
-.uc-gate{display:flex; align-items:center; gap:8px; margin-top:10px}
-.uc-gate .uc-ap{margin-left:auto; height:26px; padding:0 11px; border-radius:var(--r-sm);
-                background:var(--fg); color:#fff; font-size:12px; font-weight:500;
-                display:inline-flex; align-items:center}
-.uc-gate .uc-ed{font-size:12px; color:var(--faint)}
-.uc-card.esc{border-left:3px solid var(--amber)}
-.uc-card.esc .lab{font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
-                  font-weight:600; color:var(--amber)}
-.uc-note{margin-top:18px; max-width:78ch}
-.uc-note a{color:var(--fg); text-decoration:underline; text-underline-offset:3px;
-           text-decoration-thickness:1px}
+/* the dark pill */
+.bx-pill{position:absolute; display:inline-flex; align-items:center; gap:8px; padding:9px 16px 9px 12px;
+         border-radius:999px; background:var(--fg); color:#fff; font-size:13px; line-height:18px;
+         font-weight:500; white-space:nowrap; box-shadow:0 10px 24px -8px rgba(0,0,0,.35)}
+.bx-pill i{width:16px; height:16px; border-radius:50%; background:#fff; color:var(--fg);
+           display:inline-flex; align-items:center; justify-content:center; font-style:normal}
+.bx-pill b{font-family:"Geist Mono",ui-monospace,monospace; font-weight:500}
 
-@media (max-width:900px){
-  .uc-stage{grid-template-columns:1fr; gap:14px}
-  .uc-rail{flex-direction:row; overflow-x:auto; gap:6px; padding-bottom:4px;
-           scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
-  .uc-rail li{flex:none; scroll-snap-align:start}
-  .uc-job{width:auto; padding:10px 14px 14px; grid-template-columns:26px auto}
-  .uc-job .l{display:none}
-  .uc-job .t{font-size:14px; white-space:nowrap}
-  .uc-job .bar{left:14px; right:14px; bottom:6px}
-  .uc-win{height:640px}
-}
-@media (max-width:520px){ .uc-win{height:680px} .uc-tc .sb{white-space:normal} }
+/* checklist */
+.bx-row{display:grid; grid-template-columns:18px 18px minmax(0,1fr) auto; gap:10px; align-items:center;
+        padding:11px 14px; border-top:1px solid var(--border); font-size:13px; line-height:18px}
+.bx-row:first-child{border-top:0}
+.bx-ck{width:16px; height:16px; border-radius:4px; border:1.5px solid var(--gray-400); position:relative;
+       transition:background-color .35s var(--out), border-color .35s var(--out); transition-delay:var(--t,0s)}
+.bx-ck::after{content:""; position:absolute; left:4px; top:1px; width:4px; height:8px;
+              border:solid #fff; border-width:0 2px 2px 0; rotate:45deg; opacity:0;
+              transition:opacity .25s; transition-delay:var(--t,0s)}
+.bx.in .bx-ck{background:var(--blue); border-color:var(--blue)}
+.bx.in .bx-ck::after{opacity:1}
+.bx-row .w{font-weight:500}
+.bx-row .dn{grid-column:3/5; margin-top:-6px; font-size:12px; line-height:17px; color:var(--faint);
+            overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.bx-row.warn .dn{color:var(--amber)}
+.bx-row .tg{font-size:11px; line-height:16px; padding:1px 7px; border-radius:5px;
+            background:var(--gray-100); color:var(--faint)}
+.bx-row.warn .tg{background:var(--amber-100); color:var(--amber)}
+.bx-fade{filter:blur(1.2px); opacity:.42}
 
-/* ==================================================================
-   PART TWO - the disruptions, as a card grid. Each card carries its
-   board in a panel that rises from the card's foot. On entering the
-   viewport the board plays: cells light in order, the moved rows
-   follow, and the counts land. Without JS - or with reduced motion -
-   every card simply shows its finished board.
-   ================================================================== */
-.uc-grid{margin-top:36px; display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:16px}
-.uc-case{grid-column:span 6; display:flex; flex-direction:column; padding:28px 28px 0;
-         border:1px solid var(--border); border-radius:var(--r-lg); background:var(--card);
-         box-shadow:var(--shadow-card); overflow:hidden}
-/* Equal halves. A 7/5 split looked closer to the reference, but a
-   seven-cell board in the narrow card squeezed "ON PLAN" onto two lines. */
-.uc-case.wide{grid-column:span 6}
-.uc-case.off{background:var(--card-muted)}
-.uc-case .kind{display:flex; align-items:center; gap:8px}
-.uc-case h3{margin-top:14px; font-size:22px; line-height:28px; letter-spacing:-.6px; font-weight:600}
-.uc-case .what{margin-top:8px; font-size:14.5px; line-height:22px; color:var(--muted)}
-.uc-case .call{margin-top:16px; padding:11px 13px; border-radius:var(--r-sm);
-               background:var(--blue-100); font-size:13px; line-height:19px; color:var(--blue)}
-.uc-case .call b{font-weight:600}
-.uc-mock{position:relative; flex:1; margin-top:24px; padding:18px 18px 22px;
-         border:1px solid var(--border); border-bottom:0; border-radius:var(--r-md) var(--r-md) 0 0;
-         background:var(--card-muted)}
-.uc-case.off .uc-mock{background:var(--card)}
-.uc-replay{position:absolute; top:10px; right:10px; font:inherit; font-size:11.5px; line-height:16px;
-           color:var(--faint); background:var(--card); border:1px solid var(--border);
-           border-radius:var(--r-sm); padding:3px 8px; cursor:pointer; opacity:0;
-           transition:opacity .25s, color .25s}
-.uc-case:hover .uc-replay,.uc-replay:focus-visible{opacity:1}
+/* focus */
+.bx-fr{display:grid; grid-template-columns:minmax(0,1fr) 30px; gap:12px; align-items:center;
+       padding:12px 16px; border-radius:12px; background:var(--card); border:1px solid var(--border);
+       font-size:13px; line-height:18px; transition:background-color .7s var(--out), color .7s var(--out),
+       box-shadow .7s var(--out), filter .7s var(--out), opacity .7s var(--out);
+       transition-delay:var(--t,0s)}
+.bx-fr .a{font-weight:500}
+.bx-fr .b{margin-top:2px; color:var(--faint); font-size:12.5px; line-height:17px;
+          display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.bx-fr .go{width:30px; height:30px; border-radius:8px; border:1px solid var(--border);
+           display:flex; align-items:center; justify-content:center; color:var(--faint)}
+.bx-fr.far{filter:blur(1.4px); opacity:.45}
+.bx-fr.near{opacity:.8}
+.bx.in .bx-fr.key{background:var(--fg); color:#fff; border-color:var(--fg);
+                  box-shadow:0 14px 30px -12px rgba(0,0,0,.45)}
+.bx.in .bx-fr.key .b{color:#a8a8a8}
+.bx.in .bx-fr.key .go{border-color:#383838; color:#fff}
+
+/* The disruption boards, restyled as a panel inside the card. */
+.uc-mock{padding:14px 14px 18px}
+.uc-mock .board{margin-top:4px}
+.uc-mock .moved{margin-top:14px; display:flex; flex-direction:column; gap:6px}
+.uc-mock .mv{font-family:"Geist Mono",ui-monospace,monospace; font-size:11.5px; line-height:17px;
+             color:var(--muted)}
+.uc-mock .mv b{color:var(--fg); font-weight:500}
+.uc-mock .tot{margin-top:14px; font-size:12px; line-height:17px; color:var(--faint)}
+.uc-mock .tot b{color:var(--fg); font-weight:500; font-variant-numeric:tabular-nums}
+.uc-mock .tot b[data-desk]{display:inline-block; min-width:1ch; padding:0 5px; border-radius:4px;
+                           background:var(--green-100); color:var(--green)}
+.bx .call{margin-top:14px; max-width:48ch; padding:10px 13px; border-radius:var(--r-sm);
+          background:var(--blue-100); font-size:13px; line-height:19px; color:var(--blue)}
+.bx .call b{font-weight:600}
+.uc-replay{margin-left:auto; font:inherit; font-size:11.5px; line-height:16px; color:var(--faint);
+           background:var(--card); border:1px solid var(--border); border-radius:6px; padding:2px 8px;
+           cursor:pointer}
 .uc-replay:hover{color:var(--fg)}
 
-.board{margin-top:14px; display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px}
+.board{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px}
 .cell{padding:8px 0 9px; border-radius:var(--r-sm); text-align:center;
       border:1px solid var(--border); background:var(--card);
       transition:background-color .5s var(--out), border-color .5s var(--out)}
@@ -440,36 +407,35 @@ h1,h2,h3,h4,p{margin:0}
 .cell.hold{background:var(--amber-100); border-color:var(--amber-400)}
 .cell.hold .st{color:var(--amber)}
 .cell.plan .st{color:var(--faint)}
-.uc-case .moved{margin-top:16px; display:flex; flex-direction:column; gap:6px}
-.uc-case .mv{font-family:"Geist Mono",ui-monospace,monospace; font-size:11.5px; line-height:17px;
-             color:var(--muted)}
-.uc-case .mv b{color:var(--fg); font-weight:500}
-.uc-case .tot{margin-top:16px; font-size:12px; line-height:17px; color:var(--faint)}
-.uc-case .tot b{color:var(--fg); font-weight:500; font-variant-numeric:tabular-nums}
-.uc-case .tot b[data-desk]{display:inline-block; min-width:1ch; padding:0 5px; border-radius:4px;
-                           background:var(--green-100); color:var(--green)}
-
-/* The pre-play state exists only when the script is running, so a page
-   without JS never shows an empty board. */
-.uc-js .uc-mock:not(.played) .cell:not(.lit){background:var(--card); border-color:var(--border)}
-.uc-js .uc-mock:not(.played) .cell:not(.lit) .st{opacity:0}
-.uc-js .uc-mock .cell.lit{animation:ucFlip .6s var(--out)}
+.bx-js .uc-mock:not(.played) .cell:not(.lit){background:var(--card); border-color:var(--border)}
+.bx-js .uc-mock:not(.played) .cell:not(.lit) .st{opacity:0}
+.bx-js .uc-mock .cell.lit{animation:ucFlip .6s var(--out)}
 @keyframes ucFlip{0%{transform:scale(.9); filter:blur(3px)}100%{transform:none; filter:none}}
-.uc-js .uc-mock .mv,.uc-js .uc-mock .tot{opacity:0; transform:translateY(6px); filter:blur(4px);
+.bx-js .uc-mock .mv,.bx-js .uc-mock .tot{opacity:0; transform:translateY(6px); filter:blur(4px);
        transition:opacity .55s var(--out), transform .6s var(--out), filter .55s var(--out)}
-.uc-js .uc-mock.shown .mv,.uc-js .uc-mock.shown .tot{opacity:1; transform:none; filter:none}
+.bx-js .uc-mock.shown .mv,.bx-js .uc-mock.shown .tot{opacity:1; transform:none; filter:none}
+.bx.board-card .bx-m{height:auto; min-height:230px; -webkit-mask-image:none; mask-image:none}
+.bx.board-card .bx-l{position:relative; margin:0 -8px}
+.bx.board-card .bx-panel{border-bottom:0; border-radius:12px 12px 0 0}
 
-@media (max-width:1000px){ .uc-case,.uc-case.wide{grid-column:span 12} }
-@media (max-width:520px){
-  .uc-case{padding:22px 20px 0}
-  .board{grid-template-columns:repeat(4,minmax(0,1fr))}
+.bx-note{margin-top:18px; max-width:78ch}
+.bx-note a{color:var(--fg); text-decoration:underline; text-underline-offset:3px;
+           text-decoration-thickness:1px}
+
+@media (max-width:1000px){
+  .bx,.bx.s5,.bx.s7{grid-column:span 12}
 }
-
+@media (max-width:600px){
+  .bx{padding:26px 22px 0}
+  /* Text wraps harder at this width; the draft's "not sent" chip must stay
+     above the fade at the card's foot. */
+  .bx-m{height:480px}
+  .board{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .bx-pill{white-space:normal}
+}
 @media (prefers-reduced-motion:reduce){
-  .uc-in,.uc-txt > span,.uc-grow,.cell,.uc-job,.uc-job .l{transition:none !important}
-  .uc-shim{animation:none; background:none; color:var(--faint)}
-  .uc-pulse{animation:none}
-  .uc-js .uc-mock .cell.lit{animation:none}
+  .bx-l,.bx-ck,.bx-ck::after,.bx-fr,.cell{transition:none !important}
+  .bx-js .uc-mock .cell.lit{animation:none}
 }
 
 /* ---------- footer ---------- */
@@ -581,7 +547,7 @@ h1,h2,h3,h4,p{margin:0}
 }
 
 </style>
-<script>document.documentElement.classList.add("uc-js")</script>
+<script>document.documentElement.classList.add("bx-js")</script>
 </head>
 <body>
 
@@ -630,135 +596,41 @@ h1,h2,h3,h4,p{margin:0}
 </section>
 
 <!-- ============================================================
-     PART ONE - the everyday desk. Six jobs from one synthetic
-     morning's inbox, each played as the agents actually handle it.
+     THE USE CASES. One bento grid in two runs: the six everyday
+     jobs first, then the four disruptions.
 
-     Every line the window prints is in #uc-scenes below and is the
-     real output of src/workflow.py on the demo inbox - a bus
-     message, a queued change, a draft's subject and body, an
-     escalation. tests/test_the_desk_works_and_learns.py replays the
-     inbox and fails if the page says anything the agents did not.
-     Only the "working" lines are ours: they are the in-progress
-     label shown before the real line lands.
+     The six everyday cards are drawn from #uc-scenes below. Every
+     line their mocks print is the real output of src/workflow.py on
+     the demo inbox - a step's result, a queued record, a draft's
+     subject and body, an escalation - and
+     tests/test_the_desk_works_and_learns.py replays the inbox and
+     fails if the page says anything the agents did not.
      ============================================================ -->
-<section class="section" id="everyday">
+<section class="bx-sec" id="everyday">
   <div class="wrap">
-    <div class="head rv">
-      <div class="part-hd"><span class="num">Part one</span>
-        <span class="eyebrow">The everyday desk &middot; six jobs</span></div>
-      <h2 class="h32" style="margin-top:14px">Every mail, worked on the record.</h2>
-      <p class="copy16">A mail arrives. The agent that owns it asks the others what it needs,
-        the customer&rsquo;s playbook is checked, and the work lands on the booking &mdash;
-        drafted, queued, and waiting for you.</p>
+    <p class="bx-label">The everyday desk <span>6 jobs</span></p>
+    <div class="bx-grid" data-bx-everyday>
+      <noscript><p class="copy14">The six everyday jobs are drawn by a small script on this page:
+        quote a rate request, open a booking from a mail, check documents against the booking,
+        handle a rollover, reconcile a carrier invoice, clear an arrival.</p></noscript>
     </div>
-
-    <div class="uc-stage rv" data-uc-stage>
-      <ol class="uc-rail" role="tablist" aria-label="The six everyday jobs"></ol>
-
-      <div class="uc-win" aria-live="off">
-        <div class="uc-glow" aria-hidden="true"></div>
-        <div class="uc-win-h">
-          <span class="uc-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="uc-win-t">The desk</span>
-          <span class="uc-win-s"><span class="uc-pulse"></span><span data-uc-status>working</span></span>
-        </div>
-        <div class="uc-trigger" data-uc-trigger></div>
-        <div class="uc-feed" data-uc-feed></div>
-        <div class="uc-win-f">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          Nothing is sent and nothing is written until you approve it.
-        </div>
-      </div>
-    </div>
-
-    <p class="copy13 rv uc-note">Synthetic mail from the demo inbox. What the agents do with it is
+    <p class="copy13 bx-note">Synthetic mail from the demo inbox. What the agents do with it is
       computed on every run &mdash; open <a href="/app#/workflow">Workflow</a> in the demo to see all
       thirteen mails, the full conversation behind each, and the corrections that teach the desk.</p>
-  </div>
-</section>
 
-<!-- The scenes. Data, not prose: each "done", draft line, subject and
-     escalation is held to a real run by test. -->
-<script type="application/json" id="uc-scenes">
-[
- {"id":"quote","item":"IN-101","title":"Quote a rate request","line":"Priced across the lane, checked against the customer's rules, drafted back.",
-  "tint":"blue",
-  "trigger":{"from":"Kempen Electronics NV","subject":"Pricing request - Shenzhen to Antwerp, 3 x 40HC"},
-  "steps":[
-   {"who":"Rate Worker","working":"Pricing 3 x 40HC into Antwerp","done":"7 options into Antwerp; best ONE on R-ANR-STD, EUR 2,380 per 40HC, 33 days."},
-   {"who":"Playbook Worker","working":"Checking Kempen's playbook","done":"IN-101-1: quotes to this customer are valid 7 days, not 14.","tone":"warn"},
-   {"who":"RFQ Worker","working":"Revising the quote","done":"IN-101-1: validity set to 7 days.","record":"Q-101","label":"quotation queued"}
-  ],
-  "end":{"kind":"draft","to":"p.claes@kempen-electronics.example","cc":"logistics-planning@kempen-electronics.example",
-   "subject":"Quote: Shenzhen to Antwerp, 3 x 40HC",
-   "lines":["ONE via Antwerp (R-ANR-STD), about 33 days port to port","EUR 2,380 per container, EUR 7,140 in total","This quote is valid for 7 days."]}},
- {"id":"book","item":"IN-108","title":"Open a booking from a mail","line":"Fields read off the documents, a carrier the playbook allows, the record opened.",
-  "tint":"green",
-  "trigger":{"from":"Nordmed Pharma Logistik AG","subject":"Please book 1 x 40RH vaccines Ningbo to Hamburg"},
-  "steps":[
-   {"who":"Docs Worker","working":"Reading the commercial invoice","done":"Read 7 fields from 1 document(s)."},
-   {"who":"Rate Worker","working":"Pricing 1 x 40RH into Hamburg","done":"5 options into Hamburg; best ONE on R-HAM-STD, EUR 3,880 per 40RH, 32 days."},
-   {"who":"Playbook Worker","working":"Checking Nordmed's playbook","done":"IN-108-1: ONE is not an approved carrier - use Maersk or Hapag-Lloyd.","tone":"warn"},
-   {"who":"Booking Worker","working":"Rebooking with an approved carrier","done":"IN-108-1: rebooked with Hapag-Lloyd (EUR 3,960 per container).","record":"NEW-108","label":"booking queued"}
-  ],
-  "end":{"kind":"draft","to":"Booking desk, Hapag-Lloyd","subject":"Booking request NEW-108: Ningbo - Hamburg, 1 x 40RH",
-   "lines":["HS 3002.41, gross 2,480 kg, 1 reefer container, CIP Hamburg.","Shipper Ningbo BioCold Pharmaceuticals, consignee Nordmed Pharma Logistik AG."]}},
- {"id":"docs","item":"IN-103","title":"Check documents against the booking","line":"Every field on the bill of lading checked; a mismatch holds the release.",
-  "tint":"amber",
-  "trigger":{"from":"Bavaria Drivetrain GmbH","subject":"Final documents for HLCU-2261188"},
-  "steps":[
-   {"who":"Docs Worker","working":"Checking the B/L against SHP-001","done":"Document does not match the booking: Gross weight 18,900 vs 18,400 booked","tone":"warn"},
-   {"who":"Exception Worker","working":"Opening the exception","done":"Document mismatch - release held","record":"SHP-001","label":"exception queued"}
-  ],
-  "end":{"kind":"draft","to":"k.vogel@bavaria-drivetrain.example","subject":"HLCU-2261188: please check the documents before release",
-   "lines":["Before we release them, one thing does not match the booking: the gross weight reads 18,900 kg on the document and 18,400 kg on the booking."]}},
- {"id":"roll","item":"IN-105","title":"Handle a rollover","line":"The ETA moved on the record, the customer told, and a missed date sent across to routing.",
-  "tint":"gray",
-  "trigger":{"from":"CMA CGM","subject":"Rollover notice - CMDU-4410765"},
-  "steps":[
-   {"who":"Milestones Worker","working":"Writing the notice onto SHP-003","done":"Rolled to next sailing","record":"SHP-003","label":"ETA moved"},
-   {"who":"Playbook Worker","working":"Checking Wonen Direct's playbook","done":"IN-105-2: a slip over 1 day(s) needs a customer notice today.","tone":"warn"},
-   {"who":"Exception Worker","working":"Drafting the customer notice","done":"IN-105-2: drafted customer notice IN-105-3."}
-  ],
-  "end":{"kind":"escalate","to":"Routing Worker","label":"Handed to the risk layer",
-   "text":"SHP-003 now misses its required-by date by 4 days. Re-plan: the next routing decision is the Routing Worker's, and a person approves it."}},
- {"id":"invoice","item":"IN-110","title":"Reconcile a carrier invoice","line":"Every line against what was agreed; the one nobody agreed to, disputed.",
-  "tint":"blue",
-  "trigger":{"from":"Hapag-Lloyd","subject":"Freight invoice HL-88213407 - HLCU-2264903"},
-  "steps":[
-   {"who":"Invoice Worker","working":"Reconciling against the agreed rate","done":"DISPUTED - EUR 850 not agreed","tone":"warn","record":"SHP-005","label":"invoice disputed"}
-  ],
-  "end":{"kind":"draft","to":"billing@hlag.example","subject":"Query on Freight invoice HL-88213407",
-   "lines":["Congestion surcharge Hamburg (EUR 850) is not part of the agreed rate.","Please send a corrected invoice, or the basis for the charge."]}},
- {"id":"customs","item":"IN-112","title":"Clear an arrival","line":"The entry prepared for the discharge country - or escalated, never filed.",
-  "tint":"green",
-  "trigger":{"from":"CMA CGM","subject":"Arrival notice - CMDU-5518824 at Rotterdam, onward to Basel"},
-  "steps":[
-   {"who":"Customs Worker","working":"Preparing the entry at Rotterdam","done":"ESCALATED - transit to Switzerland, not an import at RTM","tone":"warn","record":"SHP-006","label":"customs flagged"}
-  ],
-  "end":{"kind":"escalate","to":"A person","label":"Needs a person",
-   "text":"SHP-006 lands at Rotterdam but is going to Basel (Switzerland): a transit out of the EU, not an import entry. Who declares it and under which guarantee is a person's call - nothing filed."}}
-]
-</script>
-
-<!-- ============================================================
-     PART TWO - when a lane moves. The same seven bookings under
-     four disruptions. Every state and count is from a real offline
-     run; "handed to the desk" is held to one by test.
-     ============================================================ -->
-<section class="section" id="cases">
-  <div class="wrap">
-    <div class="uc-grid">
-      <article class="uc-case wide rv" data-case>
+    <p class="bx-label" id="cases" style="margin-top:56px">When a lane moves <span>4 disruptions</span></p>
+    <div class="bx-grid">
+      <article class="bx board-card" data-bx>
         <div class="kind"><span class="chip">Port blocked</span></div>
         <h3>Hamburg port strike</h3>
-        <p class="what">A full-day walkout closes Hamburg's container terminals.</p>
+        <p class="ds">A full-day walkout closes Hamburg's container terminals.</p>
         <p class="call">Discharge-port reroute <b>against</b> hold &mdash; the same event, two different right answers.</p>
-        <div class="uc-mock">
-          <button class="uc-replay" type="button" data-replay aria-label="Replay the Hamburg board">Replay</button>
-          <div class="board">
+        <div class="bx-m">
+          <div class="bx-l front bx-panel" style="--d:.12s">
+            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
+              <button class="uc-replay" type="button" data-replay aria-label="Replay the Hamburg port strike board">Replay</button></div>
+            <div class="uc-mock">
+              <div class="board">
             <div class="cell reroute"><p class="id">SHP-001</p><p class="st">Reroute</p></div>
             <div class="cell hold"><p class="id">SHP-002</p><p class="st">Hold</p></div>
             <div class="cell plan"><p class="id">SHP-003</p><p class="st">On plan</p></div>
@@ -767,22 +639,27 @@ h1,h2,h3,h4,p{margin:0}
             <div class="cell plan"><p class="id">SHP-006</p><p class="st">On plan</p></div>
             <div class="cell plan"><p class="id">SHP-007</p><p class="st">On plan</p></div>
           </div>
-          <div class="moved">
+              <div class="moved">
             <p class="mv">SHP-001 &nbsp;<b>R-HAM-STD &rarr; R-RTM-ALT</b></p>
             <p class="mv">SHP-005 &nbsp;<b>R-HAM-STD &rarr; R-RTM-ALT</b></p>
             <p class="mv">SHP-002 &nbsp;<b>held</b> &mdash; the customer is in Hamburg</p>
           </div>
-          <p class="tot"><b>2</b> rerouted &middot; <b>1</b> held &middot; <b>4</b> on plan &middot; <b>12</b> changes queued &middot; <b data-desk="hamburg">8</b> handed to the desk</p>
+              <p class="tot"><b>2</b> rerouted &middot; <b>1</b> held &middot; <b>4</b> on plan &middot; <b>12</b> changes queued &middot; <b data-desk="hamburg">8</b> handed to the desk</p>
+            </div>
+          </div>
         </div>
       </article>
-      <article class="uc-case rv" data-case>
+      <article class="bx board-card" data-bx>
         <div class="kind"><span class="chip">Chokepoint closed</span></div>
         <h3>Red Sea closure</h3>
-        <p class="what">Attacks close the Bab-el-Mandeb approach, taking the Suez route with it.</p>
+        <p class="ds">Attacks close the Bab-el-Mandeb approach, taking the Suez route with it.</p>
         <p class="call">A forced long-haul reroute &mdash; the <b>whole board</b> moves, and one booking has nowhere better to go.</p>
-        <div class="uc-mock">
-          <button class="uc-replay" type="button" data-replay aria-label="Replay the Red Sea board">Replay</button>
-          <div class="board">
+        <div class="bx-m">
+          <div class="bx-l front bx-panel" style="--d:.12s">
+            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
+              <button class="uc-replay" type="button" data-replay aria-label="Replay the Red Sea closure board">Replay</button></div>
+            <div class="uc-mock">
+              <div class="board">
             <div class="cell reroute"><p class="id">SHP-001</p><p class="st">Reroute</p></div>
             <div class="cell reroute"><p class="id">SHP-002</p><p class="st">Reroute</p></div>
             <div class="cell reroute"><p class="id">SHP-003</p><p class="st">Reroute</p></div>
@@ -791,21 +668,26 @@ h1,h2,h3,h4,p{margin:0}
             <div class="cell reroute"><p class="id">SHP-006</p><p class="st">Reroute</p></div>
             <div class="cell hold"><p class="id">SHP-007</p><p class="st">Hold</p></div>
           </div>
-          <div class="moved">
+              <div class="moved">
             <p class="mv">Six bookings &nbsp;<b>&rarr; the Cape</b></p>
             <p class="mv">SHP-007 &nbsp;<b>held</b> &mdash; no better routing exists for it</p>
           </div>
-          <p class="tot"><b>6</b> rerouted &middot; <b>1</b> held &middot; <b>0</b> on plan &middot; <b>28</b> changes queued &middot; <b data-desk="redsea">14</b> handed to the desk</p>
+              <p class="tot"><b>6</b> rerouted &middot; <b>1</b> held &middot; <b>0</b> on plan &middot; <b>28</b> changes queued &middot; <b data-desk="redsea">14</b> handed to the desk</p>
+            </div>
+          </div>
         </div>
       </article>
-      <article class="uc-case rv" data-case>
+      <article class="bx board-card" data-bx>
         <div class="kind"><span class="chip">Inland waterway</span></div>
         <h3>Rhine low water</h3>
-        <p class="what">Sustained low water at Kaub cuts barge payloads. The sea leg is untouched.</p>
+        <p class="ds">Sustained low water at Kaub cuts barge payloads. The sea leg is untouched.</p>
         <p class="call">A <b>mode switch</b>, not a port change &mdash; barge off the river and onto rail.</p>
-        <div class="uc-mock">
-          <button class="uc-replay" type="button" data-replay aria-label="Replay the Rhine board">Replay</button>
-          <div class="board">
+        <div class="bx-m">
+          <div class="bx-l front bx-panel" style="--d:.12s">
+            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
+              <button class="uc-replay" type="button" data-replay aria-label="Replay the Rhine low water board">Replay</button></div>
+            <div class="uc-mock">
+              <div class="board">
             <div class="cell plan"><p class="id">SHP-001</p><p class="st">On plan</p></div>
             <div class="cell plan"><p class="id">SHP-002</p><p class="st">On plan</p></div>
             <div class="cell plan"><p class="id">SHP-003</p><p class="st">On plan</p></div>
@@ -814,20 +696,25 @@ h1,h2,h3,h4,p{margin:0}
             <div class="cell reroute"><p class="id">SHP-006</p><p class="st">Reroute</p></div>
             <div class="cell plan"><p class="id">SHP-007</p><p class="st">On plan</p></div>
           </div>
-          <div class="moved">
+              <div class="moved">
             <p class="mv">SHP-006 &nbsp;<b>R-RTM-RHINE &rarr; R-RTM-RAIL</b></p>
           </div>
-          <p class="tot"><b>1</b> re-moded &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="rhine">2</b> handed to the desk</p>
+              <p class="tot"><b>1</b> re-moded &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="rhine">2</b> handed to the desk</p>
+            </div>
+          </div>
         </div>
       </article>
-      <article class="uc-case wide off rv" data-case>
+      <article class="bx board-card off" data-bx>
         <div class="kind"><span class="chip">Regional inland</span><span class="chip plain">Off by default</span></div>
         <h3>Southern France wildfire</h3>
-        <p class="what">Fire across the Rhone corridor closes road and rail inland of Fos-sur-Mer. The port keeps working.</p>
+        <p class="ds">Fire across the Rhone corridor closes road and rail inland of Fos-sur-Mer. The port keeps working.</p>
         <p class="call">A <b>land-leg</b> reroute &mdash; the discharge port is fine, the way out of it is not.</p>
-        <div class="uc-mock">
-          <button class="uc-replay" type="button" data-replay aria-label="Replay the France board">Replay</button>
-          <div class="board">
+        <div class="bx-m">
+          <div class="bx-l front bx-panel" style="--d:.12s">
+            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
+              <button class="uc-replay" type="button" data-replay aria-label="Replay the Southern France wildfire board">Replay</button></div>
+            <div class="uc-mock">
+              <div class="board">
             <div class="cell plan"><p class="id">SHP-001</p><p class="st">On plan</p></div>
             <div class="cell plan"><p class="id">SHP-002</p><p class="st">On plan</p></div>
             <div class="cell plan"><p class="id">SHP-003</p><p class="st">On plan</p></div>
@@ -836,15 +723,16 @@ h1,h2,h3,h4,p{margin:0}
             <div class="cell plan"><p class="id">SHP-006</p><p class="st">On plan</p></div>
             <div class="cell reroute"><p class="id">SHP-007</p><p class="st">Reroute</p></div>
           </div>
-          <div class="moved">
+              <div class="moved">
             <p class="mv">SHP-007 &nbsp;<b>R-FOS-STD &rarr; R-ANR-LYON</b></p>
           </div>
-          <p class="tot"><b>1</b> rerouted &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="france">3</b> handed to the desk</p>
+              <p class="tot"><b>1</b> rerouted &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="france">3</b> handed to the desk</p>
+            </div>
+          </div>
         </div>
       </article>
     </div>
-
-    <p class="copy14 rv" style="margin-top:26px;max-width:78ch">
+    <p class="copy13 bx-note">
       Every state and count above is taken from a real offline run of the same advisor the
       demo uses &mdash; not written by hand. &ldquo;Handed to the desk&rdquo; is the work each
       decision gives the everyday agents: the amendment for the Booking agent, a changed
@@ -853,6 +741,242 @@ h1,h2,h3,h4,p{margin:0}
     </p>
   </div>
 </section>
+
+<!-- The scenes. Data, not prose: each "done", draft line, subject and
+     escalation is held to a real run by test. "layout" and "span" only
+     choose how a card is drawn. -->
+<script type="application/json" id="uc-scenes">
+[
+ {
+  "id": "quote",
+  "item": "IN-101",
+  "title": "Quote a rate request",
+  "line": "Priced across the lane, checked against the customer's rules, drafted back.",
+  "tint": "blue",
+  "trigger": {
+   "from": "Kempen Electronics NV",
+   "subject": "Pricing request - Shenzhen to Antwerp, 3 x 40HC"
+  },
+  "steps": [
+   {
+    "who": "Rate Worker",
+    "working": "Pricing 3 x 40HC into Antwerp",
+    "done": "7 options into Antwerp; best ONE on R-ANR-STD, EUR 2,380 per 40HC, 33 days."
+   },
+   {
+    "who": "Playbook Worker",
+    "working": "Checking Kempen's playbook",
+    "done": "IN-101-1: quotes to this customer are valid 7 days, not 14.",
+    "tone": "warn"
+   },
+   {
+    "who": "RFQ Worker",
+    "working": "Revising the quote",
+    "done": "IN-101-1: validity set to 7 days.",
+    "record": "Q-101",
+    "label": "quotation queued"
+   }
+  ],
+  "end": {
+   "kind": "draft",
+   "to": "p.claes@kempen-electronics.example",
+   "cc": "logistics-planning@kempen-electronics.example",
+   "subject": "Quote: Shenzhen to Antwerp, 3 x 40HC",
+   "lines": [
+    "ONE via Antwerp (R-ANR-STD), about 33 days port to port",
+    "EUR 2,380 per container, EUR 7,140 in total",
+    "This quote is valid for 7 days."
+   ]
+  },
+  "layout": "stack",
+  "span": 5
+ },
+ {
+  "id": "book",
+  "item": "IN-108",
+  "title": "Open a booking from a mail",
+  "line": "Fields read off the documents, a carrier the playbook allows, the record opened.",
+  "tint": "green",
+  "trigger": {
+   "from": "Nordmed Pharma Logistik AG",
+   "subject": "Please book 1 x 40RH vaccines Ningbo to Hamburg"
+  },
+  "steps": [
+   {
+    "who": "Docs Worker",
+    "working": "Reading the commercial invoice",
+    "done": "Read 7 fields from 1 document(s)."
+   },
+   {
+    "who": "Rate Worker",
+    "working": "Pricing 1 x 40RH into Hamburg",
+    "done": "5 options into Hamburg; best ONE on R-HAM-STD, EUR 3,880 per 40RH, 32 days."
+   },
+   {
+    "who": "Playbook Worker",
+    "working": "Checking Nordmed's playbook",
+    "done": "IN-108-1: ONE is not an approved carrier - use Maersk or Hapag-Lloyd.",
+    "tone": "warn"
+   },
+   {
+    "who": "Booking Worker",
+    "working": "Rebooking with an approved carrier",
+    "done": "IN-108-1: rebooked with Hapag-Lloyd (EUR 3,960 per container).",
+    "record": "NEW-108",
+    "label": "booking queued"
+   }
+  ],
+  "end": {
+   "kind": "draft",
+   "to": "Booking desk, Hapag-Lloyd",
+   "subject": "Booking request NEW-108: Ningbo - Hamburg, 1 x 40RH",
+   "lines": [
+    "HS 3002.41, gross 2,480 kg, 1 reefer container, CIP Hamburg.",
+    "Shipper Ningbo BioCold Pharmaceuticals, consignee Nordmed Pharma Logistik AG."
+   ]
+  },
+  "layout": "checklist",
+  "span": 7
+ },
+ {
+  "id": "docs",
+  "item": "IN-103",
+  "title": "Check documents against the booking",
+  "line": "Every field on the bill of lading checked; a mismatch holds the release.",
+  "tint": "amber",
+  "trigger": {
+   "from": "Bavaria Drivetrain GmbH",
+   "subject": "Final documents for HLCU-2261188"
+  },
+  "steps": [
+   {
+    "who": "Docs Worker",
+    "working": "Checking the B/L against SHP-001",
+    "done": "Document does not match the booking: Gross weight 18,900 vs 18,400 booked",
+    "tone": "warn"
+   },
+   {
+    "who": "Exception Worker",
+    "working": "Opening the exception",
+    "done": "Document mismatch - release held",
+    "record": "SHP-001",
+    "label": "exception queued"
+   }
+  ],
+  "end": {
+   "kind": "draft",
+   "to": "k.vogel@bavaria-drivetrain.example",
+   "subject": "HLCU-2261188: please check the documents before release",
+   "lines": [
+    "Before we release them, one thing does not match the booking: the gross weight reads 18,900 kg on the document and 18,400 kg on the booking."
+   ]
+  },
+  "layout": "focus",
+  "span": 7
+ },
+ {
+  "id": "roll",
+  "item": "IN-105",
+  "title": "Handle a rollover",
+  "line": "The ETA moved on the record, the customer told, and a missed date sent across to routing.",
+  "tint": "gray",
+  "trigger": {
+   "from": "CMA CGM",
+   "subject": "Rollover notice - CMDU-4410765"
+  },
+  "steps": [
+   {
+    "who": "Milestones Worker",
+    "working": "Writing the notice onto SHP-003",
+    "done": "Rolled to next sailing",
+    "record": "SHP-003",
+    "label": "ETA moved"
+   },
+   {
+    "who": "Playbook Worker",
+    "working": "Checking Wonen Direct's playbook",
+    "done": "IN-105-2: a slip over 1 day(s) needs a customer notice today.",
+    "tone": "warn"
+   },
+   {
+    "who": "Exception Worker",
+    "working": "Drafting the customer notice",
+    "done": "IN-105-2: drafted customer notice IN-105-3."
+   }
+  ],
+  "end": {
+   "kind": "escalate",
+   "to": "Routing Worker",
+   "label": "Handed to the risk layer",
+   "text": "SHP-003 now misses its required-by date by 4 days. Re-plan: the next routing decision is the Routing Worker's, and a person approves it."
+  },
+  "layout": "checklist",
+  "span": 5
+ },
+ {
+  "id": "invoice",
+  "item": "IN-110",
+  "title": "Reconcile a carrier invoice",
+  "line": "Every line against what was agreed; the one nobody agreed to, disputed.",
+  "tint": "blue",
+  "trigger": {
+   "from": "Hapag-Lloyd",
+   "subject": "Freight invoice HL-88213407 - HLCU-2264903"
+  },
+  "steps": [
+   {
+    "who": "Invoice Worker",
+    "working": "Reconciling against the agreed rate",
+    "done": "DISPUTED - EUR 850 not agreed",
+    "tone": "warn",
+    "record": "SHP-005",
+    "label": "invoice disputed"
+   }
+  ],
+  "end": {
+   "kind": "draft",
+   "to": "billing@hlag.example",
+   "subject": "Query on Freight invoice HL-88213407",
+   "lines": [
+    "Congestion surcharge Hamburg (EUR 850) is not part of the agreed rate.",
+    "Please send a corrected invoice, or the basis for the charge."
+   ]
+  },
+  "layout": "stack",
+  "span": 6
+ },
+ {
+  "id": "customs",
+  "item": "IN-112",
+  "title": "Clear an arrival",
+  "line": "The entry prepared for the discharge country - or escalated, never filed.",
+  "tint": "green",
+  "trigger": {
+   "from": "CMA CGM",
+   "subject": "Arrival notice - CMDU-5518824 at Rotterdam, onward to Basel"
+  },
+  "steps": [
+   {
+    "who": "Customs Worker",
+    "working": "Preparing the entry at Rotterdam",
+    "done": "ESCALATED - transit to Switzerland, not an import at RTM",
+    "tone": "warn",
+    "record": "SHP-006",
+    "label": "customs flagged"
+   }
+  ],
+  "end": {
+   "kind": "escalate",
+   "to": "A person",
+   "label": "Needs a person",
+   "text": "SHP-006 lands at Rotterdam but is going to Basel (Switzerland): a transit out of the EU, not an import entry. Who declares it and under which guarantee is a person's call - nothing filed."
+  },
+  "layout": "focus",
+  "span": 6
+ }
+]
+</script>
+
 <!-- ======================== FOOTER ======================== -->
 <footer class="foot">
   <div class="wrap">
@@ -912,8 +1036,7 @@ h1,h2,h3,h4,p{margin:0}
 </footer>
 
 <script>
-/* Reveal on scroll. Everything is visible without JS - the class only ever
-   gets added, never removed. */
+/* Reveal on scroll, for the page head. Class only ever added. */
 (function () {
   var items = document.querySelectorAll(".rv");
   if (!("IntersectionObserver" in window)) {
@@ -929,213 +1052,139 @@ h1,h2,h3,h4,p{margin:0}
 })();
 
 /* ------------------------------------------------------------------
-   PART ONE - the stage. Plays one job at a time, in the order a mail
-   is actually worked: trigger, each agent's step ("working", then the
-   real line), then the draft or the escalation. Holds, dissolves, and
-   moves to the next job. Pauses whenever the stage is off screen or
-   the tab is hidden, so a reader who scrolls back finds the job where
-   they left it. Every line it prints comes from #uc-scenes.
+   The six everyday cards, drawn from #uc-scenes. Each scene names a
+   layout - stack, checklist or focus - and a width; every word inside
+   the mock comes from the scene, which the tests hold to a real run.
    ------------------------------------------------------------------ */
 (function () {
-  var stage = document.querySelector("[data-uc-stage]");
+  var grid = document.querySelector("[data-bx-everyday]");
   var data = document.getElementById("uc-scenes");
-  if (!stage || !data) return;
+  if (!grid || !data) return;
   var scenes = JSON.parse(data.textContent);
-  var rail = stage.querySelector(".uc-rail");
-  var win = stage.querySelector(".uc-win");
-  var trig = stage.querySelector("[data-uc-trigger]");
-  var feed = stage.querySelector("[data-uc-feed]");
-  var status = stage.querySelector("[data-uc-status]");
-  var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   var esc = function (s) {
     return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
       return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; });
   };
-  var AV = '<span class="uc-av"><svg width="11" height="11" viewBox="0 0 20 20" fill="none">' +
+  var AV = '<span class="bx-av"><svg width="11" height="11" viewBox="0 0 20 20" fill="none">' +
            '<path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6" stroke="#fff" stroke-width="2.4" ' +
            'stroke-linecap="round"/></svg></span>';
   var MAIL = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
              'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" ' +
              'width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
-
-  // Timings, in ms. One place, so the rhythm stays even across jobs.
-  var T = {enter: 60, trigger: 850, working: 1150, settle: 700, drafting: 1100,
-           hold: 3800, leave: 600};
-  var length = function (sc) {
-    return T.enter + T.trigger + sc.steps.length * (T.enter + T.working + T.settle) +
-           T.enter + T.drafting + T.hold;
+  var CHECK = '<i><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+              'stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/>' +
+              '</svg></i>';
+  var ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+              'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  var worker = function (sc) { return sc.steps[sc.steps.length - 1].who; };
+  // "Needs a person -> A person" says the same thing twice.
+  var handedTo = function (e) {
+    return e.to === "A person" ? esc(e.label) : esc(e.label) + ' &rarr; ' + esc(e.to);
+  };
+  var recorded = function (sc) {
+    for (var i = sc.steps.length - 1; i >= 0; i--) if (sc.steps[i].record) return sc.steps[i];
+    return null;
   };
 
-  rail.innerHTML = scenes.map(function (sc, i) {
-    return '<li role="presentation"><button class="uc-job" role="tab" type="button" ' +
-      'aria-selected="false" data-job="' + i + '"><span class="n">0' + (i + 1) + '</span>' +
-      '<span class="t">' + esc(sc.title) + '</span>' +
-      '<span class="l"><span>' + esc(sc.line) + '</span></span>' +
-      '<span class="bar" aria-hidden="true"><i></i></span></button></li>';
-  }).join("");
-  var jobs = rail.querySelectorAll(".uc-job");
-
-  var current = 0, token = 0, paused = true, elapsed = 0, total = 1;
-  var bar = function () {
-    var i = jobs[current] && jobs[current].querySelector(".bar i");
-    if (i) i.style.width = Math.min(100, elapsed / total * 100) + "%";
+  var mail = function (sc) {
+    return '<div class="bx-mail"><span class="bx-ic">' + MAIL + '<b>1</b></span><span>' +
+      '<span class="s" style="display:block">Inbound mail &middot; ' + esc(sc.item) + '</span>' +
+      '<span class="f" style="display:block">' + esc(sc.trigger.from) + '</span>' +
+      '<span class="t" style="display:block">' + esc(sc.trigger.subject) + '</span></span></div>';
   };
-  // Waits `ms` of *visible* time. Returns false if a newer run took over.
-  var wait = function (ms, my) {
-    return new Promise(function (done) {
-      var left = ms;
-      var t = setInterval(function () {
-        if (my !== token) { clearInterval(t); done(false); return; }
-        if (!paused) { left -= 40; elapsed += 40; bar(); }
-        if (left <= 0) { clearInterval(t); done(true); }
-      }, 40);
-    });
-  };
-  var show = function (el) {
-    requestAnimationFrame(function () { requestAnimationFrame(function () {
-      el.classList.add("on"); follow(); }); });
-  };
-  // Keep the newest card in view. Called on arrival and again once a card has
-  // grown (a record chip or a draft opening), because that growth is animated.
-  var follow = function () {
-    var over = feed.scrollHeight - feed.clientHeight;
-    feed.classList.toggle("scrolled", over > 2);
-    if (over > 2) feed.scrollTop = over;
-  };
-  var followSoon = function () { setTimeout(follow, 80); setTimeout(follow, 650); };
-
-  var triggerHTML = function (sc) {
-    return '<div class="uc-tc uc-in"><span class="uc-ic">' + MAIL + '<b>1</b></span><span>' +
-      '<span class="src">Inbound mail &middot; ' + esc(sc.item) + '</span>' +
-      '<span class="fr" style="display:block">' + esc(sc.trigger.from) + '</span>' +
-      '<span class="sb" style="display:block">' + esc(sc.trigger.subject) + '</span></span></div>';
-  };
-  var stepHTML = function (st) {
-    return '<div class="uc-card uc-in' + (st.tone === "warn" ? " warn" : "") + '">' +
-      '<div class="uc-who">' + AV + esc(st.who) + '<span class="uc-st">working&hellip;</span></div>' +
-      '<div class="uc-txt"><span class="w uc-shim">' + esc(st.working) + '&hellip;</span>' +
-      '<span class="d">' + esc(st.done) + '</span></div>' +
-      (st.record ? '<div class="uc-grow"><div><span class="uc-rec"><b>' + esc(st.record) +
-        '</b><span>' + esc(st.label) + '</span></span></div></div>' : "") + '</div>';
-  };
-  var endHTML = function (sc) {
-    var e = sc.end, who = sc.steps[sc.steps.length - 1].who;
+  var ending = function (sc, lines) {
+    var e = sc.end;
     if (e.kind === "escalate") {
-      return '<div class="uc-card uc-in esc"><div class="uc-who">' + AV + esc(who) +
-        '<span class="uc-st">escalating&hellip;</span></div>' +
-        '<div class="uc-txt"><span class="w uc-shim">Checking who has to decide&hellip;</span>' +
-        '<span class="d"><span class="lab">' + esc(e.label) + ' &rarr; ' + esc(e.to) +
-        '</span><br>' + esc(e.text) + '</span></div></div>';
+      return '<div class="bx-esc"><div class="lab">' + handedTo(e) +
+        '</div><div class="tx">' + esc(e.text) + '</div></div>';
     }
-    return '<div class="uc-card uc-in"><div class="uc-who">' + AV + esc(who) +
-      '<span class="uc-st">drafting&hellip;</span></div>' +
-      '<div class="uc-txt"><span class="w uc-shim">Drafting the reply&hellip;</span>' +
-      '<span class="d">Draft ready. Nothing is sent until you approve it.</span></div>' +
-      '<div class="uc-grow"><div><div class="uc-mail"><div class="to">To: ' + esc(e.to) + '</div>' +
+    return '<div class="bx-draft"><div class="h">' + AV + esc(worker(sc)) +
+      '<span style="margin-left:auto">draft</span></div>' +
+      '<div class="to">To: ' + esc(e.to) + '</div>' +
       (e.cc ? '<div class="cc">cc ' + esc(e.cc) + '</div>' : "") +
       '<div class="sj">' + esc(e.subject) + '</div>' +
-      e.lines.map(function (l) { return '<div class="ln">' + esc(l) + '</div>'; }).join("") +
-      '</div><div class="uc-gate" aria-hidden="true"><span class="chip synth">Draft &mdash; not sent</span>' +
-      '<span class="uc-ed">Edit</span><span class="uc-ap">Approve</span></div></div></div></div>';
+      e.lines.slice(0, lines).map(function (l) { return '<div class="ln">' + esc(l) + '</div>'; }).join("") +
+      '<div class="bx-gate"><span class="chip synth">Draft &mdash; not sent</span>' +
+      '<span class="bx-ap">Approve ' + ARROW + '</span></div></div>';
+  };
+  var pill = function (sc, where, delay) {
+    var r = recorded(sc), text;
+    if (sc.end.kind === "escalate") text = handedTo(sc.end);
+    else if (r) text = '<b>' + esc(r.record) + '</b> ' + esc(r.label);
+    else return "";
+    return '<div class="bx-l bx-pill" style="' + where + ';--d:' + delay + 's">' + CHECK + text + '</div>';
   };
 
-  var select = function (i) {
-    jobs.forEach(function (b, k) {
-      b.classList.toggle("on", k === i);
-      b.setAttribute("aria-selected", k === i ? "true" : "false");
-      b.tabIndex = k === i ? 0 : -1;
-      var fill = b.querySelector(".bar i"); if (fill) fill.style.width = "0%";
-    });
-    win.setAttribute("data-tint", scenes[i].tint || "gray");
-  };
-
-  // The finished state of a job, drawn at once. What reduced motion gets.
-  var still_ = function (i) {
-    var sc = scenes[i];
-    select(i);
-    trig.innerHTML = triggerHTML(sc);
-    feed.innerHTML = sc.steps.map(stepHTML).join("") + endHTML(sc);
-    stage.querySelectorAll(".uc-in").forEach(function (el) { el.classList.add("on"); });
-    feed.querySelectorAll(".uc-card").forEach(function (el) {
-      el.classList.add("done");
-      var s = el.querySelector(".uc-st"); if (s) s.textContent = "done";
-    });
-    status.textContent = "waiting for you"; win.classList.add("idle");
-    feed.style.scrollBehavior = "auto"; follow(); feed.style.scrollBehavior = "";
-  };
-
-  var play = async function (i) {
-    var my = ++token;
-    current = i; elapsed = 0; total = length(scenes[i]);
-    // Dissolve what is on screen before the next job arrives.
-    var old = stage.querySelectorAll(".uc-tc, .uc-card");
-    if (old.length) {
-      old.forEach(function (el) { el.classList.add("uc-leave"); });
-      if (!(await wait(T.leave, my))) return;
-      elapsed = 0;
+  var LAYOUT = {
+    // The mail tilted at the back, the draft (or escalation) over it, a pill.
+    stack: function (sc) {
+      return '<div class="bx-dots"></div>' +
+        '<div class="bx-l bx-panel" style="left:4%;right:22%;top:9%;--r:-3deg;--d:.05s">' + mail(sc) + '</div>' +
+        '<div class="bx-l front bx-panel" style="left:14%;right:3%;top:31%;--r:1.5deg;--d:.22s">' +
+          ending(sc, 2) + '</div>' +
+        // Up top, like a notification landing - never over the draft's
+        // "not sent" chip, which is the one line on the card that must show.
+        pill(sc, "right:3%;top:0", 0.7);
+    },
+    // Each agent's step as a ticked row; the ending behind, fading out.
+    checklist: function (sc) {
+      var rows = sc.steps.map(function (st, i) {
+        return '<div class="bx-row' + (st.tone === "warn" ? " warn" : "") + '">' +
+          '<span class="bx-ck" style="--t:' + (0.55 + i * 0.28).toFixed(2) + 's"></span>' + AV +
+          '<span class="w">' + esc(st.who) + '</span>' +
+          '<span class="tg">' + (st.tone === "warn" ? "flagged" : "done") + '</span>' +
+          '<span class="dn">' + esc(st.done) + '</span></div>';
+      }).join("");
+      return '<div class="bx-dots"></div>' +
+        '<div class="bx-l bx-panel bx-fade" style="left:40%;right:-6%;top:14%;--d:.3s">' +
+          '<div class="bx-ph">Queued for you <span class="r"><b>1</b></span></div>' + ending(sc, 3) + '</div>' +
+        '<div class="bx-l front bx-panel" style="left:2%;width:64%;min-width:280px;top:4%;--d:.08s">' +
+          '<div class="bx-ph">Agents on ' + esc(sc.item) +
+          '<span class="r">order <b>as worked</b></span></div>' + rows + '</div>' +
+        pill(sc, "left:6%;bottom:3%", 0.55 + sc.steps.length * 0.28 + 0.2);
+    },
+    // The steps as a column; the one that matters picked out in black.
+    focus: function (sc) {
+      var items = sc.steps.map(function (st) {
+        return {a: st.who, b: st.done, warn: st.tone === "warn"};
+      });
+      var e = sc.end;
+      items.push(e.kind === "escalate"
+        ? {a: e.to === "A person" ? e.label : e.label + " → " + e.to, b: e.text, esc: true}
+        : {a: worker(sc) + " · draft", b: e.subject});
+      var key = -1;
+      items.forEach(function (it, i) { if (it.esc) key = i; });
+      if (key < 0) items.forEach(function (it, i) { if (key < 0 && it.warn) key = i; });
+      if (key < 0) key = items.length - 1;
+      var rows = items.map(function (it, i) {
+        var d = Math.abs(i - key);
+        return '<div class="bx-fr ' + (i === key ? "key" : d === 1 ? "near" : "far") +
+          '" style="--t:' + (i === key ? 0.9 : 0) + 's"><span><span class="a" style="display:block">' +
+          esc(it.a) + '</span><span class="b">' + esc(it.b) + '</span></span>' +
+          '<span class="go">' + ARROW + '</span></div>';
+      }).join("");
+      return '<div class="bx-dots"></div>' +
+        '<div class="bx-l front" style="left:6%;right:6%;top:4%;display:flex;flex-direction:column;gap:10px;--d:.08s">' +
+          rows + '</div>' + pill(sc, "left:8%;bottom:6%", 1.3);
     }
-    var sc = scenes[i];
-    select(i);
-    win.classList.remove("idle"); status.textContent = "working";
-    trig.innerHTML = triggerHTML(sc); feed.innerHTML = "";
-    feed.classList.remove("scrolled"); feed.scrollTop = 0;
-    show(trig.firstChild);
-    if (!(await wait(T.enter + T.trigger, my))) return;
-
-    for (var k = 0; k < sc.steps.length; k++) {
-      feed.insertAdjacentHTML("beforeend", stepHTML(sc.steps[k]));
-      var card = feed.lastElementChild; show(card);
-      if (!(await wait(T.enter + T.working, my))) return;
-      card.classList.add("done"); card.querySelector(".uc-st").textContent = "done"; followSoon();
-      if (!(await wait(T.settle, my))) return;
-    }
-    feed.insertAdjacentHTML("beforeend", endHTML(sc));
-    var end = feed.lastElementChild; show(end);
-    if (!(await wait(T.enter + T.drafting, my))) return;
-    end.classList.add("done"); followSoon();
-    end.querySelector(".uc-st").textContent = sc.end.kind === "escalate" ? "handed on" : "ready";
-    status.textContent = "waiting for you"; win.classList.add("idle");
-    if (!(await wait(T.hold, my))) return;
-    play((i + 1) % scenes.length);
   };
 
-  var go = function (i) { if (still) still_(i); else play(i); };
-  jobs.forEach(function (b) {
-    b.addEventListener("click", function () { go(+b.dataset.job); });
-    b.addEventListener("keydown", function (e) {
-      var d = {ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1}[e.key];
-      if (!d) return;
-      e.preventDefault();
-      var n = (+b.dataset.job + d + jobs.length) % jobs.length;
-      jobs[n].focus(); go(n);
-    });
-  });
-
-  if (still) { still_(0); return; }
-  select(0);
-  var visible = false;
-  var sync = function () { paused = !visible || document.hidden; };
-  document.addEventListener("visibilitychange", sync);
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (es) {
-      visible = es[0].isIntersecting; sync();
-    }, {threshold: 0.25}).observe(win);
-  } else { visible = true; sync(); }
-  play(0);
+  grid.innerHTML = scenes.map(function (sc) {
+    return '<article class="bx s' + (sc.span || 6) + '" data-bx>' +
+      '<h3>' + esc(sc.title) + '</h3><p class="ds">' + esc(sc.line) + '</p>' +
+      '<div class="bx-m" aria-hidden="true">' + (LAYOUT[sc.layout] || LAYOUT.stack)(sc) + '</div></article>';
+  }).join("");
 })();
 
 /* ------------------------------------------------------------------
-   PART TWO - the boards. Each plays once as it comes into view: cells
-   light in booking order, then the moved rows and the counts land.
-   Replay runs it again. The markup holds the finished board, so a page
-   without JS - or with reduced motion - shows the answer at once.
+   Arrival. A card animates once, as it comes into view: its layers
+   rise and un-blur back to front, ticks fill, the key row darkens, the
+   pill lands. A disruption card's board then lights booking by booking.
+   Reduced motion, or no observer, gets every card finished at once.
    ------------------------------------------------------------------ */
 (function () {
-  var mocks = document.querySelectorAll(".uc-mock");
+  var cards = document.querySelectorAll("[data-bx]");
   var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var finish = function (m) { m.classList.add("played", "shown"); };
-  if (still || !("IntersectionObserver" in window)) { mocks.forEach(finish); return; }
 
   var count = function (b) {
     var to = parseInt(b.dataset.to || b.textContent, 10);
@@ -1150,30 +1199,39 @@ h1,h2,h3,h4,p{margin:0}
     };
     requestAnimationFrame(step);
   };
-  var play = function (m) {
+  var board = function (m, delay) {
     var cells = m.querySelectorAll(".cell");
     m.classList.remove("played", "shown");
     cells.forEach(function (c) { c.classList.remove("lit"); });
     var run = (m._run = (m._run || 0) + 1);
     cells.forEach(function (c, i) {
-      setTimeout(function () { if (m._run === run) c.classList.add("lit"); }, 250 + i * 120);
+      setTimeout(function () { if (m._run === run) c.classList.add("lit"); }, delay + i * 120);
     });
     setTimeout(function () {
       if (m._run !== run) return;
       m.classList.add("played", "shown");
       m.querySelectorAll(".tot b").forEach(count);
-    }, 250 + cells.length * 120 + 250);
+    }, delay + cells.length * 120 + 250);
   };
+  var finish = function (card) {
+    card.classList.add("in");
+    var m = card.querySelector(".uc-mock"); if (m) m.classList.add("played", "shown");
+  };
+  cards.forEach(function (card) {
+    var r = card.querySelector("[data-replay]"), m = card.querySelector(".uc-mock");
+    if (r && m) r.addEventListener("click", function () { board(m, 150); });
+  });
+  if (still || !("IntersectionObserver" in window)) { cards.forEach(finish); return; }
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
-      if (e.isIntersecting) { play(e.target); io.unobserve(e.target); }
+      if (!e.isIntersecting) return;
+      var card = e.target;
+      card.classList.add("in");
+      var m = card.querySelector(".uc-mock"); if (m) board(m, 650);
+      io.unobserve(card);
     });
-  }, {threshold: 0.35});
-  mocks.forEach(function (m) {
-    io.observe(m);
-    var r = m.querySelector("[data-replay]");
-    if (r) r.addEventListener("click", function () { play(m); });
-  });
+  }, {threshold: 0.3});
+  cards.forEach(function (c) { io.observe(c); });
 })();
 </script>
 </body>
