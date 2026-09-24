@@ -193,11 +193,17 @@ class TheWorkerIsHonestlyScripted(unittest.TestCase):
         self.assertIn("waits for a person", note)
 
     def test_the_run_still_reports_exactly_three_live_workers(self):
+        # The risk layer's live Workers are the three that carry no layer tag.
+        # The workflow layer's desk Workers are live too (src/workflow.py runs
+        # them on every mail), but they belong to the other layer and say so.
         result = orchestrator.run_cycle(live=False, inject=True, use_llm=False)
-        live = [w for w in result["workers"] if w.get("mode") == "live"]
+        live = [w for w in result["workers"]
+                if w.get("mode") == "live" and not w.get("layer")]
         self.assertEqual([w["id"] for w in live], ["risk", "routing", "comms"],
                          "The Planner must never appear as a quiet fourth live "
                          "Worker.")
+        self.assertNotIn("planner", [w["id"] for w in result["workers"]
+                                     if w.get("mode") == "live"])
         planner = next(w for w in result["workers"] if w["id"] == "planner")
         self.assertEqual(planner["mode"], "scripted")
         self.assertTrue(planner["summary"].startswith("authored sweep"),

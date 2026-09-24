@@ -45,6 +45,17 @@ if not _state_dir:
     _state_dir = tempfile.gettempdir() if (SERVERLESS or not os.access(ROOT, os.W_OK)) else str(ROOT)
 RISK_STATE_FILE = Path(_state_dir) / "risk_state.json"
 
+# --- The workflow layer (src/workflow.py) ------------------------------------
+# The inbound mail and the customers' standing instructions are authored, like
+# the bookings. The lessons file is the one other thing written at runtime: every
+# correction a person makes becomes a lesson the Workers read on the next run.
+# It lives beside risk_state.json for the same reason - on a serverless host that
+# is the temp directory, so lessons last as long as the instance does and no
+# longer, which the dashboard says out loud.
+INBOX_FILE = DATA_DIR / "inbox.json"
+PLAYBOOKS_FILE = DATA_DIR / "playbooks.json"
+LESSONS_FILE = Path(os.getenv("LESSONS_FILE") or (Path(_state_dir) / "lessons.json"))
+
 # --- AI provider -----------------------------------------------------------
 # Read by llm.py and nowhere else. Swap providers by editing LLM_PROVIDER in .env.
 

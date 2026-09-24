@@ -1,0 +1,37 @@
+{
+  "_comment": "Each customer's standing instructions - their SOP, as a forwarder's key-account team keeps it. SYNTHETIC, authored alongside the bookings. The Playbook Worker checks every output against the rules for the customer it concerns before anything reaches the approval queue, and asks the Worker that produced it to fix what it can. Rules are structured on purpose: a rule a machine can check is a rule that gets checked every time, which a paragraph in a shared drive does not.",
+  "rule_types": {
+    "approved_carriers": "Only these carriers may be booked for this customer.",
+    "cc_on_customer_mail": "Every mail to this customer copies this address.",
+    "notify_delay_over_days": "Any ETA slip longer than this many days gets a customer notice the same day.",
+    "quote_validity_days": "Every quote to this customer states this validity."
+  },
+  "customers": {
+    "Nordmed Pharma Logistik AG": [
+      {"type": "approved_carriers", "value": ["Maersk", "Hapag-Lloyd"],
+       "why": "GDP-audited reefer carriers only - vaccines"},
+      {"type": "cc_on_customer_mail", "value": "qa-logistics@nordmed-pharma.example",
+       "why": "Quality assurance sees every shipment mail"},
+      {"type": "notify_delay_over_days", "value": 0,
+       "why": "Cold chain: any slip is reported"}
+    ],
+    "Wonen Direct B.V.": [
+      {"type": "notify_delay_over_days", "value": 1,
+       "why": "Store openings are planned against the ETA"}
+    ],
+    "Kempen Electronics NV": [
+      {"type": "quote_validity_days", "value": 7,
+       "why": "Their planning cycle is weekly"},
+      {"type": "cc_on_customer_mail", "value": "logistics-planning@kempen-electronics.example",
+       "why": "Planning owns the unloading slots"}
+    ],
+    "Bavaria Drivetrain GmbH": [
+      {"type": "notify_delay_over_days", "value": 1,
+       "why": "Assembly line - a slip has to reach the line planner"}
+    ],
+    "Elbe Werkzeugbau GmbH": [
+      {"type": "quote_validity_days", "value": 10,
+       "why": "Project cargo - approvals take a week"}
+    ]
+  }
+}

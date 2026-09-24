@@ -1,0 +1,145 @@
+{
+  "_comment": "One morning of a forwarder's inbound mail - SYNTHETIC, authored like the bookings. The workflow layer (src/workflow.py) reads it the way the risk layer reads a scenario: the input is authored, everything done with it is computed on the run. Messages refer to bookings by the carrier booking reference, the way real mail does; the Inbox Worker has to link them. Two mistakes are planted on purpose so the learning loop has something to learn from: IN-104 and IN-109 say 'booking' more often than 'quote' and are really rate requests, and IN-102 and IN-107 carry a German weight label the extractor does not know. Nothing here is a real customer, carrier contact or document.",
+  "_authored_on": "2026-09-24",
+  "rate_sheet": {
+    "_comment": "Synthetic reference rates, EUR per container, for pricing a quote. Not market rates. A route's cost_index (100 = baseline) scales the base, so the routes file stays the one source of relative cost.",
+    "base_eur_per_container": 2400,
+    "equipment_multiplier": {"40HC": 1.0, "40ft": 1.0, "20ft": 0.62, "40RH": 1.65, "flatrack": 1.45},
+    "quote_validity_days_default": 14,
+    "agreed_charges_eur": {"terminal handling destination": 540, "documentation": 75}
+  },
+  "messages": [
+    {
+      "id": "IN-101",
+      "received_minutes_ago": 212,
+      "from": "Pieter Claes <p.claes@kempen-electronics.example>",
+      "sender_org": "Kempen Electronics NV",
+      "subject": "Pricing request - Shenzhen to Antwerp, 3 x 40HC",
+      "body": "Hi team, can you send us pricing for 3 x 40HC consumer electronics from Shenzhen to Antwerp? Cargo ready in about three weeks. We need a rate we can take to our planning meeting on Friday.",
+      "attachments": []
+    },
+    {
+      "id": "IN-102",
+      "received_minutes_ago": 187,
+      "from": "Jonas Weber <j.weber@rheinwerk-mb.example>",
+      "sender_org": "Rheinwerk Maschinenbau GmbH",
+      "subject": "Booking request - Shanghai to Rotterdam, 2 x 40HC machine parts",
+      "body": "Please book 2 x 40HC machine parts from Shanghai to Rotterdam, sailing in about three weeks, road delivery to Duisburg. Packing list attached. Shipper is our supplier Ningxia Precision Casting Co.",
+      "attachments": [
+        {"name": "Packliste_RW-2291.txt", "kind": "packing_list",
+         "text": "PACKLISTE RW-2291\nShipper: Ningxia Precision Casting Co.\nConsignee: Rheinwerk Maschinenbau GmbH\nCommodity: machine parts, cast housings\nHS code: 8483.40\nIncoterm: FOB Shanghai\nPackages: 2 containers\nNettogewicht: 13.100 kg\nBruttogewicht: 14.200 kg"}
+      ]
+    },
+    {
+      "id": "IN-103",
+      "received_minutes_ago": 164,
+      "from": "Katrin Vogel <k.vogel@bavaria-drivetrain.example>",
+      "sender_org": "Bavaria Drivetrain GmbH",
+      "subject": "Final documents for HLCU-2261188",
+      "body": "Attached the final commercial invoice and the bill of lading draft for HLCU-2261188 from our shipper. Please check and release.",
+      "attachments": [
+        {"name": "BL_draft_HLCU-2261188.txt", "kind": "bill_of_lading",
+         "text": "BILL OF LADING (DRAFT) HLCU-2261188\nShipper: Shanghai Ruida Auto Components\nConsignee: Bavaria Drivetrain GmbH\nHS code: 8708.30\nIncoterm: FCA Shanghai\nPackages: 12 containers\nGross weight: 18,900 kg"}
+      ]
+    },
+    {
+      "id": "IN-104",
+      "received_minutes_ago": 150,
+      "from": "Dr. Anke Petersen <a.petersen@nordmed-pharma.example>",
+      "sender_org": "Nordmed Pharma Logistik AG",
+      "subject": "Re-quote Ningbo - Hamburg reefer before next month's booking",
+      "body": "Before we place next month's booking, can you re-quote the Ningbo to Hamburg reefer lane? Same spec as the current booking, 2 x 40RH. We will decide on the booking once we have the number.",
+      "attachments": []
+    },
+    {
+      "id": "IN-105",
+      "received_minutes_ago": 131,
+      "from": "CMA CGM Customer Service <noreply-cs@cma-cgm.example>",
+      "sender_org": "CMA CGM",
+      "subject": "Rollover notice - CMDU-4410765",
+      "body": "Please be advised that the cargo under booking CMDU-4410765 could not be loaded as planned and has been rolled to the next sailing. Expected delay 7 days. The revised schedule will follow.",
+      "attachments": []
+    },
+    {
+      "id": "IN-106",
+      "received_minutes_ago": 118,
+      "from": "Pieter Claes <p.claes@kempen-electronics.example>",
+      "sender_org": "Kempen Electronics NV",
+      "subject": "Where is MEDU-1774390?",
+      "body": "Can you tell us where MEDU-1774390 is and when it arrives? Our warehouse wants to plan the unloading slot.",
+      "attachments": []
+    },
+    {
+      "id": "IN-107",
+      "received_minutes_ago": 96,
+      "from": "Martin Brandt <m.brandt@elbe-werkzeugbau.example>",
+      "sender_org": "Elbe Werkzeugbau GmbH",
+      "subject": "B/L draft HLCU-2264903 for approval",
+      "body": "Our shipper sent the bill of lading draft for HLCU-2264903. Please check against the booking and confirm.",
+      "attachments": [
+        {"name": "BL_Entwurf_HLCU-2264903.txt", "kind": "bill_of_lading",
+         "text": "BILL OF LADING (ENTWURF) HLCU-2264903\nShipper: Busan Heavy Tools Co.\nConsignee: Elbe Werkzeugbau GmbH\nHS code: 8457.10\nIncoterm: DAP Hamburg\nPackages: 3 flatracks\nBruttogewicht: 26.300 kg"}
+      ]
+    },
+    {
+      "id": "IN-108",
+      "received_minutes_ago": 77,
+      "from": "Dr. Anke Petersen <a.petersen@nordmed-pharma.example>",
+      "sender_org": "Nordmed Pharma Logistik AG",
+      "subject": "Please book 1 x 40RH vaccines Ningbo to Hamburg",
+      "body": "Please book 1 x 40RH temperature-controlled vaccines from Ningbo to Hamburg with MSC, sailing in about three weeks. Commercial invoice attached.",
+      "attachments": [
+        {"name": "CI_NM-5530.txt", "kind": "commercial_invoice",
+         "text": "COMMERCIAL INVOICE NM-5530\nShipper: Ningbo BioCold Pharmaceuticals\nConsignee: Nordmed Pharma Logistik AG\nCommodity: vaccines, temperature-controlled\nHS code: 3002.41\nIncoterm: CIP Hamburg\nPackages: 1 reefer container\nGross weight: 2,480 kg"}
+      ]
+    },
+    {
+      "id": "IN-109",
+      "received_minutes_ago": 58,
+      "from": "Martin Brandt <m.brandt@elbe-werkzeugbau.example>",
+      "sender_org": "Elbe Werkzeugbau GmbH",
+      "subject": "Re-quote Busan - Hamburg flatracks for the next booking",
+      "body": "For our next booking on Busan to Hamburg, please re-quote 3 x flatrack, same as the current booking. We confirm the booking once the price is agreed.",
+      "attachments": []
+    },
+    {
+      "id": "IN-110",
+      "received_minutes_ago": 41,
+      "from": "Hapag-Lloyd Billing <billing@hlag.example>",
+      "sender_org": "Hapag-Lloyd",
+      "subject": "Freight invoice HL-88213407 - HLCU-2264903",
+      "body": "Please find our freight invoice for booking HLCU-2264903.",
+      "attachments": [
+        {"name": "HL-88213407.txt", "kind": "carrier_invoice",
+         "text": "INVOICE HL-88213407\nBooking: HLCU-2264903\nOcean freight: 16,200 EUR\nTerminal handling destination: 540 EUR\nCongestion surcharge Hamburg: 850 EUR"}
+      ]
+    },
+    {
+      "id": "IN-111",
+      "received_minutes_ago": 30,
+      "from": "MSC Import Desk <import-fos@msc.example>",
+      "sender_org": "MSC",
+      "subject": "Arrival notice - MEDU-2209471 at Fos-sur-Mer",
+      "body": "Arrival notice for booking MEDU-2209471. Vessel expected at Fos-sur-Mer on schedule. Customs clearance required before release.",
+      "attachments": []
+    },
+    {
+      "id": "IN-112",
+      "received_minutes_ago": 19,
+      "from": "CMA CGM Import Rotterdam <import-rtm@cma-cgm.example>",
+      "sender_org": "CMA CGM",
+      "subject": "Arrival notice - CMDU-5518824 at Rotterdam, onward to Basel",
+      "body": "Arrival notice for booking CMDU-5518824 at Rotterdam. Cargo moves onward to Basel by barge. Customs formalities required before release.",
+      "attachments": []
+    },
+    {
+      "id": "IN-113",
+      "received_minutes_ago": 6,
+      "from": "Terminal Operations <ops@transhipment-terminal.example>",
+      "sender_org": "Transhipment terminal",
+      "subject": "Milestone: CMDU-5518824 departed transhipment port",
+      "body": "Milestone notice: cargo under CMDU-5518824 loaded and departed the transhipment port on schedule. No exception recorded.",
+      "attachments": []
+    }
+  ]
+}

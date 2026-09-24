@@ -173,6 +173,12 @@ def _gated(operation: dict) -> dict:
                 approval_status="awaiting_approval")
 
 
+# The workflow layer (src/workflow.py) queues its own changes - a new booking, a
+# milestone, a document filed, an invoice disputed - and they go through the
+# very same gate. One function, so there is still only one way to queue a write.
+gate = _gated
+
+
 def _routing_writeback(card: dict) -> dict | None:
     """The booking change the Routing Worker's decision implies.
 

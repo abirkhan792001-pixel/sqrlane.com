@@ -8,6 +8,9 @@ A handful of routes and two static pages. That is the whole backend:
     GET  /api/initial   the calm 'before' board, so the page renders instantly
     GET  /api/gauges    live Rhine water levels for the landing page
     POST /run           the trigger button - runs the orchestrator, returns JSON
+    GET  /api/workflow  the workflow layer - the Workers work the inbox once
+    POST /api/workflow/correct  a person corrects a Worker; the learning loop runs
+    POST /api/workflow/reset    forget every lesson
 
 Start it:
 
@@ -25,7 +28,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from pydantic import BaseModel
 
-from src import config, llm, orchestrator, simulation
+from src import config, learning, llm, orchestrator, simulation, workflow
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 INDEX = STATIC_DIR / "index.html"        # the dashboard, served at /app
@@ -52,6 +55,19 @@ VIDEO_DIR = STATIC_DIR / "video"         # the hero reel; absent in a fresh chec
 
 app = FastAPI(title="SQRlane",
               description="Demo prototype. Drafts emails; sends nothing.")
+
+
+class CorrectRequest(BaseModel):
+    """One correction from the Workflow view. Either an intent (what the mail
+    is) or a field (what a document line says)."""
+    item: str
+    kind: str                     # "intent" or "field"
+    right: str | None = None      # the correct intent
+    cue: str | None = None        # the phrase that shows it; suggested if empty
+    field: str | None = None      # the field the Docs Worker missed or misread
+    value: str | None = None      # its correct value
+    label: str | None = None      # the document label it sits under; found if empty
+    use_llm: bool = True
 
 
 class RunRequest(BaseModel):
@@ -630,3 +646,44 @@ def run(request: RunRequest | None = None):
             "shipments": [], "risk": {"events": [], "sources": []},
             "summary": {"reroute": 0, "hold": 0, "no-action": 0, "drafts": 0},
         })
+
+
+# --- The workflow layer ---------------------------------------------------
+# Same rule as /run: a failure comes back as a readable payload, never a 500.
+
+
+def _workflow_error(exc):
+    return JSONResponse(status_code=200, content={
+        "state": "error", "error": f"{type(exc).__name__}: {exc}",
+        "items": [], "messages": [], "outputs": [], "lessons": [], "stats": {}})
+
+
+@app.get("/api/workflow")
+def api_workflow(use_llm: bool = True):
+    """The desk works the inbox once: triage, the work, the checks, the queue."""
+    try:
+        return workflow.run(use_llm=use_llm)
+    except Exception as exc:  # noqa: BLE001
+        return _workflow_error(exc)
+
+
+@app.post("/api/workflow/correct")
+def api_workflow_correct(request: CorrectRequest):
+    """A person corrects a Worker. The lesson is kept only if replaying the whole
+    inbox shows it fixes that mail and breaks no earlier lesson."""
+    try:
+        return workflow.correct(request.item, kind=request.kind, right=request.right,
+                                cue=request.cue, field=request.field, value=request.value,
+                                label=request.label, use_llm=request.use_llm)
+    except Exception as exc:  # noqa: BLE001
+        return JSONResponse(status_code=200, content={
+            "accepted": False, "reason": f"{type(exc).__name__}: {exc}"})
+
+
+@app.post("/api/workflow/reset")
+def api_workflow_reset():
+    """Forget every lesson - the way to rehearse the learning loop from scratch."""
+    try:
+        return {"forgotten": learning.reset()}
+    except OSError as exc:
+        return JSONResponse(status_code=200, content={"forgotten": 0, "error": str(exc)})

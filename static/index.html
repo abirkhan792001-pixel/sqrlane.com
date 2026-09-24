@@ -342,7 +342,7 @@ body.keys-on .pal.kbd{opacity:1;pointer-events:auto;transform:translateX(-50%) s
         color:var(--faint);margin:0 0 5px}
 .keys-r{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:12.5px;color:var(--muted)}
 .keys-r .d{flex:1}
-.keys-r kbd{font-family:var(--mono);font-size:10.5px;background:var(--surface);
+.keys-r kbd{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;background:var(--surface);
             border:1px solid var(--border);border-radius:4px;padding:2px 5px;color:var(--fg)}
 
 /* Every page opens the same way: a title, a line saying what it is, and its
@@ -636,7 +636,7 @@ table.q tr.pick td{background:var(--surface)}
 .fams{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
 .fam{display:inline-flex;align-items:baseline;gap:5px;padding:2px 7px;border-radius:var(--r);
      border:1px solid var(--border);background:var(--surface);font-size:11px;color:var(--muted)}
-.fam b{font-variant-numeric:tabular-nums;font-weight:600;color:var(--text)}
+.fam b{font-variant-numeric:tabular-nums;font-weight:600;color:var(--fg)}
 .fam.ctx{opacity:.62}
 /* Instrument readings and board context. Deliberately quieter than an event:
    promoting a number to look like an alarm is the one lie this board must not tell. */
@@ -744,6 +744,105 @@ table.q tr.pick td{background:var(--surface)}
 .key b{color:var(--fg);font-weight:600}
 .said{margin-top:11px;padding-top:11px;border-top:1px solid var(--border);
       font-size:13px;font-style:italic}
+/* ---------- the workflow layer ----------
+   The everyday desk: every inbound mail, the Workers it passed through, what
+   they said to each other on the way, and what they learned from a correction.
+   Every class here is prefixed wf- - a bare short class has collided twice on
+   this page already (.k, then .mk). */
+.wf-pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:20px}
+@media(max-width:1100px){.wf-pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.wf-pipe{grid-template-columns:1fr}}
+.wf-grp{background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
+        padding:13px 14px;box-shadow:var(--shadow);min-width:0}
+.wf-grp-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.wf-grp-h .num{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--faint);background:var(--surface);
+               border-radius:4px;padding:1px 5px}
+.wf-grp-h b{font-size:13px;font-weight:600}
+.wf-w{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;font-size:12.5px;padding:4px 0}
+.wf-w .nm{font-weight:500;white-space:nowrap}
+.wf-w .sm{flex-basis:100%;color:var(--faint);font-size:11.5px}
+.wf-list .wf-r{border-top:1px solid var(--border)}
+.wf-list .wf-r:first-child{border-top:0}
+.wf-rh{display:grid;grid-template-columns:62px minmax(0,1fr) auto auto;
+       gap:6px 12px;align-items:center;padding:11px 15px;cursor:pointer;width:100%;
+       background:none;border:0;text-align:left;font:inherit;color:inherit}
+.wf-rh:hover{background:var(--card-muted)}
+.wf-rh .wf-path{grid-column:2 / -1;margin:0}
+@media(max-width:900px){.wf-rh{grid-template-columns:62px minmax(0,1fr) auto}
+  .wf-rh .wf-intent{display:none}}
+.wf-id{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted)}
+.wf-org{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wf-subj{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wf-intent{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.wf-by{font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+       padding:1px 5px;border-radius:4px;background:var(--surface);color:var(--muted)}
+.wf-by.model{background:var(--green-bg);color:var(--green)}
+.wf-by.lesson{background:var(--blue-bg);color:var(--blue)}
+.wf-st{display:flex;gap:6px;align-items:center;justify-content:flex-end;white-space:nowrap}
+.wf-path{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.wf-path span{font-size:10.5px;padding:1px 6px;border-radius:999px;background:var(--surface);
+              color:var(--muted)}
+.wf-path span.x{background:var(--blue-bg);color:var(--blue)}
+.wf-rb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;
+       padding:4px 15px 18px}
+@media(max-width:900px){.wf-rb{grid-template-columns:1fr}}
+.wf-body{font-size:13px;line-height:1.55;background:var(--card-muted);border:1px solid var(--border);
+         border-radius:var(--r);padding:10px 12px;white-space:pre-wrap}
+.wf-att{border:1px dashed var(--border-strong);border-radius:var(--r);padding:9px 11px;margin-top:8px;
+        font-size:12px}
+.wf-att pre{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;margin:6px 0 0;white-space:pre-wrap;color:var(--muted)}
+.wf-flds{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:12px;margin-top:8px}
+.wf-flds dt{color:var(--faint)} .wf-flds dd{margin:0;font-weight:500}
+.wf-flds dd .ls{font-size:10px;color:var(--blue);margin-left:6px;font-weight:600}
+.wf-unread{font-size:12px;color:var(--amber);margin-top:6px}
+.wf-bus{list-style:none;margin:0;padding:0;font-size:12.5px}
+.wf-bus li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:6px 0;
+           border-bottom:1px solid var(--border)}
+.wf-bus li:last-child{border-bottom:0}
+.wf-bus .sq{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:var(--faint);padding-top:2px}
+.wf-bus .hd{font-weight:500}
+.wf-bus .hd em{font-style:normal;font-size:9.5px;font-weight:600;letter-spacing:.04em;
+               text-transform:uppercase;color:var(--faint);margin-left:6px}
+.wf-bus li.revise .hd em,.wf-bus li.escalate .hd em{color:var(--amber)}
+.wf-bus li.revised .hd em,.wf-bus li.verdict .hd em{color:var(--green)}
+.wf-bus .tx{color:var(--muted)}
+.wf-out{border:1px solid var(--border);border-radius:var(--r-md);margin-top:10px;overflow:hidden}
+.wf-out-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 12px;
+          background:var(--card-muted);border-bottom:1px solid var(--border);font-size:12px}
+.wf-out-h .t{font-weight:500}
+.wf-out-b{padding:10px 12px;font-size:12.5px;white-space:pre-wrap;line-height:1.5}
+.wf-chk{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 10px}
+.wf-chk span{font-size:11px;padding:2px 7px;border-radius:999px;background:var(--surface);color:var(--muted)}
+.wf-chk span.fixed{background:var(--blue-bg);color:var(--blue)}
+.wf-chk span.pass{background:var(--green-bg);color:var(--green)}
+.wf-chk span.flag{background:var(--red-bg);color:var(--red)}
+.wf-esc{font-size:12.5px;border-left:3px solid var(--amber);background:var(--amber-bg);
+        padding:8px 11px;border-radius:0 var(--r) var(--r) 0;margin-top:8px}
+.wf-fix{border:1px solid var(--border);border-radius:var(--r-md);padding:12px;margin-top:14px}
+.wf-fix p{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.wf-fix .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.wf-fix select,.wf-fix input{font:inherit;font-size:12.5px;padding:6px 8px;border-radius:var(--r);
+        border:1px solid var(--border-strong);background:var(--card);color:var(--fg);min-width:0}
+.wf-fix input{flex:1 1 140px}
+.wf-btn{font:inherit;font-size:12.5px;font-weight:500;padding:6px 11px;border-radius:var(--r);
+        border:1px solid var(--border-strong);background:var(--card);color:var(--fg);cursor:pointer}
+.wf-btn.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.wf-btn:disabled{opacity:.5;cursor:default}
+.wf-rep{border-radius:var(--r-md);padding:14px 16px;margin-bottom:20px;border:1px solid var(--border)}
+.wf-rep.ok{background:var(--green-bg)} .wf-rep.no{background:var(--amber-bg)}
+.wf-rep h3{margin:0 0 6px;font-size:14px}
+.wf-rep ul{margin:6px 0 0;padding-left:18px;font-size:12.5px}
+.wf-rep .x{float:right;background:none;border:0;cursor:pointer;color:var(--muted);font:inherit}
+.wf-les{list-style:none;margin:0;padding:0}
+.wf-les li{padding:10px 15px;border-top:1px solid var(--border);font-size:12.5px}
+.wf-les li:first-child{border-top:0}
+.wf-les .lh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wf-les .lh .id{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--muted)}
+.wf-les li.superseded{opacity:.55}
+.wf-les .lm{color:var(--faint);font-size:11.5px;margin-top:3px}
+.wf-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:1000px){.wf-grid{grid-template-columns:1fr}}
+.wf-seg{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -786,6 +885,7 @@ table.q tr.pick td{background:var(--surface)}
         <div class="view on" id="v-overview"></div>
         <div class="view" id="v-shipments"></div>
         <div class="view" id="v-risk"></div>
+        <div class="view" id="v-workflow"></div>
         <div class="view" id="v-approvals"></div>
         <div class="view" id="v-connections"></div>
         <div class="view" id="v-simulation"></div>
@@ -874,6 +974,7 @@ const ICON = {
   connections:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0z"/><path d="M12 18v4"/></svg>',
   close:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   chev:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  workflow:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l6 6L20 5"/></svg>',
 };
 
@@ -885,6 +986,10 @@ let tmsLink = {};
 let sim = {}, simDay = null, simBusy = false;   // the authored week (src/simulation.py)
 let atlas = {}, mapPick = null;                 // the board on a map (src/geo.py)
 let ranAt = null;                               // when the last run finished
+/* The workflow layer (src/workflow.py): the everyday desk working the inbox.
+   Its own run, its own button - it does not wait for a disruption. */
+let wf = {}, wfBusy = false, wfOpen = new Set(), wfTab = "all", wfReport = null;
+let handoffs = {messages:[], checks:[]};        // what a risk run handed the desk
 const approved = new Set();     // approval is browser state only; nothing is transmitted
 let running = false;            // a run is in flight - views show their skeleton
 let view = "overview", openId = null;
@@ -902,7 +1007,9 @@ $("theme").onclick = () => theme(document.documentElement.getAttribute("data-the
 /* Everything waiting on a person. A drafted email and a queued TMS change are
    the same kind of thing - work the Workers finished that leaves the building -
    so they sit behind one gate and are counted together. */
-function pending(){ return draftsPending() + writesPending(); }
+function pending(){ return draftsPending() + writesPending() + wfPending(); }
+function wfKey(o){ return `wf|${o.id}`; }
+function wfPending(){ return (wf.outputs||[]).filter(o=>!approved.has(wfKey(o))).length; }
 function key(d){ return `${d.shipment_id}|${d.audience}`; }
 function draftsPending(){ return board.flatMap(s=>s.drafts||[]).filter(d=>!approved.has(key(d))).length; }
 function writesPending(){ return queuedWrites().filter(w=>!approved.has(wkey(w))).length; }
@@ -917,6 +1024,7 @@ const NAV_GROUPS = [
   {title:"Overview", items:[{id:"overview", label:"Overview"}]},
   {title:"Operations", items:[
     {id:"shipments", label:"Shipments", count:() => board.length, quiet:true},
+    {id:"workflow",  label:"Workflow", count:() => (wf.items||[]).length, quiet:true},
     {id:"risk",      label:"Risk feed", count:() => (risk.events||[]).length, quiet:true},
     {id:"approvals", label:"Approvals", count:() => pending()},
   ]},
@@ -1323,6 +1431,7 @@ function notchGauge(pct, label, tone){
 const PAGES = {
   overview:   ["Overview", "The board, the run, and what the Workers did with it"],
   shipments:  ["Shipments", "Every booking on the board, grouped by what it needs"],
+  workflow:   ["Workflow", "The everyday desk — every inbound mail read, worked and checked, and what the Workers learned from you"],
   risk:       ["Risk feed", "Everything the desk read this run — news, gauges, weather, hazards, filings, rates"],
   approvals:  ["Approvals", "Drafted work waiting on a person. Nothing is sent"],
   map:        ["Map", "Lanes drawn through what they transit, and what is blocked"],
@@ -1343,6 +1452,7 @@ function palSource(){
   const views = [
     {id:"overview", label:"Overview", hint:"The board and the run"},
     {id:"shipments", label:"Shipments", hint:"Every booking, grouped by state"},
+    {id:"workflow", label:"Workflow", hint:"The inbox, worked by the desk's Workers"},
     {id:"risk", label:"Risk feed", hint:"Every source read this run"},
     {id:"approvals", label:"Approvals", hint:"Drafts waiting on a person"},
     {id:"map", label:"Map", hint:"Lanes, chokepoints and blockades"},
@@ -1420,11 +1530,11 @@ function initPalette(){
    dashboard someone works a queue in should not need the mouse for the parts
    that repeat. Typing in a field is never a shortcut, and any modifier means the
    browser's own binding wins. */
-const GO_KEYS = {o:"overview", s:"shipments", r:"risk", a:"approvals",
+const GO_KEYS = {o:"overview", s:"shipments", i:"workflow", r:"risk", a:"approvals",
                  t:"connections", m:"map", w:"simulation"};
 const KEY_SHEET = [
   {title:"Go to", rows:[
-    ["g o","Overview"], ["g s","Shipments"], ["g r","Risk feed"], ["g a","Approvals"],
+    ["g o","Overview"], ["g s","Shipments"], ["g i","Workflow"], ["g r","Risk feed"], ["g a","Approvals"],
     ["g t","TMS link"], ["g m","Map"], ["g w","Simulation"]]},
   {title:"Actions", rows:[
     ["⌘K / /","Search views and bookings"], ["⌘B","Collapse the sidebar"],
@@ -1512,7 +1622,7 @@ function renderNav(){
    button walks the views you visited, and a link to the queue is a link someone
    can actually send. Before this, every reload dropped you on Overview and the
    back button left the dashboard entirely. */
-const VIEW_TITLES = {overview:"Overview", shipments:"Shipments", risk:"Risk feed",
+const VIEW_TITLES = {overview:"Overview", shipments:"Shipments", workflow:"Workflow", risk:"Risk feed",
                      approvals:"Approvals", connections:"TMS link",
                      simulation:"Simulation", map:"Map"};
 
@@ -1712,7 +1822,8 @@ function statRow(){
     ${statCard({label:"Awaiting your approval", value:pending(),
                 pill:pending()?"held":"clear", tone:pending()?"amber":"green",
                 sub:pending()?`${draftsPending()} draft${draftsPending()===1?"":"s"} · ${
-                  writesPending()} TMS change${writesPending()===1?"":"s"}`
+                  writesPending()} TMS change${writesPending()===1?"":"s"}${
+                  wfPending()?` · ${wfPending()} from the inbox`:""}`
                   :"everything approved"})}
   </div>`;
 }
@@ -1785,7 +1896,8 @@ function workerPanel(){
   const mode = w.mode==="live" ? "live" : w.mode==="demo" ? "demo" : "scripted";
   const ctx = `${ship?esc(ship.id):"no shipment"}${scenario?` · ${esc(scenario.name)}`:""}`;
   let body;
-  if (mode === "live")      body = livePanelBody(w, ship);
+  if (w.layer === "workflow" && mode === "live") body = wfWorkerBody(w, ship);
+  else if (mode === "live") body = livePanelBody(w, ship);
   else if (!hasRun)         body = `<div class="empty">Run a scenario to populate this Worker.</div>`;
   else                      body = scriptedPanelBody(w, ship);
   return `<div class="wpanel"><div class="wpanel-h">
@@ -1981,16 +2093,26 @@ function workersCard(){
   /* The three that actually run. The full roster has its own strip above, and
      listing all fourteen here under a "3" badge was saying two different things
      at once. These are the ones with a summary to report. */
-  const live = workers.filter(w => w.mode === "live");
+  // The risk layer's three. The desk's own Workers report in Workflow, where
+  // the mail they work is - listing them here would be thirteen rows for a
+  // card about one run.
+  const live = workers.filter(w => w.mode === "live" && !w.layer);
+  const desk = workers.filter(w => w.layer === "workflow" && w.mode === "live").length;
   return `<div class="card" style="margin-bottom:20px">
-    <div class="card-h"><h2>Workers</h2><span class="n">${live.length}</span></div>
+    <div class="card-h"><h2>Risk layer</h2><span class="n">${live.length}</span></div>
     ${live.map(w=>`<div class="worker ${w.status}"><span class="wdot"></span>
       <div style="flex:1;min-width:0">
         <div class="wname">${esc(w.name)}${w.seconds!=null?`<span class="wsecs">${esc(w.seconds)}s</span>`:""}</div>
         <div class="wrole">${esc(w.role)}</div>
         ${w.summary?`<div class="wsum">${esc(w.summary)}</div>`:""}
         ${(w.detail||[]).length?`<ul class="wdet">${w.detail.map(d=>`<li>${esc(d)}</li>`).join("")}</ul>`:""}
-      </div></div>`).join("")}</div>`;
+      </div></div>`).join("")}
+    <div class="worker"><span class="wdot" style="background:var(--blue)"></span>
+      <div style="flex:1;min-width:0"><div class="wname">Workflow layer</div>
+        <div class="wrole">${desk} Workers work the inbox all day - quotes, bookings,
+          documents, milestones, exceptions, invoices, customs.
+          <button class="aff-b" data-view="workflow">Open Workflow</button></div></div></div>
+    </div>`;
 }
 
 /* The event and the decisions it caused were already linked in the data -
@@ -2212,7 +2334,7 @@ function render(){
   $("band").innerHTML = scenarioSwitcher() + rosterStrip() + workerPanel();
   // Only the visible view is built. Rendering all four left duplicate rows and
   // duplicate handlers in the DOM, with the hidden copies first.
-  ["overview","shipments","risk","approvals","connections","simulation","map"].forEach(v => {
+  ["overview","shipments","workflow","risk","approvals","connections","simulation","map"].forEach(v => {
     if (v !== view) $("v-"+v).innerHTML = "";
   });
 
@@ -2228,6 +2350,7 @@ function render(){
 
   if (view === "shipments") $("v-shipments").innerHTML = pageHeader("shipments") +
     (running ? skeletonRows(5) : statRow() + shipmentGroups());
+  if (view === "workflow")  $("v-workflow").innerHTML = pageHeader("workflow", wfActions()) + workflowView();
   if (view === "risk")      $("v-risk").innerHTML = pageHeader("risk") +
     (running ? skeletonRows(3) : riskCard(false) + instrumentCard() + contextCard());
   if (view === "approvals") $("v-approvals").innerHTML = pageHeader("approvals") + approvalsView();
@@ -2288,6 +2411,7 @@ function render(){
     openWorker = openWorker === b.dataset.worker ? null : b.dataset.worker;
     render();
   });
+  bindWorkflow();
   bindApprove();
   initCollapse();
   initPalette();
@@ -2330,6 +2454,17 @@ function apItems(){
       wb: w,
     });
   });
+  // The workflow layer's outputs - quotes, booking requests, replies, new
+  // records, milestones, disputes. Same gate, same queue, grouped on the
+  // booking they belong to (or the mail that started them, for a booking that
+  // does not exist yet).
+  (wf.outputs||[]).forEach(o => out.push({
+    k: wfKey(o), sh: board.find(x => x.id === o.booking_ref), grp: o.booking_ref || o.item,
+    kind: o.kind === "mail" ? "mail" : "write",
+    title: o.kind === "mail" ? o.subject
+      : (o.changes||[]).slice(-1).map(c => `${c.field} → ${c.to}`).join(""),
+    sub: `${o.worker} · from ${o.item}`, wfo: o,
+  }));
   return out;
 }
 
@@ -2349,7 +2484,7 @@ function apRowHTML(i){
       ${ok?"":`<button class="approve sm" data-approve="${esc(i.k)}">Approve</button>`}
       <span class="ap-x">${ICON.chev}</span>
     </div>
-    ${open ? `<div class="ap-rb">${i.kind==="mail"?mailHTML(i.mail):wbHTML(i.wb)}</div>` : ""}
+    ${open ? `<div class="ap-rb">${i.wfo?wfOutputHTML(i.wfo):i.kind==="mail"?mailHTML(i.mail):wbHTML(i.wb)}</div>` : ""}
   </div>`;
 }
 
@@ -2358,9 +2493,10 @@ function approvalsView(){
   const all = apItems();
   if (!all.length) return emptyState({
     icon: "approvals", title: "Nothing waiting yet",
-    body: `Press <b>Run</b>. Any booking that needs action gets a carrier and a
-           customer email, and the change it implies is queued back into the TMS.
-           All of it waits here for you — nothing is sent, and nothing is written.`});
+    body: `Press <b>Run</b>, or open <b>Workflow</b> to work the inbox. Any booking
+           that needs action gets its mail drafted and its change queued back into the
+           TMS, and every quote, booking and reply the desk prepares lands here too.
+           All of it waits for you — nothing is sent, and nothing is written.`});
 
   const waiting = i => !approved.has(i.k);
   const counts = {waiting: all.filter(waiting).length,
@@ -2392,12 +2528,13 @@ function approvalsView(){
   const order = board.map(s => s.id);
   const byShip = new Map();
   shown.forEach(i => {
-    const id = (i.sh||{}).id || "—";
+    const id = (i.sh||{}).id || i.grp || "—";
     if (!byShip.has(id)) byShip.set(id, []);
     byShip.get(id).push(i);
   });
   const groups = [...byShip.entries()]
-    .sort((a,b) => order.indexOf(a[0]) - order.indexOf(b[0]))
+    .sort((a,b) => { const r = x => { const n = order.indexOf(x); return n < 0 ? 999 : n; };
+                     return r(a[0]) - r(b[0]) || a[0].localeCompare(b[0]); })
     .map(([id, items]) => {
       const sh = board.find(x => x.id === id);
       const nWait = items.filter(waiting).length;
@@ -2405,7 +2542,7 @@ function approvalsView(){
         <div class="ap-h">
           ${sh?`<span class="badge ${sh.state}">${LABEL[sh.state]}</span>`:""}
           <b>${esc(id)}${sh?` · ${esc(sh.cargo)}`:""}</b>
-          <span class="ap-c">${sh?esc(sh.customer||""):""}</span>
+          <span class="ap-c">${sh?esc(sh.customer||""):esc((items[0].wfo||{}).customer||"from the inbox")}</span>
           <span class="ap-c" style="margin-left:auto">${
             nWait ? `${nWait} awaiting` : "all approved"}</span>
         </div>
@@ -2428,6 +2565,7 @@ function mailHTML(m){
     <div class="mail-h"><div class="to">To the ${esc(m.audience)}: ${esc(m.to)}${
       m.fallback?`<span class="fb" title="${esc(m.fallback_reason||"")}">template</span>`:""}</div>
       <div class="subj">${esc(m.subject)}</div>
+      ${(m.cc||[]).length?`<div class="subj">cc ${esc(m.cc.join(", "))} <span class="qtag">playbook</span></div>`:""}
       ${m.fallback&&m.fallback_reason?`<div class="subj" style="color:var(--amber)">model unavailable: ${esc(m.fallback_reason)}</div>`:""}</div>
     <div class="mail-b">${esc(m.body)}</div>
     <div class="gate">
@@ -2541,6 +2679,372 @@ async function runSimulation(){
   simBusy = false; render(); renderNav();
 }
 
+/* ---------- the workflow layer ----------
+   The everyday desk (src/workflow.py). The risk layer waits for the world to
+   move; this one works whatever arrives - rate requests, bookings, documents,
+   carrier notices, invoices, arrival notices. Three things on this view are the
+   point, and each is read straight from the run:
+
+     * the path each mail took through the Workers, and the messages they sent
+       each other on the way - the conversation is data, not a diagram;
+     * the Playbook Worker's check on every output, and the fix it asked for;
+     * the learning loop - correct a mail, and the report says what the lesson
+       fixed, what else it fixed, and that every earlier lesson still holds.
+
+   Every output joins the same Approvals queue as the risk layer's drafts.
+   Nothing is sent and nothing is written. */
+let wfTried = false, wfError = "";
+
+function wfName(id){
+  const w = (wf.workers||[]).find(x => x.id === id) || workers.find(x => x.id === id);
+  return w ? shortWorker(w.name) : (id === "person" ? "A person" : id);
+}
+
+function busHTML(msgs, withItem){
+  return `<ol class="wf-bus">${msgs.map(m => `<li class="${esc(m.kind)}">
+    <span class="sq">${esc(m.seq)}</span><div>
+      <div class="hd">${esc(shortWorker(m.from))} → ${esc(shortWorker(m.to))}<em>${esc(m.kind)}</em>${
+        withItem ? ` <span class="wf-id" style="font-size:11px">${esc(m.item)}</span>` : ""}</div>
+      <div class="tx">${esc(m.text)}</div></div></li>`).join("")}</ol>`;
+}
+
+function wfActions(){
+  const n = (wf.lessons||[]).filter(l => l.status === "active").length;
+  return `${n ? `<button class="wf-btn" id="wf-reset" title="Forget every lesson, then work the inbox again">Forget ${n} lesson${n===1?"":"s"}</button>` : ""}
+    <button class="wf-btn pri" id="wf-run" ${wfBusy?"disabled":""}>${
+      wfBusy ? "Working…" : wf.items ? "Work the inbox again" : "Work the inbox"}</button>`;
+}
+
+function workflowView(){
+  const err = wfError ? `<div class="note">${esc(wfError)}</div>` : "";
+  if (!wf.items) {
+    if (wfBusy) return err + skeletonRows(6);
+    return err + emptyState({icon:"workflow", title:"The inbox has not been worked yet",
+      body:`A morning of mail is waiting — rate requests, bookings, documents, a
+            rollover, an invoice, two arrival notices. The desk's Workers read and
+            route every one, do the work, check it against the customer's playbook,
+            and queue the result for you. Nothing is sent and nothing is written.`,
+      action:`<button class="wf-btn pri" data-wfrun="1">Work the inbox</button>`});
+  }
+  const st = wf.stats || {};
+  const items = wf.items;
+  const flagged = i => i.needs_look || i.escalations.length;
+  const shown = items.filter(i => wfTab === "look" ? flagged(i)
+                              : wfTab === "lesson" ? i.lessons_applied.length : true);
+  const how = wf.classifier === "model"
+    ? `Inbox Worker reading with ${wf.model || "the model"}; lessons applied after it`
+    : `Inbox Worker reading with rules${wf.classifier_note ? ` (${wf.classifier_note})` : ""}; lessons applied after it`;
+  return err + (wfBusy ? `<div class="note">Working the inbox…</div>` : "") + wfReportHTML() +
+    `<div class="stats">
+      ${statCard({label:"Mail worked", value:st.items, pill:`${st.routed} routed`, tone:"blue",
+         sub:`${st.by_model} by the model · ${st.by_rules} by rules · ${st.by_lesson} by a lesson`})}
+      ${statCard({label:"Drafted & queued", value:(st.mails||0) + (st.writes||0),
+         pill:wfPending() ? "held" : "approved", tone:wfPending() ? "amber" : "green",
+         sub:`${st.mails} drafts · ${st.writes} TMS changes · none sent or written`})}
+      ${statCard({label:"Messages between Workers", value:st.messages,
+         pill:`${st.playbook_fixes} playbook fix${st.playbook_fixes===1?"":"es"}`, tone:"",
+         sub:"handoffs, questions, checks and revisions"})}
+      ${statCard({label:"Needs a person", value:st.escalations,
+         pill:`${st.needs_look} to look at`, tone:st.escalations || st.needs_look ? "amber" : "green",
+         sub:"escalated or flagged, never guessed"})}
+    </div>` + wfPipeline() +
+    `<div class="wf-grid"><div>
+      <div class="wf-seg">${segmented([
+          {id:"all", label:"All mail", n:items.length},
+          {id:"look", label:"Needs a look", n:items.filter(flagged).length},
+          {id:"lesson", label:"Lesson applied", n:items.filter(i => i.lessons_applied.length).length},
+        ], wfTab, "wftab")}
+        <span class="pnote" style="margin:0">${esc(how)}</span></div>
+      <div class="card wf-list">${shown.map(wfRowHTML).join("") ||
+        `<div class="empty">Nothing in this view.</div>`}</div>
+      ${handoffsCard()}
+    </div><div>${lessonsCard()}</div></div>
+    <p class="pnote" style="margin-top:14px">${esc(wf.note || "")}</p>`;
+}
+
+function wfPipeline(){
+  const byId = Object.fromEntries((wf.workers||[]).map(w => [w.id, w]));
+  return `<div class="wf-pipe">${(wf.groups||[]).map(g => `<div class="wf-grp">
+    <div class="wf-grp-h"><span class="num">${esc(g.num)}</span><b>${esc(g.title)}</b></div>
+    ${g.workers.map(id => {
+      const w = byId[id]; if (!w) return "";
+      const mode = w.mode === "live" ? "live" : "scripted";
+      return `<div class="wf-w" title="${esc(w.role)}"><span class="nm">${esc(shortWorker(w.name))}</span>
+        <span class="wtag ${mode}">${mode}</span><span class="sm">${esc(w.summary)}</span></div>`;
+    }).join("")}</div>`).join("")}</div>`;
+}
+
+function wfRowHTML(i){
+  const open = wfOpen.has(i.id);
+  const outs = (wf.outputs||[]).filter(o => o.item === i.id);
+  const waiting = outs.filter(o => !approved.has(wfKey(o))).length;
+  const flag = i.escalations.length ? `<span class="chip synth" title="${esc(i.escalations.map(e=>e.text).join(" "))}">person</span>`
+             : i.needs_look ? `<span class="chip synth" title="${esc(i.look_reasons.join("; "))}">look</span>` : "";
+  return `<div class="wf-r">
+    <button class="wf-rh" data-wfrow="${esc(i.id)}" aria-expanded="${open}">
+      <span class="wf-id">${esc(i.id)}</span>
+      <span style="min-width:0"><div class="wf-org">${esc(i.sender_org)}</div>
+        <div class="wf-subj">${esc(i.subject)}</div></span>
+      <span class="wf-intent"><span class="chip">${esc(i.intent_label || "Unclear")}</span>
+        <span class="wf-by ${esc(i.decided_by||"")}">${esc(i.decided_by || "—")}</span></span>
+      <span class="wf-st">${flag}<span class="chip ${outs.length && !waiting ? "live" : ""}">${
+        outs.length} out${waiting && outs.length ? ` · ${waiting} held` : ""}</span></span>
+      <span class="wf-path" title="The Workers this mail passed through, in order">${i.path.map(id =>
+        `<span class="${id==="routing"||id==="planner"?"x":""}">${esc(wfName(id))}</span>`).join("")}</span>
+    </button>
+    ${open ? wfDetail(i, outs) : ""}</div>`;
+}
+
+function wfFields(doc, ex){
+  const f = doc.fields || {}, names = wf.fields || {};
+  return `<dl class="wf-flds">${Object.keys(f).map(k => {
+    const src = (ex.sources||{})[k] || {};
+    const v = typeof f[k] === "number" ? `${f[k].toLocaleString("en")} kg` : f[k];
+    return `<dt>${esc(names[k] || k)}</dt><dd>${esc(v)}${
+      src.lesson ? `<span class="ls" title="read using a lesson">${esc(src.lesson)}</span>` : ""}</dd>`;
+  }).join("")}</dl>`;
+}
+
+function wfDetail(i, outs){
+  const msgs = (wf.messages||[]).filter(m => m.item === i.id);
+  const ex = i.extracted;
+  const atts = (i.attachments||[]).map(a => {
+    const doc = ex && (ex.documents||[]).find(d => d.name === a.name);
+    return `<div class="wf-att"><b>${esc(a.name)}</b>${doc ? wfFields(doc, ex) : ""}
+      ${doc && doc.unread.length ? `<div class="wf-unread">Not recognised, so not guessed: ${
+        doc.unread.map(u => `“${esc(u.label)}: ${esc(u.value)}”`).join(", ")}</div>` : ""}
+      <details><summary class="pnote" style="cursor:pointer;margin:6px 0 0">Source text</summary>
+        <pre>${esc(a.text)}</pre></details></div>`;
+  }).join("");
+  return `<div class="wf-rb"><div>
+      <p class="sec-t">${esc(i.from)} · ${esc(i.received)}</p>
+      <div class="wf-body">${esc(i.body)}</div>${atts}
+      <p class="pnote" style="margin:10px 0 0"><b>${esc(i.intent_label || "Unclear")}</b> — ${
+        esc(i.reason || "")}${i.linked_booking ? ` · linked to <button class="aff-b"
+        data-pick="${esc(i.linked_booking)}">${esc(i.linked_booking)}</button>` : ""}</p>
+      ${i.look_reasons.map(r => `<div class="wf-esc">Needs a look: ${esc(r)}</div>`).join("")}
+      ${i.escalations.map(e => `<div class="wf-esc"><b>${esc(shortWorker(e.from))} → ${
+        esc(shortWorker(e.to))}:</b> ${esc(e.text)}</div>`).join("")}
+      ${wfFixBox(i)}
+    </div><div>
+      <p class="sec-t">What the Workers said to each other · ${msgs.length}</p>
+      ${busHTML(msgs, false)}
+      <p class="sec-t" style="margin-top:16px">Output · ${outs.length}</p>
+      ${outs.map(wfOutputHTML).join("") || `<div class="empty">No output — ${
+        i.escalations.length ? "escalated to a person instead of guessed." : "nothing is owed."}</div>`}
+    </div></div>`;
+}
+
+/* A label's likely field, to pre-select the dropdown. Only a suggestion: the
+   person picks, and the lesson is whatever they pick. */
+function guessField(label){
+  const l = String(label).toLowerCase();
+  if (/brutto|gross/.test(l)) return "gross_kg";
+  if (/netto|net/.test(l))    return "net_kg";
+  if (/zoll|tarif|hs/.test(l)) return "hs_code";
+  if (/versend|shipper/.test(l)) return "shipper";
+  if (/empf|consignee/.test(l)) return "consignee";
+  if (/colli|pack|kist/.test(l)) return "packages";
+  return "";
+}
+
+function wfFixBox(i){
+  const intents = wf.intents || {};
+  const unread = (i.extracted || {}).unread || [];
+  const opts = sel => Object.entries(wf.fields || {}).map(([k, v]) =>
+    `<option value="${esc(k)}" ${k===sel?"selected":""}>${esc(v)}</option>`).join("");
+  return `<div class="wf-fix">
+    <p><b>Correct this.</b> Your correction becomes a lesson the Workers read on every
+      later run. It is kept only if replaying the whole inbox shows it fixes this mail
+      and undoes no earlier lesson.</p>
+    <div class="row2">
+      <select data-wfintent="${esc(i.id)}" aria-label="What this mail really is">${
+        Object.entries(intents).map(([k, v]) =>
+          `<option value="${esc(k)}" ${k===i.intent?"selected":""}>${esc(v)}</option>`).join("")}</select>
+      <input data-wfcue="${esc(i.id)}" placeholder="the phrase that shows it (optional)"
+             aria-label="The phrase that shows it">
+      <button class="wf-btn" data-wfteach="${esc(i.id)}" ${wfBusy?"disabled":""}>It is this</button>
+    </div>
+    ${unread.map((u, n) => `<div class="row2">
+      <span class="pnote" style="margin:0">“${esc(u.label)}: ${esc(u.value)}” is the</span>
+      <select data-wffield="${esc(i.id)}|${n}" aria-label="Which field this line is">${opts(guessField(u.label))}</select>
+      <button class="wf-btn" data-wflabel="${esc(i.id)}|${n}" ${wfBusy?"disabled":""}>Teach</button>
+    </div>`).join("")}
+  </div>`;
+}
+
+function wfOutputHTML(o){
+  const k = wfKey(o), ok = approved.has(k);
+  const head = o.kind === "mail"
+    ? `<span class="qtag cheap">mail</span><span class="t">To the ${esc(o.audience)}: ${esc(o.to)}</span>`
+    : `<span class="qtag">TMS</span><span class="t mono">${esc(o.booking_ref)}</span>
+       <span class="wb-op mono" style="margin-left:0">${esc(o.operation)} · ${esc(o.record)}</span>`;
+  const body = o.kind === "mail"
+    ? `<div class="wf-out-b"><b>${esc(o.subject)}</b>${(o.cc||[]).length ? `\ncc ${esc(o.cc.join(", "))}` : ""}\n\n${esc(o.body)}</div>`
+    : `<div class="wf-out-b" style="white-space:normal"><div class="wb-b">${wbChanges(o)}</div>${
+        o.reason ? `<div class="wb-r">${esc(o.reason)}</div>` : ""}</div>`;
+  const checks = (o.checks||[]).filter(c => c.rule !== "none");
+  return `<div class="wf-out"><div class="wf-out-h">${head}
+      <span class="pnote" style="margin:0 0 0 auto">${esc(o.worker)}</span></div>
+    ${body}
+    ${checks.length ? `<div class="wf-chk">${checks.map(c => `<span class="${esc(c.result)}"
+        title="${esc(c.why || "")}">playbook · ${esc(c.result)}: ${esc(c.note)}</span>`).join("")}</div>` : ""}
+    <div class="gate"><span class="gate-s ${ok?"approved":"awaiting"}">${
+        ok ? (o.kind === "mail" ? "Approved — ready to send" : "Approved — ready to write") : esc(o.status)}</span>
+      ${ok ? "" : `<button class="approve" data-approve="${esc(k)}">Approve</button>`}
+      <span class="never">${o.kind === "mail" ? "nothing is transmitted" : "nothing is written"} — approval is a state change</span>
+    </div></div>`;
+}
+
+function wfReportHTML(){
+  const r = wfReport; if (!r) return "";
+  if (!r.accepted) return `<div class="wf-rep no"><button class="x" data-wfclose="1">Close</button>
+    <h3>Lesson not kept</h3><div style="font-size:13px">${esc(r.reason || "")}</div></div>`;
+  const l = r.lesson, prop = r.propagated || [], reg = r.regression || [];
+  return `<div class="wf-rep ok"><button class="x" data-wfclose="1">Close</button>
+    <h3>${esc(l.id)} learned by the ${esc(l.worker)}</h3>
+    <div style="font-size:13px">${esc(l.learned)}</div>
+    <ul>
+      <li>Replayed all ${(wf.items||[]).length} mails with it: ${esc(r.fixed_item)} is fixed.</li>
+      <li>${prop.length ? `<b>It also fixed ${prop.length} other mail${prop.length===1?"":"s"} like it:</b> ${
+        prop.map(c => `${esc(c.item)} (${esc(c.changes.join("; "))})`).join(" · ")}`
+        : "No other mail in this inbox was affected."}</li>
+      <li>${reg.length ? `Every earlier lesson still holds: ${reg.map(x =>
+        `${esc(x.lesson)} ${x.holds ? "✓" : "✗"}`).join(", ")}` : "No earlier lessons to re-check."}</li>
+      ${(r.superseded||[]).length ? `<li>Replaces ${esc(r.superseded.join(", "))}, which stays in the history as superseded.</li>` : ""}
+    </ul></div>`;
+}
+
+function lessonsCard(){
+  const ls = wf.lessons || [], ctx = wf.context || {};
+  const live = ls.filter(l => l.status === "active").length;
+  return `<div class="card"><div class="card-h"><h2>What the desk has learned</h2><span class="n">${live}</span></div>
+    ${ls.length ? `<ul class="wf-les">${ls.slice().reverse().map(l => `<li class="${esc(l.status)}">
+      <div class="lh"><span class="id">${esc(l.id)}</span><span class="qtag">${esc(l.worker)}</span>${
+        l.status !== "active" ? `<span class="chip">superseded by ${esc(l.superseded_by)}</span>` : ""}</div>
+      <div style="margin-top:4px">${esc(l.learned)}</div>
+      <div class="lm">from a correction on ${esc(l.from_item)} · applied this run to ${
+        (l.applied_to||[]).length ? esc(l.applied_to.join(", ")) : "nothing"}</div></li>`).join("")}</ul>`
+      : `<div class="empty" style="padding:16px;text-align:left">Nothing yet. Two mistakes are
+          left in this inbox on purpose so there is something to correct: IN-104 is a
+          re-quote the rules read as a booking, and the packing list on IN-102 carries a
+          weight label the Docs Worker has never seen. Open one and correct it.</div>`}
+    <div style="padding:12px 15px;border-top:1px solid var(--border)">
+      <p class="sec-t">What each Worker reads before it works</p>
+      ${Object.entries(ctx).map(([w, lines]) => `<div style="font-size:12.5px;margin-bottom:8px"><b>${esc(w)}</b>${
+        lines.length ? `<ul style="margin:4px 0 0;padding-left:18px">${lines.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`
+                     : ` — its built-in rules only`}</div>`).join("")}
+      <p class="pnote" style="margin:8px 0 0">${esc(wf.learning_note || "")}${
+        wf.lessons_persist === false ? " On this deployment lessons are kept in the server's temp directory and last only as long as the instance does." : ""}</p>
+    </div></div>`;
+}
+
+function handoffsCard(){
+  const head = `<div class="card-h"><h2>From the risk layer</h2>${
+    hasRun ? `<span class="n">${(handoffs.messages||[]).length}</span>` : ""}</div>`;
+  if (!hasRun) return `<div class="card" style="margin-top:20px">${head}
+    <div class="empty" style="padding:16px;text-align:left">Run a disruption scenario and the
+      Routing Worker's decisions arrive here as work for the desk: the amendment for
+      Booking, a changed country of entry for Customs, the new ETA for Milestones — and
+      the Playbook Worker's check on every customer mail the Comms Worker drafted.</div></div>`;
+  const checks = handoffs.checks || [];
+  return `<div class="card" style="margin-top:20px">${head}
+    <div style="padding:6px 15px 12px">${(handoffs.messages||[]).length ? busHTML(handoffs.messages, true)
+      : `<div class="empty">Nothing to hand over — every booking stayed on plan.</div>`}
+    ${checks.length ? `<div class="wf-chk" style="padding:10px 0 0">${checks.map(c => `<span class="${esc(c.result)}"
+        title="${esc(c.why || "")}">${esc(c.booking)} · playbook · ${esc(c.result)}: ${esc(c.note)}</span>`).join("")}</div>` : ""}
+    </div></div>`;
+}
+
+/* A desk Worker's panel in the roster band: its work on the inbox, what this
+   risk run handed it, and - labelled as authored - its panel for the selected
+   booking on the disruption board. The live tag vouches for the first two only. */
+function wfWorkerBody(w, ship){
+  const me = (wf.workers||[]).find(x => x.id === w.id);
+  const top = !me
+    ? `<div class="empty">This Worker works the inbox. <button class="wf-btn pri" data-wfrun="1">Work the inbox</button></div>`
+    : `<p class="sec-t">${esc(me.summary)}</p>
+       ${me.items.length ? `<div class="wf-path" style="margin-bottom:10px">${me.items.map(id =>
+          `<span>${esc(id)}</span>`).join("")}</div>` : ""}
+       ${busHTML((wf.messages||[]).filter(m => (m.from_id === w.id || m.to_id === w.id)
+          && m.kind !== "check" && m.kind !== "verdict").slice(-8), true)}
+       <button class="aff-b" data-view="workflow" style="margin-top:8px">Open in Workflow</button>`;
+  const hand = (handoffs.messages||[]).filter(m => m.to_id === w.id || m.from_id === w.id);
+  const fromRisk = hasRun && hand.length ? `<p class="sec-t" style="margin-top:14px">Handed over by this risk run</p>${busHTML(hand, true)}` : "";
+  const p = ship && (ship.roster||{})[w.id];
+  const board = hasRun && p ? `<p class="sec-t" style="margin-top:14px">On the disruption board · ${esc(ship.id)}
+    <span class="wtag scripted">authored panel</span></p>${scriptedPanelBody(w, ship)}` : "";
+  return top + fromRisk + board;
+}
+
+function bindWorkflow(){
+  document.querySelectorAll("[data-wfrun]").forEach(b => b.onclick = () => runWorkflow());
+  const rb = $("wf-run"); if (rb) rb.onclick = () => runWorkflow();
+  const rs = $("wf-reset"); if (rs) rs.onclick = resetLessons;
+  document.querySelectorAll("[data-wfrow]").forEach(b => b.onclick = () => {
+    const k = b.dataset.wfrow; wfOpen.has(k) ? wfOpen.delete(k) : wfOpen.add(k); render();
+  });
+  document.querySelectorAll("[data-wftab]").forEach(b => b.onclick = () => { wfTab = b.dataset.wftab; render(); });
+  document.querySelectorAll("[data-wfclose]").forEach(b => b.onclick = () => { wfReport = null; render(); });
+  document.querySelectorAll("[data-wfteach]").forEach(b => b.onclick = () => {
+    const id = b.dataset.wfteach;
+    wfCorrect({item:id, kind:"intent",
+               right:document.querySelector(`[data-wfintent="${id}"]`).value,
+               cue:document.querySelector(`[data-wfcue="${id}"]`).value});
+  });
+  document.querySelectorAll("[data-wflabel]").forEach(b => b.onclick = () => {
+    const [id, n] = b.dataset.wflabel.split("|");
+    const item = (wf.items||[]).find(x => x.id === id);
+    const u = ((item||{}).extracted||{}).unread[Number(n)];
+    const field = document.querySelector(`[data-wffield="${id}|${n}"]`).value;
+    if (u) wfCorrect({item:id, kind:"field", field, value:u.value, label:u.label});
+  });
+  // The first visit works the inbox, so the view is never an empty promise.
+  if (view === "workflow" && !wf.items && !wfBusy && !wfTried) { wfTried = true; runWorkflow(); }
+}
+
+async function runWorkflow(){
+  if (wfBusy) return;
+  wfBusy = true; wfError = ""; render();
+  try {
+    const r = await fetch("/api/workflow").then(r => r.json());
+    if (r.state === "error") wfError = `The inbox run failed: ${r.error}`;
+    else {
+      wf = r;
+      // A fresh run re-drafts everything, so earlier approvals no longer
+      // describe what is on screen.
+      [...approved].filter(k => k.startsWith("wf|")).forEach(k => approved.delete(k));
+    }
+  } catch (err) { wfError = `Could not reach the server: ${err.message}`; }
+  wfBusy = false; render();
+}
+
+async function wfCorrect(body){
+  if (wfBusy) return;
+  wfBusy = true; render();
+  try {
+    const r = await fetch("/api/workflow/correct", {method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(Object.assign({use_llm:true}, body))}).then(r => r.json());
+    wfReport = r;
+    if (r.accepted && r.run) {
+      wf = r.run;
+      // Anything the lesson changed was re-drafted; an approval given to the
+      // old version must not carry over to the new one.
+      (r.changed||[]).forEach(c => [...approved].filter(k => k.startsWith(`wf|${c.item}-`))
+        .forEach(k => approved.delete(k)));
+    }
+  } catch (err) { wfReport = {accepted:false, reason:`Could not reach the server: ${err.message}`}; }
+  wfBusy = false; render(); $("scroll").scrollTop = 0;
+}
+
+async function resetLessons(){
+  if (wfBusy) return;
+  try { await fetch("/api/workflow/reset", {method:"POST"}); } catch (err) {}
+  wfReport = null; wfOpen.clear();
+  runWorkflow();
+}
+
 /* ---------- run ---------- */
 async function load(){
   const r = await fetch("/api/initial").then(r=>r.json());
@@ -2555,7 +3059,10 @@ async function load(){
 
 async function run(){
   const btn = $("run");
-  btn.disabled = true; approved.clear(); running = true;
+  btn.disabled = true; running = true;
+  // A new risk run replaces the risk layer's drafts, so their approvals go. The
+  // inbox's outputs are a different run and keep theirs.
+  [...approved].filter(k => !k.startsWith("wf|")).forEach(k => approved.delete(k));
   let stage = 0;
   const names = ["Reading sources…","Triaging shipments…","Drafting communications…"];
   const advance = () => {
@@ -2579,7 +3086,7 @@ async function run(){
       notes = [res.error]; workers = workers.map(w=>({...w,status:"idle"}));
     } else {
       board=res.shipments; workers=res.workers||workers; risk=res.risk; tmsLink=res.tms||{};
-      atlas=res.map||{};
+      atlas=res.map||{}; handoffs=res.workflow_handoffs||{messages:[],checks:[]};
       ranAt=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
       ai=res.ai; summary=res.summary; notes=res.notes||[]; hasRun=true;
       scenario=res.scenario||null; scenarios=res.scenarios||scenarios;
