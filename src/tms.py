@@ -62,6 +62,23 @@ AGENT_RECORDS = [
      "writes": "Discharge port, routing code, ETA - or the hold, when nothing better exists"},
     {"agent": "Comms Worker", "record": "communication_log",
      "writes": "Each drafted carrier and customer email, filed against the booking"},
+    # The workflow layer (src/workflow.py). Same gate, same connector - the desk's
+    # Workers queue their changes here exactly as the risk layer's do.
+    {"agent": "RFQ Worker", "record": "quotation",
+     "writes": "The quote drafted for an inbound rate request"},
+    {"agent": "Booking Worker", "record": "booking",
+     "writes": "A new booking opened from the mail and its documents - or held for "
+               "what could not be verified"},
+    {"agent": "Docs Worker", "record": "documents",
+     "writes": "Each inbound document filed on the booking, with what it was checked against"},
+    {"agent": "Milestones Worker", "record": "booking",
+     "writes": "Carrier notices as milestones, and the ETA they move"},
+    {"agent": "Exception Worker", "record": "exception",
+     "writes": "A rolled box or a mismatched document, flagged on the booking"},
+    {"agent": "Invoice Worker", "record": "invoice",
+     "writes": "Matched, or disputed with the lines that were never agreed"},
+    {"agent": "Customs Worker", "record": "customs",
+     "writes": "The entry prepared for the discharge country - or escalated, never filed"},
 ]
 
 # What a forwarder's TMS holds for a booking, where each field lands in this app,
@@ -171,6 +188,12 @@ def _gated(operation: dict) -> dict:
     """The gate, applied in one place so no operation can be added without it."""
     return dict(operation, status="QUEUED - not written",
                 approval_status="awaiting_approval")
+
+
+# The workflow layer (src/workflow.py) queues its own changes - a new booking, a
+# milestone, a document filed, an invoice disputed - and they go through the
+# very same gate. One function, so there is still only one way to queue a write.
+gate = _gated
 
 
 def _routing_writeback(card: dict) -> dict | None:

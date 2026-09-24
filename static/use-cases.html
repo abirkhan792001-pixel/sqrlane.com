@@ -444,7 +444,7 @@ h1,h2,h3,h4,p{margin:0}
           <p class="mv">SHP-005 &nbsp;<b>R-HAM-STD &rarr; R-RTM-ALT</b></p>
           <p class="mv">SHP-002 &nbsp;<b>held</b> &mdash; the customer is in Hamburg</p>
         </div>
-        <p class="tot"><b>2</b> rerouted &middot; <b>1</b> held &middot; <b>4</b> on plan &middot; <b>12</b> changes queued</p>
+        <p class="tot"><b>2</b> rerouted &middot; <b>1</b> held &middot; <b>4</b> on plan &middot; <b>12</b> changes queued &middot; <b data-desk="hamburg">8</b> handed to the desk</p>
       </div>
       <div class="case">
         <div class="kind"><span class="chip">Chokepoint closed</span></div>
@@ -464,7 +464,7 @@ h1,h2,h3,h4,p{margin:0}
           <p class="mv">Six bookings &nbsp;<b>&rarr; the Cape</b></p>
           <p class="mv">SHP-007 &nbsp;<b>held</b> &mdash; no better routing exists for it</p>
         </div>
-        <p class="tot"><b>6</b> rerouted &middot; <b>1</b> held &middot; <b>0</b> on plan &middot; <b>28</b> changes queued</p>
+        <p class="tot"><b>6</b> rerouted &middot; <b>1</b> held &middot; <b>0</b> on plan &middot; <b>28</b> changes queued &middot; <b data-desk="redsea">14</b> handed to the desk</p>
       </div>
       <div class="case">
         <div class="kind"><span class="chip">Inland waterway</span></div>
@@ -483,7 +483,7 @@ h1,h2,h3,h4,p{margin:0}
         <div class="moved">
           <p class="mv">SHP-006 &nbsp;<b>R-RTM-RHINE &rarr; R-RTM-RAIL</b></p>
         </div>
-        <p class="tot"><b>1</b> re-moded &middot; <b>6</b> on plan &middot; <b>4</b> changes queued</p>
+        <p class="tot"><b>1</b> re-moded &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="rhine">2</b> handed to the desk</p>
       </div>
       <div class="case off">
         <div class="kind"><span class="chip">Regional inland</span><span class="chip plain">Off by default</span></div>
@@ -502,14 +502,16 @@ h1,h2,h3,h4,p{margin:0}
         <div class="moved">
           <p class="mv">SHP-007 &nbsp;<b>R-FOS-STD &rarr; R-ANR-LYON</b></p>
         </div>
-        <p class="tot"><b>1</b> rerouted &middot; <b>6</b> on plan &middot; <b>4</b> changes queued</p>
+        <p class="tot"><b>1</b> rerouted &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="france">3</b> handed to the desk</p>
       </div>
     </div>
 
     <p class="copy14 rv" style="margin-top:26px;max-width:78ch">
       Every state and count above is taken from a real offline run of the same advisor the
-      demo uses &mdash; not written by hand. The disruptions are authored so one can be shown
-      on command; the reasoning that answers them is not.
+      demo uses &mdash; not written by hand. &ldquo;Handed to the desk&rdquo; is the work each
+      decision gives the everyday agents: the amendment for the Booking agent, a changed
+      country of entry for Customs, the new ETA for Milestones. The disruptions are authored
+      so one can be shown on command; the reasoning that answers them is not.
     </p>
   </div>
 </section>

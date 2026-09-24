@@ -669,7 +669,7 @@ h1,h2,h3,h4,p{margin:0}
     <div class="in rv">
       <span class="eyebrow">How it works</span>
       <h1 class="d2">Sixty sources in. One decision per booking out.</h1>
-      <p class="copy18">A disruption lands somewhere in the world; a booking in your TMS changes, or defensibly does not. This page is the machinery between those two facts.</p>
+      <p class="copy18">A disruption lands somewhere in the world; a booking in your TMS changes, or defensibly does not. A mail lands in the inbox; the work it asks for is done on the record. This page is the machinery behind both.</p>
       <!-- Each page states its own job. Five pages that all try to sell the
            whole product are five pages nobody finishes. -->
       <p class="goal"><span class="chip blue">This page</span> <b>the mechanism &mdash; how a decision is actually made</b></p>
@@ -748,6 +748,64 @@ h1,h2,h3,h4,p{margin:0}
     </div>
   </div>
 </section>
+<!-- The other layer. The five stages above run when the world moves; these
+     run on every mail. Same record, same gate - and the same rule about what
+     goes to the model: prose may, numbers and field values never do. -->
+<section class="section" id="desk">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">The everyday desk</span>
+      <h2 class="h32">The other layer runs on every mail, not every disruption.</h2>
+      <p class="copy18" style="max-width:62ch">Rate requests, bookings, bills of lading,
+        rollovers, invoices, arrival notices. The desk&rsquo;s agents work each one on the
+        same records, pass the work between them as messages you can read, and wait at
+        the same gate.</p>
+    </div>
+    <div class="stages rv">
+      <div class="stage">
+        <p class="k">01</p>
+        <h3>Read and route</h3>
+        <span class="chip live">LIVE</span>
+        <p>The Inbox agent decides what a mail is &mdash; with the model when one is
+          configured, rules otherwise &mdash; links it to the booking, and hands it on.</p>
+        <p class="f">Lessons are applied <b>last</b>, so they win</p>
+      </div>
+      <div class="stage">
+        <p class="k">02</p>
+        <h3>Ask</h3>
+        <span class="chip blue">MESSAGES</span>
+        <p>The agent that owns it asks the others what it needs: the fields off the
+          documents, the rate on the lane.</p>
+        <p class="f">Weights, prices and dates <b>never</b> go to the model</p>
+      </div>
+      <div class="stage">
+        <p class="k">03</p>
+        <h3>Check</h3>
+        <span class="chip blue">PLAYBOOK</span>
+        <p>Every output is checked against the customer&rsquo;s standing instructions and
+          sent back to the agent that made it until it complies.</p>
+        <p class="f">Approved carriers, copy rules, notice thresholds</p>
+      </div>
+      <div class="stage">
+        <p class="k">04</p>
+        <h3>Escalate</h3>
+        <span class="chip synth">NOT GUESSED</span>
+        <p>What cannot be verified goes to a person. A slip the desk cannot absorb goes
+          across to the risk layer&rsquo;s Routing agent.</p>
+        <p class="f">A missing field is <b>held</b>, never filled in</p>
+      </div>
+      <div class="stage">
+        <p class="k">05</p>
+        <h3>Learn</h3>
+        <span class="chip live">FROM YOU</span>
+        <p>A correction becomes a lesson. The inbox is replayed with it, and it is kept
+          only if it fixes that mail and every earlier lesson still holds.</p>
+        <p class="f">Rules and context &mdash; <b>no retraining</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="live">
   <div class="wrap">
     <div class="head rv">

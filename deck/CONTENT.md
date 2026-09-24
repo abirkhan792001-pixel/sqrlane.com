@@ -48,9 +48,9 @@ whatever palette and type the reference deck sets.
 > sizes the **software** opportunity bottom-up from business counts instead.
 
 ### Prototype facts (counted, not claimed)
-60 sources · 6 families · 14 Workers (3 live, 10 scripted, 1 demo connector) ·
-7 bookings · 4 scenarios · 8-day simulation · 10 test suites · ~14 model calls per cycle ·
-0 emails sent · 0 records written.
+60 sources · 6 families · 16 Workers in two layers (13 live, 2 scripted, 1 demo
+connector) · 7 bookings · 13 inbound mails · 4 scenarios · 8-day simulation · 12 test
+suites · ~14 model calls per risk cycle, 1 per inbox run · 0 emails sent · 0 records written.
 
 ### Competitor figures (slide 03 only)
 
@@ -317,9 +317,11 @@ a message.
 | **Route Advisor** | `LIVE` | Weighs slack vs added transit vs delay | discharge port · routing code · ETA |
 | **Comms Agent** | `LIVE` | Writes what a person would have written | two drafts on the communication log |
 
-Sidebar: *Nine further Workers — rate, milestones, docs, inbox, RFQ, booking, invoice,
-customs, assistant — replay authored data and are tagged `SCRIPTED` on screen. The tag is
-the honesty.*
+Sidebar: *The everyday desk is a second layer on the same record — Inbox, Playbook, Rate,
+RFQ, Booking, Docs, Milestones, Exception, Invoice and Customs, tagged `LIVE` because they
+work every mail in a synthetic inbox on every run, handing each other the work as messages
+and learning from corrections (rules and context, never retraining). The Planner and the
+Assistant replay authored data and are tagged `SCRIPTED`. The tag is the honesty.*
 *Why* — The "why it exists" test is the user's own brief. Each row answers it by naming
 the record it changes; anything that couldn't name one would not be in the product.
 

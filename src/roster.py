@@ -1,24 +1,30 @@
-"""roster.py - the scripted half of the Worker roster.
+"""roster.py - every Worker beyond the risk layer's live three, and the panels
+each one shows on the disruption board.
 
-Risk, Routing and Comms are real: they run live and their output is whatever the
-model and the news actually produced. The ten Workers here are **not**. They
-replay authored data so the product surface looks complete, and every one of
-them is tagged SCRIPTED on screen.
+Two kinds of Worker live in this list, and the tag on each says which:
 
-They are still reactive, which is the point: each panel is built from the
-scenario that is active and the shipment that is selected, so switching either
-visibly changes what they show. What is authored is the *content* - rate cards,
-milestones, document fields, canned answers - not the shape of the response.
+  * The workflow layer's Workers (Inbox, Playbook, Rate, RFQ, Booking, Docs,
+    Milestones, Exception, Invoice, Customs) are **live**: src/workflow.py runs
+    them on every inbound mail, nothing is replayed, and each output records
+    whether the model, a rule or a learned lesson decided it. The mail is
+    synthetic, like the bookings - real work on authored input.
+  * The Planner and the Assistant are **scripted**: they replay authored data,
+    and are tagged SCRIPTED on screen.
 
-They all work on the same records as the live three: the booking each one shows
-came out of the TMS through src/tms.py, and anything a Worker would change on it
-- a booking amendment, an invoice query, an entry, a routing change - is a
-change to that record, held for a person. The TMS Link panel is where those
-changes are listed; the others are the desk functions that produce them.
+The panels below are a different thing from the workflow run: they are what each
+Worker shows *for the selected booking on the disruption board*, and their
+content - rate cards, milestones, document fields, canned answers - is authored.
+They are still reactive (built from the active scenario and the selected
+shipment), and the dashboard labels them as authored panels so a live Worker's
+tag never vouches for replayed content.
 
-The honesty rule this file exists to keep: never present one of these as doing
-live AI reasoning. `mode` is "scripted" on all four, and the dashboard renders
-that tag from this data rather than hard-coding it.
+They all work on the same records: the booking each panel shows came out of the
+TMS through src/tms.py, and anything a Worker would change on it is a change to
+that record, held for a person.
+
+The honesty rule this file exists to keep: never present a scripted Worker as
+reasoning live. The dashboard renders `mode` from this data rather than
+hard-coding it.
 """
 
 from datetime import date, timedelta
@@ -27,37 +33,83 @@ from src import config, route_advisor, tms
 
 ROSTER = [
     # The pre-departure Worker from ROADMAP-PRE-DEPARTURE.md, at rung two of its
-    # own proof ladder: an authored sweep, honestly tagged, like Inbox and
-    # Customs. It sits first among the scripted pills because leading is its
-    # whole design - it is the one Worker whose default state is looking ahead.
-    {"id": "planner", "name": "Planner Worker", "mode": "scripted",
+    # own proof ladder: an authored sweep, honestly tagged. It sits first among
+    # the risk layer's roster pills because leading is its whole design - it is
+    # the one Worker whose default state is looking ahead.
+    {"id": "planner", "name": "Planner Worker", "mode": "scripted", "layer": "risk",
      "role": "Sweeps the forward book before departure - exposure on the horizon, "
              "the last cheap moment to act, and the rebooking or hedge it implies"},
-    {"id": "rate", "name": "Rate Worker", "mode": "scripted",
-     "role": "Quote and rate lookups across the carriers on a lane"},
-    {"id": "milestones", "name": "Milestones Worker", "mode": "scripted",
-     "role": "Milestones and position, against the TMS booking"},
-    {"id": "docs", "name": "Docs Worker", "mode": "scripted",
-     "role": "Field extraction from bills of lading and invoices"},
-    {"id": "inbox", "name": "Inbox Worker", "mode": "scripted",
-     "role": "Triages inbound carrier and customer mail, and drafts the reply"},
-    {"id": "rfq", "name": "RFQ Worker", "mode": "scripted",
-     "role": "Reads an inbound rate request and drafts the quote back"},
-    {"id": "booking", "name": "Booking Worker", "mode": "scripted",
-     "role": "Holds the carrier booking on the TMS record, and the amendment a "
-             "decision requires"},
-    {"id": "invoice", "name": "Invoice Worker", "mode": "scripted",
-     "role": "Reconciles the carrier invoice against the rate that was agreed"},
-    {"id": "customs", "name": "Customs Worker", "mode": "scripted",
-     "role": "Checks the entry for the discharge country, and escalates what needs a person"},
+    # --- The workflow layer (src/workflow.py) -------------------------------
+    # These run on what arrives. Each one genuinely processes the inbound mail
+    # on every run - nothing is replayed - so they are tagged live, and every
+    # output says whether the model, a rule or a learned lesson decided it. The
+    # mail itself is synthetic, like the bookings. Their per-booking panels on
+    # the disruption board (below) are still authored content, and the
+    # dashboard labels those panels as such.
+    {"id": "inbox", "name": "Inbox Worker", "mode": "live", "layer": "workflow",
+     "group": "intake",
+     "role": "Reads every inbound mail, works out what it is, links it to the "
+             "booking or customer, and hands it to the Worker that owns it"},
+    {"id": "playbook", "name": "Playbook Worker", "mode": "live", "layer": "workflow",
+     "group": "intake",
+     "role": "Checks every output against the customer's standing instructions "
+             "before it reaches the queue, and sends it back to be fixed"},
+    {"id": "rate", "name": "Rate Worker", "mode": "live", "layer": "workflow",
+     "group": "quotes",
+     "role": "Prices a lane across the carriers that serve it, for any Worker that asks"},
+    {"id": "rfq", "name": "RFQ Worker", "mode": "live", "layer": "workflow",
+     "group": "quotes",
+     "role": "Reads an inbound rate request into fields and drafts the quote back"},
+    {"id": "booking", "name": "Booking Worker", "mode": "live", "layer": "workflow",
+     "group": "bookings",
+     "role": "Opens the booking on the TMS record from the mail and its documents, "
+             "flags what it cannot verify, and drafts the carrier request"},
+    {"id": "docs", "name": "Docs Worker", "mode": "live", "layer": "workflow",
+     "group": "bookings",
+     "role": "Pulls the fields out of bills of lading, packing lists and invoices, "
+             "and checks them against the booking"},
+    {"id": "milestones", "name": "Milestones Worker", "mode": "live", "layer": "workflow",
+     "group": "shipments",
+     "role": "Writes carrier notices onto the booking as milestones and ETAs, and "
+             "answers where-is-my-box"},
+    {"id": "exception", "name": "Exception Worker", "mode": "live", "layer": "workflow",
+     "group": "shipments",
+     "role": "Catches what is off plan - a rolled box, a document that does not "
+             "match - opens the exception, and escalates what the desk cannot absorb"},
+    {"id": "invoice", "name": "Invoice Worker", "mode": "live", "layer": "workflow",
+     "group": "billing",
+     "role": "Reconciles the carrier invoice against what was agreed, and drafts the dispute"},
+    {"id": "customs", "name": "Customs Worker", "mode": "live", "layer": "workflow",
+     "group": "billing",
+     "role": "Prepares the entry for the discharge country, and escalates what needs a person"},
+    {"id": "assistant", "name": "Assistant", "mode": "scripted", "layer": "workflow",
+     "group": "shipments",
+     "role": "Answers questions about what is on the board"},
     # Not "scripted": nothing here is replayed. The write-backs are derived from
-    # the decisions the real advisor made this run. What makes it a demo is the
+    # the decisions the real Workers made this run. What makes it a demo is the
     # far end - no TMS is contacted - so it carries its own tag rather than
     # borrowing one that would be untrue in the other direction.
-    {"id": "tms", "name": "TMS Link", "mode": "demo",
+    {"id": "tms", "name": "TMS Link", "mode": "demo", "layer": "record",
      "role": "The system of record: bookings in, and every Worker's action back out"},
-    {"id": "assistant", "name": "Assistant", "mode": "scripted",
-     "role": "Answers questions about what is on the board"},
+]
+
+# The workflow layer's five groups, in the order work flows through them: mail
+# comes in and is checked against the customer's rules, is priced, booked and
+# documented, is tracked until something goes off plan, and is billed and
+# cleared. The /product page and the dashboard both render this order.
+GROUPS = [
+    {"id": "intake", "num": "01", "title": "Inbox & rules",
+     "tagline": "Every inbound mail read, linked and routed - and every output "
+                "checked against the customer's standing instructions."},
+    {"id": "quotes", "num": "02", "title": "Quotes & rates",
+     "tagline": "Rate lookups and drafted quotes on the lanes your carriers price."},
+    {"id": "bookings", "num": "03", "title": "Bookings & documents",
+     "tagline": "Bookings opened on the record, and every document field where it belongs."},
+    {"id": "shipments", "num": "04", "title": "Shipments & exceptions",
+     "tagline": "Milestones on the booking, the exceptions nobody planned for, and "
+                "the answers to what is on the board."},
+    {"id": "billing", "num": "05", "title": "Billing & customs",
+     "tagline": "Invoice reconciliation and entry checks against the discharge country."},
 ]
 
 # Authored per lane. Relative cost indices, in the same 100 = baseline units the
@@ -240,6 +292,23 @@ def assistant_panel(shipment, decision, scenario_id, board, scenario):
                          or f"{shipment['id']} is on {shipment['primary_route']} and nothing "
                             f"active touches that route.")})
     return {"headline": (scenario or {}).get("name", "No scenario active"), "qa": qa}
+
+
+
+def booked_docs(shipment_id: str) -> dict:
+    """What the booking says the paperwork should say - the facts the Docs Worker
+    checks an inbound document against. Authored with the bookings."""
+    return dict(_DOCS.get(shipment_id, {}))
+
+
+def carriers_for(route_id: str) -> list[tuple[str, int]]:
+    """The carriers that price a route, with their cost index. Authored."""
+    return list(_CARRIERS.get(route_id, []))
+
+
+def entry_for(port: str) -> dict:
+    """Where an entry is made for a discharge port: country, office, EORI prefix."""
+    return dict(_ENTRY.get(port, {}))
 
 
 # --- Inbox: taking over inbound comms --------------------------------------
@@ -1004,7 +1073,7 @@ def build(shipment, decision, scenario_id, board, scenario) -> dict:
             # emails are filed against the booking too, and they live there.
             card = next((c for c in (board or []) if c.get("id") == shipment["id"]), None)
             out[wid] = tms_panel(shipment, decision, scenario_id, card)
-        elif shipment:
+        elif shipment and wid in PANELS:
             out[wid] = PANELS[wid](shipment, decision, scenario_id)
         else:
             out[wid] = None

@@ -3,6 +3,7 @@
 
 # Runtime state
 risk_state.json
+lessons.json
 
 # Python
 __pycache__/

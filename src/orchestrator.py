@@ -33,7 +33,8 @@ import sys
 import time
 from datetime import datetime, timezone
 
-from src import comms_agent, config, geo, llm, risk_monitor, roster, route_advisor, tms
+from src import (comms_agent, config, geo, llm, risk_monitor, roster, route_advisor, tms,
+                 workflow)
 
 # What the dashboard colours a card by.
 STATE_FOR_DECISION = {"reroute": "rerouted", "hold": "hold", "no-action": "green"}
@@ -63,6 +64,26 @@ def _idle_workers() -> list[dict]:
     # sit at "ready" rather than borrowing the live Workers' status language.
     scripted = [dict(w, status="ready", summary="", detail=[], seconds=None) for w in roster.ROSTER]
     return live + scripted
+
+
+def _roster_summary(worker, link, cards, handed) -> str:
+    """One line per roster Worker, counted from this run or saying what it is."""
+    if worker["id"] == "tms":
+        return f"{link['bookings_read']} bookings in · {link['queued']} changes queued back"
+    if worker["id"] == "planner" and cards:
+        # The headline of its authored sweep. The tag still says scripted, and
+        # the counts are of the scripted content, not of live work.
+        return "authored sweep · " + cards[0]["roster"]["planner"]["headline"]
+    if worker["mode"] == "scripted":
+        return "scripted — replays authored data"
+    count = handed.get(worker["id"], 0)
+    if worker["id"] == "playbook" and count:
+        return (f"{count} customer mail{'' if count == 1 else 's'} checked · "
+                f"works the inbox in Workflow")
+    if count:
+        return (f"{count} handoff{'' if count == 1 else 's'} from this run · "
+                f"works the inbox in Workflow")
+    return "works the inbox in Workflow"
 
 
 def _now_iso() -> str:
@@ -257,7 +278,20 @@ def run_cycle(*, live=True, inject=True, use_llm=True, verbose=False,
         card["roster"] = roster.build(shipment, card["decision"],
                                       (active_scenario or {}).get("id"), cards, active_scenario)
 
-    # --- 5. Queue the work back into the TMS ------------------------------
+    # --- 5. Hand the decisions to the desk ---------------------------------
+    # A reroute is not finished when it is decided: the booking is amended, a
+    # changed port can move the entry, the ETA moves on the record, and the
+    # customer mail has to meet that customer's standing instructions. The
+    # workflow layer's Workers take it from here (src/workflow.py) - and the
+    # Playbook Worker's fixes land on the drafts themselves, before step 6
+    # files them, so what a person approves is the compliant version.
+    handoffs = workflow.from_risk(cards)
+    handed = {}
+    for msg in handoffs["messages"]:
+        handed[msg["to_id"]] = handed.get(msg["to_id"], 0) + 1
+    handed["playbook"] = len({c["draft"] for c in handoffs["checks"]})
+
+    # --- 6. Queue the work back into the TMS ------------------------------
     # Nothing here is a new decision: it is the same three Workers' output
     # expressed as changes to the records they came from. Every one is queued
     # behind a person - see tms.py.
@@ -288,13 +322,7 @@ def run_cycle(*, live=True, inject=True, use_llm=True, verbose=False,
             # headline of its authored sweep - the tag still says scripted, and
             # the counts are of the scripted content, not of live work.
             dict(w, status="ready", detail=[], seconds=None,
-                 summary=(f"{link['bookings_read']} bookings in · "
-                          f"{link['queued']} changes queued back"
-                          if w["id"] == "tms" else
-                          ("authored sweep · " +
-                           cards[0]["roster"]["planner"]["headline"])
-                          if w["id"] == "planner" and cards else
-                          "scripted — replays authored data"))
+                 summary=_roster_summary(w, link, cards, handed))
             for w in roster.ROSTER],
         "scenario": active_scenario,
         "scenarios": [{k: sc[k] for k in ("id", "name", "kind", "summary",
@@ -319,6 +347,9 @@ def run_cycle(*, live=True, inject=True, use_llm=True, verbose=False,
         # The board on a map: lanes drawn through what they actually transit,
         # and which chokepoints are carrying risk right now. Derived, not authored.
         "map": geo.build(cards, risk["events"], routes),
+        # What the desk's Workers were handed by this run, and the Playbook
+        # Worker's check on every customer mail. See workflow.from_risk().
+        "workflow_handoffs": handoffs,
         "summary": dict(tally, drafts=len(drafts)),
         "notes": notes,
     }
