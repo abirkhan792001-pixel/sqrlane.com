@@ -160,6 +160,27 @@ class TheWorkersTalk(_TempLessons):
         self.assertEqual(len(notices), 1)
 
 
+    def test_the_product_page_transcript_is_what_the_workers_really_say(self):
+        """/product shows the conversation behind IN-108. It is copied from a run,
+        so it has to stay one: every line on the page must be on the bus, in the
+        same order, or the page is drawing a diagram of something the code does
+        not do."""
+        import html
+        import re
+        page = (ROOT / "static" / "product.html").read_text()
+        block = re.search(r'data-bus-item="(IN-\d+)">(.*?)</ol>', page, re.S)
+        self.assertIsNotNone(block, "the transcript block is gone from /product")
+        item, body = block.group(1), block.group(2)
+        said = [html.unescape(t).strip()
+                for t in re.findall(r'<span class="say">(.*?)</span>', body, re.S)]
+        self.assertGreaterEqual(len(said), 5)
+        spoken = [m["text"] for m in self.bus if m["item"] == item]
+        at = 0
+        for line in said:
+            self.assertIn(line, spoken[at:], f"not said on the bus (in order): {line}")
+            at = spoken.index(line, at) + 1
+
+
 class NothingLeaves(_TempLessons):
 
     def test_every_output_is_gated(self):
@@ -170,6 +191,16 @@ class NothingLeaves(_TempLessons):
                 self.assertEqual(out["approval_status"], "awaiting_approval")
                 self.assertEqual(out["status"], "DRAFT - not sent" if out["kind"] == "mail"
                                  else "QUEUED - not written")
+
+
+    def test_every_record_change_names_a_worker_the_connector_knows(self):
+        from src import tms
+        known = {(a["agent"], a["record"]) for a in tms.AGENT_RECORDS}
+        for out in self.run_desk()["outputs"]:
+            if out["kind"] == "tms":
+                with self.subTest(output=out["id"]):
+                    self.assertIn((out["agent"], out["record"]), known)
+                    self.assertTrue(out["changes"])
 
 
 class ItLearnsSafely(_TempLessons):
@@ -263,6 +294,17 @@ class TheRiskLayerHandsItsDecisionsToTheDesk(_TempLessons):
             got = {m["to_id"] for m in msgs if m["item"] == sid}
             self.assertEqual(got, {"booking", "customs", "milestones"}, sid)
         self.assertNotIn("customs", {m["to_id"] for m in msgs if m["item"] == "SHP-002"})
+
+    def test_the_use_cases_page_quotes_the_handoffs_a_run_really_makes(self):
+        import re
+        page = (ROOT / "static" / "use-cases.html").read_text()
+        quoted = dict(re.findall(r'data-desk="(\w+)">(\d+)<', page))
+        self.assertEqual(set(quoted), {"hamburg", "redsea", "rhine", "france"})
+        for scenario, count in quoted.items():
+            run = orchestrator.run_cycle(live=False, use_llm=False, scenario=scenario)
+            made = sum(1 for m in run["workflow_handoffs"]["messages"]
+                       if m["from_id"] == "routing")
+            self.assertEqual(int(count), made, scenario)
 
     def test_the_playbook_fix_lands_on_the_draft_a_person_approves(self):
         card = next(c for c in self.result["shipments"] if c["id"] == "SHP-002")

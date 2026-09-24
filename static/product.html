@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Product &mdash; SQRlane</title>
-<meta name="description" content="Fourteen AI agents on the bookings in your TMS. Nine run the everyday desk; five watch the world and act when a lane moves. Every action lands back on the record it came from, gated.">
+<meta name="description" content="Sixteen AI agents on the bookings in your TMS. Eleven work the everyday desk and hand each other the work; five watch the world and act when a lane moves. They learn from every correction, and every action lands back on the record it came from, gated.">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3.5' fill='%23171717'/%3E%3Cpath d='M3 11.2h10M3 8h6.5M3 4.8h3.5' stroke='%23fff' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -375,7 +375,7 @@ h1,h2,h3,h4,p{margin:0}
 }
 
 /* ==============================================================
-   The bucket grid. This is what carries the fourteen-agent
+   The bucket grid. This is what carries the sixteen-agent
    roster: the desk collapsed to four categories per half, and
    the individual agents are revealed by hovering (desktop) or
    tapping (touch) a bucket.
@@ -460,8 +460,44 @@ h1,h2,h3,h4,p{margin:0}
 .bkt.is-live{border-left:3px solid var(--green)}
 .bkt.is-demo{border-left:3px solid var(--amber)}
 
-@media (max-width:1000px){.buckets{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:600px){.buckets{grid-template-columns:1fr}}
+/* Part one runs in five groups, in the order work flows through them. */
+.buckets.five{grid-template-columns:repeat(5,1fr); gap:14px}
+.buckets.five .bkt{padding:18px 16px 20px}
+@media (max-width:1200px){.buckets.five{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:1000px){.buckets,.buckets.five{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.buckets,.buckets.five{grid-template-columns:1fr}}
+
+/* ==============================================================
+   The desk, talking - and learning. The transcript is a real
+   exchange from the demo inbox, copied from a run and held to it
+   by tests/test_the_desk_works_and_learns.py, so it cannot drift
+   into a diagram of something the code does not do.
+   ============================================================== */
+.talk{margin-top:34px; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+      gap:20px; align-items:start}
+@media (max-width:900px){.talk{grid-template-columns:1fr}}
+.talk-card{border:1px solid var(--border); border-radius:var(--r-md); background:var(--card);
+           box-shadow:var(--shadow-card); padding:20px}
+.talk-card h3{font-size:16px; line-height:22px; font-weight:600; letter-spacing:-.3px; margin:0}
+.talk-card .sub{font-size:13px; line-height:19px; color:var(--faint); margin:4px 0 14px}
+.bus{list-style:none; margin:0; padding:0}
+.bus li{display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 12px; padding:9px 0;
+        border-top:1px solid var(--border); font-size:13.5px; line-height:19px}
+.bus li:first-child{border-top:0}
+.bus .who{font-weight:500; white-space:nowrap}
+.bus .kind{font-family:"Geist Mono",ui-monospace,monospace; font-size:10.5px;
+           letter-spacing:.04em; text-transform:uppercase; color:var(--faint); margin-left:6px}
+.bus .kind.warn{color:var(--amber)} .bus .kind.ok{color:var(--green)}
+.bus .say{grid-column:1/-1; color:var(--muted)}
+.loop-steps{list-style:none; margin:0; padding:0; counter-reset:step}
+.loop-steps li{position:relative; padding:0 0 16px 38px; font-size:14px; line-height:21px;
+               color:var(--muted)}
+.loop-steps li b{color:var(--fg); font-weight:600}
+.loop-steps li::before{counter-increment:step; content:counter(step); position:absolute;
+               left:0; top:0; width:24px; height:24px; border-radius:6px;
+               background:var(--gray-100); color:var(--muted); font-size:12px;
+               font-family:"Geist Mono",ui-monospace,monospace;
+               display:flex; align-items:center; justify-content:center}
 
 /* ============================================================
    The two-part frame. Part one and Part two share the same
@@ -700,10 +736,12 @@ h1,h2,h3,h4,p{margin:0}
   <div class="wrap">
     <div class="in rv">
       <span class="eyebrow">Product</span>
-      <h1 class="d2">14 AI agents for your freight desk.</h1>
-      <p class="copy18">Nine automate daily ops &mdash; quoting, docs, tracking and customs.
-        Five monitor global lanes to act the moment a disruption happens. Every action logs
-        directly to your TMS, and nothing executes without your approval.</p>
+      <h1 class="d2">16 AI agents for your freight desk.</h1>
+      <p class="copy18">Eleven work the everyday desk &mdash; inbox, quotes, bookings,
+        documents, exceptions, invoices and customs &mdash; and hand each other the work.
+        Five watch global lanes and act the moment a disruption lands. Every action logs to
+        your TMS, every correction you make teaches them, and nothing executes without
+        your approval.</p>
       <p class="goal"><span class="chip blue">This page</span> <b>the roster, the write-back map, and the gate</b></p>
     </div>
   </div>
@@ -887,26 +925,52 @@ h1,h2,h3,h4,p{margin:0}
     <div class="head rv">
       <div class="part-hd">
         <span class="num">Part one</span>
-        <span class="eyebrow">The everyday desk &middot; nine agents</span>
+        <span class="eyebrow">The everyday desk &middot; eleven agents</span>
       </div>
       <h2 class="h32" style="margin-top:14px">Your desk, running itself.</h2>
-      <p class="copy18">Quoting, booking, tracking, documents, invoices, customs
-        &mdash; pre-configured against the shape of a forwarder&rsquo;s day. Each
-        agent reads what came in, drafts what needs to go out, and puts the
-        change on the booking. No second book, no new tool to keep, and no
+      <p class="copy18">Every mail that lands on the desk &mdash; a rate request, a
+        booking, a bill of lading, a rollover, an invoice, an arrival notice &mdash; is
+        read, routed to the agent that owns it, worked, and checked against that
+        customer&rsquo;s standing instructions. Each agent drafts what needs to go out
+        and puts the change on the booking. No second book, no new tool to keep, and no
         message ever sent without you.</p>
     </div>
 
-    <div class="buckets rv">
-      <!-- 01 Quotes & rates -->
-      <article class="bkt" tabindex="0" data-bkt>
+    <div class="buckets five rv">
+      <!-- 01 Inbox & rules -->
+      <article class="bkt is-live" tabindex="0" data-bkt>
         <div class="bkt-head">
           <span class="num">01</span>
+          <h3>Inbox &amp; rules</h3>
+        </div>
+        <p class="tagline">Every inbound mail read, linked and routed &mdash; and every output checked against the customer&rsquo;s standing instructions.</p>
+        <div class="meta">
+          <span class="chip live">Live</span>
+          <span class="count"><b>2</b> agents
+            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+        <div class="agents" aria-hidden="true">
+          <ul>
+            <li><span class="an">Inbox Worker</span><span class="chip live">Live</span>
+              <span class="ar">Reads every inbound mail, works out what it is, links it to the booking, and hands it on.</span></li>
+            <li><span class="an">Playbook Worker</span><span class="chip live">Live</span>
+              <span class="ar">Checks every output against the customer&rsquo;s standing instructions, and sends it back until it complies.</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 02 Quotes & rates -->
+      <article class="bkt is-live" tabindex="0" data-bkt>
+        <div class="bkt-head">
+          <span class="num">02</span>
           <h3>Quotes &amp; rates</h3>
         </div>
         <p class="tagline">Rate lookups and drafted quotes on the lanes your carriers price.</p>
         <div class="meta">
-          <span class="chip">Scripted</span>
+          <span class="chip live">Live</span>
           <span class="count"><b>2</b> agents
             <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -915,48 +979,48 @@ h1,h2,h3,h4,p{margin:0}
         </div>
         <div class="agents" aria-hidden="true">
           <ul>
-            <li><span class="an">Rate Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Rate lookups across the carriers on a lane.</span></li>
-            <li><span class="an">RFQ Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Reads an inbound rate request and drafts the quote back.</span></li>
+            <li><span class="an">Rate Worker</span><span class="chip live">Live</span>
+              <span class="ar">Prices a lane across the carriers that serve it, for any agent that asks.</span></li>
+            <li><span class="an">RFQ Worker</span><span class="chip live">Live</span>
+              <span class="ar">Reads an inbound rate request into fields and drafts the quote back.</span></li>
           </ul>
         </div>
       </article>
 
-      <!-- 02 Bookings & documents -->
-      <article class="bkt" tabindex="0" data-bkt>
-        <div class="bkt-head">
-          <span class="num">02</span>
-          <h3>Bookings &amp; documents</h3>
-        </div>
-        <p class="tagline">Carrier bookings on the record, and every document field where it belongs.</p>
-        <div class="meta">
-          <span class="chip">Scripted</span>
-          <span class="count"><b>2</b> agents
-            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9l6 6 6-6"/></svg>
-          </span>
-        </div>
-        <div class="agents" aria-hidden="true">
-          <ul>
-            <li><span class="an">Booking Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Holds the carrier booking on the TMS record, and the amendment when the itinerary changes.</span></li>
-            <li><span class="an">Docs Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Field extraction from bills of lading and invoices, back onto the booking.</span></li>
-          </ul>
-        </div>
-      </article>
-
-      <!-- 03 Shipments & inbox -->
-      <article class="bkt" tabindex="0" data-bkt>
+      <!-- 03 Bookings & documents -->
+      <article class="bkt is-live" tabindex="0" data-bkt>
         <div class="bkt-head">
           <span class="num">03</span>
-          <h3>Shipments &amp; inbox</h3>
+          <h3>Bookings &amp; documents</h3>
         </div>
-        <p class="tagline">Position and milestones, routine mail, and the answers to what&rsquo;s on the board.</p>
+        <p class="tagline">Bookings opened on the record, and every document field where it belongs.</p>
         <div class="meta">
-          <span class="chip">Scripted</span>
+          <span class="chip live">Live</span>
+          <span class="count"><b>2</b> agents
+            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+        <div class="agents" aria-hidden="true">
+          <ul>
+            <li><span class="an">Booking Worker</span><span class="chip live">Live</span>
+              <span class="ar">Opens the booking on the record from the mail and its documents. Flags what it cannot verify.</span></li>
+            <li><span class="an">Docs Worker</span><span class="chip live">Live</span>
+              <span class="ar">Pulls the fields out of bills of lading, packing lists and invoices, and checks them against the booking.</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 04 Shipments & exceptions -->
+      <article class="bkt" tabindex="0" data-bkt>
+        <div class="bkt-head">
+          <span class="num">04</span>
+          <h3>Shipments &amp; exceptions</h3>
+        </div>
+        <p class="tagline">Milestones on the booking, the exceptions nobody planned for, and the answers to what is on the board.</p>
+        <div class="meta">
+          <span class="chip live">Live</span> <span class="chip">Scripted</span>
           <span class="count"><b>3</b> agents
             <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -965,25 +1029,25 @@ h1,h2,h3,h4,p{margin:0}
         </div>
         <div class="agents" aria-hidden="true">
           <ul>
-            <li><span class="an">Milestones Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Position and milestones, tied back to the TMS booking.</span></li>
-            <li><span class="an">Inbox Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Triages inbound carrier and customer mail, and drafts the reply.</span></li>
+            <li><span class="an">Milestones Worker</span><span class="chip live">Live</span>
+              <span class="ar">Writes carrier notices onto the booking as milestones and ETAs, and answers where-is-my-box.</span></li>
+            <li><span class="an">Exception Worker</span><span class="chip live">Live</span>
+              <span class="ar">Catches the rolled box and the mismatched document, and escalates what the desk cannot absorb.</span></li>
             <li><span class="an">Assistant</span><span class="chip">Scripted</span>
               <span class="ar">Answers questions about what is on the board.</span></li>
           </ul>
         </div>
       </article>
 
-      <!-- 04 Billing & customs -->
-      <article class="bkt" tabindex="0" data-bkt>
+      <!-- 05 Billing & customs -->
+      <article class="bkt is-live" tabindex="0" data-bkt>
         <div class="bkt-head">
-          <span class="num">04</span>
+          <span class="num">05</span>
           <h3>Billing &amp; customs</h3>
         </div>
         <p class="tagline">Invoice reconciliation and entry checks against the discharge country.</p>
         <div class="meta">
-          <span class="chip">Scripted</span>
+          <span class="chip live">Live</span>
           <span class="count"><b>2</b> agents
             <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -992,19 +1056,90 @@ h1,h2,h3,h4,p{margin:0}
         </div>
         <div class="agents" aria-hidden="true">
           <ul>
-            <li><span class="an">Invoice Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Reconciles the carrier invoice against the rate that was agreed.</span></li>
-            <li><span class="an">Customs Worker</span><span class="chip">Scripted</span>
-              <span class="ar">Checks the entry for the discharge country, and escalates what needs a person.</span></li>
+            <li><span class="an">Invoice Worker</span><span class="chip live">Live</span>
+              <span class="ar">Reconciles the carrier invoice against what was agreed, and drafts the dispute.</span></li>
+            <li><span class="an">Customs Worker</span><span class="chip live">Live</span>
+              <span class="ar">Prepares the entry for the discharge country, and escalates what needs a person.</span></li>
           </ul>
         </div>
       </article>
     </div>
 
-    <p class="foot-note rv">Nine of the fourteen. <b>Each is a scripted panel today
-      &mdash; the tag on the card is the honesty.</b> The shape is real: the content
-      each renders comes from the active booking, and every draft, amendment and
-      queued write-back sits behind the same gate as the live half below.</p>
+    <p class="foot-note rv">Eleven of the sixteen, in the order work flows through them.
+      <b>Ten run for real on every mail; the Assistant is a scripted panel, and its tag
+      says so.</b> In this build the inbox they work is a synthetic morning of mail, like
+      the bookings &mdash; what they do with it is computed on the run, and every draft,
+      new booking and queued change sits behind the same gate as the half below.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     The desk talks, and learns. Two claims this page makes about
+     the everyday agents, each shown rather than drawn: the
+     conversation behind one real mail from the demo inbox, and
+     the loop a correction runs through.
+     ============================================================ -->
+<section class="section" id="talk">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">How the desk works together</span>
+      <h2 class="h32" style="margin-top:14px">Agents that ask each other, and learn from you.</h2>
+      <p class="copy18">No agent works alone. The one that owns a mail asks the others what
+        it needs &mdash; the fields off the documents, the rate on the lane &mdash; and the
+        Playbook agent checks the result against the customer&rsquo;s standing
+        instructions and sends it back until it complies. When you correct one of them,
+        the correction becomes a lesson every agent reads from then on.</p>
+    </div>
+
+    <div class="talk rv">
+      <div class="talk-card">
+        <h3>One booking request, as the agents handled it</h3>
+        <p class="sub">A vaccine booking from the demo inbox that asks for a carrier the
+          customer&rsquo;s playbook does not allow. Synthetic mail and a synthetic rate
+          sheet; the exchange is the one the agents produce on every run.</p>
+        <ol class="bus" data-bus-item="IN-108">
+          <li><span class="who">Inbox &rarr; Booking<span class="kind ">handoff</span></span>
+            <span class="say">Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG.</span></li>
+          <li><span class="who">Booking &rarr; Docs<span class="kind ">query</span></span>
+            <span class="say">Read the 1 attachment(s) on IN-108.</span></li>
+          <li><span class="who">Docs &rarr; Booking<span class="kind ">reply</span></span>
+            <span class="say">Read 7 fields from 1 document(s).</span></li>
+          <li><span class="who">Booking &rarr; Rate<span class="kind ">query</span></span>
+            <span class="say">Price 1 x 40RH into Hamburg.</span></li>
+          <li><span class="who">Rate &rarr; Booking<span class="kind ">reply</span></span>
+            <span class="say">5 options into Hamburg; best ONE on R-HAM-STD, EUR 3,880 per 40RH, 32 days.</span></li>
+          <li><span class="who">Playbook &rarr; Booking<span class="kind warn">revise</span></span>
+            <span class="say">IN-108-1: ONE is not an approved carrier - use Maersk or Hapag-Lloyd.</span></li>
+          <li><span class="who">Booking &rarr; Rate<span class="kind ">query</span></span>
+            <span class="say">Price 1 x 40RH into Hamburg, only Maersk or Hapag-Lloyd.</span></li>
+          <li><span class="who">Rate &rarr; Booking<span class="kind ">reply</span></span>
+            <span class="say">4 options into Hamburg; best Hapag-Lloyd on R-HAM-STD, EUR 3,960 per 40RH, 32 days.</span></li>
+          <li><span class="who">Booking &rarr; Playbook<span class="kind ok">revised</span></span>
+            <span class="say">IN-108-1: rebooked with Hapag-Lloyd (EUR 3,960 per container).</span></li>
+        </ol>
+      </div>
+
+      <div class="talk-card">
+        <h3>What a correction does</h3>
+        <p class="sub">The loop behind every fix you make, every time.</p>
+        <ol class="loop-steps">
+          <li><b>You correct an agent.</b> A re-quote read as a booking; a weight label on
+            a packing list it has never seen.</li>
+          <li><b>It becomes a lesson.</b> A rule the agent applies, and a line of context
+            it reads before it works &mdash; addressed to the agent that made the
+            mistake.</li>
+          <li><b>The whole inbox is replayed with it.</b> The lesson is kept only if it
+            fixes the mail it came from <em>and</em> every earlier lesson still holds. One
+            that would undo an earlier correction is refused.</li>
+          <li><b>You see what else it fixed.</b> One correction usually fixes every mail
+            like it, and the report names each one.</li>
+        </ol>
+        <p class="foot-note" style="margin-top:4px">No model is retrained. A lesson is
+          something you can read, date, trace to the mail it came from and delete &mdash;
+          and a correction you made cannot be quietly undone by the model disagreeing
+          later.</p>
+      </div>
+    </div>
   </div>
 </section>
 

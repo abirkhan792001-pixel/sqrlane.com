@@ -28,6 +28,25 @@ back into the TMS: the exception on the booking, the new discharge port, routing
 the drafted mail on the communication log. Every message and every write waits for a person. A
 light "5U AI-style AI Worker" wrapper sits on top purely as demo framing.
 
+**There are two layers on that one TMS, and they are separate on purpose** (added
+2026-09-24, on the owner's instruction):
+
+- **The workflow layer** (`src/workflow.py`) — the everyday desk. It runs on every inbound
+  mail, not on a disruption: rate requests, booking requests, documents, carrier notices,
+  status questions, invoices, arrival notices. Ten live Workers read, route and work each
+  one, pass the work between them as **messages on one bus**, have every output checked
+  against the customer's **playbook**, and **learn from corrections**. Functionally this
+  is the ground the inbox-to-TMS automation players cover (the owner pointed at Zauber and
+  5U AI as the reference) — built under our own names, with no borrowed metric.
+- **The risk layer** (everything above) — the predictive half. It runs when the world moves.
+
+The workflow layer on its own is table stakes: others do it. **The join is the edge** — the
+risk layer's decisions are handed to the desk as work (an amendment for Booking, a changed
+country of entry for Customs, a new ETA for Milestones, a playbook check on every customer
+mail), and a slip the desk cannot absorb goes back across to the Routing Worker. That makes
+differentiator 2 below stronger rather than adding a third; do not pitch the workflow layer
+as a differentiator by itself.
+
 **In this build the TMS is a demo connector** (`src/tms.py`), and that word is on screen
 everywhere it is surfaced. Both directions are modelled and the read is genuinely the only
 door to the book — `tests/test_tms_is_the_system_of_record.py` fails if anything else in
@@ -117,7 +136,7 @@ answer another page's question**:
 | Page | The one thing it lands | Owns, exclusively |
 |---|---|---|
 | `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the integration tree, the FAQ, the book-a-demo block |
-| `/product` | Fourteen Workers on one book, every action gated | the roster and its LIVE/SCRIPTED/DEMO tags, the write-back field map, the approval gate, the systems the connector points at |
+| `/product` | Sixteen Workers on one book, every action gated | the roster in two parts (the everyday desk in five groups, then the risk half) and its LIVE/SCRIPTED/DEMO tags, how the agents talk and learn (`#talk`), the write-back field map, the approval gate, the systems the connector points at |
 | `/how-it-works` | How a decision is actually made | prose-to-the-model vs numbers-to-a-threshold, the five stages, the live Rhine gauges, the source table |
 | `/use-cases` | Four disruptions, four different calls | the four scenarios and their board outcomes |
 | `/about` | What is real here and what is not | the live/synthetic/demo ledger, the honest quote, the modelled desk, the non-goals |
@@ -293,14 +312,22 @@ work on the TMS's records, not on a book of their own.
 
 ### The product layer
 
-**Fourteen Workers, three of them real.** Risk, Routing and Comms genuinely run and are
-tagged `LIVE`. Planner, Rate, Milestones, Docs, Inbox, RFQ, Booking, Invoice, Customs and
-Assistant replay authored data from `src/roster.py` and are tagged `SCRIPTED`. **The tag is
-the honesty** — never present a scripted Worker as reasoning live. They are still *reactive*:
-each panel is built from the active scenario and the selected shipment, so switching either
-visibly changes it. What is authored is the content, not the shape.
+**Sixteen Workers, in two layers.** Risk, Routing and Comms are the risk layer's live
+three. Inbox, Playbook, Rate, RFQ, Booking, Docs, Milestones, Exception, Invoice and
+Customs are the workflow layer's live ten: `src/workflow.py` runs them on every mail in
+the inbox, nothing is replayed, and every output records whether the model, a rule or a
+learned lesson decided it. The Planner and the Assistant replay authored data and are
+tagged `SCRIPTED`. The TMS Link is `DEMO`. **The tag is the honesty** — never present a
+scripted Worker as reasoning live.
 
-**The Planner is the newest of the scripted ten, and the one with a roadmap.** It is
+One subtlety holds the tags honest. The desk Workers *also* show a per-booking panel on
+the disruption board (`roster.py`'s `*_panel` functions) and that content is authored —
+rate cards, milestones, document fields. So a live tag must never vouch for it: the
+dashboard labels those panels `authored panel` wherever they appear, under the Worker's
+own work on the inbox. If a panel ever becomes computed rather than authored, move the
+label, don't drop it.
+
+**The Planner is one of the two scripted Workers, and the one with a roadmap.** It is
 rung two of `ROADMAP-PRE-DEPARTURE.md`'s own proof ladder: the pre-departure sweep of an
 authored forward book (a quotation and two unshipped bookings — earlier lifecycle states
 the demo connector does not model yet), ending in exactly one of three states per record —
@@ -357,7 +384,7 @@ is one lineage, not three.
 Both are React + Tailwind. This page is one self-contained vanilla file with no build
 step, so what carries over is **anatomy, never code**:
 
-- **Command palette** on Ctrl/Cmd-K, plus the sidebar search box. It searches the seven
+- **Command palette** on Ctrl/Cmd-K, plus the sidebar search box. It searches the eight
   views and every booking by id, cargo, origin and destination; Enter selects the booking
   and opens its panel. It reaches something rather than decorating the sidebar.
 - **One page header everywhere** — title, what the page is, actions, last-run stamp.
@@ -445,6 +472,25 @@ Two traps worth remembering, both found in a browser and invisible to a unit tes
 - **One body flag cannot open two dialogs.** `body.pal-on` showed both the palette
   and the sheet at once; each needs its own flag, with the scrim listening for
   either.
+
+### The Workflow view — the desk, on screen
+
+The dashboard's **Workflow** view (`#/workflow`, `g i`) is the workflow layer. It works
+the inbox on first visit so it is never an empty promise, then shows: four stat cards
+counted from that run; the five groups with each Worker's own count; the inbox, one row
+per mail with the Workers it passed through in order (Routing and Planner chips are blue,
+because they belong to the other layer); and, opened, the mail and its documents on the
+left with every field read, and **the numbered conversation** on the right, then each
+output with its playbook checks and its own approve button. The **Correct this** box under
+each mail is the learning loop's front door: pick the right intent (the cue phrase is
+suggested), or tell the Docs Worker what an unread label is; the report above the stats
+says what the lesson fixed, what else it fixed, and that every earlier lesson still holds.
+*From the risk layer* shows what the last `/run` handed the desk.
+
+Two things to keep: every class it adds is prefixed `wf-` (bare short classes have
+collided twice on this page), and the roster band now carries sixteen pills in two rows —
+about 218px at 1440 wide. Measure the visible view after a nav click before adding to that
+band, as the element-kit note above says.
 
 ### The simulation loop — a week, not a snapshot
 
@@ -599,21 +645,77 @@ beside a `Synthetic scenario` label. Carried into a technical paper away from
 that label, they would start being read as live measurements. **Never move an
 authored reading somewhere its label does not follow.**
 
-### The workflow layer — inbound comms, RFQs and the TMS link
+### The workflow layer — the everyday desk, and the TMS link
 
-The Comms Agent covers *outbound*. Two scripted Workers and the TMS link cover the
-rest of the desk a disruption actually lands on — the other three scripted Workers
-(Booking, Invoice, Customs) are below:
+`src/workflow.py` works a synthetic morning of inbound mail (`data/inbox.json`, thirteen
+messages) against the customers' standing instructions (`data/playbooks.json`). It is its
+own run with its own button — the dashboard's **Workflow** view, `GET /api/workflow`,
+`python -m src.workflow` — and it does not wait for a disruption. Five groups, in the order
+work flows through them (`roster.GROUPS`, rendered by both the dashboard and `/product`):
 
-- **Inbox Worker** — inbound carrier and customer mail, triaged: intent classified,
-  linked to the booking, and a reply drafted. Which mail arrives is derived from the
-  decision the Route Advisor made, so a reroute produces an omit-notice and a status
-  chase, a hold produces berth options, and an on-plan booking produces a routine
-  milestone with **no reply drafted at all**. Answering everything would be showing
-  volume rather than judgement.
-- **RFQ Worker** — an inbound rate request read into structured fields, priced against
-  the lane with the active scenario's surcharge, and answered with a drafted quote.
-- **TMS Link** (`src/tms.py`) — the **system of record**, on a demo connector. Both ends
+| Group | Workers |
+|---|---|
+| 01 Inbox & rules | **Inbox** (what is this mail, whose is it, who owns it) · **Playbook** (every output against the customer's rules) |
+| 02 Quotes & rates | **Rate** (prices a lane for anyone who asks) · **RFQ** (request → fields → drafted quote + queued quotation) |
+| 03 Bookings & documents | **Booking** (opens the record from the mail and its documents; holds what it cannot verify) · **Docs** (extracts fields, checks them against the booking) |
+| 04 Shipments & exceptions | **Milestones** (notices onto the booking, where-is-my-box) · **Exception** (rolled box, document mismatch, escalation) · **Assistant** (scripted) |
+| 05 Billing & customs | **Invoice** (billed vs agreed, the dispute) · **Customs** (entry prepared, never filed; a transit out of the EU escalated) |
+
+**The Workers talk, and the talk is data.** No Worker calls another's internals: every
+handoff, query, reply, check, revise, revised, verdict and escalation is a numbered message
+on one bus (`Desk.post` / `Desk.ask`), and the dashboard shows it as the conversation
+behind each mail. The strongest single exchange is IN-108: the customer asks for a carrier
+their own playbook forbids; the Playbook Worker sends the booking back; the Booking Worker
+asks the Rate Worker for an approved one and rebooks. `/product#talk` quotes that exchange,
+and `tests/test_the_desk_works_and_learns.py` fails if the page ever says something the bus
+did not.
+
+**The Playbook Worker never edits another Worker's output.** It says what is wrong; the
+Worker that made the output fixes it, on the bus, up to three rounds; what cannot be fixed
+is escalated. Rules are structured (`approved_carriers`, `cc_on_customer_mail`,
+`notify_delay_over_days`, `quote_validity_days`) because a rule a machine can check is one
+that gets checked every time.
+
+**Held, not guessed.** A field the Docs Worker cannot read is reported as unread and the
+booking is held with a question to the customer — never a number filled in. A rollover
+that breaks the customer's date is escalated **across the layers** to the Routing Worker.
+A transit out of the EU (Rotterdam for Basel) is escalated, not filed.
+
+**The learning loop** (`workflow.correct()`, lessons in `src/learning.py`). A person
+corrects a Worker — an intent, or a document label — and:
+
+1. the correction becomes a **lesson**: a cue phrase and the intent it means (Inbox), or a
+   label and the field it fills (Docs), addressed to the Worker that made the mistake;
+2. the whole inbox is **replayed** with it;
+3. it is kept only if it **fixes the mail it came from**;
+4. ...and **every earlier lesson still holds** — a lesson that would undo one is refused
+   and nothing is saved;
+5. the report names every other mail it changed. One correction usually fixes every mail
+   like it: teaching "re-quote" fixes IN-104 and IN-109; teaching "Bruttogewicht" fixes
+   IN-102 and IN-107.
+
+Four rules keep it honest, all asserted: **no retraining** (`learning.py` imports nothing
+but `json`, `re`, `datetime` and `config`); **lessons are applied after the model answers**,
+so a correction a person made cannot be quietly undone by the model disagreeing;
+**re-teaching the same phrase supersedes** the old lesson and keeps it in the history; and
+**two mistakes are planted on purpose** (IN-104/IN-109 say "booking" more than "quote";
+IN-102/IN-107 carry a label the extractor does not know), so there is something honest to
+correct in a demo. Lessons are one JSON file (`config.LESSONS_FILE`, gitignored); on Vercel
+it sits in the temp directory and lasts as long as the instance, which the dashboard says.
+
+**Model use is one call per inbox run** — the Inbox Worker classifies every mail in one
+batched request, and falls back to rules without a key. Everything else in the layer is
+code: prices, weights, dates and field values never go to the model, same rule as the risk
+layer. Drafts are templates, labelled by the Worker that wrote them.
+
+**Across the layers.** `workflow.from_risk(cards)` runs inside every `/run`: the Routing
+Worker's decisions become messages to Booking, Customs (only when the country of entry
+changes) and Milestones, and the Playbook Worker checks every customer mail the Comms
+Worker drafted — adding a missing copy address on the draft itself, before it is filed, so
+what a person approves is the compliant version. The counts `/use-cases` quotes ("handed
+to the desk") are held to a real run by test.
+
+**The TMS Link** (`src/tms.py`) is where both layers land — the **system of record**, on a demo connector. Both ends
   of the loop: `read_bookings()` is the only door to the book, and `writebacks_for()` turns
   each agent's output into the change it implies on that record — the Risk Worker's
   exception flag, the Routing Worker's discharge port / routing code / ETA / booking
@@ -622,13 +724,17 @@ rest of the desk a disruption actually lands on — the other three scripted Wor
   not work beside the TMS, they work in it. A booking left on plan produces no write-back
   at all, which is a real answer rather than an omission.
 
-**None of it sends, and none of it writes.** A drafted reply, a drafted quote and a
-queued write-back are all outbound actions, so all three sit behind the same approval
-gate as an email — `DRAFT - not sent` and `QUEUED - not written`, both
+**None of it sends, and none of it writes.** A drafted reply, a drafted quote, a new
+booking and a queued write-back are all outbound actions, so all of them sit behind the
+same approval gate as an email — `DRAFT - not sent` and `QUEUED - not written`, both
 `awaiting_approval`. `tests/test_comms_agent_sends_nothing.py` now checks all of them:
 the original checks only ever looked at `card["drafts"]`, which none of these appear in.
-The dashboard's **Approvals** view and the bell count both kinds together, because a
-queue a person never sees is not a gate.
+The dashboard's **Approvals** view and the bell count every kind together — the
+workflow layer's outputs included, keyed `wf|<output id>` and grouped on the booking they
+belong to (or the mail that started them, for a booking that does not exist yet) —
+because a queue a person never sees is not a gate. A risk run clears only the risk
+layer's approvals; a fresh inbox run, or a lesson that re-drafts a mail, clears only
+the approvals for what it re-drafted.
 
 `src/tms.py` imports `json`, `datetime` and `config` — and nothing else. There is no
 client, no credential and no endpoint: a write-back is a dict describing a change, and it
@@ -671,7 +777,9 @@ roster source, the
 served Worker names, or the run payload. It caught one of those names in a source
 *comment*, which is the level of paranoia this deserves.
 
-Three of them earn their place by reacting to the decision rather than decorating:
+On the disruption board, three of the desk Workers' **authored panels** earn their place
+by reacting to the decision rather than decorating (the same Workers also do live work on
+the inbox, above — the panels are the per-booking view, labelled `authored panel`):
 
 - **Booking Worker** — the carrier booking, and the amendment the decision forces: a
   reroute is a change of discharge port, a hold is a hold at the load port, an on-plan
@@ -763,6 +871,11 @@ here too, because this is what the next session reads to find its way around.
 │   ├── scenarios.json        # the four switchable disruptions
 │   ├── injected_events.json  # the scripted Hamburg strike
 │   ├── simulation.json       # the authored week - a timeline only, never events
+│   ├── inbox.json            # a synthetic morning of inbound mail + the rate sheet
+│   │                         #   the workflow layer prices against. Two mistakes
+│   │                         #   are planted on purpose - see the workflow layer
+│   ├── playbooks.json        # each customer's standing instructions (SOP), as
+│   │                         #   structured rules the Playbook Worker can check
 │   └── geo.json              # coastlines and points for the map
 ├── src/
 │   ├── llm.py                # provider wrapper — the ONLY place AI is called
@@ -776,7 +889,13 @@ here too, because this is what the next session reads to find its way around.
 │   ├── route_advisor.py      # component 2
 │   ├── comms_agent.py        # component 3
 │   ├── orchestrator.py       # component 4 (the loop)
-│   ├── roster.py             # the SCRIPTED Workers - authored, never live
+│   ├── roster.py             # every Worker beyond the risk layer's three, the five
+│   │                         #   groups, and the AUTHORED per-booking board panels
+│   ├── workflow.py           # the workflow layer: the everyday desk, its message
+│   │                         #   bus, the playbook checks, the learning loop, and
+│   │                         #   the risk layer's handoff to the desk
+│   ├── learning.py           # corrections in, lessons out - rules + context,
+│   │                         #   never retraining
 │   ├── simulation.py         # the authored week, replayed over the same board
 │   ├── geo.py                # the board on a map - derived from the run
 │   └── app.py                # FastAPI: serves the three pages + the API
@@ -815,7 +934,7 @@ here too, because this is what the next session reads to find its way around.
 │   ├── README.md             # plain-language: what it proves, what it cannot
 │   ├── data/                 # sample committed; the full book is gitignored
 │   └── reports/              # evaluation.json / .md - synthetic-world numbers
-├── tests/                    # eleven suites, one per claim the demo makes out loud
+├── tests/                    # twelve suites, one per claim the demo makes out loud
 ├── tools/
 │   ├── build_rhine_map.py    # regenerates the corridor map. NOT dead, and not
 │   │                         #   only the paper's: the landing page and the
@@ -829,7 +948,8 @@ here too, because this is what the next session reads to find its way around.
 │   ├── slide-fix.png         # what slide-fix.svg renders to
 │   ├── problem-brief.md      # the problem, with every figure graded by source
 │   └── replit-deck-prompt.md # the deck, as a prompt for a fresh Replit build
-└── risk_state.json           # written at runtime (gitignored)
+├── risk_state.json           # written at runtime (gitignored)
+└── lessons.json              # what the desk was taught - runtime, gitignored
 ```
 
 ---
@@ -1258,71 +1378,6 @@ beside a `Synthetic scenario` label. Carried into a technical paper away from
 that label, they would start being read as live measurements. **Never move an
 authored reading somewhere its label does not follow.**
 
-### The workflow layer — inbound comms, RFQs and the TMS link
-
-The Comms Agent covers *outbound*. Three scripted Workers cover the rest of the
-desk a disruption actually lands on:
-
-- **Inbox Worker** — inbound carrier and customer mail, triaged: intent classified,
-  linked to the booking, and a reply drafted. Which mail arrives is derived from the
-  decision the Route Advisor made, so a reroute produces an omit-notice and a status
-  chase, a hold produces berth options, and an on-plan booking produces a routine
-  milestone with **no reply drafted at all**. Answering everything would be showing
-  volume rather than judgement.
-- **RFQ Worker** — an inbound rate request read into structured fields, priced against
-  the lane with the active scenario's surcharge, and answered with a drafted quote.
-- **TMS Link** (`src/tms.py`) — a **demo connector**. It models the field mapping and
-  turns each actioned decision into the booking change it implies (discharge port,
-  routing code, ETA, or a hold status). A shipment left on plan produces no write-back,
-  which is a real answer rather than an omission.
-
-**None of it sends, and none of it writes.** A drafted reply, a drafted quote and a
-queued write-back are all outbound actions, so all three sit behind the same approval
-gate as an email — `DRAFT - not sent` and `QUEUED - not written`, both
-`awaiting_approval`. `tests/test_comms_agent_sends_nothing.py` now checks all of them:
-the original checks only ever looked at `card["drafts"]`, which none of these appear in.
-
-`src/tms.py` imports nothing but `datetime`. There is no client, no credential and no
-endpoint — a write-back is a dict describing a change, and it stays a dict. Never
-present the connector as a live TMS link; it says `connected (demo)` everywhere it is
-surfaced, and a test asserts that.
-
-**The roster covers the desk, under our own names.** The function set a forwarding
-desk actually runs — quoting, booking, shipment tracking, TMS data entry, invoice
-reconciliation, and customs — is all present. The names are ours: **never** use the
-names the reference product ships (`Rate Manager`, `DocuMind`, `Track & Trace`,
-`Copilot`), and `verify_product.py` fails on any of them appearing in the dashboard,
-the README, the roster source, the served Worker names, or the run payload. It caught
-one of those names in a source *comment*, which is the level of paranoia this deserves.
-
-Three of them earn their place by reacting to the decision rather than decorating:
-
-- **Booking Worker** — the carrier booking, and the amendment the decision forces: a
-  reroute is a change of discharge port, a hold is a hold at the load port, an on-plan
-  booking needs no amendment at all. An amendment is an outbound action, so it is
-  `DRAFT - not sent` / `awaiting_approval` like an email.
-- **Invoice Worker** — reconciles the carrier invoice against the rate agreed. It only
-  bites under a disruption: the carrier bills a surcharge that was never quoted, and the
-  discrepancy is the finding. With no disruption every line matches and it says so.
-- **Customs Worker** — the one that only exists because of the reroute. Moving the
-  discharge port moves the **country of entry** (HAM → RTM is Germany → Netherlands), so a
-  different EORI and clearance agent apply and the bill of lading has to be reissued. It
-  **escalates rather than files**, which is the honest behaviour and matches how these
-  systems are supposed to treat a novel exception.
-
-**The connection point** is its own view in the sidebar under `System`, not just a Worker
-chip: connector name, `connected (demo)`, bookings synced, changes queued, the field
-mapping table, and every queued write-back with the change it describes. All of it from
-`src/tms.py`, which still imports nothing but `datetime`.
-
-**The topbar bell** carries the real pending-approval count and shows a dot only when
-something is actually waiting — a permanent badge would be decoration. Clicking it opens
-Approvals, and a test asserts the bell and the Approvals count agree.
-
-Drafts sit behind a **human-approval gate**: `awaiting_approval` → *Approve* →
-`approved`. Approval is a state change in the browser and nothing else — there is no
-transport anywhere in `src/` for it to trigger, and a test asserts that.
-
 ### The dataset ages itself
 
 Shipments are authored to sit mid-voyage on `_authored_on` in `shipments.json`.
@@ -1344,7 +1399,10 @@ Beside them sit the deck pages, which argue the pitch to a room rather than
 answering a visitor's question: `/deck` is the pitch deck, `/what` is its What
 section on its own, and `/pitch` is the rebuilt deck - **generated** by
 `tools/build_slides.py`, so edit the builder and not `static/pitch.html`. `GET /api/initial` renders the calm five-green-cards board instantly; `POST /run`
-is the button. `GET /api/gauges` reads the three reference Rhine gauges live from PEGELONLINE for
+is the button. `GET /api/workflow` is the everyday desk working the inbox once,
+`POST /api/workflow/correct` runs the learning loop on one correction, and
+`POST /api/workflow/reset` forgets every lesson; all three answer 200 with a readable
+payload on failure, like `/run`. `GET /api/gauges` reads the three reference Rhine gauges live from PEGELONLINE for
 the gauge panel on `/how-it-works` (`config.LANDING_GAUGES` — the panel was designed for
 three; the monitor's live pull reads all six stations in `config.RHINE_GAUGES`, and both
 resolve against the one configured list so the two callers cannot band the same station
@@ -1364,6 +1422,7 @@ python -m src.risk_monitor --scenario redsea
 python -m src.route_advisor --inject --shipment SHP-002
 python -m src.comms_agent  --inject
 python -m src.orchestrator --no-live      # the whole loop, no network
+python -m src.workflow                    # the desk works the inbox (--llm, --reset)
 ```
 
 ### The pitch deck
@@ -1615,7 +1674,10 @@ file in `src/` and fails naming the file and line if a transport library ever ap
 (including via `__import__` or `importlib`). It also runs a full offline cycle and checks
 every draft it produces. Run the whole suite with
 `python -m unittest discover -s tests` — standard library, nothing to install, and it
-covers the other ten claim-guards too: the TMS being the only door to the book; the
+covers the other eleven claim-guards too: the everyday desk routing or escalating every
+mail, answering every question one Worker asks another, gating every output, and
+learning only what fixes its own mail without undoing an earlier lesson; the TMS being
+the only door to the book; the
 pages naming no language, loading nothing external, carrying one product name and
 disclaiming the systems they name; the simulated week never sending a booking back to a
 route it left; a trickling source being cut off rather than hanging the run; the
@@ -1661,6 +1723,11 @@ Scope creep is the failure mode here. None of these are in this build:
 - **No database.** In-memory + JSON files.
 - **No paid data.** Free sources only.
 - **No accounts, billing, multi-tenant, or the real 5U AI product.** The AI-Worker layer is cosmetic.
+- **No mailbox connected.** The workflow layer works a synthetic inbox. Reading a real
+  Outlook or Gmail account is the same integration wall as the TMS, on the other side of
+  the desk.
+- **No retraining.** Learning is lessons — rules and context a person can read and delete.
+  No fine-tune, no weights, and no ML dependency in the root requirements.
 
 ---
 
@@ -1683,6 +1750,11 @@ Scope creep is the failure mode here. None of these are in this build:
 - **An agent's output is a change to a record, not a message on a screen.** Anything a
   Worker decides should be expressible as a write-back to the booking it came from. If it
   cannot be, ask whether the desk would actually act on it.
+- **Workers talk through the bus, never through each other's internals.** A handoff, a
+  question, a check or a revision is a message (`Desk.post` / `Desk.ask`) — if it is not on
+  the bus, the dashboard cannot show it and nobody can audit it.
+- **A lesson is kept only if it fixes its own mail and breaks no earlier one.** Never add a
+  way to save a lesson that skips the replay.
 - **Each component runnable alone.** The Risk Monitor must produce visible output before the Route
   Advisor exists.
 - **Human-in-the-loop is a feature, not a limitation.** The Comms Agent drafts; it never sends. Say
@@ -1732,7 +1804,7 @@ Scope creep is the failure mode here. None of these are in this build:
 
 ## Definition of done
 
-Six criteria — five from `PRD.md`, plus the one the product rests on. If these hold, the
+Seven criteria — five from `PRD.md`, the one the product rests on, and the everyday desk. If these hold, the
 prototype is finished and nothing else is in scope:
 
 1. The demo narrative runs start to finish in under ~2 minutes, on command, without breaking.
@@ -1746,6 +1818,10 @@ prototype is finished and nothing else is in scope:
 6. Every decision lands on the booking it came from. The board is read out of the TMS
    through one door, each Worker's action is queued back against the record, and all of it
    waits for a person — visible on screen, not just true in the payload.
+7. The everyday desk works its inbox without a disruption: every mail is routed or
+   escalated, the Workers' conversation is readable, every output is checked against the
+   customer's playbook, and one correction visibly fixes every mail like it — without
+   undoing an earlier one.
 
 ---
 

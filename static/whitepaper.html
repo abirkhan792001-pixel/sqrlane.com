@@ -377,8 +377,12 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
         is expressed as a change to the booking record it came from and queued back into the
         TMS — the exception on the booking, the new discharge port and ETA, the drafted mail
         on its communication log. Nothing is sent and nothing is written until a person
-        approves it. The whole loop runs on open-weight models that can be hosted inside the
-        European Union, so the shipment data never has to leave.
+        approves it. Beside that loop sits the everyday desk: agents that work every inbound
+        mail — quotes, bookings, documents, milestones, invoices, customs — hand each other the
+        work as recorded messages, check every output against the customer's standing
+        instructions, and learn from each correction a person makes. The risk loop's decisions
+        are handed to that desk to carry out. The whole system runs on open-weight models that
+        can be hosted inside the European Union, so the shipment data never has to leave.
       </p>
     </section>
 
@@ -505,8 +509,14 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
               <td>Both directions are modelled and the read is the only door to the book, so every component follows it. But no TMS is contacted: there is no client, no credential and no endpoint, and a write-back is a described change that stays queued.</td></tr>
             <tr><td><b>The triggering event</b></td><td><span class="tag warn">Scripted</span></td>
               <td>So a disruption can be shown on demand instead of waiting for one. It uses the same data shape as a live event and flows through the same pipeline.</td></tr>
-            <tr><td><b>Downstream desk workers</b></td><td><span class="tag warn">Scripted</span></td>
-              <td>Booking, invoice, customs. They react correctly to each decision and work on the same booking records, but they replay authored content and are labelled as such.</td></tr>
+            <tr><td><b>The everyday desk</b></td><td><span class="tag ok">Real</span></td>
+              <td>Ten agents work every inbound mail on every run: the inbox agent classifies it (one batched model call, rules as fallback), the owner does the work, a playbook agent checks each output against the customer's standing instructions and sends it back until it complies. Every handoff is a recorded message. Prices, weights and dates are computed, never generated.</td></tr>
+            <tr><td><b>Learning from corrections</b></td><td><span class="tag ok">Real</span></td>
+              <td>A correction becomes a lesson — a rule and a line of context — and the whole inbox is replayed with it. It is kept only if it fixes the mail it came from and every earlier lesson still holds. No model is retrained.</td></tr>
+            <tr><td><b>The inbound mail</b></td><td><span class="tag warn">Synthetic</span></td>
+              <td>A morning of thirteen authored mails and each customer's playbook, with two mistakes left in on purpose so the learning loop has something honest to correct. No mailbox is read.</td></tr>
+            <tr><td><b>Per-booking desk panels</b></td><td><span class="tag warn">Scripted</span></td>
+              <td>On the disruption board, the desk agents' view of the selected booking — rate card, milestones, document fields — is authored content, and is labelled as such where it appears.</td></tr>
           </tbody>
         </table>
       </div>
@@ -900,6 +910,7 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
         <li><b>Not route optimisation.</b> Candidate routes are pre-defined. The system chooses among them and justifies the choice; it does not compute new ones.</li>
         <li><b>Not a sending system.</b> Emails, booking amendments, customs entries and TMS write-backs are all drafted and held. There is no transport layer in the codebase, and a test fails the build if one is ever imported.</li>
         <li><b>Not connected to a real TMS.</b> Working through the TMS is the design and both directions are modelled — the read is the only door to the book, and every agent action is expressed as a change to a booking record. What is absent is the far end: no vendor, no credential, no endpoint. It contacts nothing.</li>
+        <li><b>Not self-training.</b> The everyday desk learns from corrections, but a lesson is a rule and a line of context a person can read and delete. No weights change, and a lesson that would undo an earlier correction is refused.</li>
         <li><b>Not always-on.</b> It runs on demand. For a demonstration, a button beats a background job.</li>
         <li><b>Not measured.</b> There are no accuracy figures, hit rates or time-saved claims anywhere in this document, because none have been measured. Inventing them is the fastest way to lose a room that knows the domain.</li>
       </ul>

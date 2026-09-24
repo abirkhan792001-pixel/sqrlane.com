@@ -9,11 +9,16 @@ Written to be followed live, step by step, with **what to type**, **what you
 should see**, and — where it matters — **what to say out loud**. Windows
 commands first (`py`); the Mac/Linux form is the same with `python3`.
 
-**The honest frame, before anything runs.** Fourteen Workers are on the
-board. Three are **LIVE** (Risk, Routing, Comms — they genuinely read, decide
-and draft on every run). Ten are **SCRIPTED** (they replay authored content,
-reactive to the scenario and the selected shipment — the tag on each pill is
-the honesty). The TMS Link is a **DEMO** connector: both directions are
+**The honest frame, before anything runs.** Sixteen Workers are on the
+board, in two layers. The **risk layer**'s three are **LIVE** (Risk, Routing,
+Comms — they genuinely read, decide and draft on every run). The **workflow
+layer**'s ten desk Workers are **LIVE** too (Inbox, Playbook, Rate, RFQ,
+Booking, Docs, Milestones, Exception, Invoice, Customs — they genuinely work
+every mail in the inbox on every run; the inbox itself is a synthetic morning
+of mail, like the bookings). Two are **SCRIPTED** (Planner and Assistant —
+they replay authored content, and the tag on each pill is the honesty). The
+desk Workers' per-booking panels on the disruption board are authored too, and
+labelled `authored panel` where they appear. The TMS Link is a **DEMO** connector: both directions are
 modelled, its write-backs are derived from the real decisions of that run,
 but no TMS is contacted — no vendor, no credential, no endpoint. **Nothing
 is ever sent and nothing is ever written**; every outbound action stops at
@@ -86,11 +91,12 @@ Across the top of every view sits one band:
   note on what decision type it forces. Click one to arm it. The same seven
   bookings react differently to each — that is the point: one board,
   different disruptions, different defensible answers.
-- **Workers** — fourteen pills, each carrying its mode tag (`LIVE`, `SCR`,
+- **Workers** — sixteen pills, each carrying its mode tag (`LIVE`, `SCR`,
   `DEMO`). **Click a pill to open that Worker's panel** below the strip;
-  click another to switch, the same one to close. Every panel is built from
-  the active scenario and the currently selected shipment, so changing
-  either visibly changes the panel.
+  click another to switch, the same one to close. A risk-layer panel is built
+  from the active scenario and the selected shipment. A desk Worker's panel
+  shows its work on the inbox, what this risk run handed it, and — labelled
+  `authored panel` — its view of the selected booking on the disruption board.
 
 Select a shipment by clicking its row in the sidebar (the board in
 miniature — one row per booking, a live state dot and its id) or its card.
@@ -134,33 +140,61 @@ miniature — one row per booking, a live state dot and its id) or its card.
 
 ---
 
-## 5. The TMS-workflow tour — what arrives, which agent, what lands
+## 5. The everyday desk — the Workflow view
 
-This is slide 04's table, walked live. For each row: **select a shipment
-that was actioned** (SHP-001 is the clean reroute), then **click the
-Worker's pill** and read its panel. Every one of these ends as a change on
-the booking record — that is what makes it a desk, not a set of panels.
+This is slide 04's table, walked live. Open **Workflow** in the sidebar
+(`g` then `i`, or `#/workflow`). The desk works a synthetic morning of
+thirteen mails the moment the view opens — no disruption needed. Each row
+shows the Workers the mail passed through, in order. **Click a row** to open
+it: the mail and its documents on the left (with every field the Docs Worker
+read), and on the right **what the Workers said to each other** — every
+handoff, question, answer, playbook check and revision, numbered — then the
+outputs, each gated.
 
-| What arrives | Click this pill | What lands on the booking | Mode |
-|---|---|---|---|
-| A brewing disruption, before departure | **Planner** | the pre-departure sweep of the forward book — quotations and unshipped bookings. Each ends in one of three states: **act now** (a rebooking or a re-priced quote, drafted), **tripwire armed** (a prepared move held behind a condition the Risk Monitor already reads — the Kaub gauge, the strike's own duration), or **stand down**, recorded with reasoning. Board-level on purpose: it reads the forward book, not the selected card, so its reactivity is the scenario | SCR |
-| A rate request | **RFQ** | the request read into fields, priced with the scenario's surcharge, a quote drafted on the file | SCR |
-| Carrier or customer mail | **Inbox** | mail triaged: intent, linked booking, a reply drafted on the comms log — and for an on-plan booking, *no reply at all* (judgement, not volume) | SCR |
-| A bill of lading, an invoice | **Docs** | the document's fields extracted onto the booking | SCR |
-| A change to the booking | **Booking** | the carrier amendment the decision forces — reroute = new discharge port, hold = hold at load port — drafted for approval | SCR |
-| The carrier's invoice | **Invoice** | reconciled against the agreed rate; under a disruption the unquoted surcharge is flagged as a discrepancy; with none, every line matches and it says so | SCR |
-| A new country of entry | **Customs** | the reroute moved the entry country (HAM→RTM is Germany→Netherlands), so it **escalates rather than files** — the honest behaviour for a novel exception | SCR |
-| Every one of the above | **TMS Link** | one queued change per action, gated, `QUEUED - not written` | DEMO |
+| What arrives | Open this mail | Who works it | What lands on the record | Mode |
+|---|---|---|---|---|
+| A rate request | IN-101 | Inbox → RFQ → Rate → Playbook | a quote drafted and a quotation queued; the Playbook sets the customer's 7-day validity and copies their planning team | LIVE |
+| A booking request, with a document | IN-108 | Inbox → Booking → Docs → Rate → Playbook | a new booking queued; the customer asked for a carrier their own playbook forbids, so the Playbook sends it back and Booking asks Rate for an approved one — **read this exchange out loud** | LIVE |
+| Documents to check | IN-103 | Inbox → Docs → Exception | the B/L's gross weight does not match the booking: exception flagged, release held, a query drafted | LIVE |
+| A rollover | IN-105 | Inbox → Milestones → Exception → Routing | the ETA moves; 7 days late against 3 of slack breaks the customer's date, so it is **escalated across to the risk layer's Routing Worker**; the customer's playbook forces a same-day notice | LIVE |
+| Where is my box? | IN-106 | Inbox → Milestones | a reply answered from the record, with the customer's planning team in copy | LIVE |
+| A carrier invoice | IN-110 | Inbox → Invoice | an unagreed congestion surcharge found: invoice disputed, query drafted to the carrier | LIVE |
+| An arrival notice | IN-111 / IN-112 | Inbox → Customs | Fos-sur-Mer for Lyon: import entry prepared, not filed. Rotterdam for Basel: a transit out of the EU — **escalated, not filed** | LIVE |
+| A routine milestone | IN-113 | Inbox → Milestones | the milestone logged, and **no reply** — nothing is owed | LIVE |
+| A brewing disruption, before departure | the **Planner** pill | Planner | the pre-departure sweep of the forward book — act now, tripwire armed, or stand down, each recorded with reasoning. New bookings from the inbox are handed to it | SCR |
+| Every one of the above | **TMS link** / Approvals | TMS Link | one queued change per action, gated, `QUEUED - not written` | DEMO |
 
-Two things to say while touring:
+**After a disruption run**, the Workflow view's *From the risk layer* card
+shows what the Routing Worker handed the desk: the amendment for Booking, a
+changed country of entry for Customs (HAM→RTM is Germany→Netherlands), the new
+ETA for Milestones — and the Playbook Worker's check on every customer mail
+the Comms Worker drafted. For SHP-002 it adds the customer's QA address in
+copy, on the draft you approve.
 
-- **The tags are the honesty.** These panels are scripted — authored
-  content, reactive to scenario and shipment. What's authored is the words,
-  not the shape: switch scenario or shipment and watch the panel change.
-- **They run at once.** Each agent starts when the fact it needs exists
-  (Booking waits for Docs' fields, Invoice for the agreed rate, Customs for
-  the new port) and nothing waits for a person until the single approval at
-  the end.
+### The learning loop — correct it, live
+
+Two mistakes are left in the inbox on purpose, so there is something honest
+to correct:
+
+1. **Open IN-104.** The rules read *"re-quote … before next month's booking"*
+   as a booking request, and the Booking Worker tried to open one. In **Correct
+   this**, pick *Rate request* and press **It is this** (the phrase is
+   suggested for you: "re-quote").
+2. **Read the report at the top.** The lesson, in plain words; the whole inbox
+   replayed with it; IN-104 fixed — **and IN-109 fixed too**, because it says
+   the same thing; every earlier lesson re-checked.
+3. **Open IN-102.** The packing list's weight label was never recognised, so the
+   booking is held and the customer is being asked for a number they already
+   sent. Pick *Gross weight* next to "Bruttogewicht" and press **Teach**. IN-102's
+   booking completes — **and IN-107's bill of lading is now checked against its
+   booking** as well.
+4. **Try to break it.** Teach IN-109 back to *Booking request* with the phrase
+   "booking". It is refused: that lesson would undo L-001.
+
+What to say: *a correction becomes a rule and a line of context the Workers
+read on every later run — no model is retrained, and a lesson is kept only if
+it fixes the mail it came from without undoing an earlier one.* **Forget
+lessons** (top right) resets it for the next rehearsal.
 
 ---
 
@@ -218,6 +252,7 @@ done:
     py -m src.route_advisor --inject --no-llm  # the transparent rules path
     py -m src.comms_agent --inject             # the four drafts, in full
     py -m src.orchestrator --no-live           # the entire loop, no network
+    py -m src.workflow                         # the desk works the inbox (--llm, --reset)
     py -m unittest discover -s tests           # every claim-guard (should end "OK")
 
 **What this does *not* run: the prediction models.** TabPFN and the other
@@ -241,7 +276,7 @@ out of the demo — see `ml/README.md` and the lab notes.
 
 - **Ctrl/Cmd-K** — command palette: jump to any view, or find any booking by
   id, cargo, origin or destination; Enter opens it.
-- **`g` then a key** — go to a view; **`/`** — search; **`?`** — the
+- **`g` then a key** — go to a view (`g i` is Workflow); **`/`** — search; **`?`** — the
   shortcut sheet; **⌘B / Ctrl-B** — collapse the sidebar.
 - **Every view has an address** (`#/approvals`, `#/shipments/SHP-002`) —
   refresh keeps your place, and a link to the queue is a link you can send.
