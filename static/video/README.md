@@ -1,9 +1,10 @@
 # static/video — the background clips
 
-Footage plays behind five blocks. The landing hero rotates four clips, one at
+Footage plays behind four blocks. The landing hero rotates four clips, one at
 a time, crossfading; the landing page's closer holds a single one behind the
-sign-up block; `/how-it-works` and `/product` each hold a single one behind
-their page head, and `/product` a second behind its closer. `src/app.py` serves
+sign-up block; `/product` holds one behind its page head and a second behind
+its closer. (`/how-it-works` held `04-control-room.mp4` until the page was
+removed on 2026-09-24; that clip is now unused.) `src/app.py` serves
 this directory at `/video/<name>.mp4`, so no
 page fetches anything from another host — the same promise the self-hosted fonts
 keep, and `tests/test_the_pages_keep_their_promises.py` fails the build if a
@@ -37,7 +38,7 @@ in the frame. Replace them with licensed downloads under the same filenames.
 | `01-container-yard.mp4` | a container yard from above | the landing hero |
 | `02-terminal-queue.mp4` | trucks queued at a terminal | the landing hero |
 | `03-road-corridor.mp4` | a road corridor from the air | the landing hero |
-| `04-control-room.mp4` | an operations desk at a data wall (**graded darker**) | `/how-it-works` |
+| `04-control-room.mp4` | an operations desk at a data wall (**graded darker**) | unused since `/how-it-works` was removed |
 | `05-port-aerial.mp4` | an aerial view of a container port | the landing closer |
 | `06-assembly-line.mp4` | robot arms working a car body down a line | `/product` |
 | `07-ship-at-sea.mp4` | a container ship at sea from above | `/product`'s closer |

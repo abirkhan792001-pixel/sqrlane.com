@@ -25,7 +25,8 @@ import time
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
+from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, RedirectResponse,
+                               Response)
 from pydantic import BaseModel
 
 from src import config, learning, llm, orchestrator, simulation, workflow
@@ -35,14 +36,15 @@ INDEX = STATIC_DIR / "index.html"        # the dashboard, served at /app
 LANDING = STATIC_DIR / "landing.html"    # the front door, served at /
 PAPER = STATIC_DIR / "whitepaper.html"   # the technical whitepaper, served at /whitepaper
 
-# The four pages the front door hands off to. Each answers one question and
+# The three pages the front door hands off to. Each answers one question and
 # says which on itself, so none of them has to carry the whole pitch:
 #   product      - what you get
-#   how-it-works - how a decision is made
 #   use-cases    - when it fires, and what changes
 #   about        - what is real here, and what is not
+# /how-it-works was removed on 2026-09-24, on the owner's instruction; its
+# address redirects to /product so a link someone already shared still lands.
 PAGES = {name: STATIC_DIR / f"{name}.html"
-         for name in ("product", "how-it-works", "use-cases", "about")}
+         for name in ("product", "use-cases", "about")}
 
 # The deck, which is a different kind of page: it argues the pitch to a room
 # rather than answering a visitor's question, so it sits outside the four above
@@ -106,8 +108,8 @@ def product():
 
 @app.get("/how-it-works")
 def how_it_works():
-    """The mechanism: sixty sources in, one decision per booking out."""
-    return _page(PAGES["how-it-works"], "How it works page")
+    """Removed page. Permanently redirected rather than 404'd, so old links land."""
+    return RedirectResponse("/product", status_code=301)
 
 
 @app.get("/use-cases")

@@ -1,4 +1,8 @@
-"""The Rhine gauges are the one genuinely live number on /how-it-works.
+"""The Rhine gauges behind /api/gauges, read live and banded like the monitor.
+
+(The panel that showed them lived on /how-it-works, which was removed on
+2026-09-24. The endpoint stays, and so do these guards, so the panel can come
+back on another page without its banding drifting from the risk monitor's.)
 
 Two things have to hold, and neither is obvious from reading the code:
 

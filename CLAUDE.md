@@ -125,21 +125,35 @@ it**, in plain language, at the end of every phase. Prefer obvious code over cle
 http://127.0.0.1:8000 for the home page and http://127.0.0.1:8000/app for the board with
 the button. `README.md` is the front door for anyone new.
 
-### The site is five pages, and each one has a job
+### The site is four pages, and each one has a job
 
 One long landing page was doing five jobs at once — it ran to seventeen screens,
 which is about twice the length of the marketing sites it is aimed alongside, and
-every section after the third was read by nobody. It is now five, and the rule that
-keeps them five rather than five copies of the same pitch is that **no page may
+every section after the third was read by nobody. It became five, and is now four
+(`/how-it-works` was removed on 2026-09-24, on the owner's instruction — see below). The
+rule that keeps them four rather than four copies of the same pitch is that **no page may
 answer another page's question**:
 
 | Page | The one thing it lands | Owns, exclusively |
 |---|---|---|
 | `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the integration tree, the FAQ, the book-a-demo block |
 | `/product` | Sixteen Workers on one book, every action gated | the roster in two parts (the everyday desk in five groups, then the risk half) and its LIVE/SCRIPTED/DEMO tags, how the agents talk and learn (`#talk`), the write-back field map, the approval gate, the systems the connector points at |
-| `/how-it-works` | How a decision is actually made | prose-to-the-model vs numbers-to-a-threshold, the five stages, the live Rhine gauges, the source table |
 | `/use-cases` | Four disruptions, four different calls | the four scenarios and their board outcomes |
 | `/about` | What is real here and what is not | the live/synthetic/demo ledger, the honest quote, the modelled desk, the non-goals |
+
+**`/how-it-works` is gone, and three things went with it** (2026-09-24, on the owner's
+instruction). Its nav and footer links are off every page, the footer's *Data sources*
+link with them, and the address **301-redirects to `/product`** so a link someone already
+shared still lands; `TheRemovedPageStaysRemoved` in
+`tests/test_the_pages_keep_their_promises.py` fails if any page links to it again or the
+redirect goes. What it owned is not on the site any more: the prose-vs-threshold split,
+the five stages (and the everyday desk's five), the source table, and **the live Rhine
+gauge panel** — the one genuinely live number on a marketing page. `GET /api/gauges`
+stays, still tested for banding parity with the risk monitor, so the panel can come back
+on another page; nothing calls it today. The two in-content links that pointed there
+(the home FAQ, the `/use-cases` closer) now go to `/whitepaper#split`, which argues the
+same model-vs-threshold point. `static/video/04-control-room.mp4` played behind its
+header and is now unused.
 
 Two things follow, and both are easy to undo by accident:
 
@@ -904,7 +918,6 @@ here too, because this is what the next session reads to find its way around.
 │   │                         #   editable SVGs - for Figma and the deck
 │   ├── landing.html          # home - the gap, the loop in one picture, four doors
 │   ├── product.html          # the roster, the write-back map, the approval gate
-│   ├── how-it-works.html     # the mechanism, and the live Rhine gauges
 │   ├── use-cases.html        # the four scenarios and the calls they force
 │   ├── about.html            # what is real here, who it is for, the non-goals
 │   ├── index.html            # the dashboard (HTML+CSS+JS in one file)
@@ -1392,8 +1405,8 @@ days and ordering exactly as the screenplay authored them.
 uvicorn src.app:app --reload      # then open http://127.0.0.1:8000
 ```
 
-`/` is home; `/product`, `/how-it-works`, `/use-cases` and `/about` are the four pages
-it hands off to; `/whitepaper` is the technical paper and `/app` is the dashboard. All
+`/` is home; `/product`, `/use-cases` and `/about` are the three pages it hands off to
+(`/how-it-works` redirects to `/product`); `/whitepaper` is the technical paper and `/app` is the dashboard. All
 seven are single self-contained files carrying the same tokens, nav and footer.
 Beside them sit the deck pages, which argue the pitch to a room rather than
 answering a visitor's question: `/deck` is the pitch deck, `/what` is its What
@@ -1406,7 +1419,7 @@ payload on failure, like `/run`. `GET /api/gauges` reads the three reference Rhi
 the gauge panel on `/how-it-works` (`config.LANDING_GAUGES` — the panel was designed for
 three; the monitor's live pull reads all six stations in `config.RHINE_GAUGES`, and both
 resolve against the one configured list so the two callers cannot band the same station
-apart) — cached for `GAUGE_CACHE_SECONDS` because the page is
+apart; no page calls it since `/how-it-works` was removed) — cached for `GAUGE_CACHE_SECONDS` because the page is
 public and the source refreshes about every fifteen minutes, and it answers 200 with
 `ok: false` rather than failing, so a gauge being down can never blank the page. `GET /api/health` reports what a running instance can actually see — the
 path it received, whether the dashboard and data files shipped, and whether a provider
