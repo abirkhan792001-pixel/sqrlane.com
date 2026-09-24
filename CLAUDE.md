@@ -156,6 +156,16 @@ The everyday mocks come in three compositions, chosen per scene by `layout`:
   on purpose: that chip is the one line on the card that must always show.
 - **checklist** - each agent's step as a ticked row, the draft blurred and fading behind.
 - **focus** - the steps as a column, the one that matters picked out in black.
+- **chat** - an *SQR agent* thread: each message is a Worker speaking, a typing indicator
+  between them, the thread following the newest. It shows what a single Worker actually
+  does - the Docs Worker's card carries the attachment and every field it read, set
+  against the booking with the mismatch flagged; the Playbook Worker's card opens with
+  the customer's standing instructions and then the send-back and the fix. **There is no
+  chat box in the product, so there is none on the page:** the agents post, and the only
+  human message is a correction - the one thing a person does in this loop besides
+  approving. A seventh, full-width card, *Correct it once. The desk learns.*, is that
+  correction: IN-104 misread, a person corrects it, the lesson, the replay, IN-109 fixed
+  too, kept.
 
 On arrival a card's layers rise and un-blur back to front, ticks fill in order, the key row
 darkens last and the pill lands; hover lifts the front layer. Three rules hold it:
@@ -163,7 +173,11 @@ darkens last and the pill lands; hover lifts the front layer. Three rules hold i
 - **Every word in an everyday mock is the desk's own output.** The cards are drawn from
   `#uc-scenes`, and `test_the_use_cases_stage_says_only_what_the_desk_did` replays the
   inbox and fails on any step result, record, draft subject, recipient, body line or
-  escalation the agents did not produce. Checked by changing one price and watching it
+  escalation the agents did not produce - and, for a chat, on any message not said by
+  that same Worker, any field value the Docs Worker did not read, or any rule that is
+  not in the customer's playbook. `test_the_use_cases_learning_card_is_what_a_correction_really_does`
+  replays the correction on a clean slate and holds the lesson's id and words, the mails
+  it fixed and the mail count to the loop's own report. Checked by changing one price and watching it
   fail. Lines with a date in them are avoided, because the bookings age forward weekly.
 - **Reduced motion, or no observer, gets every card finished**; the pre-arrival state
   exists only under `.bx-js`, which the page sets on itself.

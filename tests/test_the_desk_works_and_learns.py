@@ -181,37 +181,75 @@ class TheWorkersTalk(_TempLessons):
             at = spoken.index(line, at) + 1
 
 
-    def test_the_use_cases_stage_says_only_what_the_desk_did(self):
-        """/use-cases draws six inbox jobs as product mocks from #uc-scenes. Every
-        line a mock prints - a step's result, a queued record, a draft's subject,
-        recipient and body, an escalation - must be what this run produced for that
-        mail. Titles, one-line descriptions and "working" labels are the page's own
-        and are not checked; they describe, they do not quote."""
+    def _scenes(self):
         import json
         import re
         page = (ROOT / "static" / "use-cases.html").read_text()
         block = re.search(r'<script type="application/json" id="uc-scenes">(.*?)</script>',
                           page, re.S)
         self.assertIsNotNone(block, "the scene data is gone from /use-cases")
-        scenes = json.loads(block.group(1))
-        self.assertEqual(len(scenes), 6)
+        return json.loads(block.group(1))
+
+    def test_the_use_cases_stage_says_only_what_the_desk_did(self):
+        """/use-cases draws its cards from #uc-scenes. Every line a card puts in an
+        agent's mouth - a step's result, a chat message, a field it read, a rule
+        it checked, a queued record, a draft's subject, recipient and body, an
+        escalation - must be what this run produced for that mail, said by that
+        Worker. Titles, one-line descriptions and "working" labels are the page's
+        own and are not checked; they describe, they do not quote. The learning
+        card is checked on its own, below."""
+        from src import roster
+        scenes = self._scenes()
+        self.assertEqual(len(scenes), 7)
         inbox = {m["id"]: m for m in workflow.load_inbox()["messages"]}
         items = {i["id"]: i for i in self.result["items"]}
+        playbooks = workflow.load_playbooks()
         for sc in scenes:
+            if sc["id"] == "learn":
+                continue
             item = sc["item"]
             with self.subTest(scene=sc["id"]):
                 self.assertEqual(sc["trigger"]["subject"], inbox[item]["subject"])
                 self.assertEqual(sc["trigger"]["from"], inbox[item]["sender_org"])
                 outs = [o for o in self.result["outputs"] if o["item"] == item]
-                said = {m["text"] for m in self.bus if m["item"] == item}
-                changed = {c["to"] for o in outs if o["kind"] == "tms" for c in o["changes"]}
+                said = {(m["from"], m["text"]) for m in self.bus if m["item"] == item}
+                said |= {(o["worker"], c["to"]) for o in outs if o["kind"] == "tms"
+                         for c in o["changes"]}
                 refs = {o["booking_ref"] for o in outs}
-                for st in sc["steps"]:
-                    self.assertIn(st["done"], said | changed, st["done"])
+                for st in sc.get("steps", []):
+                    self.assertIn(st["done"], {t for _, t in said}, st["done"])
                     if st.get("record"):
                         self.assertIn(st["record"], refs)
-                end = sc["end"]
-                if end["kind"] == "draft":
+                for m in sc.get("messages", []):
+                    kind = m.get("kind")
+                    if kind is None:
+                        self.assertIn((m["who"], m["text"]), said, m["text"])
+                    elif kind == "file":
+                        self.assertIn(m["name"], [a["name"] for a in inbox[item]["attachments"]])
+                    elif kind == "fields":
+                        read = items[item]["extracted"]["fields"]
+                        booked = roster.booked_docs(items[item]["linked_booking"])
+                        self.assertEqual(m["against"], items[item]["linked_booking"])
+                        for row in m["rows"]:
+                            self.assertEqual(row["value"], read[row["field"]], row["field"])
+                            self.assertEqual(row["label"], workflow.FIELDS[row["field"]][0])
+                            if "booked" in row:
+                                key = workflow.BOOKED_KEYS[row["field"]]
+                                self.assertEqual(row["booked"], booked[key])
+                    elif kind == "rules":
+                        rules = {r["type"]: r for r in playbooks[m["customer"]]}
+                        self.assertEqual(m["customer"], items[item]["customer"])
+                        for r in m["rules"]:
+                            self.assertIn(r["type"], rules)
+                            self.assertEqual(r["why"], rules[r["type"]]["why"])
+                            value = rules[r["type"]]["value"]
+                            for v in (value if isinstance(value, list) else [value]):
+                                if isinstance(v, str):
+                                    self.assertIn(v, r["text"])
+                    if m.get("record"):
+                        self.assertIn(m["record"], refs)
+                end = sc.get("end")
+                if end and end["kind"] == "draft":
                     mail = next((o for o in outs if o["kind"] == "mail"
                                  and o["subject"] == end["subject"]), None)
                     self.assertIsNotNone(mail, end["subject"])
@@ -220,9 +258,34 @@ class TheWorkersTalk(_TempLessons):
                         self.assertIn(end["cc"], mail["cc"])
                     for line in end["lines"]:
                         self.assertIn(line, mail["body"])
-                else:
+                elif end:
                     esc = [(e["to"], e["text"]) for e in items[item]["escalations"]]
                     self.assertIn((end["to"], end["text"]), esc)
+
+    def test_the_use_cases_learning_card_is_what_a_correction_really_does(self):
+        """The learning card shows a person correcting IN-104 and the desk's
+        answer. Replay that exact correction on a clean slate: the misreading,
+        the lesson's words and id, the mails it fixed and the mail count must all
+        be what the loop reports - and the lesson must actually be kept."""
+        scene = next(sc for sc in self._scenes() if sc["id"] == "learn")
+        msgs = {m.get("kind"): m for m in scene["messages"]}
+        item = scene["item"]
+        before = next(i for i in self.result["items"] if i["id"] == item)
+        self.assertEqual(msgs["intent"]["intent"], before["intent"])
+        self.assertEqual(msgs["intent"]["label"], workflow.INTENTS[before["intent"]]["label"])
+        self.assertIn(("Inbox Worker", msgs["intent"]["text"]),
+                      {(m["from"], m["text"]) for m in self.bus if m["item"] == item})
+        fix = msgs["human"]["correct"]
+        self.assertIn(fix["cue"], msgs["human"]["text"])
+        self.assertIn(workflow.INTENTS[fix["right"]]["label"].lower(), msgs["human"]["text"])
+        report = workflow.correct(item, kind=fix["kind"], right=fix["right"], cue=fix["cue"])
+        self.assertTrue(report["accepted"], report.get("reason"))
+        self.assertEqual(msgs["lesson"]["id"], report["lesson"]["id"])
+        self.assertEqual(msgs["lesson"]["text"], report["lesson"]["learned"])
+        self.assertEqual(msgs["replay"]["fixed"], report["fixed_item"])
+        self.assertEqual(msgs["replay"]["also"], [c["item"] for c in report["propagated"]])
+        self.assertEqual(msgs["replay"]["mails"], len(report["run"]["items"]))
+        self.assertFalse([r for r in report["regression"] if not r["holds"]])
 
 
 class NothingLeaves(_TempLessons):
