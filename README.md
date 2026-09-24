@@ -125,22 +125,21 @@ or go straight to **http://127.0.0.1:8000/app** and press **Inject Hamburg strik
 |---|---|
 | `/` | Home — the gap, the cost of acting late, the systems it works through, the FAQ |
 | `/product` | The sixteen Workers, how they talk and learn, the write-back map, the approval gate |
-| `/how-it-works` | The mechanism: sixty sources in, one decision per booking out |
-| `/use-cases` | Four disruptions over one board, and the four calls they force |
+| `/use-cases` | One card grid: six everyday jobs as product mocks drawn from the agents' real output, then four disruptions over one board |
 | `/about` | What is real here and what is not, and the desk it is modelled on |
 | `/whitepaper` | The technical paper |
 | `/app` | The dashboard. This is the demo, and the button lives here |
 | `/video/<clip>` | The hero reel's clips, same-origin. 404 is fine — the hero renders without them |
 | `/api/health` | What a running instance can actually see. First stop when a deploy misbehaves |
-| `/api/gauges` | Live Rhine water levels from PEGELONLINE. The one real number on /how-it-works |
+| `/api/gauges` | Live Rhine water levels from PEGELONLINE. No page shows them since `/how-it-works` was removed; the endpoint and its tests stay |
 | `POST /run` | One cycle: refresh risk, decide, draft, hand the consequences to the desk |
 | `GET /api/workflow` | The desk works the inbox once: triage, the work, the playbook checks, the queue |
 | `POST /api/workflow/correct` | A person corrects a Worker; the learning loop runs and reports what it fixed |
 | `POST /api/workflow/reset` | Forget every lesson — to rehearse the learning loop from scratch |
 
 Each page answers **one** question and says so on itself, in a chip under its
-headline. That is deliberate: five pages that all try to sell the whole product
-are five pages nobody finishes.
+headline. That is deliberate: pages that all try to sell the whole product
+are pages nobody finishes.
 
 For the AI key, pick one free provider and put it in `.env`:
 
@@ -425,7 +424,7 @@ src/      the components + llm.py (the only door to the AI provider) + config.py
           httpget.py is the capped GET both of them share,
           tms.py is the only door to the book of bookings,
           workflow.py is the everyday desk, learning.py what it was taught
-static/   landing.html - home  ·  product.html  ·  how-it-works.html
+static/   landing.html - home  ·  product.html
           use-cases.html  ·  about.html  ·  whitepaper.html
           index.html - the dashboard
           fonts/ - Geist Sans + Mono, self-hosted (no CDN, ever)

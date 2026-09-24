@@ -46,11 +46,11 @@ LANDING = STATIC / "landing.html"
 DASHBOARD = STATIC / "index.html"
 WHITEPAPER = STATIC / "whitepaper.html"
 
-# The four pages the home page hands off to, each answering one question. They
+# The three pages the home page hands off to, each answering one question. They
 # are served, so they are held to every promise in this file - a guard that
-# covers three pages of a seven-page site is a guard with four holes in it.
+# covers three pages of a six-page site is a guard with three holes in it.
+# (/how-it-works was removed on 2026-09-24; see TheRemovedPageStaysRemoved.)
 PRODUCT = STATIC / "product.html"
-HOW_IT_WORKS = STATIC / "how-it-works.html"
 USE_CASES = STATIC / "use-cases.html"
 ABOUT = STATIC / "about.html"
 
@@ -66,7 +66,7 @@ DECK = STATIC / "deck.html"
 WHAT = STATIC / "what.html"
 PITCH = STATIC / "pitch.html"
 
-MARKETING = (LANDING, PRODUCT, HOW_IT_WORKS, USE_CASES, ABOUT)
+MARKETING = (LANDING, PRODUCT, USE_CASES, ABOUT)
 ALL_PAGES = MARKETING + (DASHBOARD, WHITEPAPER, DECK, WHAT, PITCH)
 
 # Named languages. "English" is on the list for the same reason as the rest: the
@@ -469,6 +469,25 @@ class NothingLoadsFromOffOrigin(unittest.TestCase):
                     offences.append(f"{page.name} fetches {url}")
         self.assertEqual(offences, [], "\n".join([
             "", "A page fetches from another host:", *(f"    {o}" for o in offences)]))
+
+
+
+class TheRemovedPageStaysRemoved(unittest.TestCase):
+    """/how-it-works was taken off the site on the owner's instruction. A link
+    left pointing at it is a dead end in the nav, and a shared link should still
+    land somewhere - so no page may link to it, and the address redirects."""
+
+    def test_no_page_links_to_it(self):
+        for page in sorted(STATIC.glob("*.html")):
+            with self.subTest(page=page.name):
+                self.assertNotIn('href="/how-it-works', page.read_text(encoding="utf-8"))
+
+    def test_the_old_address_redirects_to_the_product_page(self):
+        from fastapi.testclient import TestClient
+        from src.app import app
+        response = TestClient(app).get("/how-it-works", follow_redirects=False)
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response.headers["location"], "/product")
 
 
 if __name__ == "__main__":

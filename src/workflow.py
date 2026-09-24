@@ -519,6 +519,8 @@ def _docs(desk, item_id, message, msg):
     if diffs:
         desk.post("docs", "exception", "handoff", item_id,
                   "Document does not match the booking: " + "; ".join(
+                      f"{d['label']} {d['document']:,} vs {d['booking']} booked"
+                      if isinstance(d["document"], int) else
                       f"{d['label']} {d['document']} vs {d['booking']} booked" for d in diffs),
                   deliver=True, reason="doc_mismatch", diffs=diffs, booking=booking["id"])
 
