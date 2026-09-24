@@ -138,14 +138,16 @@ answer another page's question**:
 |---|---|---|
 | `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the integration tree, the FAQ, the book-a-demo block |
 | `/product` | Sixteen Workers on one book, every action gated | the roster in two parts (the everyday desk in five groups, then the risk half) and its LIVE/SCRIPTED/DEMO tags, how the agents talk and learn (`#talk`), the write-back field map, the approval gate, the systems the connector points at |
-| `/use-cases` | Six everyday jobs, then four disruptions | one card grid: the six inbox jobs as cropped product mocks (`#everyday`), then the four scenarios and their boards (`#cases`) |
+| `/use-cases` | Six everyday jobs, one desk | one card grid: the six inbox jobs as cropped product mocks (`#everyday`) |
 | `/about` | What is real here and what is not | the live/synthetic/demo ledger, the honest quote, the modelled desk, the non-goals |
 
-**`/use-cases` is one card grid, everyday desk first** (2026-09-24, on the owner's
+**`/use-cases` is one card grid of the everyday desk** (2026-09-24, on the owner's
 instruction, rebuilt twice the same day: first as a single agent window after an
 inbox-automation reel, then as the bento grid on Peec AI's site - layout and motion taken,
-colours, names and content ours). Under the unchanged hero, two runs of cards, two to a
-row with the widths alternating: **the six everyday jobs**, then **the four disruptions**.
+colours, names and content ours). Six cards, two to a row with the widths alternating, one
+per everyday job. **The four disruption cards were removed the same day**, also on the
+owner's instruction, and the hero no longer promises them ("Six jobs a day. One desk.");
+the disruptions still run on the dashboard and are argued on `/product`.
 Each card is a title, two lines, and a cropped product mock that fades out at its foot.
 The everyday mocks come in three compositions, chosen per scene by `layout`:
 
@@ -155,8 +157,7 @@ The everyday mocks come in three compositions, chosen per scene by `layout`:
 - **checklist** - each agent's step as a ticked row, the draft blurred and fading behind.
 - **focus** - the steps as a column, the one that matters picked out in black.
 
-The disruption cards keep their boards, now in a panel, lighting booking by booking. On
-arrival a card's layers rise and un-blur back to front, ticks fill in order, the key row
+On arrival a card's layers rise and un-blur back to front, ticks fill in order, the key row
 darkens last and the pill lands; hover lifts the front layer. Three rules hold it:
 
 - **Every word in an everyday mock is the desk's own output.** The cards are drawn from
@@ -755,8 +756,7 @@ layer. Drafts are templates, labelled by the Worker that wrote them.
 Worker's decisions become messages to Booking, Customs (only when the country of entry
 changes) and Milestones, and the Playbook Worker checks every customer mail the Comms
 Worker drafted — adding a missing copy address on the draft itself, before it is filed, so
-what a person approves is the compliant version. The counts `/use-cases` quotes ("handed
-to the desk") are held to a real run by test.
+what a person approves is the compliant version.
 
 **The TMS Link** (`src/tms.py`) is where both layers land — the **system of record**, on a demo connector. Both ends
   of the loop: `read_bookings()` is the only door to the book, and `writebacks_for()` turns
@@ -947,7 +947,7 @@ here too, because this is what the next session reads to find its way around.
 │   │                         #   editable SVGs - for Figma and the deck
 │   ├── landing.html          # home - the gap, the loop in one picture, four doors
 │   ├── product.html          # the roster, the write-back map, the approval gate
-│   ├── use-cases.html        # the four scenarios and the calls they force
+│   ├── use-cases.html        # the six everyday jobs, as a card grid
 │   ├── about.html            # what is real here, who it is for, the non-goals
 │   ├── index.html            # the dashboard (HTML+CSS+JS in one file)
 │   ├── whitepaper.html       # the technical paper

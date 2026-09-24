@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Use cases &mdash; SQRlane</title>
-<meta name="description" content="Six everyday jobs the desk's agents work from the inbox - a quote, a booking, a document check, a rollover, an invoice, an arrival - and four disruptions that each force a different call. Every one ends on the booking, waiting for your approval.">
+<meta name="description" content="Six everyday jobs the desk's agents work from the inbox - a quote, a booking, a document check, a rollover, an invoice, an arrival. Every one ends on the booking, waiting for your approval.">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3.5' fill='%23171717'/%3E%3Cpath d='M3 11.2h10M3 8h6.5M3 4.8h3.5' stroke='%23fff' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -248,8 +248,7 @@ h1,h2,h3,h4,p{margin:0}
    Motion, all of it on arrival: layers rise and un-blur back to
    front, ticks fill in order, the key row darkens last, the pill
    lands. Hover lifts the front layer a few pixels. Reduced motion,
-   or no JS, gets the finished card. Every class is prefixed bx- (or
-   uc- for the boards, kept from before).
+   or no JS, gets the finished card. Every class is prefixed bx-.
    ================================================================== */
 :root{--out:cubic-bezier(.22,1,.36,1)}
 
@@ -267,10 +266,8 @@ h1,h2,h3,h4,p{margin:0}
     padding:36px 40px 0; background:var(--card); border:1px solid var(--border);
     border-radius:var(--r-lg); box-shadow:var(--shadow-card)}
 .bx.s5{grid-column:span 5} .bx.s7{grid-column:span 7}
-.bx.off{background:var(--card-muted)}
 .bx h3{font-size:20px; line-height:28px; letter-spacing:-.5px; font-weight:600}
 .bx .ds{margin-top:8px; max-width:40ch; font-size:16px; line-height:25px; color:var(--muted)}
-.bx .kind{display:flex; gap:8px; margin-bottom:12px}
 
 /* The mock: fixed height, cropped, fading out at the foot. */
 .bx-m{position:relative; height:390px; margin-top:28px;
@@ -375,49 +372,6 @@ h1,h2,h3,h4,p{margin:0}
 .bx.in .bx-fr.key .b{color:#a8a8a8}
 .bx.in .bx-fr.key .go{border-color:#383838; color:#fff}
 
-/* The disruption boards, restyled as a panel inside the card. */
-.uc-mock{padding:14px 14px 18px}
-.uc-mock .board{margin-top:4px}
-.uc-mock .moved{margin-top:14px; display:flex; flex-direction:column; gap:6px}
-.uc-mock .mv{font-family:"Geist Mono",ui-monospace,monospace; font-size:11.5px; line-height:17px;
-             color:var(--muted)}
-.uc-mock .mv b{color:var(--fg); font-weight:500}
-.uc-mock .tot{margin-top:14px; font-size:12px; line-height:17px; color:var(--faint)}
-.uc-mock .tot b{color:var(--fg); font-weight:500; font-variant-numeric:tabular-nums}
-.uc-mock .tot b[data-desk]{display:inline-block; min-width:1ch; padding:0 5px; border-radius:4px;
-                           background:var(--green-100); color:var(--green)}
-.bx .call{margin-top:14px; max-width:48ch; padding:10px 13px; border-radius:var(--r-sm);
-          background:var(--blue-100); font-size:13px; line-height:19px; color:var(--blue)}
-.bx .call b{font-weight:600}
-.uc-replay{margin-left:auto; font:inherit; font-size:11.5px; line-height:16px; color:var(--faint);
-           background:var(--card); border:1px solid var(--border); border-radius:6px; padding:2px 8px;
-           cursor:pointer}
-.uc-replay:hover{color:var(--fg)}
-
-.board{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px}
-.cell{padding:8px 0 9px; border-radius:var(--r-sm); text-align:center;
-      border:1px solid var(--border); background:var(--card);
-      transition:background-color .5s var(--out), border-color .5s var(--out)}
-.cell .id{font-family:"Geist Mono",ui-monospace,monospace; font-size:9.5px; line-height:13px;
-          color:var(--faint)}
-.cell .st{margin-top:3px; font-size:9.5px; line-height:13px; font-weight:600;
-          letter-spacing:.04em; text-transform:uppercase; transition:opacity .4s var(--out)}
-.cell.reroute{background:var(--blue-100); border-color:var(--blue-400)}
-.cell.reroute .st{color:var(--blue)}
-.cell.hold{background:var(--amber-100); border-color:var(--amber-400)}
-.cell.hold .st{color:var(--amber)}
-.cell.plan .st{color:var(--faint)}
-.bx-js .uc-mock:not(.played) .cell:not(.lit){background:var(--card); border-color:var(--border)}
-.bx-js .uc-mock:not(.played) .cell:not(.lit) .st{opacity:0}
-.bx-js .uc-mock .cell.lit{animation:ucFlip .6s var(--out)}
-@keyframes ucFlip{0%{transform:scale(.9); filter:blur(3px)}100%{transform:none; filter:none}}
-.bx-js .uc-mock .mv,.bx-js .uc-mock .tot{opacity:0; transform:translateY(6px); filter:blur(4px);
-       transition:opacity .55s var(--out), transform .6s var(--out), filter .55s var(--out)}
-.bx-js .uc-mock.shown .mv,.bx-js .uc-mock.shown .tot{opacity:1; transform:none; filter:none}
-.bx.board-card .bx-m{height:auto; min-height:230px; -webkit-mask-image:none; mask-image:none}
-.bx.board-card .bx-l{position:relative; margin:0 -8px}
-.bx.board-card .bx-panel{border-bottom:0; border-radius:12px 12px 0 0}
-
 .bx-note{margin-top:18px; max-width:78ch}
 .bx-note a{color:var(--fg); text-decoration:underline; text-underline-offset:3px;
            text-decoration-thickness:1px}
@@ -430,12 +384,10 @@ h1,h2,h3,h4,p{margin:0}
   /* Text wraps harder at this width; the draft's "not sent" chip must stay
      above the fade at the card's foot. */
   .bx-m{height:480px}
-  .board{grid-template-columns:repeat(4,minmax(0,1fr))}
   .bx-pill{white-space:normal}
 }
 @media (prefers-reduced-motion:reduce){
-  .bx-l,.bx-ck,.bx-ck::after,.bx-fr,.cell{transition:none !important}
-  .bx-js .uc-mock .cell.lit{animation:none}
+  .bx-l,.bx-ck,.bx-ck::after,.bx-fr{transition:none !important}
 }
 
 /* ---------- footer ---------- */
@@ -587,17 +539,18 @@ h1,h2,h3,h4,p{margin:0}
   <div class="wrap">
     <div class="in rv">
       <span class="eyebrow">Use cases</span>
-      <h1 class="d2">Six jobs a day. Four disruptions. One desk.</h1>
-      <p class="copy18">Most of a forwarder&rsquo;s day is the same six jobs, arriving by mail and ending on a booking. Now and then the world moves a lane and the whole board has to be re-planned. Both run through the same agents, on the same records, and every one of them stops at your approval.</p>
+      <h1 class="d2">Six jobs a day. One desk.</h1>
+      <p class="copy18">Most of a forwarder&rsquo;s day is the same six jobs, arriving by mail and ending on a booking. The desk&rsquo;s agents work each one on the same records, hand each other what they need, and every one of them stops at your approval.</p>
       <!-- Each page states its own job. -->
-      <p class="goal"><span class="chip blue">This page</span> <b>what the desk does, one job at a time &mdash; and when a lane moves</b></p>
+      <p class="goal"><span class="chip blue">This page</span> <b>what the desk does, one job at a time</b></p>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     THE USE CASES. One bento grid in two runs: the six everyday
-     jobs first, then the four disruptions.
+     THE USE CASES. One bento grid of the six everyday jobs. (The
+     four disruption cards were removed on 2026-09-24, on the owner's
+     instruction; the disruptions still run on the dashboard.)
 
      The six everyday cards are drawn from #uc-scenes below. Every
      line their mocks print is the real output of src/workflow.py on
@@ -618,128 +571,6 @@ h1,h2,h3,h4,p{margin:0}
       computed on every run &mdash; open <a href="/app#/workflow">Workflow</a> in the demo to see all
       thirteen mails, the full conversation behind each, and the corrections that teach the desk.</p>
 
-    <p class="bx-label" id="cases" style="margin-top:56px">When a lane moves <span>4 disruptions</span></p>
-    <div class="bx-grid">
-      <article class="bx board-card" data-bx>
-        <div class="kind"><span class="chip">Port blocked</span></div>
-        <h3>Hamburg port strike</h3>
-        <p class="ds">A full-day walkout closes Hamburg's container terminals.</p>
-        <p class="call">Discharge-port reroute <b>against</b> hold &mdash; the same event, two different right answers.</p>
-        <div class="bx-m">
-          <div class="bx-l front bx-panel" style="--d:.12s">
-            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
-              <button class="uc-replay" type="button" data-replay aria-label="Replay the Hamburg port strike board">Replay</button></div>
-            <div class="uc-mock">
-              <div class="board">
-            <div class="cell reroute"><p class="id">SHP-001</p><p class="st">Reroute</p></div>
-            <div class="cell hold"><p class="id">SHP-002</p><p class="st">Hold</p></div>
-            <div class="cell plan"><p class="id">SHP-003</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-004</p><p class="st">On plan</p></div>
-            <div class="cell reroute"><p class="id">SHP-005</p><p class="st">Reroute</p></div>
-            <div class="cell plan"><p class="id">SHP-006</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-007</p><p class="st">On plan</p></div>
-          </div>
-              <div class="moved">
-            <p class="mv">SHP-001 &nbsp;<b>R-HAM-STD &rarr; R-RTM-ALT</b></p>
-            <p class="mv">SHP-005 &nbsp;<b>R-HAM-STD &rarr; R-RTM-ALT</b></p>
-            <p class="mv">SHP-002 &nbsp;<b>held</b> &mdash; the customer is in Hamburg</p>
-          </div>
-              <p class="tot"><b>2</b> rerouted &middot; <b>1</b> held &middot; <b>4</b> on plan &middot; <b>12</b> changes queued &middot; <b data-desk="hamburg">8</b> handed to the desk</p>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="bx board-card" data-bx>
-        <div class="kind"><span class="chip">Chokepoint closed</span></div>
-        <h3>Red Sea closure</h3>
-        <p class="ds">Attacks close the Bab-el-Mandeb approach, taking the Suez route with it.</p>
-        <p class="call">A forced long-haul reroute &mdash; the <b>whole board</b> moves, and one booking has nowhere better to go.</p>
-        <div class="bx-m">
-          <div class="bx-l front bx-panel" style="--d:.12s">
-            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
-              <button class="uc-replay" type="button" data-replay aria-label="Replay the Red Sea closure board">Replay</button></div>
-            <div class="uc-mock">
-              <div class="board">
-            <div class="cell reroute"><p class="id">SHP-001</p><p class="st">Reroute</p></div>
-            <div class="cell reroute"><p class="id">SHP-002</p><p class="st">Reroute</p></div>
-            <div class="cell reroute"><p class="id">SHP-003</p><p class="st">Reroute</p></div>
-            <div class="cell reroute"><p class="id">SHP-004</p><p class="st">Reroute</p></div>
-            <div class="cell reroute"><p class="id">SHP-005</p><p class="st">Reroute</p></div>
-            <div class="cell reroute"><p class="id">SHP-006</p><p class="st">Reroute</p></div>
-            <div class="cell hold"><p class="id">SHP-007</p><p class="st">Hold</p></div>
-          </div>
-              <div class="moved">
-            <p class="mv">Six bookings &nbsp;<b>&rarr; the Cape</b></p>
-            <p class="mv">SHP-007 &nbsp;<b>held</b> &mdash; no better routing exists for it</p>
-          </div>
-              <p class="tot"><b>6</b> rerouted &middot; <b>1</b> held &middot; <b>0</b> on plan &middot; <b>28</b> changes queued &middot; <b data-desk="redsea">14</b> handed to the desk</p>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="bx board-card" data-bx>
-        <div class="kind"><span class="chip">Inland waterway</span></div>
-        <h3>Rhine low water</h3>
-        <p class="ds">Sustained low water at Kaub cuts barge payloads. The sea leg is untouched.</p>
-        <p class="call">A <b>mode switch</b>, not a port change &mdash; barge off the river and onto rail.</p>
-        <div class="bx-m">
-          <div class="bx-l front bx-panel" style="--d:.12s">
-            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
-              <button class="uc-replay" type="button" data-replay aria-label="Replay the Rhine low water board">Replay</button></div>
-            <div class="uc-mock">
-              <div class="board">
-            <div class="cell plan"><p class="id">SHP-001</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-002</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-003</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-004</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-005</p><p class="st">On plan</p></div>
-            <div class="cell reroute"><p class="id">SHP-006</p><p class="st">Reroute</p></div>
-            <div class="cell plan"><p class="id">SHP-007</p><p class="st">On plan</p></div>
-          </div>
-              <div class="moved">
-            <p class="mv">SHP-006 &nbsp;<b>R-RTM-RHINE &rarr; R-RTM-RAIL</b></p>
-          </div>
-              <p class="tot"><b>1</b> re-moded &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="rhine">2</b> handed to the desk</p>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="bx board-card off" data-bx>
-        <div class="kind"><span class="chip">Regional inland</span><span class="chip plain">Off by default</span></div>
-        <h3>Southern France wildfire</h3>
-        <p class="ds">Fire across the Rhone corridor closes road and rail inland of Fos-sur-Mer. The port keeps working.</p>
-        <p class="call">A <b>land-leg</b> reroute &mdash; the discharge port is fine, the way out of it is not.</p>
-        <div class="bx-m">
-          <div class="bx-l front bx-panel" style="--d:.12s">
-            <div class="bx-ph">Board <span class="c">&middot; 7 bookings from the TMS</span>
-              <button class="uc-replay" type="button" data-replay aria-label="Replay the Southern France wildfire board">Replay</button></div>
-            <div class="uc-mock">
-              <div class="board">
-            <div class="cell plan"><p class="id">SHP-001</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-002</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-003</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-004</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-005</p><p class="st">On plan</p></div>
-            <div class="cell plan"><p class="id">SHP-006</p><p class="st">On plan</p></div>
-            <div class="cell reroute"><p class="id">SHP-007</p><p class="st">Reroute</p></div>
-          </div>
-              <div class="moved">
-            <p class="mv">SHP-007 &nbsp;<b>R-FOS-STD &rarr; R-ANR-LYON</b></p>
-          </div>
-              <p class="tot"><b>1</b> rerouted &middot; <b>6</b> on plan &middot; <b>4</b> changes queued &middot; <b data-desk="france">3</b> handed to the desk</p>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-    <p class="copy13 bx-note">
-      Every state and count above is taken from a real offline run of the same advisor the
-      demo uses &mdash; not written by hand. &ldquo;Handed to the desk&rdquo; is the work each
-      decision gives the everyday agents: the amendment for the Booking agent, a changed
-      country of entry for Customs, the new ETA for Milestones. The disruptions are authored
-      so one can be shown on command; the reasoning that answers them is not.
-    </p>
-  </div>
 </section>
 
 <!-- The scenes. Data, not prose: each "done", draft line, subject and
@@ -1179,56 +1010,20 @@ h1,h2,h3,h4,p{margin:0}
 /* ------------------------------------------------------------------
    Arrival. A card animates once, as it comes into view: its layers
    rise and un-blur back to front, ticks fill, the key row darkens, the
-   pill lands. A disruption card's board then lights booking by booking.
-   Reduced motion, or no observer, gets every card finished at once.
+   pill lands. Reduced motion, or no observer, gets every card finished.
    ------------------------------------------------------------------ */
 (function () {
   var cards = document.querySelectorAll("[data-bx]");
   var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  var count = function (b) {
-    var to = parseInt(b.dataset.to || b.textContent, 10);
-    if (isNaN(to)) return;
-    b.dataset.to = to;
-    var t0 = null;
-    var step = function (t) {
-      if (t0 === null) t0 = t;
-      var p = Math.min(1, (t - t0) / 700);
-      b.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(step); else b.textContent = to;
-    };
-    requestAnimationFrame(step);
-  };
-  var board = function (m, delay) {
-    var cells = m.querySelectorAll(".cell");
-    m.classList.remove("played", "shown");
-    cells.forEach(function (c) { c.classList.remove("lit"); });
-    var run = (m._run = (m._run || 0) + 1);
-    cells.forEach(function (c, i) {
-      setTimeout(function () { if (m._run === run) c.classList.add("lit"); }, delay + i * 120);
-    });
-    setTimeout(function () {
-      if (m._run !== run) return;
-      m.classList.add("played", "shown");
-      m.querySelectorAll(".tot b").forEach(count);
-    }, delay + cells.length * 120 + 250);
-  };
-  var finish = function (card) {
-    card.classList.add("in");
-    var m = card.querySelector(".uc-mock"); if (m) m.classList.add("played", "shown");
-  };
-  cards.forEach(function (card) {
-    var r = card.querySelector("[data-replay]"), m = card.querySelector(".uc-mock");
-    if (r && m) r.addEventListener("click", function () { board(m, 150); });
-  });
-  if (still || !("IntersectionObserver" in window)) { cards.forEach(finish); return; }
+  if (still || !("IntersectionObserver" in window)) {
+    cards.forEach(function (c) { c.classList.add("in"); });
+    return;
+  }
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
       if (!e.isIntersecting) return;
-      var card = e.target;
-      card.classList.add("in");
-      var m = card.querySelector(".uc-mock"); if (m) board(m, 650);
-      io.unobserve(card);
+      e.target.classList.add("in");
+      io.unobserve(e.target);
     });
   }, {threshold: 0.3});
   cards.forEach(function (c) { io.observe(c); });

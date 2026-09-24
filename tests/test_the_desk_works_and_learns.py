@@ -339,17 +339,6 @@ class TheRiskLayerHandsItsDecisionsToTheDesk(_TempLessons):
             self.assertEqual(got, {"booking", "customs", "milestones"}, sid)
         self.assertNotIn("customs", {m["to_id"] for m in msgs if m["item"] == "SHP-002"})
 
-    def test_the_use_cases_page_quotes_the_handoffs_a_run_really_makes(self):
-        import re
-        page = (ROOT / "static" / "use-cases.html").read_text()
-        quoted = dict(re.findall(r'data-desk="(\w+)">(\d+)<', page))
-        self.assertEqual(set(quoted), {"hamburg", "redsea", "rhine", "france"})
-        for scenario, count in quoted.items():
-            run = orchestrator.run_cycle(live=False, use_llm=False, scenario=scenario)
-            made = sum(1 for m in run["workflow_handoffs"]["messages"]
-                       if m["from_id"] == "routing")
-            self.assertEqual(int(count), made, scenario)
-
     def test_the_playbook_fix_lands_on_the_draft_a_person_approves(self):
         card = next(c for c in self.result["shipments"] if c["id"] == "SHP-002")
         customer = next(d for d in card["drafts"] if d["audience"] == "customer")
