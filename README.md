@@ -125,7 +125,7 @@ or go straight to **http://127.0.0.1:8000/app** and press **Inject Hamburg strik
 |---|---|
 | `/` | Home — the gap, the cost of acting late, the systems it works through, the FAQ |
 | `/product` | The sixteen Workers, how they talk and learn, the write-back map, the approval gate |
-| `/use-cases` | One card grid: six everyday jobs as product mocks drawn from the agents' real output, then four disruptions over one board |
+| `/use-cases` | One card grid: six everyday jobs as product mocks drawn from the agents' real output |
 | `/about` | What is real here and what is not, and the desk it is modelled on |
 | `/whitepaper` | The technical paper |
 | `/app` | The dashboard. This is the demo, and the button lives here |
@@ -399,7 +399,7 @@ another is answered on the bus; the Playbook Worker's carrier fix happens where 
 read it; every output is gated. Then the loop: one correction fixes every mail like it, a
 lesson that would undo an earlier one is refused and not saved, the model cannot undo a
 correction, and `learning.py` imports nothing that could train a model. The transcript on
-`/product` and the handoff counts on `/use-cases` are held to what a run really produces.
+`/product` and the six job cards on `/use-cases` are held to what a run really produces.
 
 `tests/test_the_simulation_holds_together.py` — **the authored week makes sense as a
 week.** No booking is ever offered the route it just left, yesterday's reroute is still in
