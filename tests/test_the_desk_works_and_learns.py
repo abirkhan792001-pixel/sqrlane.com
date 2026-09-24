@@ -181,6 +181,50 @@ class TheWorkersTalk(_TempLessons):
             at = spoken.index(line, at) + 1
 
 
+    def test_the_use_cases_stage_says_only_what_the_desk_did(self):
+        """/use-cases plays six inbox jobs as the agents handle them. Each line it
+        prints - a step's result, a queued record, a draft's subject and body, an
+        escalation - must be what this run produced for that mail. The "working"
+        labels are the page's own and are not checked: they are the pause before
+        the real line lands."""
+        import json
+        import re
+        page = (ROOT / "static" / "use-cases.html").read_text()
+        block = re.search(r'<script type="application/json" id="uc-scenes">(.*?)</script>',
+                          page, re.S)
+        self.assertIsNotNone(block, "the scene data is gone from /use-cases")
+        scenes = json.loads(block.group(1))
+        self.assertEqual(len(scenes), 6)
+        inbox = {m["id"]: m for m in workflow.load_inbox()["messages"]}
+        items = {i["id"]: i for i in self.result["items"]}
+        for sc in scenes:
+            item = sc["item"]
+            with self.subTest(scene=sc["id"]):
+                self.assertEqual(sc["trigger"]["subject"], inbox[item]["subject"])
+                self.assertEqual(sc["trigger"]["from"], inbox[item]["sender_org"])
+                outs = [o for o in self.result["outputs"] if o["item"] == item]
+                said = {m["text"] for m in self.bus if m["item"] == item}
+                changed = {c["to"] for o in outs if o["kind"] == "tms" for c in o["changes"]}
+                refs = {o["booking_ref"] for o in outs}
+                for st in sc["steps"]:
+                    self.assertIn(st["done"], said | changed, st["done"])
+                    if st.get("record"):
+                        self.assertIn(st["record"], refs)
+                end = sc["end"]
+                if end["kind"] == "draft":
+                    mail = next((o for o in outs if o["kind"] == "mail"
+                                 and o["subject"] == end["subject"]), None)
+                    self.assertIsNotNone(mail, end["subject"])
+                    self.assertEqual(end["to"], mail["to"])
+                    if end.get("cc"):
+                        self.assertIn(end["cc"], mail["cc"])
+                    for line in end["lines"]:
+                        self.assertIn(line, mail["body"])
+                else:
+                    esc = [(e["to"], e["text"]) for e in items[item]["escalations"]]
+                    self.assertIn((end["to"], end["text"]), esc)
+
+
 class NothingLeaves(_TempLessons):
 
     def test_every_output_is_gated(self):
