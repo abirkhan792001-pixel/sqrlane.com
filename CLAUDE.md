@@ -147,8 +147,10 @@ taken, colours not). Part one is a rail of six jobs beside one agent window that
 each the way the agents handle it: the trigger mail lands, each agent card arrives
 "working" with a shimmer and resolves into the real line, and the job ends on a draft
 (`Draft — not sent`, Approve - never Send) or an escalation, then dissolves into the
-next. Part two is the four disruptions as a card grid whose boards light booking by
-booking when they scroll into view. Three rules hold it:
+next. Below it, with no heading of its own (the old "One board. Four different
+answers." intro and the "Pick one and watch it run" closing bar were removed on the
+owner's instruction), the four disruptions sit as a card grid whose boards light booking
+by booking when they scroll into view. Three rules hold it:
 
 - **Every line the window prints is the desk's own output.** The scenes live as JSON in
   `#uc-scenes`, and `test_the_use_cases_stage_says_only_what_the_desk_did` replays the
@@ -172,7 +174,7 @@ the five stages (and the everyday desk's five), the source table, and **the live
 gauge panel** — the one genuinely live number on a marketing page. `GET /api/gauges`
 stays, still tested for banding parity with the risk monitor, so the panel can come back
 on another page; nothing calls it today. The two in-content links that pointed there
-(the home FAQ, the `/use-cases` closer) now go to `/whitepaper#split`, which argues the
+(the home FAQ, and the `/use-cases` closing bar, since removed) now go to `/whitepaper#split`, which argues the
 same model-vs-threshold point. `static/video/04-control-room.mp4` played behind its
 header and is now unused.
 
