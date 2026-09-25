@@ -101,6 +101,14 @@ class TheConnectedBookIsTheBook(unittest.TestCase):
             self.assertEqual(op["approval_status"], "awaiting_approval")
         self.assertIn("nothing is written to it from here", self.cycle["tms"]["honesty"])
 
+    def test_a_tampered_booking_costs_one_card_not_the_run(self):
+        spec = dict(self.spec, bookings=[dict(self.spec["bookings"][0], primary_route="R-NOWHERE"),
+                                         dict(self.spec["bookings"][1], eta="garbage"),
+                                         "not a booking"] + self.spec["bookings"][2:])
+        with tms.using(spec):
+            run = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+        self.assertEqual(len(run["shipments"]), len(self.spec["bookings"]) - 2)
+
     def test_the_demo_book_comes_back_after(self):
         self.assertIsNone(tms.active())
         self.assertIn("demo", tms.read_bookings()[0]["source_system"].lower())

@@ -447,6 +447,42 @@ def read_api(url: str, *, token: str | None = None, auth_header: str | None = No
     return normalise(rows, name=f"Your TMS (API: {host})", kind="api", source=host)
 
 
+def _checked(bookings) -> list[dict]:
+    """A file connection's bookings, re-checked as they come back from the browser.
+
+    The dashboard sends back what /connect returned, but anything arriving over
+    HTTP can have been changed on the way. Every booking must still name routes
+    the catalogue carries and dates that parse, or it is dropped - so a garbled
+    record costs one card, never the run.
+    """
+    if not isinstance(bookings, list):
+        return []
+    routes = {r["route_id"] for r in json.loads(config.ROUTES_FILE.read_text(
+        encoding="utf-8"))["routes"]}
+    out = []
+    for b in bookings[:config.TMS_MAX_BOOKINGS]:
+        if not isinstance(b, dict) or not isinstance(b.get("id"), str):
+            continue
+        alternates = b.get("alternates") if isinstance(b.get("alternates"), list) else []
+        if (b.get("primary_route") not in routes or not all(a in routes for a in alternates)
+                or not parse_date(b.get("eta"))):
+            continue
+        try:
+            slack = int(b.get("deadline_slack_days") or 0)
+        except (TypeError, ValueError):
+            continue
+        terms = b.get("commercial") if isinstance(b.get("commercial"), dict) else {}
+        clean = dict(b, alternates=alternates, deadline_slack_days=slack,
+                     eta=parse_date(b["eta"]), cold_chain=bool(b.get("cold_chain")),
+                     commercial={k: _money(terms.get(k)) or 0
+                                 for k in ("freight_eur", "late_eur_per_day", "breach_eur",
+                                           "transfer_risk_eur")})
+        for field in ("etd", "required_by"):
+            clean[field] = parse_date(b.get(field))
+        out.append(clean)
+    return out
+
+
 def resolve(spec: dict | None) -> dict | None:
     """What the dashboard sent, turned into a connection with bookings in it.
 
@@ -463,12 +499,12 @@ def resolve(spec: dict | None) -> dict | None:
         live["writeback_url"] = spec.get("writeback_url") or None
         return live
     if spec.get("kind") == "file":
-        bookings = spec.get("bookings")
-        if not isinstance(bookings, list) or not bookings:
-            raise ValueError("the connection carries no bookings - upload the export again")
-        return {"kind": "file", "name": spec.get("name") or "Your TMS (export)",
-                "source": spec.get("source") or "export",
-                "read_at": spec.get("read_at"), "bookings": bookings[:config.TMS_MAX_BOOKINGS],
+        bookings = _checked(spec.get("bookings"))
+        if not bookings:
+            raise ValueError("the connection carries no usable bookings - upload the export again")
+        return {"kind": "file", "name": str(spec.get("name") or "Your TMS (export)")[:120],
+                "source": str(spec.get("source") or "export")[:120],
+                "read_at": spec.get("read_at"), "bookings": bookings,
                 "writeback_url": spec.get("writeback_url") or None}
     raise ValueError(f"unknown connection kind '{spec.get('kind')}'")
 
