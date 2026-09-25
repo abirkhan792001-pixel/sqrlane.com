@@ -175,13 +175,17 @@ def pitch():
 
 
 @app.get("/app")
-def dashboard():
-    """The demo moved to its own app at app.sqrlane.com (2026-09-25, on the owner's
-    instruction). A permanent redirect, so a link someone already shared still lands;
-    the browser carries any #fragment across. static/index.html is kept, unserved,
-    until the new dashboard has run in front of an audience - putting it back is
-    this one function."""
-    return RedirectResponse(config.DASHBOARD_URL, status_code=301)
+@app.get("/app/{page:path}")
+def dashboard(page: str = ""):
+    """The demo moved to its own app (2026-09-25, on the owner's instruction), and
+    every "Open the demo" link on the site comes through here - so where the
+    dashboard lives is one setting, config.DASHBOARD_URL, not fourteen hrefs.
+    /app/desk lands on the dashboard's /desk. A temporary redirect: the target
+    moves when the app.sqrlane.com DNS record exists, and a browser caches a 301
+    for good. static/index.html is kept, unserved, until the new dashboard has
+    run in front of an audience - putting it back is this one function."""
+    target = config.DASHBOARD_URL.rstrip("/") + ("/" + page if page else "")
+    return RedirectResponse(target, status_code=307)
 
 
 # A clip is identified by what it contains, not by when it was asked for. The
