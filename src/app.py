@@ -31,8 +31,8 @@ from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, Redirec
                                Response)
 from pydantic import BaseModel
 
-from src import (ask, config, connect, httpget, learning, llm, mcp_server, orchestrator,
-                 simulation, tms, workflow)
+from src import (ask, config, connect, httpget, insights, learning, llm, mcp_server,
+                 orchestrator, simulation, tms, workflow)
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 INDEX = STATIC_DIR / "index.html"        # the dashboard, served at /app
@@ -112,10 +112,12 @@ class WritebackRequest(BaseModel):
 
 class AskRequest(BaseModel):
     """A question for the desk, about the board the person is looking at."""
-    question: str
+    question: str = ""
     scenario: str | None = None
     use_llm: bool = True
     connection: dict | None = None
+    attachments: list[dict] | None = None   # [{name, content}] - content is the file's
+                                            # text, or null for a file it cannot read
 
 
 def _page(path: Path, what: str):
@@ -809,6 +811,20 @@ def api_tms_writeback(request: WritebackRequest):
         return JSONResponse(status_code=200, content={"ok": False, "error": reason})
 
 
+# --- Insights -----------------------------------------------------------------
+
+
+@app.get("/api/insights")
+def api_insights(scenario: str | None = None):
+    """The dashboard's cards and charts, counted from one run. Never a trend."""
+    try:
+        return insights.build(scenario=scenario)
+    except Exception as exc:  # noqa: BLE001
+        return JSONResponse(status_code=200, content={
+            "error": f"{type(exc).__name__}: {exc}", "cards": [],
+            "workload": {"bars": []}, "mix": {"rows": []}, "approvals": {"rows": []}})
+
+
 # --- Ask SQRlane -------------------------------------------------------------
 
 
@@ -818,7 +834,7 @@ def api_ask(request: AskRequest):
     try:
         with tms.using(request.connection):
             return ask.ask(request.question, scenario=request.scenario,
-                           use_llm=request.use_llm)
+                           use_llm=request.use_llm, attachments=request.attachments)
     except Exception as exc:  # noqa: BLE001
         return JSONResponse(status_code=200, content={
             "question": request.question, "answered": False, "conversation": [],
