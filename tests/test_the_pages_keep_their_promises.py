@@ -368,6 +368,23 @@ class NamingASystemIsNotClaimingOne(unittest.TestCase):
                           "the integration tree names systems and has to say, in the "
                           "same block, that none of them is reached.")
 
+    def test_the_use_cases_mail_mark_disclaims_a_mailbox(self):
+        # /use-cases draws each inbound mail with the Outlook mark (2026-09-25,
+        # on the owner's instruction). A real mail app's mark reads as a
+        # connected mailbox, and "No mailbox connected" is a non-goal - so the
+        # section that shows the mark has to say none is connected, and that
+        # nothing is sent.
+        html = USE_CASES.read_text(encoding="utf-8")
+        if 'data-mark="outlook"' not in html:
+            return                                # no mark, nothing to disclaim
+        start = html.find('<section class="bx-sec" id="everyday">')
+        self.assertGreaterEqual(start, 0, "the everyday section is gone")
+        block = " ".join(html[start:html.find("</section>", start)].split())
+        for required in ("no mailbox is connected", "nothing is ever sent"):
+            self.assertIn(required, block,
+                          "/use-cases shows the Outlook mark and has to say, in the same "
+                          "section, that no mailbox is connected and nothing is sent.")
+
     def test_no_named_system_appears_in_the_sources_band(self):
         """The sources band is what the Risk Monitor reads. None of these is read."""
         carriers = [p for p in MARKETING

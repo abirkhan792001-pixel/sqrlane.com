@@ -197,7 +197,12 @@ class TheWorkersTalk(_TempLessons):
         escalation - must be what this run produced for that mail, said by that
         Worker. Titles, one-line descriptions and "working" labels are the page's
         own and are not checked; they describe, they do not quote. The learning
-        card is checked on its own, below."""
+        card is checked on its own, below.
+
+        The hover reasons ("why") are held the same way: each must be the reason
+        the desk recorded on this run for that exact line - the bus message's
+        `why`, the queued record's `reason`, the draft's `reason`, the
+        escalation's `why` - so the logic a visitor reads is the logic that ran."""
         from src import roster
         scenes = self._scenes()
         self.assertEqual(len(scenes), 7)
@@ -215,21 +220,36 @@ class TheWorkersTalk(_TempLessons):
                 said = {(m["from"], m["text"]) for m in self.bus if m["item"] == item}
                 said |= {(o["worker"], c["to"]) for o in outs if o["kind"] == "tms"
                          for c in o["changes"]}
+                why = {}
+                for o in outs:
+                    if o["kind"] == "tms":
+                        for c in o["changes"]:
+                            why.setdefault((o["worker"], c["to"]), set()).add(o.get("reason"))
+                for m in self.bus:
+                    if m["item"] == item:
+                        why.setdefault((m["from"], m["text"]), set()).add(m.get("why"))
                 refs = {o["booking_ref"] for o in outs}
                 for st in sc.get("steps", []):
                     self.assertIn(st["done"], {t for _, t in said}, st["done"])
+                    self.assertIn(st["why"], why.get((st["who"], st["done"]), set()),
+                                  f"not the recorded reason for: {st['done']}")
                     if st.get("record"):
                         self.assertIn(st["record"], refs)
                 for m in sc.get("messages", []):
                     kind = m.get("kind")
                     if kind is None:
                         self.assertIn((m["who"], m["text"]), said, m["text"])
+                        self.assertIn(m["why"], why.get((m["who"], m["text"]), set()),
+                                      f"not the recorded reason for: {m['text']}")
                     elif kind == "file":
                         self.assertIn(m["name"], [a["name"] for a in inbox[item]["attachments"]])
                     elif kind == "fields":
                         read = items[item]["extracted"]["fields"]
                         booked = roster.booked_docs(items[item]["linked_booking"])
                         self.assertEqual(m["against"], items[item]["linked_booking"])
+                        docs = next(o for o in outs if o["worker"] == "Docs Worker"
+                                    and o["kind"] == "tms")
+                        self.assertEqual(m["why"], docs["reason"])
                         for row in m["rows"]:
                             self.assertEqual(row["value"], read[row["field"]], row["field"])
                             self.assertEqual(row["label"], workflow.FIELDS[row["field"]][0])
@@ -239,6 +259,8 @@ class TheWorkersTalk(_TempLessons):
                     elif kind == "rules":
                         rules = {r["type"]: r for r in playbooks[m["customer"]]}
                         self.assertEqual(m["customer"], items[item]["customer"])
+                        self.assertIn(m["why"], {b.get("why") for b in self.bus
+                                                 if b["item"] == item and b["kind"] == "check"})
                         for r in m["rules"]:
                             self.assertIn(r["type"], rules)
                             self.assertEqual(r["why"], rules[r["type"]]["why"])
@@ -258,9 +280,10 @@ class TheWorkersTalk(_TempLessons):
                         self.assertIn(end["cc"], mail["cc"])
                     for line in end["lines"]:
                         self.assertIn(line, mail["body"])
+                    self.assertEqual(end["why"], mail.get("reason"))
                 elif end:
-                    esc = [(e["to"], e["text"]) for e in items[item]["escalations"]]
-                    self.assertIn((end["to"], end["text"]), esc)
+                    esc = [(e["to"], e["text"], e.get("why")) for e in items[item]["escalations"]]
+                    self.assertIn((end["to"], end["text"], end["why"]), esc)
 
     def test_the_use_cases_learning_card_is_what_a_correction_really_does(self):
         """The learning card shows a person correcting IN-104 and the desk's
@@ -273,8 +296,8 @@ class TheWorkersTalk(_TempLessons):
         before = next(i for i in self.result["items"] if i["id"] == item)
         self.assertEqual(msgs["intent"]["intent"], before["intent"])
         self.assertEqual(msgs["intent"]["label"], workflow.INTENTS[before["intent"]]["label"])
-        self.assertIn(("Inbox Worker", msgs["intent"]["text"]),
-                      {(m["from"], m["text"]) for m in self.bus if m["item"] == item})
+        self.assertIn(("Inbox Worker", msgs["intent"]["text"], msgs["intent"]["why"]),
+                      {(m["from"], m["text"], m.get("why")) for m in self.bus if m["item"] == item})
         fix = msgs["human"]["correct"]
         self.assertIn(fix["cue"], msgs["human"]["text"])
         self.assertIn(workflow.INTENTS[fix["right"]]["label"].lower(), msgs["human"]["text"])
@@ -286,6 +309,16 @@ class TheWorkersTalk(_TempLessons):
         self.assertEqual(msgs["replay"]["also"], [c["item"] for c in report["propagated"]])
         self.assertEqual(msgs["replay"]["mails"], len(report["run"]["items"]))
         self.assertFalse([r for r in report["regression"] if not r["holds"]])
+        # The hover reasons: the lesson's is the Inbox Worker's own reason on the
+        # replayed run; the replay's and the keep's name what the report says.
+        after = {m.get("why") for m in report["run"]["messages"]
+                 if m["item"] == item and m["from"] == "Inbox Worker"}
+        self.assertIn(msgs["lesson"]["why"], after)
+        self.assertIn(report["lesson"]["id"], msgs["replay"]["why"])
+        self.assertIn(f"{len(report['changed'])} changed", msgs["replay"]["why"])
+        self.assertIn(item, msgs["kept"]["why"])
+        self.assertIn("No earlier lesson" if not report["regression"] else
+                      f"All {len(report['regression'])} earlier lessons", msgs["kept"]["why"])
 
 
 class NothingLeaves(_TempLessons):

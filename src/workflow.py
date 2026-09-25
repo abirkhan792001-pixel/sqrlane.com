@@ -229,10 +229,14 @@ class Desk:
 
     # --- messages ---------------------------------------------------------
 
-    def post(self, frm, to, kind, item, text, *, deliver=False, **data) -> dict:
+    def post(self, frm, to, kind, item, text, *, deliver=False, why=None, **data) -> dict:
+        """`why` is the short reason behind the message - the logic the Worker
+        applied, in one line - so the conversation can be audited, not just read."""
         msg = {"seq": len(self.messages) + 1, "from": NAMES.get(frm, frm), "from_id": frm,
                "to": NAMES.get(to, to), "to_id": to, "kind": kind, "item": item,
                "text": text}
+        if why:
+            msg["why"] = why
         if data:
             msg["data"] = data
         self.messages.append(msg)
@@ -247,13 +251,15 @@ class Desk:
     def ask(self, frm, to, item, question, answer_fn):
         """A question one Worker puts to another, and the answer, both on the bus."""
         self.post(frm, to, "query", item, question)
-        answer, said = answer_fn()
-        self.post(to, frm, "reply", item, said)
+        answer, said, *why = answer_fn()
+        self.post(to, frm, "reply", item, said, why=why[0] if why else None)
         return answer
 
-    def escalate(self, frm, item, text, *, to="person", **data):
-        self.post(frm, to, "escalate", item, text, **data)
+    def escalate(self, frm, item, text, *, to="person", why=None, **data):
+        self.post(frm, to, "escalate", item, text, why=why, **data)
         entry = {"item": item, "from": NAMES[frm], "to": NAMES.get(to, to), "text": text}
+        if why:
+            entry["why"] = why
         self.escalations.append(entry)
         self.items[item]["escalations"].append(entry)
 
@@ -403,9 +409,11 @@ def _triage(desk, messages, use_llm) -> dict:
         item["owner"] = owner
         link = (f" Linked to {booking['id']} ({booking['booking_ref']})." if booking
                 else f" Customer: {customer}." if customer else " New sender - no booking linked.")
+        by = {"rules": "By rules", "model": "By the model", "lesson": "By a lesson"}[decided_by]
         desk.post("inbox", owner, "handoff", message["id"],
                   f"{INTENTS[intent]['label']} from {message['sender_org']}.{link}",
-                  deliver=True)
+                  deliver=True, why=f"{by} - {reason.rstrip('.')}. Routed to the "
+                                    f"{NAMES[owner]}.")
     return {"classifier": "model" if modelled else "rules", "failure": failure}
 
 
@@ -471,7 +479,9 @@ def _extract_all(desk, requester, item_id, message) -> dict:
         if merged["unread"]:
             said += " - labels not recognised: " + ", ".join(
                 f"“{u['label']}”" for u in merged["unread"])
-        return merged, said + "."
+        return merged, said + ".", ("Fields read from “Label: value” lines the extractor "
+                                    "knows; a label it does not know is reported, never "
+                                    "guessed.")
 
     if requester == "docs":
         return answer()[0]
@@ -522,7 +532,9 @@ def _docs(desk, item_id, message, msg):
                       f"{d['label']} {d['document']:,} vs {d['booking']} booked"
                       if isinstance(d["document"], int) else
                       f"{d['label']} {d['document']} vs {d['booking']} booked" for d in diffs),
-                  deliver=True, reason="doc_mismatch", diffs=diffs, booking=booking["id"])
+                  deliver=True, reason="doc_mismatch", diffs=diffs, booking=booking["id"],
+                  why=f"Each field read is compared with {booking['id']}'s booking; a "
+                      f"difference is handed on to Exception, never corrected.")
 
 
 # ---------------------------------------------------------------------------
@@ -598,10 +610,14 @@ def _ask_rates(desk, frm, item_id, port, city, equipment, count, carrier_filter=
         if not options:
             return options, f"No carrier on the rate sheet serves {lane} for {equipment}."
         best = options[0]
+        why = (f"Every carrier on a route into {lane}, priced from the rate sheet and "
+               f"ranked: Cape routings last, then cheapest, then fastest.")
+        if carrier_filter:
+            why += f" Only {' or '.join(carrier_filter)}, as the playbook allows."
         return options, (f"{len(options)} option{'' if len(options) == 1 else 's'} into {lane}; "
                          f"best {best['carrier']} on {best['route_id']}, "
                          f"{_eur(best['per_container_eur'])} per {equipment}, "
-                         f"{best['transit_days']} days.")
+                         f"{best['transit_days']} days."), why
 
     ask = f"Price {count or 1} x {equipment} into {lane}"
     if carrier_filter:
@@ -666,6 +682,8 @@ def _rfq(desk, item_id, message, msg):
         "validity_days": params["validity_days"],
         "subject": f"Quote: {origin} to {city}, {count or 1} x {equipment}",
         "body": _quote_body(params), "booking_ref": current["id"] if current else None,
+        "reason": f"The top-ranked option on the rate sheet: {best['carrier']} on "
+                  f"{best['route_id']}, {best['transit_days']} days.",
     })
     desk.emit("rfq", {
         "item": item_id, "kind": "tms", "record": "quotation", "operation": "create_quotation",
@@ -723,7 +741,9 @@ def _booking(desk, item_id, message, msg):
     name, addr = _sender(message)
     if missing:
         desk.escalate("booking", item_id, f"{ref} held: {', '.join(missing).lower()} not "
-                      f"found in the documents. Not guessed - asking the customer.")
+                      f"found in the documents. Not guessed - asking the customer.",
+                      why="A booking goes to the carrier only when every required field "
+                          "was read from the documents.")
         desk.emit("booking", {
             "item": item_id, "kind": "mail", "audience": "customer", "customer": customer,
             "to": addr, "booking_ref": ref,
@@ -821,7 +841,9 @@ def _milestones(desk, item_id, message, msg):
         desk.post("milestones", "exception", "handoff", item_id,
                   f"{booking['id']} slips {delay} days to {new_eta}. Slack on the booking "
                   f"is {booking['deadline_slack_days']} days.", deliver=True,
-                  reason="slip", delay=delay, new_eta=new_eta, booking=booking["id"])
+                  reason="slip", delay=delay, new_eta=new_eta, booking=booking["id"],
+                  why=f"The notice says {delay} days; the ETA moves by exactly that and the "
+                      f"slip goes to Exception to weigh against the slack.")
         return
 
     if item["intent"] == "milestone":
@@ -883,7 +905,8 @@ def _exception(desk, item_id, message, msg):
                           f"{booking['id']} now misses its required-by date by "
                           f"{delay - slack} days. Re-plan: the next routing decision is "
                           f"the Routing Worker's, and a person approves it.",
-                          to="routing")
+                          to="routing", why=f"{delay} days late against {slack} days of "
+                                            f"slack - more than the desk can absorb.")
         return
 
     if data.get("reason") == "doc_mismatch":
@@ -894,8 +917,11 @@ def _exception(desk, item_id, message, msg):
             "action": "exception", "booking_ref": booking["id"], "customer": booking["customer"],
             "changes": [{"field": "exception_flag", "from": "none",
                          "to": "Document mismatch - release held"}],
-            "reason": "; ".join(f"{d['label']}: {d['document']} on the document, "
-                                f"{d['booking']} on the booking" for d in diffs),
+            "reason": "; ".join(f"{d['label']}: "
+                                + (f"{d['document']:,}" if isinstance(d["document"], int)
+                                   else f"{d['document']}")
+                                + f" on the document, {d['booking']} on the booking"
+                                for d in diffs) + " - release held until it is resolved.",
         })
         desk.emit("exception", {
             "item": item_id, "kind": "mail", "audience": "customer",
@@ -910,6 +936,8 @@ def _exception(desk, item_id, message, msg):
                          f"{d['booking']} on the booking" for d in diffs)
                      + ". Could you ask the shipper to confirm which is right, and correct "
                      f"the draft if needed?\n\nKind regards,\n{config.FORWARDER['company']}"),
+            "reason": "The document is not corrected to match the booking or the other way "
+                      "round - the customer confirms which figure is right.",
         })
 
 
@@ -980,6 +1008,8 @@ def _invoice(desk, item_id, message, msg):
                          f"{_eur(l['agreed'])} agreed." for l in disputed)
                      + " Please send a corrected invoice, or the basis for the charge.\n\n"
                      f"Kind regards,\n{config.FORWARDER['company']}"),
+            "reason": (f"{len(disputed)} line{'' if len(disputed) == 1 else 's'} not on the "
+                       f"agreed rate - queried with the carrier, not passed for payment."),
         })
 
 
@@ -1011,7 +1041,10 @@ def _customs(desk, item_id, message, msg):
                       f"{booking['id']} lands at {PORT_NAMES.get(port, port)} but is going "
                       f"to {booking['final_destination']} ({onward}): a transit out of the EU, "
                       f"not an import entry. Who declares it and under which guarantee is a "
-                      f"person's call - nothing filed.")
+                      f"person's call - nothing filed.",
+                      why=f"{booking['final_destination']} is outside the EU customs union, "
+                          f"so an import entry at {PORT_NAMES.get(port, port)} would be the "
+                          f"wrong filing.")
         return
     if not docs.get("hs") or not entry:
         desk.escalate("customs", item_id, "Missing HS code or entry office - nothing filed.")
@@ -1116,7 +1149,9 @@ def _playbook_review(desk, producer, output) -> list[dict]:
         return [{"rule": "none", "result": "pass",
                  "note": "no standing instructions for this customer"}]
     desk.post(producer, "playbook", "check", item, f"Check {output['id']} for "
-              f"{output.get('customer')}.")
+              f"{output.get('customer')}.",
+              why=f"Every output is checked against {output.get('customer')}'s "
+                  f"{len(rules)} standing rule(s) before a person sees it.")
     outcome: dict[str, dict] = {}
     for _round in range(3):
         broken = []
@@ -1133,10 +1168,13 @@ def _playbook_review(desk, producer, output) -> list[dict]:
         if not broken:
             break
         for rule, note in broken:
-            desk.post("playbook", producer, "revise", item, f"{output['id']}: {note}.")
+            desk.post("playbook", producer, "revise", item, f"{output['id']}: {note}.",
+                      why=f"Customer rule: {(rule.get('why') or rule['type']).rstrip('.')}.")
             ok, did = _fix(desk, rule, output)
             if ok:
-                desk.post(producer, "playbook", "revised", item, f"{output['id']}: {did}.")
+                desk.post(producer, "playbook", "revised", item, f"{output['id']}: {did}.",
+                          why="The Worker that made it fixes it - the Playbook Worker "
+                              "never edits another Worker's output.")
                 outcome[rule["type"]] = {"rule": rule["type"], "result": "fixed",
                                          "note": did, "why": rule.get("why")}
             else:
@@ -1151,7 +1189,9 @@ def _playbook_review(desk, producer, output) -> list[dict]:
     desk.post("playbook", producer, "verdict", item,
               f"{output['id']}: {passed} of {len(checks)} rule(s) satisfied"
               + (f", {sum(1 for c in checks if c['result'] == 'fixed')} after a fix"
-                 if any(c["result"] == "fixed" for c in checks) else "") + ".")
+                 if any(c["result"] == "fixed" for c in checks) else "") + ".",
+              why="Re-checked after every fix, up to three rounds; anything still "
+                  "broken would have gone to a person.")
     return checks
 
 

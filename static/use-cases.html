@@ -233,13 +233,16 @@ h1,h2,h3,h4,p{margin:0}
    site (layout and motion taken; colours, content and names ours).
 
    Two cards a row, the widths alternating so the grid never reads as
-   a table. Each card is a title, two lines, and a cropped product
-   mock that fades out at the card's foot. The mocks come in three
-   compositions, all drawn from the same scene data the tests hold to
-   a real run (#uc-scenes):
+   a table, in the order a shipment lives: quote, book, documents, in
+   transit, arrival, billing. Each card is a stage, a title, two lines,
+   and a cropped product mock that fades out at the card's foot. The
+   mocks come in four compositions, all drawn from the same scene data
+   the tests hold to a real run (#uc-scenes):
 
-     stack      the mail, tilted at the back; the draft or escalation
-                over it; a dark pill for what was queued
+     flow       the mail lands like a notification; under it the agent
+                works each step (a spinner, then a tick) from drafting
+                to "Draft ready", with the draft and its Approve button
+     chat       an SQR agent thread, one Worker speaking at a time
      checklist  each agent's step as a ticked row; the draft behind it,
                 blurred and fading, like a list you are not reading yet
      focus      the steps as a column of rows, the one that matters
@@ -326,6 +329,71 @@ h1,h2,h3,h4,p{margin:0}
 .bx-av{width:18px; height:18px; border-radius:5px; background:var(--fg); flex:none;
        display:inline-flex; align-items:center; justify-content:center}
 
+/* The stage a card sits at in a shipment's life. */
+.bx-stg{display:flex; align-items:center; gap:8px; margin-bottom:10px; font-size:12px; line-height:16px;
+        color:var(--faint); letter-spacing:.04em; text-transform:uppercase; font-weight:500}
+.bx-stg b{font-family:"Geist Mono",ui-monospace,monospace; font-weight:500; letter-spacing:0;
+          padding:2px 7px; border-radius:4px; background:var(--gray-100); color:var(--muted)}
+
+/* The mail app's mark on a white tile, where the envelope used to be. The
+   mark is a real one (see MAIL in the script); no mailbox is connected,
+   and the note under the grid says so. */
+.bx-ic.app{background:#fff; border:1px solid var(--border); box-shadow:0 1px 2px rgba(0,0,0,.05)}
+
+/* The mail arriving: it drops in like a notification and the badge pops. */
+@keyframes bxNtf{from{opacity:0; translate:0 -28px; scale:.96}to{opacity:1; translate:0 0; scale:1}}
+@keyframes bxBadge{0%{scale:0}60%{scale:1.3}100%{scale:1}}
+.bx-js .bx:not(.in) .bx-ntf{opacity:0}
+.bx.in .bx-ntf{animation:bxNtf .75s cubic-bezier(.34,1.45,.64,1) .1s both}
+.bx.in .bx-ntf .bx-ic b{animation:bxBadge .5s var(--out) .75s both}
+
+/* ---- the flow card: mail in, agent at work, draft ready ---- */
+/* Its height is measured from the finished card (sizeFlows in the script),
+   so the draft's last line clears the fade at every width; 470px is only
+   the floor before the script runs. */
+.bx.flow .bx-m{height:470px; -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 24px),transparent);
+                             mask-image:linear-gradient(to bottom,#000 calc(100% - 24px),transparent)}
+.bx-flow{position:absolute; left:0; right:0; top:4px; display:flex; flex-direction:column; gap:12px}
+.bx-flow .bx-ntf{margin-left:10%; background:var(--card); border:1px solid var(--border); border-radius:14px;
+                 box-shadow:0 1px 1px rgba(0,0,0,.02),0 14px 30px -12px rgba(0,0,0,.18)}
+.bx-flow .bx-ag{position:relative; margin-right:3%}
+.bx-st{display:grid; grid-template-columns:16px 18px minmax(0,1fr); gap:9px; align-items:start;
+       padding:9px 14px; border-top:1px solid var(--border); font-size:12.5px; line-height:17px}
+.bx-steps .bx-st:first-child{border-top:0}
+.bx-st .ic{width:16px; height:16px; margin-top:1px; border-radius:50%; background:var(--green); color:#fff;
+           display:flex; align-items:center; justify-content:center}
+.bx-st.warn .ic{background:var(--amber)}
+.bx-st .sp{display:none; width:14px; height:14px; margin:2px 0 0 1px; border-radius:50%;
+           border:2px solid var(--gray-300); border-top-color:var(--fg); animation:bxSpin .8s linear infinite}
+@keyframes bxSpin{to{rotate:360deg}}
+.bx-st .w{display:flex; align-items:center; gap:8px; font-weight:600}
+.bx-st .dn{display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+           color:var(--muted)}
+.bx-st.warn .dn{color:var(--amber)}
+.bx-st .wk{display:none; color:var(--faint)}
+.bx-st .bx-rec{margin:0 0 0 auto; padding:0 6px; font-weight:400; font-size:11px; line-height:17px;
+                white-space:nowrap}
+.bx-st.run .ic,.bx-st.run .dn,.bx-st.run .bx-rec{display:none}
+.bx-st.run .sp,.bx-st.run .wk{display:block}
+.bx-st.pend{display:none}
+.bx-pop{animation:bxMsg .55s var(--out)}
+.bx-rd{display:flex; align-items:center; gap:8px; padding:10px 14px; border-top:1px solid var(--border);
+       font-size:13px; line-height:18px; font-weight:600}
+.bx-rd .c{font-weight:400; font-size:12px; color:var(--faint)}
+.bx-rd .ing{display:none; align-items:center; gap:8px; font-weight:500; color:var(--faint)}
+.bx-rd .ing .bx-typing{display:inline-flex; padding:0; border:0; background:none}
+.bx-ag.drafting .bx-rd .ing{display:inline-flex}
+.bx-ag.drafting .bx-rd .ok,.bx-ag.drafting .bx-rd .bx-ap,.bx-ag.drafting .bx-dft{display:none}
+.bx-ag.pre .bx-rd,.bx-ag.pre .bx-dft{display:none}
+.bx-dft{margin:0 12px 12px; border:1px solid var(--border); border-radius:10px; background:var(--card-muted)}
+.bx-dft .bx-draft{padding:11px 13px}
+.bx-dft .bx-draft .to{margin-top:0}
+.bx-ag .bx-esc{border-top:1px solid var(--border)}
+@media (prefers-reduced-motion:reduce){
+  .bx.in .bx-ntf,.bx.in .bx-ntf .bx-ic b,.bx-pop{animation:none}
+  .bx-st .sp{animation:none}
+}
+
 /* the dark pill */
 .bx-pill{position:absolute; display:inline-flex; align-items:center; gap:8px; padding:9px 16px 9px 12px;
          border-radius:999px; background:var(--fg); color:#fff; font-size:13px; line-height:18px;
@@ -374,9 +442,15 @@ h1,h2,h3,h4,p{margin:0}
 
 /* ---- the chat card: an SQR agent thread ---- */
 .bx.s12{grid-column:span 12}
-.bx-label.bx-in-grid{grid-column:1/-1; margin:28px 0 2px}
-.bx.chat .bx-m{height:470px; -webkit-mask-image:none; mask-image:none}
-.bx.chat.s12 .bx-m{height:440px}
+.bx-label .bx-hint{order:3; font-style:normal; text-transform:none; letter-spacing:0; font-size:12px;
+                   color:var(--faint)}
+.bx-label .bx-hint span{font-family:inherit; padding:0; background:none}
+.bx-label .bx-hint .t{display:none}
+@media (hover:none){ .bx-label .bx-hint .m{display:none} .bx-label .bx-hint .t{display:inline} }
+/* A chat fills its card: beside a taller flow card it grows with the row
+   rather than leaving a blank foot. */
+.bx.chat .bx-m{height:auto; flex:1 0 470px; -webkit-mask-image:none; mask-image:none}
+.bx.chat.s12 .bx-m{flex-basis:440px}
 .bx-chat{left:0; right:0; top:0; bottom:28px; display:flex; flex-direction:column; overflow:hidden}
 .bx.chat.s12 .bx-chat{left:50%; right:auto; width:min(720px,100%); translate:-50% 0}
 .bx-js .bx.chat.s12:not(.in) .bx-chat{translate:-50% 22px}
@@ -393,7 +467,8 @@ h1,h2,h3,h4,p{margin:0}
        display:flex; flex-direction:column; gap:12px; background:var(--card-muted)}
 .bx-cb::-webkit-scrollbar{display:none}
 .bx-in{display:grid; grid-template-columns:36px minmax(0,1fr); gap:10px; align-items:center;
-       padding:10px 12px; border:1px dashed var(--border-strong); border-radius:12px; background:var(--card)}
+       padding:10px 12px; border:1px solid var(--border); border-radius:12px; background:var(--card);
+       box-shadow:0 10px 24px -12px rgba(0,0,0,.16)}
 .bx-in .s{display:block; font-size:11px; line-height:15px; color:var(--faint)}
 .bx-in .t{display:block; font-size:13px; line-height:18px; font-weight:500}
 .bx-msg{max-width:88%; transition:opacity .55s var(--out), translate .6s var(--out), filter .55s var(--out)}
@@ -441,7 +516,7 @@ h1,h2,h3,h4,p{margin:0}
              animation:bxDot 1.1s infinite ease-in-out}
 .bx-typing i:nth-child(2){animation-delay:.15s} .bx-typing i:nth-child(3){animation-delay:.3s}
 @keyframes bxDot{0%,80%,100%{opacity:.35; translate:0 0}40%{opacity:1; translate:0 -3px}}
-@media (max-width:600px){ .bx.chat .bx-m{height:520px} .bx-msg{max-width:96%} }
+@media (max-width:600px){ .bx.chat .bx-m{flex-basis:520px} .bx-msg{max-width:96%} }
 @media (prefers-reduced-motion:reduce){ .bx-msg.on{animation:none} .bx-typing i{animation:none} }
 
 .bx-note{margin-top:18px; max-width:78ch}
@@ -453,14 +528,37 @@ h1,h2,h3,h4,p{margin:0}
 }
 @media (max-width:600px){
   .bx{padding:26px 22px 0}
-  /* Text wraps harder at this width; the draft's "not sent" chip must stay
+  /* Text wraps harder at this width; the draft's Approve gate must stay
      above the fade at the card's foot. */
   .bx-m{height:480px}
+  .bx-flow .bx-ntf{margin-left:4%}
+  /* The caption drops under "Draft ready." rather than squeezing it. */
+  .bx-rd{flex-wrap:wrap}
+  .bx-rd .ok{white-space:nowrap}
+  .bx-rd .c{order:3; flex-basis:100%}
+  .bx-st .w{flex-wrap:wrap; row-gap:2px}
+  .bx-st .w > .bx-rec{margin-left:0}
   .bx-pill{white-space:normal}
 }
 @media (prefers-reduced-motion:reduce){
   .bx-l,.bx-ck,.bx-ck::after,.bx-fr{transition:none !important}
 }
+
+/* ---- why, on hover: every agent box carries the reason the desk recorded
+   for it (data-why). One tip for the page, fixed to the viewport, so a
+   card's overflow or a chat's scroll can never clip it. ---- */
+.bx [data-why]{cursor:help; transition:box-shadow .2s var(--out), border-color .2s var(--out)}
+.bx .bx-bu[data-why]:hover,.bx .bx-dft[data-why]:hover,.bx .bx-esc[data-why]:hover,
+.bx .bx-fr[data-why]:hover{box-shadow:0 0 0 1.5px var(--fg),var(--shadow-card)}
+.bx .bx-st[data-why]:hover,.bx .bx-row[data-why]:hover{background:var(--gray-100)}
+.bx-tip{position:fixed; z-index:60; max-width:300px; padding:10px 12px; border-radius:10px;
+        background:var(--fg); color:#fff; font-size:12.5px; line-height:18px;
+        box-shadow:0 14px 30px -10px rgba(0,0,0,.45); pointer-events:none;
+        opacity:0; translate:0 4px; transition:opacity .15s, translate .15s}
+.bx-tip.on{opacity:1; translate:0 0}
+.bx-tip b{display:block; margin-bottom:3px; font-size:10.5px; line-height:14px; font-weight:600;
+          letter-spacing:.06em; text-transform:uppercase; color:#a8a8a8}
+@media (prefers-reduced-motion:reduce){ .bx-tip{transition:none} }
 
 /* ---------- footer ---------- */
 .foot{border-top:1px solid var(--border); background:var(--card); padding:52px 0 34px}
@@ -633,13 +731,16 @@ h1,h2,h3,h4,p{margin:0}
      ============================================================ -->
 <section class="bx-sec" id="everyday">
   <div class="wrap">
-    <p class="bx-label">The everyday desk <span>6 jobs</span></p>
+    <p class="bx-label">The everyday desk <span>6 jobs &middot; 1 correction</span>
+      <em class="bx-hint"><span class="m">Hover</span><span class="t">Tap</span> any agent&rsquo;s message to see why</em></p>
     <div class="bx-grid" data-bx-everyday>
       <noscript><p class="copy14">The six everyday jobs are drawn by a small script on this page:
         quote a rate request, open a booking from a mail, check documents against the booking,
-        handle a rollover, reconcile a carrier invoice, clear an arrival.</p></noscript>
+        handle a rollover, clear an arrival, reconcile a carrier invoice.</p></noscript>
     </div>
-    <p class="copy13 bx-note">Synthetic mail from the demo inbox. What the agents do with it is
+    <p class="copy13 bx-note">Synthetic mail from the demo inbox. The Outlook mark shows where a
+      desk&rsquo;s mail arrives today; no mailbox is connected, and nothing is ever sent &mdash; every
+      draft waits for a person to approve it. What the agents do with the mail is
       computed on every run &mdash; open <a href="/app#/workflow">Workflow</a> in the demo to see all
       thirteen mails, the full conversation behind each, and the corrections that teach the desk.</p>
 
@@ -653,6 +754,7 @@ h1,h2,h3,h4,p{margin:0}
  {
   "id": "quote",
   "item": "IN-101",
+  "stage": "Quote",
   "title": "Quote a rate request",
   "line": "Priced across the lane, checked against the customer's rules, drafted back.",
   "tint": "blue",
@@ -664,18 +766,21 @@ h1,h2,h3,h4,p{margin:0}
    {
     "who": "Rate Worker",
     "working": "Pricing 3 x 40HC into Antwerp",
-    "done": "7 options into Antwerp; best ONE on R-ANR-STD, EUR 2,380 per 40HC, 33 days."
+    "done": "7 options into Antwerp; best ONE on R-ANR-STD, EUR 2,380 per 40HC, 33 days.",
+    "why": "Every carrier on a route into Antwerp, priced from the rate sheet and ranked: Cape routings last, then cheapest, then fastest."
    },
    {
     "who": "Playbook Worker",
     "working": "Checking Kempen's playbook",
     "done": "IN-101-1: quotes to this customer are valid 7 days, not 14.",
+    "why": "Customer rule: Their planning cycle is weekly.",
     "tone": "warn"
    },
    {
     "who": "RFQ Worker",
     "working": "Revising the quote",
     "done": "IN-101-1: validity set to 7 days.",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output.",
     "record": "Q-101",
     "label": "quotation queued"
    }
@@ -689,14 +794,16 @@ h1,h2,h3,h4,p{margin:0}
     "ONE via Antwerp (R-ANR-STD), about 33 days port to port",
     "EUR 2,380 per container, EUR 7,140 in total",
     "This quote is valid for 7 days."
-   ]
+   ],
+   "why": "The top-ranked option on the rate sheet: ONE on R-ANR-STD, 33 days."
   },
-  "layout": "stack",
+  "layout": "flow",
   "span": 5
  },
  {
   "id": "playbook",
   "item": "IN-108",
+  "stage": "Book",
   "title": "Hold every booking to the customer's playbook",
   "line": "Nordmed books GDP-audited reefer carriers only. The first carrier picked was not one - so the booking went back until it was.",
   "tint": "green",
@@ -710,12 +817,14 @@ h1,h2,h3,h4,p{margin:0}
   "messages": [
    {
     "who": "Inbox Worker",
-    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG."
+    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG.",
+    "why": "By rules - strongest cues: booking request (6 vs next 1). Routed to the Booking Worker."
    },
    {
     "who": "Playbook Worker",
     "kind": "rules",
     "customer": "Nordmed Pharma Logistik AG",
+    "why": "Every output is checked against Nordmed Pharma Logistik AG's 3 standing rule(s) before a person sees it.",
     "rules": [
      {
       "type": "approved_carriers",
@@ -736,35 +845,42 @@ h1,h2,h3,h4,p{margin:0}
    },
    {
     "who": "Rate Worker",
-    "text": "5 options into Hamburg; best ONE on R-HAM-STD, EUR 3,880 per 40RH, 32 days."
+    "text": "5 options into Hamburg; best ONE on R-HAM-STD, EUR 3,880 per 40RH, 32 days.",
+    "why": "Every carrier on a route into Hamburg, priced from the rate sheet and ranked: Cape routings last, then cheapest, then fastest."
    },
    {
     "who": "Playbook Worker",
     "text": "IN-108-1: ONE is not an approved carrier - use Maersk or Hapag-Lloyd.",
+    "why": "Customer rule: GDP-audited reefer carriers only - vaccines.",
     "tone": "warn"
    },
    {
     "who": "Rate Worker",
-    "text": "4 options into Hamburg; best Hapag-Lloyd on R-HAM-STD, EUR 3,960 per 40RH, 32 days."
+    "text": "4 options into Hamburg; best Hapag-Lloyd on R-HAM-STD, EUR 3,960 per 40RH, 32 days.",
+    "why": "Every carrier on a route into Hamburg, priced from the rate sheet and ranked: Cape routings last, then cheapest, then fastest. Only Maersk or Hapag-Lloyd, as the playbook allows."
    },
    {
     "who": "Booking Worker",
     "text": "IN-108-1: rebooked with Hapag-Lloyd (EUR 3,960 per container).",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output.",
     "record": "NEW-108",
     "label": "booking queued"
    },
    {
     "who": "Playbook Worker",
     "text": "IN-108-3: copy qa-logistics@nordmed-pharma.example on every mail to this customer.",
+    "why": "Customer rule: Quality assurance sees every shipment mail.",
     "tone": "warn"
    },
    {
     "who": "Booking Worker",
-    "text": "IN-108-3: added qa-logistics@nordmed-pharma.example in copy."
+    "text": "IN-108-3: added qa-logistics@nordmed-pharma.example in copy.",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output."
    },
    {
     "who": "Playbook Worker",
     "text": "IN-108-1: 1 of 1 rule(s) satisfied, 1 after a fix.",
+    "why": "Re-checked after every fix, up to three rounds; anything still broken would have gone to a person.",
     "tone": "ok"
    }
   ]
@@ -772,6 +888,7 @@ h1,h2,h3,h4,p{margin:0}
  {
   "id": "docs",
   "item": "IN-103",
+  "stage": "Documents",
   "title": "Read the documents, check them against the booking",
   "line": "Every field pulled off the bill of lading and set against SHP-001. One does not match, so the release is held and the customer is asked.",
   "tint": "amber",
@@ -785,7 +902,8 @@ h1,h2,h3,h4,p{margin:0}
   "messages": [
    {
     "who": "Inbox Worker",
-    "text": "Documents from Bavaria Drivetrain GmbH. Linked to SHP-001 (HLCU-2261188)."
+    "text": "Documents from Bavaria Drivetrain GmbH. Linked to SHP-001 (HLCU-2261188).",
+    "why": "By rules - strongest cues: documents (5 vs next 1). Routed to the Docs Worker."
    },
    {
     "who": "Docs Worker",
@@ -796,6 +914,7 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Docs Worker",
     "kind": "fields",
     "against": "SHP-001",
+    "why": "Checked against SHP-001's booking: 1 mismatch.",
     "rows": [
      {
       "field": "shipper",
@@ -833,11 +952,13 @@ h1,h2,h3,h4,p{margin:0}
    {
     "who": "Docs Worker",
     "text": "Document does not match the booking: Gross weight 18,900 vs 18,400 booked",
+    "why": "Each field read is compared with SHP-001's booking; a difference is handed on to Exception, never corrected.",
     "tone": "warn"
    },
    {
     "who": "Exception Worker",
     "text": "Document mismatch - release held",
+    "why": "Gross weight: 18,900 on the document, 18,400 on the booking - release held until it is resolved.",
     "record": "SHP-001",
     "label": "exception queued"
    },
@@ -852,12 +973,14 @@ h1,h2,h3,h4,p{margin:0}
    "subject": "HLCU-2261188: please check the documents before release",
    "lines": [
     "Before we release them, one thing does not match the booking: the gross weight reads 18,900 kg on the document and 18,400 kg on the booking."
-   ]
+   ],
+   "why": "The document is not corrected to match the booking or the other way round - the customer confirms which figure is right."
   }
  },
  {
   "id": "roll",
   "item": "IN-105",
+  "stage": "In transit",
   "title": "Handle a rollover",
   "line": "The ETA moved on the record, the customer told, and a missed date sent across to routing.",
   "tint": "gray",
@@ -870,6 +993,7 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Milestones Worker",
     "working": "Writing the notice onto SHP-003",
     "done": "Rolled to next sailing",
+    "why": "CMA CGM: rolled to next sailing, 7 days.",
     "record": "SHP-003",
     "label": "ETA moved"
    },
@@ -877,58 +1001,30 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Playbook Worker",
     "working": "Checking Wonen Direct's playbook",
     "done": "IN-105-2: a slip over 1 day(s) needs a customer notice today.",
+    "why": "Customer rule: Store openings are planned against the ETA.",
     "tone": "warn"
    },
    {
     "who": "Exception Worker",
     "working": "Drafting the customer notice",
-    "done": "IN-105-2: drafted customer notice IN-105-3."
+    "done": "IN-105-2: drafted customer notice IN-105-3.",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output."
    }
   ],
   "end": {
    "kind": "escalate",
    "to": "Routing Worker",
    "label": "Handed to the risk layer",
-   "text": "SHP-003 now misses its required-by date by 4 days. Re-plan: the next routing decision is the Routing Worker's, and a person approves it."
+   "text": "SHP-003 now misses its required-by date by 4 days. Re-plan: the next routing decision is the Routing Worker's, and a person approves it.",
+   "why": "7 days late against 3 days of slack - more than the desk can absorb."
   },
   "layout": "checklist",
   "span": 5
  },
  {
-  "id": "invoice",
-  "item": "IN-110",
-  "title": "Reconcile a carrier invoice",
-  "line": "Every line against what was agreed; the one nobody agreed to, disputed.",
-  "tint": "blue",
-  "trigger": {
-   "from": "Hapag-Lloyd",
-   "subject": "Freight invoice HL-88213407 - HLCU-2264903"
-  },
-  "steps": [
-   {
-    "who": "Invoice Worker",
-    "working": "Reconciling against the agreed rate",
-    "done": "DISPUTED - EUR 850 not agreed",
-    "tone": "warn",
-    "record": "SHP-005",
-    "label": "invoice disputed"
-   }
-  ],
-  "end": {
-   "kind": "draft",
-   "to": "billing@hlag.example",
-   "subject": "Query on Freight invoice HL-88213407",
-   "lines": [
-    "Congestion surcharge Hamburg (EUR 850) is not part of the agreed rate.",
-    "Please send a corrected invoice, or the basis for the charge."
-   ]
-  },
-  "layout": "stack",
-  "span": 6
- },
- {
   "id": "customs",
   "item": "IN-112",
+  "stage": "Arrival",
   "title": "Clear an arrival",
   "line": "The entry prepared for the discharge country - or escalated, never filed.",
   "tint": "green",
@@ -941,6 +1037,7 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Customs Worker",
     "working": "Preparing the entry at Rotterdam",
     "done": "ESCALATED - transit to Switzerland, not an import at RTM",
+    "why": "Onward to a destination outside the EU customs union.",
     "tone": "warn",
     "record": "SHP-006",
     "label": "customs flagged"
@@ -950,14 +1047,51 @@ h1,h2,h3,h4,p{margin:0}
    "kind": "escalate",
    "to": "A person",
    "label": "Needs a person",
-   "text": "SHP-006 lands at Rotterdam but is going to Basel (Switzerland): a transit out of the EU, not an import entry. Who declares it and under which guarantee is a person's call - nothing filed."
+   "text": "SHP-006 lands at Rotterdam but is going to Basel (Switzerland): a transit out of the EU, not an import entry. Who declares it and under which guarantee is a person's call - nothing filed.",
+   "why": "Basel is outside the EU customs union, so an import entry at Rotterdam would be the wrong filing."
   },
   "layout": "focus",
   "span": 6
  },
  {
+  "id": "invoice",
+  "item": "IN-110",
+  "stage": "Billing",
+  "title": "Reconcile a carrier invoice",
+  "line": "Every line against what was agreed; the one nobody agreed to, disputed.",
+  "tint": "blue",
+  "trigger": {
+   "from": "Hapag-Lloyd",
+   "subject": "Freight invoice HL-88213407 - HLCU-2264903"
+  },
+  "steps": [
+   {
+    "who": "Invoice Worker",
+    "working": "Reconciling against the agreed rate",
+    "done": "DISPUTED - EUR 850 not agreed",
+    "why": "1 of 3 lines differ from the agreed rate.",
+    "tone": "warn",
+    "record": "SHP-005",
+    "label": "invoice disputed"
+   }
+  ],
+  "end": {
+   "kind": "draft",
+   "to": "billing@hlag.example",
+   "subject": "Query on Freight invoice HL-88213407",
+   "lines": [
+    "Congestion surcharge Hamburg (EUR 850) is not part of the agreed rate.",
+    "Please send a corrected invoice, or the basis for the charge."
+   ],
+   "why": "1 line not on the agreed rate - queried with the carrier, not passed for payment."
+  },
+  "layout": "flow",
+  "span": 6
+ },
+ {
   "id": "learn",
   "item": "IN-104",
+  "stage": "Learning",
   "title": "Correct it once. The desk learns.",
   "line": "Tell an agent it read a mail wrong. The lesson is replayed over the whole inbox, kept only if it undoes nothing, and fixes every mail like it.",
   "tint": "blue",
@@ -974,7 +1108,8 @@ h1,h2,h3,h4,p{margin:0}
     "kind": "intent",
     "intent": "booking_request",
     "label": "Booking request",
-    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG."
+    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG.",
+    "why": "By rules - strongest cues: booking request (5 vs next 0). Routed to the Booking Worker."
    },
    {
     "who": "You",
@@ -990,7 +1125,8 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Inbox Worker",
     "kind": "lesson",
     "id": "L-001",
-    "text": "A message that says “re-quote” is a rate request, whatever else it mentions."
+    "text": "A message that says “re-quote” is a rate request, whatever else it mentions.",
+    "why": "By a lesson - L-001: A message that says “re-quote” is a rate request, whatever else it mentions. Routed to the RFQ Worker."
    },
    {
     "who": "Inbox Worker",
@@ -999,11 +1135,13 @@ h1,h2,h3,h4,p{margin:0}
     "fixed": "IN-104",
     "also": [
      "IN-109"
-    ]
+    ],
+    "why": "Every mail re-run with L-001; 2 changed, and each one is named."
    },
    {
     "who": "Inbox Worker",
-    "kind": "kept"
+    "kind": "kept",
+    "why": "No earlier lesson to undo, and it fixed IN-104 on replay - so it was saved."
    }
   ]
  }
@@ -1086,8 +1224,9 @@ h1,h2,h3,h4,p{margin:0}
 
 /* ------------------------------------------------------------------
    The six everyday cards, drawn from #uc-scenes. Each scene names a
-   layout - stack, checklist or focus - and a width; every word inside
-   the mock comes from the scene, which the tests hold to a real run.
+   layout - flow, chat, checklist or focus - and a width; every word
+   inside the mock comes from the scene, which the tests hold to a real
+   run.
    ------------------------------------------------------------------ */
 (function () {
   var grid = document.querySelector("[data-bx-everyday]");
@@ -1101,14 +1240,30 @@ h1,h2,h3,h4,p{margin:0}
   var AV = '<span class="bx-av"><svg width="11" height="11" viewBox="0 0 20 20" fill="none">' +
            '<path d="M3.2 14h13.6M3.2 10h8.6M3.2 6h4.6" stroke="#fff" stroke-width="2.4" ' +
            'stroke-linecap="round"/></svg></span>';
-  var MAIL = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
-             'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" ' +
-             'width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
+  // The Outlook mark, on the owner's instruction (2026-09-25), so the mail
+  // reads as the inbox a desk already works in. Taken verbatim from
+  // vscode-icons' file-type-outlook (MIT, via @iconify-json/vscode-icons on
+  // npm, the only place this sandbox can reach) - never redrawn. It is the
+  // classic mark; swap in the current official file when someone supplies
+  // it. A real mark reads as a connected mailbox, which this build does not
+  // have, so the note under the grid says none is connected - and a test
+  // holds that line to this data-mark.
+  var MAIL = '<svg data-mark="outlook" width="22" height="22" viewBox="0 0 32 32">' +
+    '<path fill="#0072c6" d="M19.484 7.937v5.477l1.916 1.205a.5.5 0 0 0 .21 0l8.238-5.554a1.174 1.174 0 0 0-.959-1.128Z"/>' +
+    '<path fill="#0072c6" d="m19.484 15.457l1.747 1.2a.52.52 0 0 0 .543 0c-.3.181 8.073-5.378 8.073-5.378v10.066a1.408 ' +
+    '1.408 0 0 1-1.49 1.555h-8.874zm-9.044-2.525a1.61 1.61 0 0 0-1.42.838a4.13 4.13 0 0 0-.526 2.218A4.05 4.05 0 0 0 ' +
+    '9.02 18.2a1.6 1.6 0 0 0 2.771.022a4 4 0 0 0 .515-2.2a4.37 4.37 0 0 0-.5-2.281a1.54 1.54 0 0 0-1.366-.809"/>' +
+    '<path fill="#0072c6" d="M2.153 5.155v21.427L18.453 30V2Zm10.908 14.336a3.23 3.23 0 0 1-2.7 1.361a3.19 3.19 0 0 ' +
+    '1-2.64-1.318A5.46 5.46 0 0 1 6.706 16.1a5.87 5.87 0 0 1 1.036-3.616a3.27 3.27 0 0 1 2.744-1.384a3.12 3.12 0 0 ' +
+    '1 2.61 1.321a5.64 5.64 0 0 1 1 3.484a5.76 5.76 0 0 1-1.035 3.586"/></svg>';
   var CHECK = '<i><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
               'stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/>' +
               '</svg></i>';
   var ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
               'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  // The reason behind a box, recorded by the desk on the run (see "why" in
+  // #uc-scenes, held to the run by test). Shown on hover by the tip below.
+  var W = function (why) { return why ? ' data-why="' + esc(why) + '"' : ""; };
   var worker = function (sc) {
     return sc.agent || sc.steps[sc.steps.length - 1].who;
   };
@@ -1123,25 +1278,29 @@ h1,h2,h3,h4,p{margin:0}
   };
 
   var mail = function (sc) {
-    return '<div class="bx-mail"><span class="bx-ic">' + MAIL + '<b>1</b></span><span>' +
-      '<span class="s" style="display:block">Inbound mail &middot; ' + esc(sc.item) + '</span>' +
+    return '<div class="bx-mail bx-ntf"><span class="bx-ic app">' + MAIL + '<b>1</b></span><span>' +
+      '<span class="s" style="display:block">New mail &middot; ' + esc(sc.item) + '</span>' +
       '<span class="f" style="display:block">' + esc(sc.trigger.from) + '</span>' +
       '<span class="t" style="display:block">' + esc(sc.trigger.subject) + '</span></span></div>';
   };
-  var ending = function (sc, lines, who) {
-    var e = sc.end;
-    if (e.kind === "escalate") {
-      return '<div class="bx-esc"><div class="lab">' + handedTo(e) +
-        '</div><div class="tx">' + esc(e.text) + '</div></div>';
-    }
-    return '<div class="bx-draft"><div class="h">' + AV + esc(who || worker(sc)) +
-      '<span style="margin-left:auto">draft</span></div>' +
-      '<div class="to">To: ' + esc(e.to) + '</div>' +
+  var escalation = function (e) {
+    return '<div class="bx-esc"' + W(e.why) + '><div class="lab">' + handedTo(e) +
+      '</div><div class="tx">' + esc(e.text) + '</div></div>';
+  };
+  var draftBody = function (e, lines) {
+    return '<div class="to">To: ' + esc(e.to) + '</div>' +
       (e.cc ? '<div class="cc">cc ' + esc(e.cc) + '</div>' : "") +
       '<div class="sj">' + esc(e.subject) + '</div>' +
-      e.lines.slice(0, lines).map(function (l) { return '<div class="ln">' + esc(l) + '</div>'; }).join("") +
-      '<div class="bx-gate"><span class="chip synth">Draft &mdash; not sent</span>' +
-      '<span class="bx-ap">Approve ' + ARROW + '</span></div></div>';
+      e.lines.slice(0, lines).map(function (l) { return '<div class="ln">' + esc(l) + '</div>'; }).join("");
+  };
+  // The gate. "Draft ready" and an Approve button, never a Send: nothing
+  // in this build sends, and every draft waits for a person.
+  var ending = function (sc, lines, who) {
+    var e = sc.end;
+    if (e.kind === "escalate") return escalation(e);
+    return '<div class="bx-draft"' + W(e.why) + '><div class="h">' + AV + esc(who || worker(sc)) +
+      '<span style="margin-left:auto">draft</span></div>' + draftBody(e, lines) +
+      '<div class="bx-gate"><b>Draft ready.</b><span class="bx-ap">Approve ' + ARROW + '</span></div></div>';
   };
   var pill = function (sc, where, delay) {
     var r = recorded(sc), text;
@@ -1197,6 +1356,8 @@ h1,h2,h3,h4,p{margin:0}
       body = '<div class="bx-bu' + (m.tone ? " " + m.tone : "") + '">' + esc(m.text) +
         (m.record ? '<div class="bx-rec"><b>' + esc(m.record) + '</b> ' + esc(m.label) + '</div>' : "") + '</div>';
     }
+    // Every agent bubble carries its reason; a draft carries it on the draft.
+    if (m.why && m.kind !== "draft") body = body.replace('<div class="bx-bu', '<div' + W(m.why) + ' class="bx-bu');
     return head + body;
   };
 
@@ -1212,25 +1373,45 @@ h1,h2,h3,h4,p{margin:0}
             ' &middot; ' + esc(sc.item) + '</span></span>' +
             '<button class="bx-replay" type="button" data-chat-replay>Replay</button></div>' +
           '<div class="bx-cb" data-chat>' +
-            '<div class="bx-in"><span class="bx-ic">' + MAIL + '<b>1</b></span><span><span class="s">Inbound mail &middot; ' +
+            '<div class="bx-in bx-ntf"><span class="bx-ic app">' + MAIL + '<b>1</b></span><span><span class="s">New mail &middot; ' +
               esc(sc.trigger.from) + '</span><span class="t">' + esc(sc.trigger.subject) + '</span></span></div>' +
             msgs + '<div class="bx-typing" aria-hidden="true"><i></i><i></i><i></i></div></div>' +
         '</div>';
     },
-    // The mail tilted at the back, the draft (or escalation) over it, a pill.
-    stack: function (sc) {
-      return '<div class="bx-dots"></div>' +
-        '<div class="bx-l bx-panel" style="left:4%;right:22%;top:9%;--r:-3deg;--d:.05s">' + mail(sc) + '</div>' +
-        '<div class="bx-l front bx-panel" style="left:14%;right:3%;top:31%;--r:1.5deg;--d:.22s">' +
-          ending(sc, 2) + '</div>' +
-        // Up top, like a notification landing - never over the draft's
-        // "not sent" chip, which is the one line on the card that must show.
-        pill(sc, "right:3%;top:0", 0.7);
+    // The mail lands like a notification; under it the agent works each
+    // step in order - a spinner on the page's own "working" label, then a
+    // tick on what the Worker actually said - and ends on "Draft ready."
+    // with the draft and its Approve button. playFlow() below runs it.
+    flow: function (sc) {
+      var steps = sc.steps.map(function (st) {
+        var warn = st.tone === "warn";
+        return '<div class="bx-st' + (warn ? " warn" : "") + '"' + W(st.why) + '><span><span class="ic">' +
+          (warn ? '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+                  'stroke-width="4" stroke-linecap="round"><path d="M12 5v8M12 19h.01"/></svg>'
+                : CHECK.replace(/^<i>|<\/i>$/g, "")) +
+          '</span><span class="sp"></span></span>' + AV + '<span><span class="w">' + esc(st.who) +
+          (st.record ? '<span class="bx-rec"><b>' + esc(st.record) + '</b> ' + esc(st.label) + '</span>' : "") +
+          '</span><span class="wk">' + esc(st.working) + '&hellip;</span>' +
+          '<span class="dn">' + esc(st.done) + '</span></span></div>';
+      }).join("");
+      var e = sc.end;
+      var end = e.kind === "escalate" ? escalation(e) :
+        '<div class="bx-rd"><span class="ok">Draft ready.</span><span class="c ok">waits for your approval</span>' +
+          '<span class="ing">Drafting<span class="bx-typing"><i></i><i></i><i></i></span></span>' +
+          '<span class="bx-ap">Approve ' + ARROW + '</span></div>' +
+        '<div class="bx-dft"' + W(e.why) + '><div class="bx-draft">' + draftBody(e, 3) + '</div></div>';
+      return '<div class="bx-dots"></div><div class="bx-flow">' + mail(sc) +
+        '<div class="bx-l front bx-panel bx-ag" style="--d:.55s" data-flow>' +
+          '<div class="bx-ch">' + AV + '<span><b>SQR agent</b><span class="c">' + esc(worker(sc)) +
+            ' &middot; ' + esc(sc.item) + '</span></span>' +
+            '<button class="bx-replay" type="button" data-chat-replay>Replay</button></div>' +
+          '<div class="bx-steps">' + steps + '</div>' + end +
+        '</div></div>';
     },
     // Each agent's step as a ticked row; the ending behind, fading out.
     checklist: function (sc) {
       var rows = sc.steps.map(function (st, i) {
-        return '<div class="bx-row' + (st.tone === "warn" ? " warn" : "") + '">' +
+        return '<div class="bx-row' + (st.tone === "warn" ? " warn" : "") + '"' + W(st.why) + '>' +
           '<span class="bx-ck" style="--t:' + (0.55 + i * 0.28).toFixed(2) + 's"></span>' + AV +
           '<span class="w">' + esc(st.who) + '</span>' +
           '<span class="tg">' + (st.tone === "warn" ? "flagged" : "done") + '</span>' +
@@ -1247,20 +1428,20 @@ h1,h2,h3,h4,p{margin:0}
     // The steps as a column; the one that matters picked out in black.
     focus: function (sc) {
       var items = sc.steps.map(function (st) {
-        return {a: st.who, b: st.done, warn: st.tone === "warn"};
+        return {a: st.who, b: st.done, warn: st.tone === "warn", why: st.why};
       });
       var e = sc.end;
       items.push(e.kind === "escalate"
-        ? {a: e.to === "A person" ? e.label : e.label + " → " + e.to, b: e.text, esc: true}
-        : {a: worker(sc) + " · draft", b: e.subject});
+        ? {a: e.to === "A person" ? e.label : e.label + " → " + e.to, b: e.text, esc: true, why: e.why}
+        : {a: worker(sc) + " · draft", b: e.subject, why: e.why});
       var key = -1;
       items.forEach(function (it, i) { if (it.esc) key = i; });
       if (key < 0) items.forEach(function (it, i) { if (key < 0 && it.warn) key = i; });
       if (key < 0) key = items.length - 1;
       var rows = items.map(function (it, i) {
         var d = Math.abs(i - key);
-        return '<div class="bx-fr ' + (i === key ? "key" : d === 1 ? "near" : "far") +
-          '" style="--t:' + (i === key ? 0.9 : 0) + 's"><span><span class="a" style="display:block">' +
+        return '<div class="bx-fr ' + (i === key ? "key" : d === 1 ? "near" : "far") + '"' + W(it.why) +
+          ' style="--t:' + (i === key ? 0.9 : 0) + 's"><span><span class="a" style="display:block">' +
           esc(it.a) + '</span><span class="b">' + esc(it.b) + '</span></span>' +
           '<span class="go">' + ARROW + '</span></div>';
       }).join("");
@@ -1270,12 +1451,77 @@ h1,h2,h3,h4,p{margin:0}
     }
   };
 
+  var n = 0;
   grid.innerHTML = scenes.map(function (sc) {
-    return (sc.id === "learn" ? '<p class="bx-label bx-in-grid">Learning <span>1 correction</span></p>' : "") +
-      '<article class="bx s' + (sc.span || 6) + (sc.layout === "chat" ? " chat" : "") + '" data-bx>' +
+    var layout = LAYOUT[sc.layout] ? sc.layout : "flow";
+    return '<article class="bx s' + (sc.span || 6) + (layout === "chat" || layout === "flow" ? " " + layout : "") +
+      '" data-bx>' +
+      (sc.stage ? '<p class="bx-stg"><b>' + ("0" + (++n)).slice(-2) + '</b>' + esc(sc.stage) + '</p>' : "") +
       '<h3>' + esc(sc.title) + '</h3><p class="ds">' + esc(sc.line) + '</p>' +
-      '<div class="bx-m" aria-hidden="true">' + (LAYOUT[sc.layout] || LAYOUT.stack)(sc) + '</div></article>';
+      '<div class="bx-m" aria-hidden="true">' + LAYOUT[layout](sc) + '</div></article>';
   }).join("");
+
+  // The tip. Hover shows the reason under the pointer's box; a tap does the
+  // same on a touch screen, and a tap anywhere else, or a scroll, hides it.
+  var tip = document.createElement("div");
+  tip.className = "bx-tip";
+  tip.setAttribute("role", "tooltip");
+  document.body.appendChild(tip);
+  var shown = null;
+  var hide = function () { shown = null; tip.classList.remove("on"); };
+  var show = function (el) {
+    if (el === shown) return;
+    shown = el;
+    tip.innerHTML = "<b>Why</b>" + esc(el.getAttribute("data-why"));
+    var r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    var x = Math.min(Math.max(12, r.left), window.innerWidth - t.width - 12);
+    var y = r.top - t.height - 8;
+    if (y < 12) y = r.bottom + 8;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+    tip.classList.add("on");
+  };
+  // Pointer events, mouse only: a tap also fires emulated mouse events,
+  // including a leave straight after it, which would hide the tip it opened.
+  grid.addEventListener("pointerover", function (ev) {
+    if (ev.pointerType !== "mouse") return;
+    var el = ev.target.closest && ev.target.closest("[data-why]");
+    if (el) show(el); else hide();
+  });
+  grid.addEventListener("pointerleave", function (ev) {
+    if (ev.pointerType === "mouse") hide();
+  });
+  document.addEventListener("click", function (ev) {
+    var el = ev.target.closest && ev.target.closest("[data-why]");
+    if (el && grid.contains(el)) show(el); else hide();
+  });
+  window.addEventListener("scroll", hide, {passive: true});
+  grid.addEventListener("scroll", hide, true);
+
+  // A flow card's height is measured, not guessed: a clone of its finished
+  // state (every step ticked, the draft out) is laid out off-screen and the
+  // mock sized to it plus the fade. Re-measured when the width changes,
+  // because text wraps harder on a phone.
+  var sizeFlows = function () {
+    grid.querySelectorAll(".bx.flow .bx-m").forEach(function (m) {
+      var f = m.querySelector(".bx-flow");
+      if (!f) return;
+      var c = f.cloneNode(true);
+      c.style.visibility = "hidden";
+      c.querySelectorAll(".pre,.drafting,.pend,.run").forEach(function (el) {
+        el.classList.remove("pre", "drafting", "pend", "run");
+      });
+      m.appendChild(c);
+      m.style.height = Math.ceil(c.offsetHeight + 4 + 28) + "px";
+      m.removeChild(c);
+    });
+  };
+  sizeFlows();
+  var w = window.innerWidth, t;
+  window.addEventListener("resize", function () {
+    if (window.innerWidth === w) return;
+    w = window.innerWidth;
+    clearTimeout(t); t = setTimeout(sizeFlows, 120);
+  });
 })();
 
 /* ------------------------------------------------------------------
@@ -1294,6 +1540,65 @@ h1,h2,h3,h4,p{margin:0}
     body.style.scrollBehavior = smooth ? "smooth" : "auto";
     body.scrollTop = body.scrollHeight;
   };
+  // Restart a CSS animation (the notification's drop, the badge's pop).
+  var again = function (el) {
+    if (!el) return;
+    el.style.animation = "none"; void el.offsetWidth; el.style.animation = "";
+  };
+  var pop = function (el) {
+    el.classList.remove("bx-pop"); void el.offsetWidth; el.classList.add("bx-pop");
+  };
+  var finishFlow = function (card) {
+    var ag = card.querySelector("[data-flow]");
+    if (!ag) return;
+    ag.classList.remove("pre", "drafting");
+    ag.querySelectorAll(".bx-st").forEach(function (s) { s.classList.remove("pend", "run"); });
+    card.classList.add("done");
+  };
+  // The mail lands, the agent panel rises, then each step spins on its
+  // working label and ticks over to what the Worker said; then "Drafting",
+  // then "Draft ready." and the draft.
+  var playFlow = function (card) {
+    var ag = card.querySelector("[data-flow]");
+    if (!ag) return;
+    var steps = ag.querySelectorAll(".bx-st");
+    var dft = ag.querySelector(".bx-dft");
+    var run = (card._run = (card._run || 0) + 1);
+    card.classList.remove("done");
+    ag.classList.add("pre");
+    ag.classList.remove("drafting");
+    steps.forEach(function (s) { s.classList.add("pend"); s.classList.remove("run"); });
+    var i = 0;
+    var next = function () {
+      if (card._run !== run) return;
+      if (i < steps.length) {
+        var s = steps[i];
+        s.classList.remove("pend"); s.classList.add("run"); pop(s);
+        setTimeout(function () {
+          if (card._run !== run) return;
+          s.classList.remove("run"); i += 1;
+          setTimeout(next, 300);
+        }, 1150);
+        return;
+      }
+      ag.classList.remove("pre");
+      if (!dft) { card.classList.add("done"); return; }
+      ag.classList.add("drafting");
+      setTimeout(function () {
+        if (card._run !== run) return;
+        ag.classList.remove("drafting"); pop(dft);
+        card.classList.add("done");
+      }, 1400);
+    };
+    setTimeout(next, 1250);
+  };
+  var play = function (card) {
+    card.querySelectorAll(".bx-ntf, .bx-ntf .bx-ic b").forEach(again);
+    playFlow(card);
+    playChat(card);
+  };
+  var finish = function (card) { finishFlow(card); finishChat(card); };
+
   var finishChat = function (card) {
     var body = card.querySelector("[data-chat]");
     if (!body) return;
@@ -1334,17 +1639,18 @@ h1,h2,h3,h4,p{margin:0}
   cards.forEach(function (card) {
     var r = card.querySelector("[data-chat-replay]");
     if (r) r.addEventListener("click", function () {
-      if (still) finishChat(card); else playChat(card);
+      if (still) finish(card); else play(card);
     });
   });
   if (still || !("IntersectionObserver" in window)) {
-    cards.forEach(function (c) { c.classList.add("in"); finishChat(c); });
+    cards.forEach(function (c) { c.classList.add("in"); finish(c); });
     return;
   }
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
       if (!e.isIntersecting) return;
       e.target.classList.add("in");
+      playFlow(e.target);
       playChat(e.target);
       io.unobserve(e.target);
     });
