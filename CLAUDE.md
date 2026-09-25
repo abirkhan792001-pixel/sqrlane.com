@@ -659,23 +659,31 @@ One booking ends the week still held, because under a persistent corridor closur
 better routing exists for it. Saying so is a real answer, not a gap, and the day's copy
 says it rather than claiming the board is clear.
 
-### The new dashboard at app.sqrlane.com (in progress, 2026-09-25)
+### The new dashboard at app.sqrlane.com (live, 2026-09-25)
 
-On the owner's instruction the dashboard is being rebuilt as its own app, after Peec AI's
+On the owner's instruction the dashboard was rebuilt as its own app, after Peec AI's
 dashboard: built in **Lovable** (project `SQRlane Operations`, repo
-`abirkhan792001-pixel/sqrlane-dashboard` - TanStack Start, React, Tailwind, shadcn), deployed as
-a separate Vercel project on **app.sqrlane.com**. It has no backend of its own: it calls this
-API from the browser (`VITE_API_BASE=https://sqrlane.com`), and falls back to a recorded run
-with a "Showing a recorded run" badge when it cannot. That is why `src/app.py` carries a CORS
-allow-list, `config.DASHBOARD_ORIGINS` - app.sqrlane.com, the Lovable preview and its dev
-server, never `*` (`TheApiIsOpenOnlyToTheDashboard` holds it). The Lovable project's
-knowledge carries the same honesty rules as this file. **The cut-over is on branch
-`claude/dashboard-cutover`**: `/app` answers a 301 to `config.DASHBOARD_URL`
-(https://app.sqrlane.com), all fourteen demo links point there directly (the Workflow link to
-`/desk`), and `TheDemoMovedToItsOwnApp` fails if an old link or the redirect comes back.
-`static/index.html` is kept, unserved, until the new dashboard has run in front of an
-audience - restoring it is the one `dashboard()` function in `src/app.py`. **Merge that branch
-only once app.sqrlane.com is live and a real run works end to end.**
+`abirkhan792001-pixel/sqrlane-operations` - Lovable named it after the project; TanStack
+Start, React, Tailwind, shadcn), deployed as its own Vercel project, `sqrlane-operations`
+(env: `VITE_API_BASE=https://sqrlane.com`, `NITRO_PRESET=vercel`). It has no backend of its
+own: it calls this API from the browser, and falls back to a recorded run with a "Showing a
+recorded run" badge when it cannot. That is why `src/app.py` carries a CORS allow-list,
+`config.DASHBOARD_ORIGINS` - app.sqrlane.com, the project's own
+`sqrlane-operations.vercel.app`, the Lovable preview and its dev server, never `*`
+(`TheApiIsOpenOnlyToTheDashboard` holds it). The Lovable project's knowledge carries the
+same honesty rules as this file.
+
+**Every demo link goes through one switch.** All the "Open the demo" links are `/app`
+(the Workflow link `/app/desk`), and `/app/...` answers a **307** to
+`config.DASHBOARD_URL` plus the path - temporary on purpose, because a browser keeps a 301
+for good and this target moves. `DASHBOARD_URL` defaults to https://app.sqrlane.com, but
+**that domain needs a CNAME (`app` -> Vercel) at Hostinger, where sqrlane.com's DNS lives,
+and the owner has no Hostinger access yet.** So the `sqrlane.com` Vercel project sets
+`DASHBOARD_URL=https://sqrlane-operations.vercel.app` until the record exists; delete that
+variable and redeploy once app.sqrlane.com answers. `TheDemoMovedToItsOwnApp` fails if a
+page hard-codes the dashboard's address again or the dashboard's own origin drops off the
+allow-list. `static/index.html` is kept, unserved, until the new dashboard has run in front
+of an audience - restoring it is the one `dashboard()` function in `src/app.py`.
 
 ### The dashboard follows limns-admin
 

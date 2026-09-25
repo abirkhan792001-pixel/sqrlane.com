@@ -510,28 +510,37 @@ class TheRemovedPageStaysRemoved(unittest.TestCase):
 
 
 class TheDemoMovedToItsOwnApp(unittest.TestCase):
-    """The dashboard moved to app.sqrlane.com. Every demo link goes straight there,
-    and /app answers with a permanent redirect so a link already shared still lands."""
+    """The dashboard is its own app. Every demo link goes through /app, which
+    redirects to config.DASHBOARD_URL - one setting, so the day the dashboard's
+    address changes no page has to. The redirect is temporary (307): a browser
+    keeps a 301 for good, and this target is expected to move."""
 
-    def test_no_page_links_to_the_old_address(self):
-        from src import config
+    def test_every_demo_link_goes_through_the_one_switch(self):
         for page in ALL_PAGES:
             with self.subTest(page=page.name):
-                self.assertNotRegex(page.read_text(encoding="utf-8"), r'href="/app[#"/]')
+                self.assertNotIn("app.sqrlane.com", page.read_text(encoding="utf-8"))
         links = [href for page in MARKETING + (WHITEPAPER,)
                  for href in re.findall(r'href="([^"]*)"[^>]*>[^<]*Open the demo',
                                         page.read_text(encoding="utf-8"))]
         self.assertTrue(links, "no 'Open the demo' link found - did the parse break?")
         for href in links:
-            self.assertTrue(href.startswith(config.DASHBOARD_URL), href)
+            self.assertEqual(href, "/app")
 
-    def test_the_old_address_redirects_to_the_dashboard(self):
+    def test_the_switch_redirects_to_the_dashboard(self):
         from fastapi.testclient import TestClient
         from src import config
         from src.app import app
-        response = TestClient(app).get("/app", follow_redirects=False)
-        self.assertEqual(response.status_code, 301)
+        client = TestClient(app)
+        response = client.get("/app", follow_redirects=False)
+        self.assertEqual(response.status_code, 307)
         self.assertEqual(response.headers["location"], config.DASHBOARD_URL)
+        response = client.get("/app/desk", follow_redirects=False)
+        self.assertEqual(response.headers["location"],
+                         config.DASHBOARD_URL.rstrip("/") + "/desk")
+
+    def test_the_dashboard_can_call_the_api_wherever_it_is_served(self):
+        from src import config
+        self.assertIn(config.DASHBOARD_URL.rstrip("/"), config.DASHBOARD_ORIGINS)
 
 class TheApiIsOpenOnlyToTheDashboard(unittest.TestCase):
     """app.sqrlane.com reads this API from the browser, so the API names it as an
