@@ -659,6 +659,20 @@ One booking ends the week still held, because under a persistent corridor closur
 better routing exists for it. Saying so is a real answer, not a gap, and the day's copy
 says it rather than claiming the board is clear.
 
+### The new dashboard at app.sqrlane.com (in progress, 2026-09-25)
+
+On the owner's instruction the dashboard is being rebuilt as its own app, after Peec AI's
+dashboard: built in **Lovable** (project `SQRlane Operations`, repo
+`abirkhan792001-pixel/sqrlane-dashboard` - TanStack Start, React, Tailwind, shadcn), deployed as
+a separate Vercel project on **app.sqrlane.com**. It has no backend of its own: it calls this
+API from the browser (`VITE_API_BASE=https://sqrlane.com`), and falls back to a recorded run
+with a "Showing a recorded run" badge when it cannot. That is why `src/app.py` carries a CORS
+allow-list, `config.DASHBOARD_ORIGINS` - app.sqrlane.com, the Lovable preview and its dev
+server, never `*` (`TheApiIsOpenOnlyToTheDashboard` holds it). The Lovable project's
+knowledge carries the same honesty rules as this file. **`/app` (below) stays until the new
+dashboard is live and checked, then becomes a redirect to app.sqrlane.com** - do not delete it
+first.
+
 ### The dashboard follows limns-admin
 
 The shell is modelled on [`Franvy/limns-admin`](https://github.com/Franvy/limns-admin),

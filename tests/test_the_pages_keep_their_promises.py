@@ -507,5 +507,25 @@ class TheRemovedPageStaysRemoved(unittest.TestCase):
         self.assertEqual(response.headers["location"], "/product")
 
 
+
+class TheApiIsOpenOnlyToTheDashboard(unittest.TestCase):
+    """app.sqrlane.com reads this API from the browser, so the API names it as an
+    allowed origin. It names it and nothing wider: a wildcard would let any site
+    press the run button (and spend the model budget) from a visitor's browser."""
+
+    def test_the_dashboard_may_call_and_a_stranger_may_not(self):
+        from fastapi.testclient import TestClient
+        from src import config
+        from src.app import app
+        self.assertNotIn("*", config.DASHBOARD_ORIGINS)
+        self.assertIn("https://app.sqrlane.com", config.DASHBOARD_ORIGINS)
+        client = TestClient(app)
+        ask = {"Access-Control-Request-Method": "POST",
+               "Access-Control-Request-Headers": "content-type"}
+        ok = client.options("/run", headers={"Origin": "https://app.sqrlane.com", **ask})
+        self.assertEqual(ok.headers.get("access-control-allow-origin"), "https://app.sqrlane.com")
+        no = client.options("/run", headers={"Origin": "https://elsewhere.example", **ask})
+        self.assertIsNone(no.headers.get("access-control-allow-origin"))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

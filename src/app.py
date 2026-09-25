@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, RedirectResponse,
                                Response)
 from pydantic import BaseModel
@@ -57,6 +58,12 @@ VIDEO_DIR = STATIC_DIR / "video"         # the hero reel; absent in a fresh chec
 
 app = FastAPI(title="SQRlane",
               description="Demo prototype. Drafts emails; sends nothing.")
+
+# Only the dashboard's own origins may call the API from a browser - see
+# config.DASHBOARD_ORIGINS. The pages served from here are same-origin and
+# unaffected.
+app.add_middleware(CORSMiddleware, allow_origins=config.DASHBOARD_ORIGINS,
+                   allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
 
 
 class CorrectRequest(BaseModel):
