@@ -719,6 +719,28 @@ The Assistant's roster tag moved from `SCRIPTED` to `LIVE` (roster, `/product`'s
 blob, `/about`, the README and the whitepaper's agent table, which now counts five
 model-calling agents and a sixth job, *routing a question*).
 
+**Files go to the Worker they belong to** (2026-09-25, on the owner's instruction: "a
+ChatGPT-like interface with the ability to upload files"). `POST /api/ask` takes
+`attachments: [{name, content}]`; `src/uploads.py` says what each file is. A bookings
+export goes to the TMS Link and comes back as a `connection_preview` - nothing changes
+until the person chooses to use it. An `.eml` or a text document is worked by the desk
+exactly like an inbound mail (`workflow.work_mail`: Inbox Worker, the owner, the playbook,
+the gate). A PDF, an image or a spreadsheet is said to be unreadable - there is no vision
+model in this build, and a spreadsheet should be saved as CSV. **`.eml` is parsed by hand,
+not with the standard library's `email` package**: `tests/test_comms_agent_sends_nothing.py`
+bans that package from `src/` because it builds messages too, and that guard is not
+relaxed for convenience. A vague question beside a file ("check this please") keeps the
+file's answer; a question a Worker owns is answered after it.
+
+**The dashboard's insights page is counted, never trended** (`GET /api/insights`,
+`src/insights.py`). The owner's reference showed "from last period" deltas, a win rate, a
+response time and 30 days of volume. SQRlane has no history, so none of those exist, and
+the page keeps the reference's layout - four stat cards, a thin-bar chart, horizontal
+share bars - filled with counts from one run: mails worked, handled end to end, escalated,
+waiting for you; messages per agent on the bus; what the inbox asked for; where the
+approvals come from. Shares use largest remainder so they add to exactly 100, and a test
+fails on "last period", "previous", "win rate" or "response time" in the payload.
+
 **`/mcp` is the same desk as an MCP server** (`src/mcp_server.py`): Streamable HTTP in
 its simplest form - one JSON-RPC request per POST, JSON back, no session, no stream -
 with three read-only tools (`ask_sqrlane`, `list_bookings`, `list_scenarios`). Add
@@ -1118,6 +1140,8 @@ here too, because this is what the next session reads to find its way around.
 │   │                         #   HTTPS endpoint mapped in, and the write-back push
 │   ├── ask.py                # Ask SQRlane: a question, to the Worker who owns it
 │   ├── mcp_server.py         # the same desk as an MCP server, at /mcp
+│   ├── uploads.py            # a file dropped into Ask: export, mail, or unreadable
+│   ├── insights.py           # the dashboard's cards and charts, counted not trended
 │   ├── simulation.py         # the authored week, replayed over the same board
 │   ├── geo.py                # the board on a map - derived from the run
 │   └── app.py                # FastAPI: serves the three pages + the API

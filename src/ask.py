@@ -28,7 +28,7 @@ import re
 from datetime import datetime, timezone
 from types import SimpleNamespace
 
-from src import config, llm, orchestrator, roster, route_advisor, tms, workflow
+from src import config, llm, orchestrator, roster, route_advisor, tms, uploads, workflow
 
 NAMES = dict(workflow.NAMES, assistant="Assistant", tms="TMS Link", you="You")
 MODE = {w["id"]: w["mode"] for w in roster.ROSTER}
@@ -595,7 +595,66 @@ def _nobody(conv, ctx, reason):
 # ---------------------------------------------------------------------------
 
 
-def ask(question: str, *, scenario: str | None = None, use_llm: bool = True) -> dict:
+def _uploaded(conv, upload, use_llm) -> dict:
+    """One dropped-in file, handed to the Worker it belongs to."""
+    conv.post("you", "assistant", "ask", f"Uploaded {upload['name']}.")
+    if upload["kind"] == "unreadable":
+        conv.post("assistant", "docs", "handoff", f"Read {upload['name']}.")
+        conv.post("docs", "you", "answer", upload["reason"])
+        return _answer(f"{upload['name']}: {upload['reason']}", answered=False,
+                       suggestions=["Upload the mail as .eml, or paste the document's text.",
+                                    "A bookings export works as CSV or JSON."])
+    if upload["kind"] == "export":
+        conn = upload["connection"]
+        conv.post("assistant", "tms", "handoff", f"{upload['name']} looks like a bookings export.")
+        conv.post("tms", "you", "answer",
+                  f"Read {conn['rows_read']} rows: {len(conn['bookings'])} on lanes the agents "
+                  f"judge, {len(conn['not_covered'])} not covered.",
+                  why=f"{len(conn['mapping'])} columns mapped by the names TMS exports use.")
+        text = (f"{upload['name']} is a bookings export: {conn['rows_read']} rows read, "
+                f"{len(conn['bookings'])} on lanes the agents can judge, "
+                f"{len(conn['not_covered'])} not covered"
+                + (" (" + "; ".join(f"{n['ref'] or 'row ' + str(n['row'])}: {n['reason']}"
+                                    for n in conn["not_covered"][:3]) + ")"
+                   if conn["not_covered"] else "")
+                + ". Nothing changes until you choose to use it as your TMS.")
+        return dict(_answer(text, facts=[{"label": m["column"], "value": m["field"]}
+                                         for m in conn["mapping"][:8]],
+                            links=[{"label": "TMS link", "view": "tms"}]),
+                    connection_preview=conn)
+    message = upload["message"]
+    worked = workflow.work_mail(message, use_llm=use_llm)
+    item = worked["item"]
+    for msg in worked["messages"]:
+        conv.post(msg["from_id"], msg["to_id"], msg["kind"], msg["text"], why=msg.get("why"))
+    outs = worked["outputs"]
+    parts = [f"{upload['name']}: the Inbox Worker read it as "
+             f"\"{(item.get('intent_label') or 'unclear').lower()}\""
+             + (f" from {item['sender_org']}" if item.get("sender_org") else "")
+             + (f", linked to {item['linked_booking']}" if item.get("linked_booking") else "")
+             + f", and it went {' -> '.join(NAMES.get(w, w) for w in item['path'])}."]
+    if item.get("extracted") and item["extracted"].get("fields"):
+        fields = item["extracted"]["fields"]
+        parts.append("Read from the document: " + ", ".join(
+            f"{workflow.FIELDS.get(k, (k,))[0]} {v:,}" if isinstance(v, int)
+            else f"{workflow.FIELDS.get(k, (k,))[0]} {v}" for k, v in list(fields.items())[:6]) + ".")
+    if outs:
+        parts.append("Waiting for your approval: " + "; ".join(
+            f"{o['worker']} - {o.get('subject') or o.get('action')} ({o['status']})"
+            for o in outs[:4]) + ".")
+    if worked["escalations"]:
+        parts.append("For a person: " + "; ".join(e["text"].rstrip(".")
+                                                   for e in worked["escalations"][:3]) + ".")
+    answered = bool(item.get("owner"))
+    return dict(_answer(" ".join(parts), answered=answered,
+                        suggestions=[] if answered else [
+                            "Add what the mail is about to the subject, or correct it on the "
+                            "Desk page - one correction teaches the desk every mail like it."]),
+                desk_item={"item": item, "outputs": outs})
+
+
+def ask(question: str, *, scenario: str | None = None, use_llm: bool = True,
+        attachments: list[dict] | None = None) -> dict:
     """Answer one question from a fresh run of the board the person is looking at.
 
     The run is offline and rules-only on purpose: it is the same board, decided
@@ -617,6 +676,33 @@ def ask(question: str, *, scenario: str | None = None, use_llm: bool = True) -> 
     ctx["unwatched"] = _unwatched_places(question, run["shipments"], ctx["chokepoints"])
 
     conv = Conversation()
+    if attachments:
+        results = [_uploaded(conv, uploads.read(a.get("name"), a.get("content"), i), use_llm)
+                   for i, a in enumerate(attachments[:3], start=1)]
+        answer = {"text": " ".join(r["text"] for r in results),
+                  "facts": [f for r in results for f in r["facts"]],
+                  "links": [l for r in results for l in r["links"]],
+                  "suggestions": [x for r in results for x in r["suggestions"]],
+                  "answered": all(r["answered"] for r in results)}
+        for extra in ("connection_preview", "desk_item"):
+            found = [r[extra] for r in results if extra in r]
+            if found:
+                answer[extra] = found[0]
+        uploaded = answer
+        # A question beside a file is answered only if a Worker owns it; "check
+        # this please" is about the file, and the file's answer stands.
+        if not question or not (_rules_route(question)[0] or _board_matches(
+                question, run["shipments"])):
+            return dict(answer, question=question, conversation=conv.messages, routed_to=None,
+                        routed_by="upload", route_reason="each file goes to the Worker it "
+                        "belongs to", asked_at=datetime.now(timezone.utc).replace(
+                            microsecond=0).isoformat(), examples=EXAMPLES,
+                        checked_against={"connector": run["tms"]["connector"],
+                                         "bookings": len(run["shipments"]),
+                                         "note": "Uploaded files are worked by the desk; "
+                                                 "nothing is sent and nothing is written."})
+    else:
+        uploaded = None
     conv.post("you", "assistant", "ask", question)
 
     routed = _model_route(question) if use_llm and llm.is_configured() else None
@@ -641,6 +727,11 @@ def ask(question: str, *, scenario: str | None = None, use_llm: bool = True) -> 
         conv.post(worker, "you", "answer", answer["text"])
     else:
         answer = _nobody(conv, ctx, reason)
+    if uploaded:
+        answer = dict(uploaded, text=f"{uploaded['text']} {answer['text']}",
+                      facts=uploaded["facts"] + answer["facts"],
+                      links=uploaded["links"] + answer["links"],
+                      suggestions=uploaded["suggestions"] + answer["suggestions"])
 
     return {
         "question": question,

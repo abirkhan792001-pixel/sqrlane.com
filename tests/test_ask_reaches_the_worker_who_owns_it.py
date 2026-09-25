@@ -137,5 +137,77 @@ class TheDeskIsAnMcpServer(unittest.TestCase):
         self.assertIn("SHP-002 is held", reply["result"]["content"][0]["text"])
 
 
+class AFileGoesToTheWorkerItBelongsTo(unittest.TestCase):
+    """The Ask box's upload: an export to the TMS Link, a mail or document to the
+    desk, and a file nothing here can read is said to be unreadable."""
+
+    BL = ("BILL OF LADING (DRAFT) HLCU-2261188\nShipper: Shanghai Ruida Auto Components\n"
+          "Gross weight: 18,900 kg")
+
+    def upload(self, name, content, question=""):
+        return ask.ask(question, scenario="hamburg", use_llm=False,
+                       attachments=[{"name": name, "content": content}])
+
+    def test_an_export_is_previewed_not_connected(self):
+        from src import config, tms
+        result = self.upload("tms.csv", config.SAMPLE_TMS_EXPORT.read_text(encoding="utf-8"))
+        self.assertEqual(len(result["connection_preview"]["bookings"]), 7)
+        self.assertIsNone(tms.active())
+        self.assertIn("Nothing changes until you choose", result["text"])
+
+    def test_a_document_is_worked_by_the_desk_and_gated(self):
+        result = self.upload("BL.txt", self.BL)
+        item = result["desk_item"]["item"]
+        self.assertEqual(item["owner"], "docs")
+        self.assertEqual(item["linked_booking"], "SHP-001")
+        for out in result["desk_item"]["outputs"]:
+            self.assertEqual(out["approval_status"], "awaiting_approval")
+
+    def test_an_unreadable_file_is_said_to_be_unreadable(self):
+        for name in ("scan.pdf", "photo.jpg", "export.xlsx"):
+            with self.subTest(name=name):
+                result = self.upload(name, None)
+                self.assertFalse(result["answered"])
+                self.assertNotIn("desk_item", result)
+
+    def test_a_vague_question_beside_a_file_keeps_the_files_answer(self):
+        result = self.upload("BL.txt", self.BL, question="check this please")
+        self.assertTrue(result["answered"])
+        self.assertIn("desk_item", result)
+
+
+class TheDashboardCountsNotTrends(unittest.TestCase):
+    """The insights page's cards and charts, held to the run they came from."""
+
+    @classmethod
+    def setUpClass(cls):
+        from src import insights, workflow
+        cls.data = insights.build(scenario="hamburg")
+        cls.desk = workflow.run(use_llm=False)
+        cls.board = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+
+    def test_the_cards_are_the_runs_counts(self):
+        cards = {c["label"]: c["value"] for c in self.data["cards"]}
+        self.assertEqual(cards["Mails worked"], str(len(self.desk["items"])))
+        self.assertEqual(cards["Escalated to a person"],
+                         str(len({e["item"] for e in self.desk["escalations"]})))
+        waiting = (sum(1 for o in self.desk["outputs"]
+                       if o["approval_status"] == "awaiting_approval")
+                   + self.board["tms"]["queued"])
+        self.assertEqual(cards["Waiting for you"], str(waiting))
+        self.assertEqual(sum(r["count"] for r in self.data["approvals"]["rows"]), waiting)
+
+    def test_every_share_adds_to_a_hundred(self):
+        for chart in ("mix", "approvals"):
+            with self.subTest(chart=chart):
+                self.assertEqual(sum(r["share"] for r in self.data[chart]["rows"]), 100)
+
+    def test_nothing_is_a_trend(self):
+        import json
+        text = json.dumps(self.data).lower()
+        for phrase in ("last period", "previous", "vs.", "win rate", "response time"):
+            self.assertNotIn(phrase, text)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

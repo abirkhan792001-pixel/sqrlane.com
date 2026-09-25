@@ -1224,17 +1224,7 @@ def run(*, use_llm=True, lessons=None, today=None) -> dict:
         desk.items[message["id"]] = _item_record(message)
 
     mode = _triage(desk, messages, use_llm)
-
-    # Deliver handoffs until nothing is left. A Worker that hands on (Docs to
-    # Exception, Milestones to Exception) adds to the queue; the guard is only
-    # there so a bug can never become an infinite loop in front of a room.
-    steps = 0
-    while desk.queue and steps < 500:
-        msg = desk.queue.pop(0)
-        steps += 1
-        handler = HANDLERS.get(msg["to_id"])
-        if handler:
-            handler(desk, msg["item"], by_id[msg["item"]], msg)
+    _drain(desk, by_id)
 
     items = list(desk.items.values())
     mails = [o for o in desk.outputs if o["kind"] == "mail"]
@@ -1280,6 +1270,41 @@ def run(*, use_llm=True, lessons=None, today=None) -> dict:
         "learning_note": LEARNING_NOTE,
         "lessons_persist": not config.SERVERLESS,
     }
+
+
+def _drain(desk, by_id):
+    """Deliver handoffs until nothing is left.
+
+    A Worker that hands on (Docs to Exception, Milestones to Exception) adds to
+    the queue; the guard is only there so a bug can never become an infinite
+    loop in front of a room.
+    """
+    steps = 0
+    while desk.queue and steps < 500:
+        msg = desk.queue.pop(0)
+        steps += 1
+        handler = HANDLERS.get(msg["to_id"])
+        if handler:
+            handler(desk, msg["item"], by_id[msg["item"]], msg)
+
+
+def work_mail(message, *, use_llm=True, today=None) -> dict:
+    """One inbound mail, worked by the desk exactly as the inbox's are.
+
+    The Ask box's upload lands here: a mail or a document a person drops in is
+    triaged, handed to its Worker, checked against the playbook and gated - the
+    same path, the same rules, nothing sent and nothing written.
+    """
+    message = dict({"received_minutes_ago": 0, "attachments": []}, **message)
+    desk = Desk(bookings=tms.read_bookings(), routes=route_advisor.load_routes(),
+                playbooks=load_playbooks(), rate_sheet=load_inbox()["rate_sheet"],
+                lessons=learning.load(), today=today or date.today())
+    desk.items[message["id"]] = _item_record(message)
+    mode = _triage(desk, [message], use_llm)
+    _drain(desk, {message["id"]: message})
+    return {"item": desk.items[message["id"]], "messages": desk.messages,
+            "outputs": desk.outputs, "escalations": desk.escalations,
+            "classifier": mode["classifier"]}
 
 
 def _worker_summaries(desk, items) -> list[dict]:
