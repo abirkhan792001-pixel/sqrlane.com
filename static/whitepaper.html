@@ -196,6 +196,7 @@ td.k{font-family:"Geist Mono",ui-monospace,monospace; font-size:12.5px; color:va
 td.n{font-family:"Geist Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums;
      text-align:right; white-space:nowrap; color:var(--fg)}
 .sub{display:block; font-size:12.5px; line-height:18px; color:var(--faint); margin-top:3px}
+td.grp{background:var(--gray-100); font-size:12px; line-height:16px; color:var(--muted); padding-top:8px; padding-bottom:8px}
 .tag{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.07em;
      text-transform:uppercase; padding:2px 8px; border-radius:999px; white-space:nowrap}
 .tag.ok{background:var(--green-100); color:var(--green)}
@@ -456,9 +457,11 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
         <div class="stage">
           <span class="n">04</span>
           <div class="t">The desk</div>
-          <div class="d">Booking amendments, invoice reconciliation, customs entry —
-            everything a decision lands on downstream.</div>
-          <span class="chip script">Scripted</span>
+          <div class="d">The decision handed to the everyday desk as messages: the Booking
+            agent amends the booking, the Customs agent is told when the country of entry
+            moves, the Milestones agent moves the ETA, and the Playbook agent checks every
+            customer mail against that customer&rsquo;s rules before it is filed.</div>
+          <span class="chip live">Live</span>
         </div>
         <div class="stage">
           <span class="n">05</span>
@@ -574,8 +577,10 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
     <section id="models">
       <h2 class="h32">The model layer</h2>
       <p class="lede copy14">
-        Four jobs with genuinely different requirements. Sizing each one separately is where
-        nearly all the cost and latency savings live.
+        Five jobs with genuinely different requirements &mdash; and twelve of the sixteen
+        agents need no model at all. Sizing each job separately, and not calling a model
+        where code gives the same answer every time, is where nearly all the cost and
+        latency savings live.
       </p>
 
       <div class="scroller">
@@ -614,9 +619,62 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
               <td class="n">$0.15 / $0.20</td>
               <td>Handled inside the screening call rather than as a separate translation step — one pass is cheaper and loses less than translate-then-classify.</td>
             </tr>
+            <tr>
+              <td><b>Classifying the inbox</b></td>
+              <td>Every inbound mail in one batched call: which of eight intents, and one line of why. Strict JSON. One call per inbox run.</td>
+              <td class="k">Qwen3.5-9B<span class="sub">or Gemma-3-27B</span></td>
+              <td class="n">$0.15 / $0.20</td>
+              <td>A labelling job with a fixed answer set, like screening. Rules answer it first anyway, and a person&rsquo;s corrections are applied after the model, so a small model&rsquo;s mistake is caught rather than trusted.</td>
+            </tr>
           </tbody>
         </table>
       </div>
+
+      <h3>Sixteen agents, and which of them need a model</h3>
+      <p class="copy16">
+        The agents are named for the job a forwarding desk already has, in two layers: the
+        risk layer, which runs when a lane moves, and the everyday desk, which runs on every
+        inbound mail. Four of the sixteen call a model. The rest are code &mdash; prices,
+        weights, dates, rule checks and field values are computed, never generated &mdash;
+        and code is both the cheapest and the most repeatable model there is.
+      </p>
+      <div class="scroller">
+        <table>
+          <caption>Every agent, what it does, and the model it uses. Model classes from the table above; a scripted agent replays authored data and calls nothing.</caption>
+          <thead><tr><th>Agent</th><th>Its job</th><th>Model</th></tr></thead>
+          <tbody>
+            <tr><td colspan="3" class="grp"><b>Risk layer &middot; when a lane moves</b></td></tr>
+            <tr><td><b>Risk</b></td><td>Reads sixty sources; flags the exception on the booking a disruption threatens.</td><td class="k">Qwen3.5-9B<span class="sub">prose only &mdash; gauges, gusts, waves and quakes go to a threshold</span></td></tr>
+            <tr><td><b>Routing</b></td><td>Reroute, hold or leave on plan, with the reasoning; writes the booking change.</td><td class="k">Qwen3-235B-A22B<span class="sub">DeepSeek-V4-Pro if the reasoning needs it</span></td></tr>
+            <tr><td><b>Comms</b></td><td>Drafts the carrier and the customer mail each decision implies; sends nothing.</td><td class="k">Llama-3.3-70B<span class="sub">or Qwen3-235B-A22B</span></td></tr>
+            <tr><td><b>Planner</b></td><td>Sweeps the forward book before departure: act now, tripwire armed, or stand down.</td><td class="k">None today<span class="sub">scripted</span></td></tr>
+            <tr><td><b>TMS link</b></td><td>The only door to the book, and every agent&rsquo;s output queued back onto it.</td><td class="k">None<span class="sub">code; demo connector</span></td></tr>
+            <tr><td colspan="3" class="grp"><b>Everyday desk &middot; on every mail</b></td></tr>
+            <tr><td><b>Inbox</b></td><td>What the mail is, whose it is, which agent owns it.</td><td class="k">Qwen3.5-9B<span class="sub">one batched call; rules as fallback</span></td></tr>
+            <tr><td><b>Playbook</b></td><td>Checks every output against the customer&rsquo;s standing rules; sends it back until it complies.</td><td class="k">None<span class="sub">structured rules, checked by code</span></td></tr>
+            <tr><td><b>Rate</b></td><td>Prices a lane from the rate sheet for any agent that asks.</td><td class="k">None<span class="sub">arithmetic</span></td></tr>
+            <tr><td><b>RFQ</b></td><td>Reads a rate request into fields, drafts the quote, queues the quotation.</td><td class="k">None<span class="sub">parser and template</span></td></tr>
+            <tr><td><b>Booking</b></td><td>Opens or amends the booking from the mail and its documents; holds what it cannot verify.</td><td class="k">None</td></tr>
+            <tr><td><b>Docs</b></td><td>Reads the fields off the documents and checks them against the booking.</td><td class="k">None<span class="sub">text documents only &mdash; scanned PDFs would need a vision model, not in this build</span></td></tr>
+            <tr><td><b>Milestones</b></td><td>Writes carrier notices onto the booking; answers where-is-my-box from the record.</td><td class="k">None</td></tr>
+            <tr><td><b>Exception</b></td><td>Opens the exception on a rolled box or a mismatched document; escalates what the desk cannot absorb.</td><td class="k">None</td></tr>
+            <tr><td><b>Invoice</b></td><td>Reconciles the carrier invoice against the agreed rate; drafts the dispute.</td><td class="k">None</td></tr>
+            <tr><td><b>Customs</b></td><td>Prepares the entry for the discharge country; escalates a transit, never files.</td><td class="k">None</td></tr>
+            <tr><td><b>Assistant</b></td><td>Answers questions about what is on the board.</td><td class="k">None today<span class="sub">scripted</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="copy16">
+        That split is the efficiency recommendation in one line: <b>a small model where the
+        answer is a label, a mid-size mixture-of-experts model where the answer is a judgement
+        someone will challenge, a strong writer where tone is the deliverable, and no model
+        at all where the answer can be computed.</b> Qwen3-235B-A22B earns the judgement slot
+        because only about 22 billion of its parameters work on each token, which puts a large
+        model&rsquo;s reasoning at close to a small one&rsquo;s price. Every agent also records
+        the reason for each message it posts &mdash; the cues that classified a mail, the
+        customer rule behind a send-back, the slack arithmetic behind an escalation &mdash;
+        and for the agents that use no model, that reason is the computation itself.
+      </p>
 
       <h3>What that costs, measured rather than assumed</h3>
       <p class="copy16">
@@ -639,6 +697,12 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
         </table>
       </div>
 
+      <p class="copy16">
+        The everyday desk adds one call per inbox run: about <b>950 input tokens</b> for the
+        thirteen-mail morning, measured from the prompt, and an estimated 350 out &mdash;
+        roughly <b>$0.0002</b> at the screening price, and a little more as a person&rsquo;s
+        corrections are added to the prompt as context.
+      </p>
       <p class="copy16">
         Sizing each stage separately is <b>about ten times cheaper</b> than reaching for a
         frontier model everywhere, for output a desk would not be able to tell apart on the

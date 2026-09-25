@@ -1706,6 +1706,13 @@ four claims in it are load-bearing and tested for by string:
 - **any hard-coded model name is a scheduled outage**;
 - there are **no accuracy figures** anywhere, because none have been measured.
 
+**The model layer covers all sixteen agents** (2026-09-25): a fifth job, *classifying the
+inbox* (one batched call per inbox run, screening class), and a table of every agent with
+the model it uses - four call one (Risk, Routing, Comms, Inbox), twelve are code or
+scripted. The inbox call's ~950 input tokens are measured from the real prompt; its ~350
+output tokens are an estimate, and the page says which is which. Stage 04, *The desk*, is
+tagged Live now that `workflow.from_risk` hands the decision to the desk.
+
 Model guidance names **specific models from Lyceum's own catalogue with their per-token
 prices**, taken from their inference deck rather than from secondary sources, and dated
 July–August 2026 with their own subject-to-change caveat.
