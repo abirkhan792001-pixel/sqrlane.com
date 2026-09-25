@@ -378,6 +378,14 @@ GAUGE_CACHE_SECONDS = _env_int("GAUGE_CACHE_SECONDS", 300)
 # own address below; delete that variable and redeploy once the domain answers.
 DASHBOARD_URL = os.environ.get("DASHBOARD_URL", "https://app.sqrlane.com")
 
+# A real TMS behind the connector (src/connect.py). One run reads at most this
+# many bookings - every affected one may cost a model call - and the TMS's
+# endpoint gets the same kind of deadline every other third-party host does.
+TMS_MAX_BOOKINGS = _env_int("TMS_MAX_BOOKINGS", 50)
+TMS_TIMEOUT_SECONDS = _env_int("TMS_TIMEOUT_SECONDS", 10)
+SAMPLE_TMS_EXPORT = DATA_DIR / "sample_tms_export.csv"
+SAMPLE_TMS_AUTHORED_ON = "2026-09-25"   # its dates roll forward from here, like the book's
+
 DASHBOARD_ORIGINS = [
     "https://app.sqrlane.com",
     "https://sqrlane-operations.vercel.app",

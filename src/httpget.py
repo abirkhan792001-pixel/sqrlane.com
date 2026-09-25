@@ -1,4 +1,4 @@
-"""httpget.py - a GET that is guaranteed to end, and one readable error line.
+"""httpget.py - a request that is guaranteed to end, and one readable error line.
 
 One job: talk to a third-party host we do not control without letting it hold
 the run open. Both source families need it - the news pull in `risk_monitor.py`
@@ -32,8 +32,26 @@ class SourceTooSlow(requests.RequestException):
     """A source that is answering, but too slowly to be worth waiting for."""
 
 
-def get_capped(url, *, timeout, params=None, headers=None):
-    """A GET that is guaranteed to end.
+def get_capped(url, *, timeout, params=None, headers=None, allow_redirects=True):
+    """A GET that is guaranteed to end."""
+    return _capped("GET", url, timeout=timeout, params=params, headers=headers,
+                   allow_redirects=allow_redirects)
+
+
+def post_capped(url, *, timeout, json=None, headers=None):
+    """A POST that is guaranteed to end, and never follows a redirect.
+
+    Only the TMS connector's write-back uses it (src/connect.py): an approved
+    change pushed to the endpoint a person configured. A redirect is refused
+    rather than followed, so a write can only ever land where it was pointed.
+    """
+    return _capped("POST", url, timeout=timeout, json=json, headers=headers,
+                   allow_redirects=False)
+
+
+def _capped(method, url, *, timeout, params=None, json=None, headers=None,
+            allow_redirects=True):
+    """One request, guaranteed to end.
 
     Two details here are load-bearing and easy to undo by accident:
 
@@ -47,8 +65,9 @@ def get_capped(url, *, timeout, params=None, headers=None):
     request_headers = {"User-Agent": config.USER_AGENT}
     if headers:
         request_headers.update(headers)
-    response = requests.get(url, params=params, headers=request_headers,
-                            timeout=timeout, stream=True)
+    response = requests.request(method, url, params=params, json=json,
+                                headers=request_headers, timeout=timeout, stream=True,
+                                allow_redirects=allow_redirects)
     expired = []
 
     def _give_up():

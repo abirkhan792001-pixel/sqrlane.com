@@ -80,8 +80,22 @@ def nearest_place(lat: float, lon: float, candidates: list[str],
     return best, best_km
 
 
-def _pt(place_id: str) -> tuple[float, float]:
-    p = _geo()["places"][place_id]
+def place_id(name: str) -> str | None:
+    """The map's id for a place name, or None when the map does not know it.
+
+    A connected TMS writes "Shanghai (CNSHA)" where the authored book writes
+    "Shanghai"; both are the same point. A place the map does not carry is not
+    guessed at - its lane stops at the port, or is left off the map.
+    """
+    places = _geo()["places"]
+    if name in places:
+        return name
+    head = str(name or "").split("(")[0].split(",")[0].strip().lower()
+    return next((key for key in places if key.lower() == head), None)
+
+
+def _pt(place: str) -> tuple[float, float]:
+    p = _geo()["places"][place_id(place) or place]
     return project(p["lat"], p["lon"])
 
 
@@ -119,7 +133,7 @@ def route_polyline(origin: str, route: dict, destination: str) -> list[tuple[flo
     for inland in ("RHINE", "FRINL"):
         if inland in chokes:
             pts.append(_pt(inland))
-    if destination in _geo()["places"]:
+    if place_id(destination):
         pts.append(_pt(destination))
     return pts
 
@@ -161,7 +175,7 @@ def build(board: list[dict], events: list[dict], routes: dict) -> dict:
         effective = (decision.get("recommended_route")
                      if decision.get("decision") == "reroute" else None)
         route = routes.get(effective or card.get("route_id") or card.get("primary_route") or "")
-        if not route:
+        if not route or not place_id(card["origin"]):
             continue
         pts = route_polyline(card["origin"], route, card["final_destination"])
         lanes.append({

@@ -8,8 +8,11 @@ Two kinds of Worker live in this list, and the tag on each says which:
     them on every inbound mail, nothing is replayed, and each output records
     whether the model, a rule or a learned lesson decided it. The mail is
     synthetic, like the bookings - real work on authored input.
-  * The Planner and the Assistant are **scripted**: they replay authored data,
-    and are tagged SCRIPTED on screen.
+  * The Planner is **scripted**: it replays authored data, and is tagged
+    SCRIPTED on screen. The Assistant was too, until it became the front door
+    (2026-09-25): src/ask.py routes a person's question to the Worker who owns
+    it and answers from the run, so it is live. Its per-booking panel below is
+    still computed from the board, not authored.
 
 The panels below are a different thing from the workflow run: they are what each
 Worker shows *for the selected booking on the disruption board*, and their
@@ -82,9 +85,10 @@ ROSTER = [
     {"id": "customs", "name": "Customs Worker", "mode": "live", "layer": "workflow",
      "group": "billing",
      "role": "Prepares the entry for the discharge country, and escalates what needs a person"},
-    {"id": "assistant", "name": "Assistant", "mode": "scripted", "layer": "workflow",
+    {"id": "assistant", "name": "Assistant", "mode": "live", "layer": "workflow",
      "group": "shipments",
-     "role": "Answers questions about what is on the board"},
+     "role": "Takes your question, hands it to the Worker who owns it, and says so "
+             "when nobody does"},
     # Not "scripted": nothing here is replayed. The write-backs are derived from
     # the decisions the real Workers made this run. What makes it a demo is the
     # far end - no TMS is contacted - so it carries its own tag rather than

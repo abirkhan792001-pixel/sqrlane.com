@@ -55,6 +55,38 @@ write-back is a dict describing a change, and it stays a dict. **Never present t
 connector as a live TMS link, and never quietly drop the "runs through the TMS" framing
 either — the first is a lie about this build, the second is a lie about the product.**
 
+**A forwarder can now connect their own TMS** (2026-09-25, on the owner's instruction:
+"build a way so that if I have a TMS I can connect SQRlane with it right now"). The demo
+connector stays the default and keeps every word above. Beside it, `src/connect.py` reads
+**a bookings export** (CSV or JSON - what every TMS produces from a saved search) or **a
+live HTTPS endpoint** returning the bookings as JSON, maps the columns onto SQRlane's
+fields by the header names TMS exports actually use, and puts the result behind the same
+one door: `tms.using(connection)` makes it the book for one request, via a context
+variable, so every component follows and two users never see each other's book. Four
+rules hold it, all asserted in `tests/test_a_real_tms_can_be_connected.py`:
+
+- **Mapped, not guessed.** Every column used is named on screen; an unknown column is
+  listed as unmapped; an unreadable date is unread, never filled in; a missing required-by
+  date is said (slack taken as 0) rather than hidden.
+- **Covered or not, out loud.** The agents can only judge a lane the route catalogue
+  models (Asia to Hamburg / Rotterdam / Antwerp / Fos, and the Basel and Lyon inland legs).
+  Anything else is read, listed with its reason, and left alone - never forced onto the
+  nearest route.
+- **The gate does not move.** Every write-back to a real TMS is still `QUEUED - not
+  written`. It leaves only when a person approves that one operation, and then only to the
+  write-back URL they configured (`POST /api/tms/writeback`, one operation per call);
+  without one, approved changes are exported for them to import.
+- **It cannot be pointed inward.** https only; loopback, private and metadata addresses
+  refused before any request; redirects never followed. Nothing is stored server-side:
+  the dashboard holds the connection and sends it with each request.
+
+A connected TMS is labelled with its own name and how it is read (`Your TMS (export: …)`,
+`connected (live API)`), never as the demo. `data/sample_tms_export.csv` is a ten-row
+synthetic export with foreign column names and mixed date formats - 1 reroute, 1 hold, 1
+absorbed by slack, 4 untouched and 3 not covered under the Hamburg strike - served at
+`GET /api/tms/sample.csv` with its dates rolled forward, so the connector can be tried
+without a TMS. Changing its rows changes those outcomes, which a test holds.
+
 **The problem it models:** forwarders watch for disruptions *and* react to them by hand, and both
 halves are worse than they look. The watching is **narrower than the problem** — a lane is moved
 by a strike, a gale over the crane, a river that has dropped, a swell off the Cape, a wildfire
@@ -440,8 +472,9 @@ work on the TMS's records, not on a book of their own.
 three. Inbox, Playbook, Rate, RFQ, Booking, Docs, Milestones, Exception, Invoice and
 Customs are the workflow layer's live ten: `src/workflow.py` runs them on every mail in
 the inbox, nothing is replayed, and every output records whether the model, a rule or a
-learned lesson decided it. The Planner and the Assistant replay authored data and are
-tagged `SCRIPTED`. The TMS Link is `DEMO`. **The tag is the honesty** — never present a
+learned lesson decided it. The Planner replays authored data and is tagged `SCRIPTED`.
+The Assistant was scripted too until 2026-09-25; it is now the live front door (see *Ask
+SQRlane*, below). The TMS Link is `DEMO`. **The tag is the honesty** — never present a
 scripted Worker as reasoning live.
 
 One subtlety holds the tags honest. The desk Workers *also* show a per-booking panel on
@@ -659,13 +692,47 @@ One booking ends the week still held, because under a persistent corridor closur
 better routing exists for it. Saying so is a real answer, not a gap, and the day's copy
 says it rather than claiming the board is clear.
 
+### Ask SQRlane - the front door, and the same desk over MCP (2026-09-25)
+
+On the owner's instruction ("a home or search page ... where you can chat with the SQRlane
+agent; the agent responsible gets triggered and answers back after checking with other
+agents, and if none can, suggest what can be done"). `src/ask.py` puts a person on the
+desk's bus: the **Assistant** routes the question to the Worker who owns it (cue-phrase
+rules, or one small model call when a key is configured - the model only picks *who*),
+that Worker checks with the others it needs on a numbered conversation (the Milestones
+Worker asks the TMS Link for the record, the Routing Worker for the decision, the Risk
+Worker for the exposure), and answers. The answer is assembled by code from a fresh
+offline, rules-only run of the board the person is looking at (same scenario, same
+connection) - ~0.02s, so it answers while you wait; pressing Run is what reads the live
+sources. Nothing the model says reaches the answer.
+
+**A question nobody owns is said to be nobody's**, with suggestions: a booking not in the
+book (it names the book and says to check the reference or connect the TMS that holds
+it), a place no source watches ("weather in Paris" gets the watch list, not Hamburg's
+strike), anything off the desk. A booking asked for in chat is priced, not opened - the
+Booking Worker opens bookings from the customer's mail and documents. **Asking changes
+nothing**: `ask.py` never gates, emits, pushes or corrects, and a test parses it for that.
+There is now a chat box in the product, so the old "no chat box" line under `/use-cases`
+applies to that page's mocks only: they still show agents posting, not a chat.
+
+The Assistant's roster tag moved from `SCRIPTED` to `LIVE` (roster, `/product`'s run
+blob, `/about`, the README and the whitepaper's agent table, which now counts five
+model-calling agents and a sixth job, *routing a question*).
+
+**`/mcp` is the same desk as an MCP server** (`src/mcp_server.py`): Streamable HTTP in
+its simplest form - one JSON-RPC request per POST, JSON back, no session, no stream -
+with three read-only tools (`ask_sqrlane`, `list_bookings`, `list_scenarios`). Add
+`https://www.sqrlane.com/mcp` as a custom connector in Claude to ask the desk from there.
+
 ### The new dashboard at app.sqrlane.com (live, 2026-09-25)
 
 On the owner's instruction the dashboard was rebuilt as its own app, after Peec AI's
 dashboard: built in **Lovable** (project `SQRlane Operations`, repo
 `abirkhan792001-pixel/sqrlane-operations` - Lovable named it after the project; TanStack
 Start, React, Tailwind, shadcn), deployed as its own Vercel project, `sqrlane-operations`
-(env: `VITE_API_BASE=https://sqrlane.com`, `NITRO_PRESET=vercel`). It has no backend of its
+(env: `VITE_API_BASE=https://www.sqrlane.com` - **with the www**: the apex 308-redirects
+to www at Vercel's edge, and a browser refuses a redirect on a cross-origin call, so the
+apex silently drops the dashboard to its recorded run - and `NITRO_PRESET=vercel`). It has no backend of its
 own: it calls this API from the browser, and falls back to a recorded run with a "Showing a
 recorded run" badge when it cannot. That is why `src/app.py` carries a CORS allow-list,
 `config.DASHBOARD_ORIGINS` - app.sqrlane.com, the project's own
@@ -808,7 +875,7 @@ work flows through them (`roster.GROUPS`, rendered by both the dashboard and `/p
 | 01 Inbox & rules | **Inbox** (what is this mail, whose is it, who owns it) · **Playbook** (every output against the customer's rules) |
 | 02 Quotes & rates | **Rate** (prices a lane for anyone who asks) · **RFQ** (request → fields → drafted quote + queued quotation) |
 | 03 Bookings & documents | **Booking** (opens the record from the mail and its documents; holds what it cannot verify) · **Docs** (extracts fields, checks them against the booking) |
-| 04 Shipments & exceptions | **Milestones** (notices onto the booking, where-is-my-box) · **Exception** (rolled box, document mismatch, escalation) · **Assistant** (scripted) |
+| 04 Shipments & exceptions | **Milestones** (notices onto the booking, where-is-my-box) · **Exception** (rolled box, document mismatch, escalation) · **Assistant** (your question, to the Worker who owns it) |
 | 05 Billing & customs | **Invoice** (billed vs agreed, the dispute) · **Customs** (entry prepared, never filed; a transit out of the EU escalated) |
 
 **The Workers talk, and the talk is data.** No Worker calls another's internals: every
@@ -1024,6 +1091,7 @@ here too, because this is what the next session reads to find its way around.
 │   ├── inbox.json            # a synthetic morning of inbound mail + the rate sheet
 │   │                         #   the workflow layer prices against. Two mistakes
 │   │                         #   are planted on purpose - see the workflow layer
+│   ├── sample_tms_export.csv # a synthetic TMS export to try the connector with
 │   ├── playbooks.json        # each customer's standing instructions (SOP), as
 │   │                         #   structured rules the Playbook Worker can check
 │   └── geo.json              # coastlines and points for the map
@@ -1046,6 +1114,10 @@ here too, because this is what the next session reads to find its way around.
 │   │                         #   the risk layer's handoff to the desk
 │   ├── learning.py           # corrections in, lessons out - rules + context,
 │   │                         #   never retraining
+│   ├── connect.py            # a real TMS behind the connector: an export or an
+│   │                         #   HTTPS endpoint mapped in, and the write-back push
+│   ├── ask.py                # Ask SQRlane: a question, to the Worker who owns it
+│   ├── mcp_server.py         # the same desk as an MCP server, at /mcp
 │   ├── simulation.py         # the authored week, replayed over the same board
 │   ├── geo.py                # the board on a map - derived from the run
 │   └── app.py                # FastAPI: serves the three pages + the API
@@ -1084,7 +1156,7 @@ here too, because this is what the next session reads to find its way around.
 │   ├── README.md             # plain-language: what it proves, what it cannot
 │   ├── data/                 # sample committed; the full book is gitignored
 │   └── reports/              # evaluation.json / .md - synthetic-world numbers
-├── tests/                    # twelve suites, one per claim the demo makes out loud
+├── tests/                    # fourteen suites, one per claim the demo makes out loud
 ├── tools/
 │   ├── build_rhine_map.py    # regenerates the corridor map. NOT dead, and not
 │   │                         #   only the paper's: the landing page and the
@@ -1552,7 +1624,10 @@ section on its own, and `/pitch` is the rebuilt deck - **generated** by
 is the button. `GET /api/workflow` is the everyday desk working the inbox once,
 `POST /api/workflow/correct` runs the learning loop on one correction, and
 `POST /api/workflow/reset` forgets every lesson; all three answer 200 with a readable
-payload on failure, like `/run`. `GET /api/gauges` reads the three reference Rhine gauges live from PEGELONLINE for
+payload on failure, like `/run`. `POST /api/ask` is the Ask box, `POST /api/tms/connect`
+reads a TMS export or endpoint, `GET /api/tms/sample.csv` is the sample export,
+`POST /api/tms/writeback` pushes one approved operation, and `POST /mcp` is the MCP
+server. `POST /run` and `POST /api/initial` take an optional `connection`. `GET /api/gauges` reads the three reference Rhine gauges live from PEGELONLINE for
 the gauge panel on `/how-it-works` (`config.LANDING_GAUGES` — the panel was designed for
 three; the monitor's live pull reads all six stations in `config.RHINE_GAUGES`, and both
 resolve against the one configured list so the two callers cannot band the same station
@@ -1869,13 +1944,12 @@ Scope creep is the failure mode here. None of these are in this build:
 - **No real route optimisation.** Routes are pre-authored candidates; the agent *chooses among them
   and justifies the choice*. It does not compute routes.
 - **No sending of anything.** Emails are drafted and displayed only.
-- **No *live* TMS connection.** Working through the TMS is the design, not a non-goal —
-  what is out of scope is the far end of it. The TMS Link is a *demo connector*: it models
-  both directions, owns the only read path, and describes the write-back each decision
-  implies, but there is no vendor, no credential and no endpoint, and nothing is ever
-  written. The bookings behind it are synthetic. Wiring a real TMS is on the far side of
-  the integration/trust wall, not in this build — and it is the single highest-value thing
-  on the other side of it.
+- **No vendor-specific TMS integration.** Working through the TMS is the design, not a
+  non-goal. The demo connector is the default; since 2026-09-25 a forwarder can connect
+  their own through an export or an HTTPS endpoint (`src/connect.py`), and approved
+  changes can be pushed to a URL they name. What is still out of scope is a native
+  CargoWise / SAP TM / Descartes client, OAuth, stored credentials and any write that
+  skips a person's approval of that one operation.
 - **No scheduler / always-on.** Button-triggered.
 - **No database.** In-memory + JSON files.
 - **No paid data.** Free sources only.

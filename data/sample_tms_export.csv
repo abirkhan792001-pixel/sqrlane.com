@@ -1,0 +1,11 @@
+Shipment No,Carrier Booking,Commodity,POL,POD,Final Destination,ETD,ETA,RDD,Carrier,Consignee,Containers,Reefer,Freight EUR,Late Penalty per Day,Remarks
+JOB-24117,HLCU-7719031,Industrial pumps,Shanghai (CNSHA),Hamburg (DEHAM),Stuttgart,2026-09-02,2026-10-06,2026-10-12,Hapag-Lloyd,Kessler Pumpen GmbH,4 x 40HC,No,"14,200","1,200",
+JOB-24121,MSCU-5520488,Frozen seafood,Busan (KRPUS),Hamburg (DEHAM),Hamburg,2026-09-04,2026-10-04,2026-10-05,MSC,Nordsee Frischkost GmbH,2 x 40RF,-18 C,"9,600",,Keep frozen; no transhipment
+JOB-24126,COSU-6604417,Bicycle frames,Kaohsiung (TWKHH),Hamburg (DEHAM),Berlin,05.09.2026,08.10.2026,11.10.2026,COSCO,Velotechnik Berlin GmbH,3 x 40HC,No,"11,900","2,500",
+JOB-24133,ONEY-3381920,Solar inverters,Ningbo (CNNGB),Rotterdam (NLRTM),Rotterdam,2026-09-06,2026-10-08,2026-10-14,ONE,Zonnekracht B.V.,6 x 40HC,No,"19,800","1,800",
+JOB-24140,CMAU-8812004,Cotton garments,Ho Chi Minh City (VNSGN),Antwerp (BEANR),Brussels,2026-09-03,2026-10-05,2026-10-09,CMA CGM,Maison Lintel SA,2 x 40HC,No,"7,400",900,
+JOB-24152,MAEU-2217750,Lab glassware,Qingdao (CNTAO),Rotterdam (NLRTM),Basel,2026-09-01,2026-10-07,2026-10-13,Maersk,Rheinlab AG,1 x 40HC,No,"6,100",700,Fragile - Rhine barge preferred
+JOB-24160,CMAU-9043126,Kitchen appliances,Yantian (CNYTN),Fos-sur-Mer (FRFOS),Lyon,2026-09-05,2026-10-03,2026-10-10,CMA CGM,Électroménager Rhône SAS,3 x 40HC,No,"10,300","1,100",
+JOB-24166,EGLV-1402958,Furniture,Shanghai (CNSHA),Los Angeles (USLAX),Los Angeles,2026-09-10,2026-09-28,2026-10-02,Evergreen,Pacific Home Inc.,2 x 40HC,No,"8,200",600,
+JOB-24171,MSCU-7718204,Tyres,Singapore (SGSIN),Gdansk (PLGDN),Warsaw,2026-09-02,2026-10-09,2026-10-16,MSC,Opony Polska Sp. z o.o.,5 x 40HC,No,"12,600","1,000",
+JOB-24175,HLCU-7720455,Printed circuit boards,Shenzhen (CNSZX),Hamburg (DEHAM),Munich,2026-09-08,,2026-10-20,Hapag-Lloyd,Isar Elektronik GmbH,1 x 20GP,No,"4,800",500,ETA not yet confirmed by carrier
