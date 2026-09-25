@@ -442,7 +442,11 @@ h1,h2,h3,h4,p{margin:0}
 
 /* ---- the chat card: an SQR agent thread ---- */
 .bx.s12{grid-column:span 12}
-.bx-label.bx-in-grid{grid-column:1/-1; margin:28px 0 2px}
+.bx-label .bx-hint{order:3; font-style:normal; text-transform:none; letter-spacing:0; font-size:12px;
+                   color:var(--faint)}
+.bx-label .bx-hint span{font-family:inherit; padding:0; background:none}
+.bx-label .bx-hint .t{display:none}
+@media (hover:none){ .bx-label .bx-hint .m{display:none} .bx-label .bx-hint .t{display:inline} }
 /* A chat fills its card: beside a taller flow card it grows with the row
    rather than leaving a blank foot. */
 .bx.chat .bx-m{height:auto; flex:1 0 470px; -webkit-mask-image:none; mask-image:none}
@@ -539,6 +543,22 @@ h1,h2,h3,h4,p{margin:0}
 @media (prefers-reduced-motion:reduce){
   .bx-l,.bx-ck,.bx-ck::after,.bx-fr{transition:none !important}
 }
+
+/* ---- why, on hover: every agent box carries the reason the desk recorded
+   for it (data-why). One tip for the page, fixed to the viewport, so a
+   card's overflow or a chat's scroll can never clip it. ---- */
+.bx [data-why]{cursor:help; transition:box-shadow .2s var(--out), border-color .2s var(--out)}
+.bx .bx-bu[data-why]:hover,.bx .bx-dft[data-why]:hover,.bx .bx-esc[data-why]:hover,
+.bx .bx-fr[data-why]:hover{box-shadow:0 0 0 1.5px var(--fg),var(--shadow-card)}
+.bx .bx-st[data-why]:hover,.bx .bx-row[data-why]:hover{background:var(--gray-100)}
+.bx-tip{position:fixed; z-index:60; max-width:300px; padding:10px 12px; border-radius:10px;
+        background:var(--fg); color:#fff; font-size:12.5px; line-height:18px;
+        box-shadow:0 14px 30px -10px rgba(0,0,0,.45); pointer-events:none;
+        opacity:0; translate:0 4px; transition:opacity .15s, translate .15s}
+.bx-tip.on{opacity:1; translate:0 0}
+.bx-tip b{display:block; margin-bottom:3px; font-size:10.5px; line-height:14px; font-weight:600;
+          letter-spacing:.06em; text-transform:uppercase; color:#a8a8a8}
+@media (prefers-reduced-motion:reduce){ .bx-tip{transition:none} }
 
 /* ---------- footer ---------- */
 .foot{border-top:1px solid var(--border); background:var(--card); padding:52px 0 34px}
@@ -711,7 +731,8 @@ h1,h2,h3,h4,p{margin:0}
      ============================================================ -->
 <section class="bx-sec" id="everyday">
   <div class="wrap">
-    <p class="bx-label">The everyday desk <span>6 jobs</span></p>
+    <p class="bx-label">The everyday desk <span>6 jobs &middot; 1 correction</span>
+      <em class="bx-hint"><span class="m">Hover</span><span class="t">Tap</span> any agent&rsquo;s message to see why</em></p>
     <div class="bx-grid" data-bx-everyday>
       <noscript><p class="copy14">The six everyday jobs are drawn by a small script on this page:
         quote a rate request, open a booking from a mail, check documents against the booking,
@@ -745,18 +766,21 @@ h1,h2,h3,h4,p{margin:0}
    {
     "who": "Rate Worker",
     "working": "Pricing 3 x 40HC into Antwerp",
-    "done": "7 options into Antwerp; best ONE on R-ANR-STD, EUR 2,380 per 40HC, 33 days."
+    "done": "7 options into Antwerp; best ONE on R-ANR-STD, EUR 2,380 per 40HC, 33 days.",
+    "why": "Every carrier on a route into Antwerp, priced from the rate sheet and ranked: Cape routings last, then cheapest, then fastest."
    },
    {
     "who": "Playbook Worker",
     "working": "Checking Kempen's playbook",
     "done": "IN-101-1: quotes to this customer are valid 7 days, not 14.",
+    "why": "Customer rule: Their planning cycle is weekly.",
     "tone": "warn"
    },
    {
     "who": "RFQ Worker",
     "working": "Revising the quote",
     "done": "IN-101-1: validity set to 7 days.",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output.",
     "record": "Q-101",
     "label": "quotation queued"
    }
@@ -770,7 +794,8 @@ h1,h2,h3,h4,p{margin:0}
     "ONE via Antwerp (R-ANR-STD), about 33 days port to port",
     "EUR 2,380 per container, EUR 7,140 in total",
     "This quote is valid for 7 days."
-   ]
+   ],
+   "why": "The top-ranked option on the rate sheet: ONE on R-ANR-STD, 33 days."
   },
   "layout": "flow",
   "span": 5
@@ -792,12 +817,14 @@ h1,h2,h3,h4,p{margin:0}
   "messages": [
    {
     "who": "Inbox Worker",
-    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG."
+    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG.",
+    "why": "By rules - strongest cues: booking request (6 vs next 1). Routed to the Booking Worker."
    },
    {
     "who": "Playbook Worker",
     "kind": "rules",
     "customer": "Nordmed Pharma Logistik AG",
+    "why": "Every output is checked against Nordmed Pharma Logistik AG's 3 standing rule(s) before a person sees it.",
     "rules": [
      {
       "type": "approved_carriers",
@@ -818,35 +845,42 @@ h1,h2,h3,h4,p{margin:0}
    },
    {
     "who": "Rate Worker",
-    "text": "5 options into Hamburg; best ONE on R-HAM-STD, EUR 3,880 per 40RH, 32 days."
+    "text": "5 options into Hamburg; best ONE on R-HAM-STD, EUR 3,880 per 40RH, 32 days.",
+    "why": "Every carrier on a route into Hamburg, priced from the rate sheet and ranked: Cape routings last, then cheapest, then fastest."
    },
    {
     "who": "Playbook Worker",
     "text": "IN-108-1: ONE is not an approved carrier - use Maersk or Hapag-Lloyd.",
+    "why": "Customer rule: GDP-audited reefer carriers only - vaccines.",
     "tone": "warn"
    },
    {
     "who": "Rate Worker",
-    "text": "4 options into Hamburg; best Hapag-Lloyd on R-HAM-STD, EUR 3,960 per 40RH, 32 days."
+    "text": "4 options into Hamburg; best Hapag-Lloyd on R-HAM-STD, EUR 3,960 per 40RH, 32 days.",
+    "why": "Every carrier on a route into Hamburg, priced from the rate sheet and ranked: Cape routings last, then cheapest, then fastest. Only Maersk or Hapag-Lloyd, as the playbook allows."
    },
    {
     "who": "Booking Worker",
     "text": "IN-108-1: rebooked with Hapag-Lloyd (EUR 3,960 per container).",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output.",
     "record": "NEW-108",
     "label": "booking queued"
    },
    {
     "who": "Playbook Worker",
     "text": "IN-108-3: copy qa-logistics@nordmed-pharma.example on every mail to this customer.",
+    "why": "Customer rule: Quality assurance sees every shipment mail.",
     "tone": "warn"
    },
    {
     "who": "Booking Worker",
-    "text": "IN-108-3: added qa-logistics@nordmed-pharma.example in copy."
+    "text": "IN-108-3: added qa-logistics@nordmed-pharma.example in copy.",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output."
    },
    {
     "who": "Playbook Worker",
     "text": "IN-108-1: 1 of 1 rule(s) satisfied, 1 after a fix.",
+    "why": "Re-checked after every fix, up to three rounds; anything still broken would have gone to a person.",
     "tone": "ok"
    }
   ]
@@ -868,7 +902,8 @@ h1,h2,h3,h4,p{margin:0}
   "messages": [
    {
     "who": "Inbox Worker",
-    "text": "Documents from Bavaria Drivetrain GmbH. Linked to SHP-001 (HLCU-2261188)."
+    "text": "Documents from Bavaria Drivetrain GmbH. Linked to SHP-001 (HLCU-2261188).",
+    "why": "By rules - strongest cues: documents (5 vs next 1). Routed to the Docs Worker."
    },
    {
     "who": "Docs Worker",
@@ -879,6 +914,7 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Docs Worker",
     "kind": "fields",
     "against": "SHP-001",
+    "why": "Checked against SHP-001's booking: 1 mismatch.",
     "rows": [
      {
       "field": "shipper",
@@ -916,11 +952,13 @@ h1,h2,h3,h4,p{margin:0}
    {
     "who": "Docs Worker",
     "text": "Document does not match the booking: Gross weight 18,900 vs 18,400 booked",
+    "why": "Each field read is compared with SHP-001's booking; a difference is handed on to Exception, never corrected.",
     "tone": "warn"
    },
    {
     "who": "Exception Worker",
     "text": "Document mismatch - release held",
+    "why": "Gross weight: 18,900 on the document, 18,400 on the booking - release held until it is resolved.",
     "record": "SHP-001",
     "label": "exception queued"
    },
@@ -935,7 +973,8 @@ h1,h2,h3,h4,p{margin:0}
    "subject": "HLCU-2261188: please check the documents before release",
    "lines": [
     "Before we release them, one thing does not match the booking: the gross weight reads 18,900 kg on the document and 18,400 kg on the booking."
-   ]
+   ],
+   "why": "The document is not corrected to match the booking or the other way round - the customer confirms which figure is right."
   }
  },
  {
@@ -954,6 +993,7 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Milestones Worker",
     "working": "Writing the notice onto SHP-003",
     "done": "Rolled to next sailing",
+    "why": "CMA CGM: rolled to next sailing, 7 days.",
     "record": "SHP-003",
     "label": "ETA moved"
    },
@@ -961,19 +1001,22 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Playbook Worker",
     "working": "Checking Wonen Direct's playbook",
     "done": "IN-105-2: a slip over 1 day(s) needs a customer notice today.",
+    "why": "Customer rule: Store openings are planned against the ETA.",
     "tone": "warn"
    },
    {
     "who": "Exception Worker",
     "working": "Drafting the customer notice",
-    "done": "IN-105-2: drafted customer notice IN-105-3."
+    "done": "IN-105-2: drafted customer notice IN-105-3.",
+    "why": "The Worker that made it fixes it - the Playbook Worker never edits another Worker's output."
    }
   ],
   "end": {
    "kind": "escalate",
    "to": "Routing Worker",
    "label": "Handed to the risk layer",
-   "text": "SHP-003 now misses its required-by date by 4 days. Re-plan: the next routing decision is the Routing Worker's, and a person approves it."
+   "text": "SHP-003 now misses its required-by date by 4 days. Re-plan: the next routing decision is the Routing Worker's, and a person approves it.",
+   "why": "7 days late against 3 days of slack - more than the desk can absorb."
   },
   "layout": "checklist",
   "span": 5
@@ -994,6 +1037,7 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Customs Worker",
     "working": "Preparing the entry at Rotterdam",
     "done": "ESCALATED - transit to Switzerland, not an import at RTM",
+    "why": "Onward to a destination outside the EU customs union.",
     "tone": "warn",
     "record": "SHP-006",
     "label": "customs flagged"
@@ -1003,7 +1047,8 @@ h1,h2,h3,h4,p{margin:0}
    "kind": "escalate",
    "to": "A person",
    "label": "Needs a person",
-   "text": "SHP-006 lands at Rotterdam but is going to Basel (Switzerland): a transit out of the EU, not an import entry. Who declares it and under which guarantee is a person's call - nothing filed."
+   "text": "SHP-006 lands at Rotterdam but is going to Basel (Switzerland): a transit out of the EU, not an import entry. Who declares it and under which guarantee is a person's call - nothing filed.",
+   "why": "Basel is outside the EU customs union, so an import entry at Rotterdam would be the wrong filing."
   },
   "layout": "focus",
   "span": 6
@@ -1024,6 +1069,7 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Invoice Worker",
     "working": "Reconciling against the agreed rate",
     "done": "DISPUTED - EUR 850 not agreed",
+    "why": "1 of 3 lines differ from the agreed rate.",
     "tone": "warn",
     "record": "SHP-005",
     "label": "invoice disputed"
@@ -1036,7 +1082,8 @@ h1,h2,h3,h4,p{margin:0}
    "lines": [
     "Congestion surcharge Hamburg (EUR 850) is not part of the agreed rate.",
     "Please send a corrected invoice, or the basis for the charge."
-   ]
+   ],
+   "why": "1 line not on the agreed rate - queried with the carrier, not passed for payment."
   },
   "layout": "flow",
   "span": 6
@@ -1044,6 +1091,7 @@ h1,h2,h3,h4,p{margin:0}
  {
   "id": "learn",
   "item": "IN-104",
+  "stage": "Learning",
   "title": "Correct it once. The desk learns.",
   "line": "Tell an agent it read a mail wrong. The lesson is replayed over the whole inbox, kept only if it undoes nothing, and fixes every mail like it.",
   "tint": "blue",
@@ -1060,7 +1108,8 @@ h1,h2,h3,h4,p{margin:0}
     "kind": "intent",
     "intent": "booking_request",
     "label": "Booking request",
-    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG."
+    "text": "Booking request from Nordmed Pharma Logistik AG. Customer: Nordmed Pharma Logistik AG.",
+    "why": "By rules - strongest cues: booking request (5 vs next 0). Routed to the Booking Worker."
    },
    {
     "who": "You",
@@ -1076,7 +1125,8 @@ h1,h2,h3,h4,p{margin:0}
     "who": "Inbox Worker",
     "kind": "lesson",
     "id": "L-001",
-    "text": "A message that says “re-quote” is a rate request, whatever else it mentions."
+    "text": "A message that says “re-quote” is a rate request, whatever else it mentions.",
+    "why": "By a lesson - L-001: A message that says “re-quote” is a rate request, whatever else it mentions. Routed to the RFQ Worker."
    },
    {
     "who": "Inbox Worker",
@@ -1085,11 +1135,13 @@ h1,h2,h3,h4,p{margin:0}
     "fixed": "IN-104",
     "also": [
      "IN-109"
-    ]
+    ],
+    "why": "Every mail re-run with L-001; 2 changed, and each one is named."
    },
    {
     "who": "Inbox Worker",
-    "kind": "kept"
+    "kind": "kept",
+    "why": "No earlier lesson to undo, and it fixed IN-104 on replay - so it was saved."
    }
   ]
  }
@@ -1209,6 +1261,9 @@ h1,h2,h3,h4,p{margin:0}
               '</svg></i>';
   var ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
               'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  // The reason behind a box, recorded by the desk on the run (see "why" in
+  // #uc-scenes, held to the run by test). Shown on hover by the tip below.
+  var W = function (why) { return why ? ' data-why="' + esc(why) + '"' : ""; };
   var worker = function (sc) {
     return sc.agent || sc.steps[sc.steps.length - 1].who;
   };
@@ -1229,7 +1284,7 @@ h1,h2,h3,h4,p{margin:0}
       '<span class="t" style="display:block">' + esc(sc.trigger.subject) + '</span></span></div>';
   };
   var escalation = function (e) {
-    return '<div class="bx-esc"><div class="lab">' + handedTo(e) +
+    return '<div class="bx-esc"' + W(e.why) + '><div class="lab">' + handedTo(e) +
       '</div><div class="tx">' + esc(e.text) + '</div></div>';
   };
   var draftBody = function (e, lines) {
@@ -1243,7 +1298,7 @@ h1,h2,h3,h4,p{margin:0}
   var ending = function (sc, lines, who) {
     var e = sc.end;
     if (e.kind === "escalate") return escalation(e);
-    return '<div class="bx-draft"><div class="h">' + AV + esc(who || worker(sc)) +
+    return '<div class="bx-draft"' + W(e.why) + '><div class="h">' + AV + esc(who || worker(sc)) +
       '<span style="margin-left:auto">draft</span></div>' + draftBody(e, lines) +
       '<div class="bx-gate"><b>Draft ready.</b><span class="bx-ap">Approve ' + ARROW + '</span></div></div>';
   };
@@ -1301,6 +1356,8 @@ h1,h2,h3,h4,p{margin:0}
       body = '<div class="bx-bu' + (m.tone ? " " + m.tone : "") + '">' + esc(m.text) +
         (m.record ? '<div class="bx-rec"><b>' + esc(m.record) + '</b> ' + esc(m.label) + '</div>' : "") + '</div>';
     }
+    // Every agent bubble carries its reason; a draft carries it on the draft.
+    if (m.why && m.kind !== "draft") body = body.replace('<div class="bx-bu', '<div' + W(m.why) + ' class="bx-bu');
     return head + body;
   };
 
@@ -1328,7 +1385,7 @@ h1,h2,h3,h4,p{margin:0}
     flow: function (sc) {
       var steps = sc.steps.map(function (st) {
         var warn = st.tone === "warn";
-        return '<div class="bx-st' + (warn ? " warn" : "") + '"><span><span class="ic">' +
+        return '<div class="bx-st' + (warn ? " warn" : "") + '"' + W(st.why) + '><span><span class="ic">' +
           (warn ? '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
                   'stroke-width="4" stroke-linecap="round"><path d="M12 5v8M12 19h.01"/></svg>'
                 : CHECK.replace(/^<i>|<\/i>$/g, "")) +
@@ -1342,7 +1399,7 @@ h1,h2,h3,h4,p{margin:0}
         '<div class="bx-rd"><span class="ok">Draft ready.</span><span class="c ok">waits for your approval</span>' +
           '<span class="ing">Drafting<span class="bx-typing"><i></i><i></i><i></i></span></span>' +
           '<span class="bx-ap">Approve ' + ARROW + '</span></div>' +
-        '<div class="bx-dft"><div class="bx-draft">' + draftBody(e, 3) + '</div></div>';
+        '<div class="bx-dft"' + W(e.why) + '><div class="bx-draft">' + draftBody(e, 3) + '</div></div>';
       return '<div class="bx-dots"></div><div class="bx-flow">' + mail(sc) +
         '<div class="bx-l front bx-panel bx-ag" style="--d:.55s" data-flow>' +
           '<div class="bx-ch">' + AV + '<span><b>SQR agent</b><span class="c">' + esc(worker(sc)) +
@@ -1354,7 +1411,7 @@ h1,h2,h3,h4,p{margin:0}
     // Each agent's step as a ticked row; the ending behind, fading out.
     checklist: function (sc) {
       var rows = sc.steps.map(function (st, i) {
-        return '<div class="bx-row' + (st.tone === "warn" ? " warn" : "") + '">' +
+        return '<div class="bx-row' + (st.tone === "warn" ? " warn" : "") + '"' + W(st.why) + '>' +
           '<span class="bx-ck" style="--t:' + (0.55 + i * 0.28).toFixed(2) + 's"></span>' + AV +
           '<span class="w">' + esc(st.who) + '</span>' +
           '<span class="tg">' + (st.tone === "warn" ? "flagged" : "done") + '</span>' +
@@ -1371,20 +1428,20 @@ h1,h2,h3,h4,p{margin:0}
     // The steps as a column; the one that matters picked out in black.
     focus: function (sc) {
       var items = sc.steps.map(function (st) {
-        return {a: st.who, b: st.done, warn: st.tone === "warn"};
+        return {a: st.who, b: st.done, warn: st.tone === "warn", why: st.why};
       });
       var e = sc.end;
       items.push(e.kind === "escalate"
-        ? {a: e.to === "A person" ? e.label : e.label + " → " + e.to, b: e.text, esc: true}
-        : {a: worker(sc) + " · draft", b: e.subject});
+        ? {a: e.to === "A person" ? e.label : e.label + " → " + e.to, b: e.text, esc: true, why: e.why}
+        : {a: worker(sc) + " · draft", b: e.subject, why: e.why});
       var key = -1;
       items.forEach(function (it, i) { if (it.esc) key = i; });
       if (key < 0) items.forEach(function (it, i) { if (key < 0 && it.warn) key = i; });
       if (key < 0) key = items.length - 1;
       var rows = items.map(function (it, i) {
         var d = Math.abs(i - key);
-        return '<div class="bx-fr ' + (i === key ? "key" : d === 1 ? "near" : "far") +
-          '" style="--t:' + (i === key ? 0.9 : 0) + 's"><span><span class="a" style="display:block">' +
+        return '<div class="bx-fr ' + (i === key ? "key" : d === 1 ? "near" : "far") + '"' + W(it.why) +
+          ' style="--t:' + (i === key ? 0.9 : 0) + 's"><span><span class="a" style="display:block">' +
           esc(it.a) + '</span><span class="b">' + esc(it.b) + '</span></span>' +
           '<span class="go">' + ARROW + '</span></div>';
       }).join("");
@@ -1397,13 +1454,48 @@ h1,h2,h3,h4,p{margin:0}
   var n = 0;
   grid.innerHTML = scenes.map(function (sc) {
     var layout = LAYOUT[sc.layout] ? sc.layout : "flow";
-    return (sc.id === "learn" ? '<p class="bx-label bx-in-grid">Learning <span>1 correction</span></p>' : "") +
-      '<article class="bx s' + (sc.span || 6) + (layout === "chat" || layout === "flow" ? " " + layout : "") +
+    return '<article class="bx s' + (sc.span || 6) + (layout === "chat" || layout === "flow" ? " " + layout : "") +
       '" data-bx>' +
       (sc.stage ? '<p class="bx-stg"><b>' + ("0" + (++n)).slice(-2) + '</b>' + esc(sc.stage) + '</p>' : "") +
       '<h3>' + esc(sc.title) + '</h3><p class="ds">' + esc(sc.line) + '</p>' +
       '<div class="bx-m" aria-hidden="true">' + LAYOUT[layout](sc) + '</div></article>';
   }).join("");
+
+  // The tip. Hover shows the reason under the pointer's box; a tap does the
+  // same on a touch screen, and a tap anywhere else, or a scroll, hides it.
+  var tip = document.createElement("div");
+  tip.className = "bx-tip";
+  tip.setAttribute("role", "tooltip");
+  document.body.appendChild(tip);
+  var shown = null;
+  var hide = function () { shown = null; tip.classList.remove("on"); };
+  var show = function (el) {
+    if (el === shown) return;
+    shown = el;
+    tip.innerHTML = "<b>Why</b>" + esc(el.getAttribute("data-why"));
+    var r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    var x = Math.min(Math.max(12, r.left), window.innerWidth - t.width - 12);
+    var y = r.top - t.height - 8;
+    if (y < 12) y = r.bottom + 8;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+    tip.classList.add("on");
+  };
+  // Pointer events, mouse only: a tap also fires emulated mouse events,
+  // including a leave straight after it, which would hide the tip it opened.
+  grid.addEventListener("pointerover", function (ev) {
+    if (ev.pointerType !== "mouse") return;
+    var el = ev.target.closest && ev.target.closest("[data-why]");
+    if (el) show(el); else hide();
+  });
+  grid.addEventListener("pointerleave", function (ev) {
+    if (ev.pointerType === "mouse") hide();
+  });
+  document.addEventListener("click", function (ev) {
+    var el = ev.target.closest && ev.target.closest("[data-why]");
+    if (el && grid.contains(el)) show(el); else hide();
+  });
+  window.addEventListener("scroll", hide, {passive: true});
+  grid.addEventListener("scroll", hide, true);
 
   // A flow card's height is measured, not guessed: a clone of its finished
   // state (every step ticked, the draft out) is laid out off-screen and the

@@ -187,6 +187,23 @@ compositions, chosen per scene by `layout`:
   correction: IN-104 misread, a person corrects it, the lesson, the replay, IN-109 fixed
   too, kept.
 
+**Learning is card 07 in the same grid, not a section of its own** (2026-09-25, on the
+owner's instruction): its scene carries `stage: "Learning"`, and the label reads
+"6 jobs · 1 correction".
+
+**Every agent box explains itself on hover** (2026-09-25, on the owner's instruction) -
+a step, a bubble, a draft, an escalation, a focus row. The reason is **recorded by the
+desk, not written by the page**: `Desk.post(..., why=...)` puts a one-line `why` on every
+bus message (the Inbox Worker's cue count and who decided, the Rate Worker's ranking, the
+customer rule behind a send-back, the slack arithmetic behind an escalation), and queued
+records and drafts carry a `reason`. The scene's `why` is copied from that run, and
+`test_the_use_cases_stage_says_only_what_the_desk_did` fails if any hover line is not
+the reason recorded for that exact line (checked by changing one digit). One tip for
+the page, fixed to the viewport so a card's overflow or a chat's scroll cannot clip it;
+hover uses mouse pointer events only, because a tap fires an emulated mouse-leave that
+closed the tip it had just opened - a tap is handled by `click` instead. The dashboard
+does not show the bus `why` yet; it is in the payload.
+
 On arrival a card's layers rise and un-blur back to front, the mail drops in, a flow card
 works its steps, ticks fill in order, the key row darkens last and the pill lands; hover
 lifts the front layer, and a flow or chat card has a Replay. Three rules hold it:
