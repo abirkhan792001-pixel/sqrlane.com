@@ -148,12 +148,32 @@ colours, names and content ours). Six cards, two to a row with the widths altern
 per everyday job. **The four disruption cards were removed the same day**, also on the
 owner's instruction, and the hero no longer promises them ("Six jobs a day. One desk.");
 the disruptions still run on the dashboard and are argued on `/product`.
-Each card is a title, two lines, and a cropped product mock that fades out at its foot.
-The everyday mocks come in three compositions, chosen per scene by `layout`:
+Each card is a stage, a title, two lines, and a cropped product mock that fades out at its
+foot. **The cards run in the order a shipment lives** (2026-09-25): 01 Quote, 02 Book,
+03 Documents, 04 In transit, 05 Arrival, 06 Billing - the stage chip is numbered from the
+scene's `stage`, so moving a scene renumbers it. The invoice sits after the arrival
+because that is when a carrier's surcharge lands. The everyday mocks come in four
+compositions, chosen per scene by `layout`:
 
-- **stack** - the mail tilted at the back, the draft (or escalation) over it, a dark pill
-  up top for what was queued. The pill sits clear of the draft's `Draft — not sent` chip
-  on purpose: that chip is the one line on the card that must always show.
+- **flow** (2026-09-25, on the owner's instruction, after an inbox-agent reference) - the
+  mail drops in like a notification, with the **Outlook mark** and a badge that pops;
+  under it an *SQR agent* panel works each step in order (a spinner on the page's own
+  `working` label, then a tick or a flag on what the Worker actually said, the queued
+  record as a chip on the Worker's line), shows *Drafting*, and ends on **Draft ready.**
+  with the draft and an **Approve** button. It replaced *stack*, and with it the
+  `Draft — not sent` chip, on the owner's instruction. **The gate did not go, it changed
+  words:** "Draft ready. waits for your approval" and Approve, never a Send button -
+  nothing in this build sends, so a Send on the page would be a claim. The chat card's
+  draft carries the same "Draft ready." gate.
+
+  The Outlook mark is vscode-icons' `file-type-outlook` (MIT, via `@iconify-json/vscode-icons`
+  on npm), inlined byte-for-byte - the classic mark, because the current one was not
+  reachable; swap in the official file when someone supplies it, never redraw it. Chosen
+  over Gmail because a DACH/Benelux desk runs on Microsoft 365. **A real mail app's mark
+  reads as a connected mailbox, which this build does not have**, so the note under the
+  grid says "no mailbox is connected, and nothing is ever sent", and
+  `test_the_use_cases_mail_mark_disclaims_a_mailbox` fails without both clauses (checked
+  by deleting one).
 - **checklist** - each agent's step as a ticked row, the draft blurred and fading behind.
 - **focus** - the steps as a column, the one that matters picked out in black.
 - **chat** - an *SQR agent* thread: each message is a Worker speaking, a typing indicator
@@ -167,8 +187,9 @@ The everyday mocks come in three compositions, chosen per scene by `layout`:
   correction: IN-104 misread, a person corrects it, the lesson, the replay, IN-109 fixed
   too, kept.
 
-On arrival a card's layers rise and un-blur back to front, ticks fill in order, the key row
-darkens last and the pill lands; hover lifts the front layer. Three rules hold it:
+On arrival a card's layers rise and un-blur back to front, the mail drops in, a flow card
+works its steps, ticks fill in order, the key row darkens last and the pill lands; hover
+lifts the front layer, and a flow or chat card has a Replay. Three rules hold it:
 
 - **Every word in an everyday mock is the desk's own output.** The cards are drawn from
   `#uc-scenes`, and `test_the_use_cases_stage_says_only_what_the_desk_did` replays the
@@ -182,8 +203,10 @@ darkens last and the pill lands; hover lifts the front layer. Three rules hold i
 - **Reduced motion, or no observer, gets every card finished**; the pre-arrival state
   exists only under `.bx-js`, which the page sets on itself.
 - **Mock heights are measured, not guessed.** At phone width the text wraps harder, so the
-  mock grows to keep the draft's gate above the fade. Re-check a 390px screen after
-  changing any mock's content.
+  mock grows to keep the draft's gate above the fade. A flow card is measured in the
+  browser (`sizeFlows` lays out a clone of its finished state and sizes the mock to it),
+  and a chat card stretches to its row. Re-check a 390px screen after changing any
+  mock's content.
 
 **`/how-it-works` is gone, and three things went with it** (2026-09-24, on the owner's
 instruction). Its nav and footer links are off every page, the footer's *Data sources*
@@ -961,7 +984,8 @@ here too, because this is what the next session reads to find its way around.
 │   │                         #   editable SVGs - for Figma and the deck
 │   ├── landing.html          # home - the gap, the loop in one picture, four doors
 │   ├── product.html          # the roster, the write-back map, the approval gate
-│   ├── use-cases.html        # the six everyday jobs, as a card grid
+│   ├── use-cases.html        # the six everyday jobs, as a card grid in
+│   │                         #   shipment order
 │   ├── about.html            # what is real here, who it is for, the non-goals
 │   ├── index.html            # the dashboard (HTML+CSS+JS in one file)
 │   ├── whitepaper.html       # the technical paper
