@@ -111,6 +111,7 @@ def _shipment_card(shipment: dict, routes: dict) -> dict:
         "route_description": primary.get("description"),
         "discharge_port": primary.get("discharge_port"),
         "transit_days": primary.get("transit_days"),
+        "etd": shipment.get("etd"),
         "eta": shipment["eta"],
         "required_by": shipment.get("required_by"),
         "slack_days": shipment["deadline_slack_days"],

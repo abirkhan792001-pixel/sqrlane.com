@@ -15,6 +15,7 @@ fonts: an external asset is one more thing that can fail in front of an audience
 
 import json
 import math
+from datetime import date
 
 from src import config
 
@@ -138,6 +139,43 @@ def route_polyline(origin: str, route: dict, destination: str) -> list[tuple[flo
     return pts
 
 
+def _along(points, fraction):
+    """The point that far along a polyline, by length - not by vertex count."""
+    if len(points) < 2:
+        return points[0] if points else None
+    legs = [math.dist(a, b) for a, b in zip(points, points[1:])]
+    target, walked = sum(legs) * fraction, 0.0
+    for (a, b), leg in zip(zip(points, points[1:]), legs):
+        if walked + leg >= target and leg:
+            t = (target - walked) / leg
+            return (round(a[0] + (b[0] - a[0]) * t, 1), round(a[1] + (b[1] - a[1]) * t, 1))
+        walked += leg
+    return points[-1]
+
+
+def position(card: dict, points, today: date | None = None) -> dict | None:
+    """Where the box probably is: the share of its voyage elapsed, along its lane.
+
+    An ESTIMATE from the booking's own departure and arrival dates - there is no
+    vessel tracking in this build (the AIS feeds that would do it are paid), and
+    the map says so.
+    """
+    try:
+        etd, eta = date.fromisoformat(card["etd"]), date.fromisoformat(card["eta"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    today = today or date.today()
+    span = max((eta - etd).days, 1)
+    progress = min(max((today - etd).days / span, 0.0), 1.0)
+    point = _along(points, progress)
+    if not point:
+        return None
+    return {"x": point[0], "y": point[1], "progress": round(progress, 2),
+            "status": ("not yet sailed" if progress == 0 else
+                       "arrived" if progress == 1 else "at sea"),
+            "basis": "estimated from ETD and ETA - not vessel tracking"}
+
+
 def build(board: list[dict], events: list[dict], routes: dict) -> dict:
     """Everything the map draws, derived from the run - never authored per-run."""
     blocked = {}
@@ -189,7 +227,14 @@ def build(board: list[dict], events: list[dict], routes: dict) -> dict:
             "points": pts,
             # Which of this lane's chokepoints are carrying active risk right now.
             "hit": [c for c in route.get("chokepoints", []) if c in blocked],
+            "eta": card.get("eta"),
+            "position": position(card, pts),
         })
+    used = ({place_id(l["from"]) for l in lanes} | {place_id(l["to"]) for l in lanes}
+            | {c for l in lanes for c in routes[l["route_id"]].get("chokepoints", [])}
+            | {routes[l["route_id"]].get("discharge_port") for l in lanes})
+    for p in places:
+        p["on_board"] = p["id"] in used
 
     return {
         "frame": _geo()["_frame"],

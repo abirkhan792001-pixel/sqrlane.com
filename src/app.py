@@ -811,6 +811,46 @@ def api_tms_writeback(request: WritebackRequest):
         return JSONResponse(status_code=200, content={"ok": False, "error": reason})
 
 
+# --- The map: every booking, re-read through the TMS link --------------------
+
+
+class MapRequest(BaseModel):
+    scenario: str | None = None
+    connection: dict | None = None
+
+
+@app.get("/api/map")
+@app.post("/api/map")
+def api_map(request: MapRequest | None = None, scenario: str | None = None):
+    """Every booking on the map, read through the TMS link on each call.
+
+    The dashboard polls this, so the map is only ever as old as its last read:
+    a connected API is fetched live each time, a file connection is the export
+    as uploaded, and the demo book is the demo book. Decisions come from a fast
+    rules-only run of the selected scenario. Positions are estimates from each
+    booking's ETD and ETA - there is no vessel tracking in this build.
+    """
+    request = request or MapRequest(scenario=scenario)
+    try:
+        with tms.using(request.connection):
+            run = orchestrator.run_cycle(live=False, inject=bool(request.scenario),
+                                         use_llm=False, scenario=request.scenario)
+        return {"read_at": run["ran_at"], "connector": run["tms"]["connector"],
+                "status": run["tms"]["status"], "kind": run["tms"]["kind"],
+                "bookings": len(run["shipments"]), "mapped": len(run["map"]["lanes"]),
+                "scenario": (run.get("scenario") or {}).get("name"),
+                "refresh_seconds": config.MAP_REFRESH_SECONDS, "map": run["map"],
+                "shipments": [{k: c.get(k) for k in ("id", "cargo", "origin",
+                               "final_destination", "carrier", "etd", "eta", "state")}
+                              for c in run["shipments"]],
+                "note": ("Read through the TMS link on every refresh. Positions are "
+                         "estimated from each booking's ETD and ETA along its lane - "
+                         "not vessel tracking.")}
+    except Exception as exc:  # noqa: BLE001
+        return JSONResponse(status_code=200, content={
+            "error": f"{type(exc).__name__}: {exc}", "map": None, "bookings": 0})
+
+
 # --- Insights -----------------------------------------------------------------
 
 

@@ -627,11 +627,11 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
               <td>A labelling job with a fixed answer set, like screening. Rules answer it first anyway, and a person&rsquo;s corrections are applied after the model, so a small model&rsquo;s mistake is caught rather than trusted.</td>
             </tr>
             <tr>
-              <td><b>Routing a question</b></td>
-              <td>One short call per question a person asks: which of the sixteen agents owns it, or none. Strict JSON.</td>
-              <td class="k">Qwen3.5-9B<span class="sub">or Gemma-3-27B</span></td>
+              <td><b>Routing and wording a question</b></td>
+              <td>Two short calls per question a person asks: which of the sixteen agents owns it, and the finished answer reworded so it reads like a colleague wrote it.</td>
+              <td class="k">Qwen3.5-9B<span class="sub">or Gemma-3-27B; the prototype runs a Llama 3.1 8B class model</span></td>
               <td class="n">$0.15 / $0.20</td>
-              <td>The model only picks who answers. The answer itself is assembled by code from the run &mdash; dates, prices and decisions never pass through it &mdash; and cue-phrase rules route the question when no model is configured.</td>
+              <td>The facts are assembled by code from the run. The rewording is checked against them &mdash; every number, date, reference and status word must survive, and nothing new may appear &mdash; and the desk&rsquo;s own wording is shown when it does not. Cue-phrase rules route the question when no model is configured.</td>
             </tr>
           </tbody>
         </table>
@@ -667,7 +667,7 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
             <tr><td><b>Exception</b></td><td>Opens the exception on a rolled box or a mismatched document; escalates what the desk cannot absorb.</td><td class="k">None</td></tr>
             <tr><td><b>Invoice</b></td><td>Reconciles the carrier invoice against the agreed rate; drafts the dispute.</td><td class="k">None</td></tr>
             <tr><td><b>Customs</b></td><td>Prepares the entry for the discharge country; escalates a transit, never files.</td><td class="k">None</td></tr>
-            <tr><td><b>Assistant</b></td><td>Takes a person&rsquo;s question, hands it to the agent who owns it, and says so when none does.</td><td class="k">Qwen3.5-9B<span class="sub">routing only &mdash; the answer is built from the run; rules as fallback</span></td></tr>
+            <tr><td><b>Assistant</b></td><td>Takes a person&rsquo;s question, hands it to the agent who owns it, and says so when none does.</td><td class="k">Qwen3.5-9B<span class="sub">routes and rewords; the facts are built from the run and checked; rules as fallback</span></td></tr>
           </tbody>
         </table>
       </div>

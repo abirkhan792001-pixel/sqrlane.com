@@ -20,6 +20,11 @@ Public API
     describe()       -> str           # human-readable "groq / llama-3.3-70b"
     complete(...)    -> str           # free text back
     complete_json(...) -> dict|list   # parsed JSON back, with one repair retry
+
+Both take `tier="small"` for jobs a big model is wasted on - routing a question,
+rewording an answer. The small model is discovered the same way as the main one,
+from its own preference list, and falls back to the main model when the key
+offers none of them.
 """
 
 import json
@@ -235,6 +240,49 @@ def resolve_model(provider: str | None = None, *, force: bool = False,
     return chosen
 
 
+_resolved_small: dict[str, str] = {}
+
+
+def _small_preferences(provider: str) -> list[str]:
+    return {"groq": config.GROQ_SMALL_MODEL_PREFERENCES,
+            "hf": config.HF_SMALL_MODEL_PREFERENCES}.get(provider, [])
+
+
+def resolve_small_model(provider: str | None = None, *, force: bool = False,
+                        exclude: frozenset = frozenset()) -> str:
+    """The small tier's model: the first small preference this key offers.
+
+    Only models the key actually lists are chosen - a small preference is never
+    tried blind - and when none is offered the main model is used instead, so a
+    lineup without a small model costs speed, not the answer.
+    """
+    provider = provider or config.LLM_PROVIDER
+    already = _resolved_small.get(provider)
+    if not force and already and already not in exclude:
+        return already
+    if config.LLM_SMALL_MODEL and config.LLM_SMALL_MODEL not in exclude:
+        _resolved_small[provider] = config.LLM_SMALL_MODEL
+        return config.LLM_SMALL_MODEL
+    try:
+        offered = {m["id"].lower(): m["id"] for m in _list_model_entries(provider)
+                   if _serves_text(m) and _usable(m["id"], provider)}
+    except (LLMError, requests.RequestException):
+        offered = {}
+    chosen = next((offered[p.lower()] for p in _small_preferences(provider)
+                   if p.lower() in offered and offered[p.lower()] not in exclude), None)
+    chosen = chosen or resolve_model(provider, exclude=exclude)
+    _resolved_small[provider] = chosen
+    return chosen
+
+
+def active_small_model() -> str:
+    """The small tier's model, without forcing a lookup."""
+    if config.LLM_PROVIDER in OPENAI_COMPATIBLE:
+        return (_resolved_small.get(config.LLM_PROVIDER) or config.LLM_SMALL_MODEL
+                or "(resolved on first call)")
+    return active_model()
+
+
 def resolve_groq_model(*, force: bool = False, exclude: frozenset = frozenset()) -> str:
     """Kept under its own name because the README and .env.example use it."""
     return resolve_model("groq", force=force, exclude=exclude)
@@ -273,7 +321,8 @@ def configuration_hint() -> str:
 
 
 def complete(prompt: str, *, system: str | None = None,
-             temperature: float | None = None, max_tokens: int = 1200) -> str:
+             temperature: float | None = None, max_tokens: int = 1200,
+             tier: str = "main") -> str:
     """Send a prompt, get text back. Raises LLMError if it cannot."""
     if not is_configured():
         raise LLMNotConfigured(configuration_hint())
@@ -282,7 +331,8 @@ def complete(prompt: str, *, system: str | None = None,
     provider = config.LLM_PROVIDER
 
     if provider in OPENAI_COMPATIBLE:
-        return _call_openai_compatible(provider, prompt, system, temperature, max_tokens)
+        return _call_openai_compatible(provider, prompt, system, temperature, max_tokens,
+                                       tier)
     if provider == "gemini":
         return _call_gemini(prompt, system, temperature, max_tokens)
     if provider == "ollama":
@@ -292,7 +342,8 @@ def complete(prompt: str, *, system: str | None = None,
 
 
 def complete_json(prompt: str, *, system: str | None = None,
-                  temperature: float | None = None, max_tokens: int = 1200):
+                  temperature: float | None = None, max_tokens: int = 1200,
+                  tier: str = "main"):
     """Same as complete(), but insists on JSON and parses it.
 
     Models sometimes wrap JSON in prose or ```json fences, so we strip those.
@@ -304,7 +355,7 @@ def complete_json(prompt: str, *, system: str | None = None,
         "outside the JSON."
     )
     raw = complete(prompt, system=json_system.strip(), temperature=temperature,
-                   max_tokens=max_tokens)
+                   max_tokens=max_tokens, tier=tier)
     try:
         return _parse_json(raw)
     except ValueError:
@@ -314,7 +365,7 @@ def complete_json(prompt: str, *, system: str | None = None,
             f"Your previous reply:\n{raw[:3000]}"
         )
         retry = complete(repair, system=json_system.strip(), temperature=0.0,
-                         max_tokens=max_tokens)
+                         max_tokens=max_tokens, tier=tier)
         try:
             return _parse_json(retry)
         except ValueError as exc:
@@ -484,15 +535,17 @@ def _openai_chat(provider, model, prompt, system, temperature, max_tokens) -> st
     return content
 
 
-def _call_openai_compatible(provider, prompt, system, temperature, max_tokens) -> str:
-    model = resolve_model(provider)
+def _call_openai_compatible(provider, prompt, system, temperature, max_tokens,
+                            tier="main") -> str:
+    resolve = resolve_small_model if tier == "small" else resolve_model
+    model = resolve(provider)
     try:
         return _openai_chat(provider, model, prompt, system, temperature, max_tokens)
     except ModelNotAvailable:
         # The model was retired, renamed, or is not on this key. Ask the provider
         # what it does offer and try once more, rather than dropping the whole run
         # to the deterministic fallback over a stale name.
-        replacement = resolve_model(provider, force=True, exclude=frozenset({model}))
+        replacement = resolve(provider, force=True, exclude=frozenset({model}))
         if replacement == model:
             raise
         return _openai_chat(provider, replacement, prompt, system, temperature,

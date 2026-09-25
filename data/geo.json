@@ -160,6 +160,54 @@
       "kind": "destination",
       "label_dx": 0,
       "label_dy": -9
+    },
+    "Qingdao": {
+      "name": "Qingdao",
+      "lat": 36.07,
+      "lon": 120.32,
+      "kind": "origin",
+      "label_dx": 18,
+      "label_dy": -5
+    },
+    "Yantian": {
+      "name": "Yantian",
+      "lat": 22.57,
+      "lon": 114.27,
+      "kind": "origin",
+      "label_dx": 18,
+      "label_dy": 12
+    },
+    "Kaohsiung": {
+      "name": "Kaohsiung",
+      "lat": 22.61,
+      "lon": 120.28,
+      "kind": "origin",
+      "label_dx": 18,
+      "label_dy": 10
+    },
+    "Ho Chi Minh City": {
+      "name": "Ho Chi Minh City",
+      "lat": 10.77,
+      "lon": 106.7,
+      "kind": "origin",
+      "label_dx": 18,
+      "label_dy": 8
+    },
+    "Singapore": {
+      "name": "Singapore",
+      "lat": 1.26,
+      "lon": 103.84,
+      "kind": "origin",
+      "label_dx": 18,
+      "label_dy": 8
+    },
+    "Xiamen": {
+      "name": "Xiamen",
+      "lat": 24.45,
+      "lon": 118.07,
+      "kind": "origin",
+      "label_dx": 18,
+      "label_dy": 0
     }
   },
   "corridors": {
