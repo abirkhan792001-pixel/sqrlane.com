@@ -33,6 +33,46 @@ def _shares(counts: dict) -> list[dict]:
     return [{"label": k, "count": v, "share": s} for (k, v, _), s in zip(raw, floors)]
 
 
+WATCH_MARGIN_DAYS = 2   # on plan, but a known delay would leave this little slack or less
+THIN_SLACK_DAYS = 1     # on plan, with so little slack any disruption breaks the date
+
+
+def watchlist(run: dict) -> list[dict]:
+    """Bookings still on plan that are close to their limit - before anything moves.
+
+    Two reasons, both arithmetic on the booking's own record and the active
+    events, never a forecast: a disruption on the route whose worst expected
+    delay leaves WATCH_MARGIN_DAYS of slack or less, or slack so thin
+    (THIN_SLACK_DAYS or less) that any disruption on the route breaks the date.
+    """
+    events = {e["event_id"]: e for e in run["risk"]["events"]}
+    rows = []
+    for card in run["shipments"]:
+        if card["state"] != "green":
+            continue
+        slack = card["slack_days"]
+        exposed = [events[e] for e in (card.get("decision") or {}).get("triggering_events") or []
+                   if e in events]
+        if exposed:
+            worst = max((max(e.get("expected_delay_days") or [0]) for e in exposed), default=0)
+            margin = slack - worst
+            if margin > WATCH_MARGIN_DAYS:
+                continue
+            reason = (f"{exposed[0]['title']} could delay it up to {worst} days; its {slack} "
+                      f"days of slack would leave {margin}.")
+        elif slack <= THIN_SLACK_DAYS:
+            worst, margin = 0, slack
+            reason = (f"Only {slack} day{'' if slack == 1 else 's'} of slack before its "
+                      f"required-by date - any disruption on its route would break it.")
+        else:
+            continue
+        rows.append({"id": card["id"], "cargo": card["cargo"], "eta": card["eta"],
+                     "required_by": card.get("required_by"), "slack_days": slack,
+                     "worst_delay_days": worst, "margin_days": margin, "reason": reason,
+                     "events": [e["event_id"] for e in exposed]})
+    return sorted(rows, key=lambda r: r["margin_days"])
+
+
 def build(*, scenario: str | None = None) -> dict:
     run = orchestrator.run_cycle(live=False, inject=bool(scenario), use_llm=False,
                                  scenario=scenario)
@@ -88,6 +128,12 @@ def build(*, scenario: str | None = None) -> dict:
         "approvals": {"title": "Where your approvals come from",
                       "subtitle": "Items waiting at the gate, by the agent that produced them",
                       "rows": _shares(approvals)},
+        "watchlist": {"title": "On watch",
+                      "subtitle": "On plan, but close to the required-by date",
+                      "rule": (f"On plan, and either a known delay would leave "
+                               f"{WATCH_MARGIN_DAYS} days of slack or less, or the booking has "
+                               f"{THIN_SLACK_DAYS} day of slack or less."),
+                      "rows": watchlist(run)},
         "note": ("Counted from one run - the desk's synthetic inbox and the board as it "
                  "stands. There is no history yet, so nothing here is a trend."),
     }

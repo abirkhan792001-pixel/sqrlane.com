@@ -524,3 +524,33 @@ def push(operation: dict, *, url: str, token: str | None = None,
                                    headers=_auth_headers(token, auth_header))
     return {"ok": 200 <= response.status_code < 300, "status": response.status_code,
             "host": host, "response": response.text[:500]}
+
+
+def test_connection(*, kind: str, url: str, token: str | None = None,
+                    auth_header: str | None = None, records_path: str = "") -> dict:
+    """Check a connection works, without touching a booking.
+
+    The read endpoint is read once and nothing is kept. The write-back endpoint
+    receives one POST marked `"test": true` with no operation in it, so the
+    receiving side can recognise it and do nothing. The result names the host
+    and the time it was verified - the only thing a "connected" label may rest on.
+    """
+    verified_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    if kind == "api":
+        conn = read_api(url, token=token, auth_header=auth_header, records_path=records_path)
+        return {"ok": True, "host": conn["source"], "verified_at": verified_at,
+                "detail": f"Read {conn['rows_read']} rows, {len(conn['bookings'])} on lanes the "
+                          f"agents judge. Nothing was kept."}
+    if kind == "writeback":
+        host = check_url(url)
+        response = httpget.post_capped(url, timeout=config.TMS_TIMEOUT_SECONDS,
+                                       json={"source": "SQRlane", "test": True,
+                                             "operation": None, "sent_at": verified_at},
+                                       headers=_auth_headers(token, auth_header))
+        ok = 200 <= response.status_code < 300
+        return {"ok": ok, "host": host, "verified_at": verified_at if ok else None,
+                "status": response.status_code,
+                "detail": ("The endpoint accepted a test message marked \"test\": true - no "
+                           "booking was changed." if ok else
+                           f"The endpoint answered HTTP {response.status_code}.")}
+    raise ValueError("kind must be 'api' or 'writeback'")

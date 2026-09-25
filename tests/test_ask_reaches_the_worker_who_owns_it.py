@@ -314,5 +314,56 @@ class TheMapIsEveryBookingReadThroughTheTms(unittest.TestCase):
         self.assertEqual(data["connector"], conn["name"])
 
 
+class TheWatchlistIsArithmeticNotAForecast(unittest.TestCase):
+    """On plan, but close to the limit - computed from the record and the events."""
+
+    def test_a_connected_booking_near_its_limit_is_on_watch(self):
+        from fastapi.testclient import TestClient
+        from src import config
+        from src.app import app
+        client = TestClient(app)
+        conn = client.post("/api/tms/connect", json={
+            "kind": "file", "filename": "s.csv",
+            "content": config.SAMPLE_TMS_EXPORT.read_text(encoding="utf-8")}).json()
+        data = client.post("/api/insights", json={"scenario": "hamburg",
+                                                  "connection": conn}).json()
+        rows = {r["id"]: r for r in data["watchlist"]["rows"]}
+        # 6 days of slack against a strike of up to 5: on plan, 1 day to spare.
+        self.assertEqual(rows["JOB-24117"]["margin_days"], 1)
+        self.assertEqual(rows["JOB-24117"]["worst_delay_days"], 5)
+        for row in data["watchlist"]["rows"]:
+            self.assertLessEqual(row["margin_days"], 2)
+
+    def test_nothing_already_actioned_is_on_watch(self):
+        from src import insights
+        run = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+        actioned = {c["id"] for c in run["shipments"] if c["state"] != "green"}
+        self.assertFalse(actioned & {r["id"] for r in insights.watchlist(run)})
+
+    def test_thin_slack_is_flagged_with_the_reason(self):
+        from src import insights
+        run = orchestrator.run_cycle(live=False, inject=False, use_llm=False)
+        rows = {r["id"]: r for r in insights.watchlist(run)}
+        self.assertIn("SHP-002", rows)
+        self.assertIn("1 day of slack", rows["SHP-002"]["reason"])
+
+
+class TheQueueCanBeSortedByFacts(unittest.TestCase):
+
+    def test_every_write_back_carries_its_age_and_severity(self):
+        run = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+        for op in run["tms"]["writebacks"]:
+            self.assertTrue(op["queued_at"])
+            self.assertEqual(op["severity"], "high")
+
+    def test_a_connection_test_refuses_a_private_address(self):
+        from fastapi.testclient import TestClient
+        from src.app import app
+        result = TestClient(app).post("/api/tms/test", json={
+            "kind": "writeback", "url": "https://192.168.1.4/hook"}).json()
+        self.assertFalse(result["ok"])
+        self.assertIsNone(result["verified_at"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

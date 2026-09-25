@@ -297,6 +297,17 @@ def run_cycle(*, live=True, inject=True, use_llm=True, verbose=False,
     # expressed as changes to the records they came from. Every one is queued
     # behind a person - see tms.py.
     link = tms.connection(cards)
+    # When each change was queued, and how serious the disruption behind it is -
+    # what the approval queue sorts and filters by. Both are facts of this run.
+    queued_at = _now_iso()
+    severity = {e["event_id"]: e.get("severity") for e in risk["events"]}
+    rank = {"low": 1, "medium": 2, "high": 3}
+    by_card = {c["id"]: c for c in cards}
+    for op in link["writebacks"]:
+        found = [severity.get(e) for e in
+                 (by_card[op["booking_ref"]]["decision"].get("triggering_events") or [])]
+        op["queued_at"] = queued_at
+        op["severity"] = max((s for s in found if s), key=lambda s: rank.get(s, 0), default=None)
     queued = link["queued_by_agent"]
     for worker_id, agent in (("risk", "Risk Worker"), ("routing", "Routing Worker"),
                              ("comms", "Comms Worker")):

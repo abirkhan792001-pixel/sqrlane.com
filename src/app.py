@@ -798,6 +798,28 @@ def _shifted(raw, days):
     return moved
 
 
+class TestRequest(BaseModel):
+    kind: str                      # "api" (the read endpoint) or "writeback"
+    url: str
+    token: str | None = None
+    auth_header: str | None = None
+    records_path: str | None = None
+
+
+@app.post("/api/tms/test")
+def api_tms_test(request: TestRequest):
+    """Verify a TMS endpoint or write-back address works, changing nothing."""
+    try:
+        return connect.test_connection(kind=request.kind, url=request.url, token=request.token,
+                                       auth_header=request.auth_header,
+                                       records_path=request.records_path or "")
+    except Exception as exc:  # noqa: BLE001
+        reason = (str(exc) if isinstance(exc, ValueError)
+                  else httpget.short_error(exc, connect.host(request.url)))
+        return JSONResponse(status_code=200, content={"ok": False, "error": reason,
+                                                      "verified_at": None})
+
+
 @app.post("/api/tms/writeback")
 def api_tms_writeback(request: WritebackRequest):
     """Push ONE approved write-back to the connected TMS. Called by the Approve
@@ -855,10 +877,14 @@ def api_map(request: MapRequest | None = None, scenario: str | None = None):
 
 
 @app.get("/api/insights")
-def api_insights(scenario: str | None = None):
-    """The dashboard's cards and charts, counted from one run. Never a trend."""
+@app.post("/api/insights")
+def api_insights(request: MapRequest | None = None, scenario: str | None = None):
+    """The dashboard's cards, charts and watchlist, counted from one run. Never a
+    trend. POST with a connection counts the connected TMS's book."""
+    request = request or MapRequest(scenario=scenario)
     try:
-        return insights.build(scenario=scenario)
+        with tms.using(request.connection):
+            return insights.build(scenario=request.scenario)
     except Exception as exc:  # noqa: BLE001
         return JSONResponse(status_code=200, content={
             "error": f"{type(exc).__name__}: {exc}", "cards": [],

@@ -281,7 +281,8 @@ class Desk:
         """File an output: numbered, gated, and checked by the Playbook Worker."""
         item = output["item"]
         n = sum(1 for o in self.outputs if o["item"] == item) + 1
-        output = dict(output, id=f"{item}-{n}", worker=NAMES[producer], worker_id=producer)
+        output = dict(output, id=f"{item}-{n}", worker=NAMES[producer], worker_id=producer,
+                      queued_at=datetime.now(timezone.utc).replace(microsecond=0).isoformat())
         if output["kind"] == "mail":
             output.update(status="DRAFT - not sent", approval_status="awaiting_approval",
                           cc=list(output.get("cc") or []))
