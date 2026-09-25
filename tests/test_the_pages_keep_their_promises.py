@@ -508,6 +508,31 @@ class TheRemovedPageStaysRemoved(unittest.TestCase):
 
 
 
+
+class TheDemoMovedToItsOwnApp(unittest.TestCase):
+    """The dashboard moved to app.sqrlane.com. Every demo link goes straight there,
+    and /app answers with a permanent redirect so a link already shared still lands."""
+
+    def test_no_page_links_to_the_old_address(self):
+        from src import config
+        for page in ALL_PAGES:
+            with self.subTest(page=page.name):
+                self.assertNotRegex(page.read_text(encoding="utf-8"), r'href="/app[#"/]')
+        links = [href for page in MARKETING + (WHITEPAPER,)
+                 for href in re.findall(r'href="([^"]*)"[^>]*>[^<]*Open the demo',
+                                        page.read_text(encoding="utf-8"))]
+        self.assertTrue(links, "no 'Open the demo' link found - did the parse break?")
+        for href in links:
+            self.assertTrue(href.startswith(config.DASHBOARD_URL), href)
+
+    def test_the_old_address_redirects_to_the_dashboard(self):
+        from fastapi.testclient import TestClient
+        from src import config
+        from src.app import app
+        response = TestClient(app).get("/app", follow_redirects=False)
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response.headers["location"], config.DASHBOARD_URL)
+
 class TheApiIsOpenOnlyToTheDashboard(unittest.TestCase):
     """app.sqrlane.com reads this API from the browser, so the API names it as an
     allowed origin. It names it and nothing wider: a wildcard would let any site

@@ -176,8 +176,12 @@ def pitch():
 
 @app.get("/app")
 def dashboard():
-    """The demo itself. This is the page with the button."""
-    return _page(INDEX, "Dashboard")
+    """The demo moved to its own app at app.sqrlane.com (2026-09-25, on the owner's
+    instruction). A permanent redirect, so a link someone already shared still lands;
+    the browser carries any #fragment across. static/index.html is kept, unserved,
+    until the new dashboard has run in front of an audience - putting it back is
+    this one function."""
+    return RedirectResponse(config.DASHBOARD_URL, status_code=301)
 
 
 # A clip is identified by what it contains, not by when it was asked for. The

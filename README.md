@@ -117,8 +117,11 @@ cp .env.example .env        # then paste a free API key into .env
 uvicorn src.app:app --reload
 ```
 
-Open **http://127.0.0.1:8000** for the landing page, then **Open the demo** —
-or go straight to **http://127.0.0.1:8000/app** and press **Inject Hamburg strike**.
+Open **http://127.0.0.1:8000** for the landing page. **Open the demo** goes to the
+dashboard at **https://app.sqrlane.com** — its own app (repo `sqrlane-dashboard`), which
+calls this API. To run the dashboard against your local server, start it from that repo
+with `VITE_API_BASE=http://127.0.0.1:8000 npm run dev` (it serves on port 8080, which this
+API already allows).
 
 
 | Route | What |
@@ -128,7 +131,7 @@ or go straight to **http://127.0.0.1:8000/app** and press **Inject Hamburg strik
 | `/use-cases` | One card grid: six everyday jobs as product mocks drawn from the agents' real output |
 | `/about` | What is real here and what is not, and the desk it is modelled on |
 | `/whitepaper` | The technical paper |
-| `/app` | The dashboard. This is the demo, and the button lives here |
+| `/app` | Redirects to the dashboard at https://app.sqrlane.com, where the button lives |
 | `/video/<clip>` | The hero reel's clips, same-origin. 404 is fine — the hero renders without them |
 | `/api/health` | What a running instance can actually see. First stop when a deploy misbehaves |
 | `/api/gauges` | Live Rhine water levels from PEGELONLINE. No page shows them since `/how-it-works` was removed; the endpoint and its tests stay |

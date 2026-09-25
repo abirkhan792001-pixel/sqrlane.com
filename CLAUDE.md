@@ -669,9 +669,13 @@ API from the browser (`VITE_API_BASE=https://sqrlane.com`), and falls back to a 
 with a "Showing a recorded run" badge when it cannot. That is why `src/app.py` carries a CORS
 allow-list, `config.DASHBOARD_ORIGINS` - app.sqrlane.com, the Lovable preview and its dev
 server, never `*` (`TheApiIsOpenOnlyToTheDashboard` holds it). The Lovable project's
-knowledge carries the same honesty rules as this file. **`/app` (below) stays until the new
-dashboard is live and checked, then becomes a redirect to app.sqrlane.com** - do not delete it
-first.
+knowledge carries the same honesty rules as this file. **The cut-over is on branch
+`claude/dashboard-cutover`**: `/app` answers a 301 to `config.DASHBOARD_URL`
+(https://app.sqrlane.com), all fourteen demo links point there directly (the Workflow link to
+`/desk`), and `TheDemoMovedToItsOwnApp` fails if an old link or the redirect comes back.
+`static/index.html` is kept, unserved, until the new dashboard has run in front of an
+audience - restoring it is the one `dashboard()` function in `src/app.py`. **Merge that branch
+only once app.sqrlane.com is live and a real run works end to end.**
 
 ### The dashboard follows limns-admin
 
