@@ -21,6 +21,7 @@ Start it:
 import hashlib
 import json
 import os
+import re
 import time
 from pathlib import Path
 
@@ -30,7 +31,8 @@ from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, Redirec
                                Response)
 from pydantic import BaseModel
 
-from src import config, learning, llm, orchestrator, simulation, workflow
+from src import (ask, config, connect, httpget, learning, llm, mcp_server, orchestrator,
+                 simulation, tms, workflow)
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 INDEX = STATIC_DIR / "index.html"        # the dashboard, served at /app
@@ -85,6 +87,35 @@ class RunRequest(BaseModel):
     inject: bool = True           # load the selected scripted scenario
     use_llm: bool = True          # fall back to deterministic logic if this is false
     scenario: str | None = None   # hamburg, redsea, rhine, france. None = the default
+    connection: dict | None = None  # a connected TMS (src/connect.py); None = the demo book
+
+
+class ConnectRequest(BaseModel):
+    """Connect a TMS: an uploaded export, or a live HTTPS endpoint."""
+    kind: str                     # "file" or "api"
+    filename: str | None = None
+    content: str | None = None    # the export's text, CSV or JSON
+    url: str | None = None        # the endpoint that returns the bookings as JSON
+    token: str | None = None
+    auth_header: str | None = None
+    records_path: str | None = None
+    writeback_url: str | None = None
+
+
+class WritebackRequest(BaseModel):
+    """One approved operation, pushed to the connected TMS's write-back endpoint."""
+    operation: dict
+    writeback_url: str
+    token: str | None = None
+    auth_header: str | None = None
+
+
+class AskRequest(BaseModel):
+    """A question for the desk, about the board the person is looking at."""
+    question: str
+    scenario: str | None = None
+    use_llm: bool = True
+    connection: dict | None = None
 
 
 def _page(path: Path, what: str):
@@ -601,11 +632,20 @@ def live_feed():
                         headers={"Cache-Control": "no-store"})
 
 
+class InitialRequest(BaseModel):
+    connection: dict | None = None
+
+
 @app.get("/api/initial")
-def initial():
-    """The board before the button is pressed: five shipments, all green."""
+@app.post("/api/initial")
+def initial(request: InitialRequest | None = None):
+    """The board before the button is pressed: every booking, all green.
+
+    POST with a connection shows the connected TMS's book instead of the demo's.
+    """
     try:
-        state = orchestrator.initial_state()
+        with tms.using((request or InitialRequest()).connection):
+            state = orchestrator.initial_state()
     except OSError as exc:
         return JSONResponse(status_code=200, content={
             "state": "error",
@@ -652,8 +692,9 @@ def run(request: RunRequest | None = None):
     """
     options = request or RunRequest()
     try:
-        return orchestrator.run_cycle(live=options.live, inject=options.inject,
-                                      use_llm=options.use_llm, scenario=options.scenario)
+        with tms.using(options.connection):
+            return orchestrator.run_cycle(live=options.live, inject=options.inject,
+                                          use_llm=options.use_llm, scenario=options.scenario)
     except Exception as exc:  # noqa: BLE001 - never let the demo show a stack trace
         return JSONResponse(status_code=200, content={
             "state": "error",
@@ -704,3 +745,107 @@ def api_workflow_reset():
         return {"forgotten": learning.reset()}
     except OSError as exc:
         return JSONResponse(status_code=200, content={"forgotten": 0, "error": str(exc)})
+
+
+# --- The TMS link: connect your own ----------------------------------------
+# Nothing here stores a connection. /connect reads and maps what it is given and
+# hands the result back; the dashboard keeps it and sends it with each request.
+
+
+@app.post("/api/tms/connect")
+def api_tms_connect(request: ConnectRequest):
+    """Read a TMS export or endpoint once, and show what was mapped and covered."""
+    try:
+        if request.kind == "file":
+            result = connect.read_export(request.content or "", request.filename or "export")
+        elif request.kind == "api":
+            result = connect.read_api(request.url or "", token=request.token,
+                                      auth_header=request.auth_header,
+                                      records_path=request.records_path or "")
+        else:
+            raise ValueError("kind must be 'file' or 'api'")
+        if request.writeback_url:
+            connect.check_url(request.writeback_url)
+        result["writeback_url"] = request.writeback_url or None
+        return dict(result, ok=True)
+    except Exception as exc:  # noqa: BLE001 - a bad file is a sentence, not a 500
+        host = connect.host(request.url) if request.url else ""
+        reason = (str(exc) if isinstance(exc, ValueError)
+                  else httpget.short_error(exc, host))
+        return JSONResponse(status_code=200, content={"ok": False, "error": reason})
+
+
+@app.get("/api/tms/sample.csv")
+def api_tms_sample():
+    """A sample TMS export to try the connector with, dates rolled to today."""
+    text = config.SAMPLE_TMS_EXPORT.read_text(encoding="utf-8")
+    weeks = tms._weeks_since_authored(config.SAMPLE_TMS_AUTHORED_ON)
+    if weeks:
+        text = re.sub(r"\b(\d{4}-\d{2}-\d{2}|\d{2}\.\d{2}\.\d{4})\b",
+                      lambda m: _shifted(m.group(1), weeks * 7), text)
+    return Response(text, media_type="text/csv", headers={
+        "Content-Disposition": 'attachment; filename="sample_tms_export.csv"'})
+
+
+def _shifted(raw, days):
+    iso = connect.parse_date(raw)
+    moved = tms.shift_date(iso, days)
+    if "." in raw:
+        y, m, d = moved.split("-")
+        return f"{d}.{m}.{y}"
+    return moved
+
+
+@app.post("/api/tms/writeback")
+def api_tms_writeback(request: WritebackRequest):
+    """Push ONE approved write-back to the connected TMS. Called by the Approve
+    button and nothing else; the gate stays per operation."""
+    try:
+        return connect.push(request.operation, url=request.writeback_url, token=request.token,
+                            auth_header=request.auth_header)
+    except Exception as exc:  # noqa: BLE001
+        reason = (str(exc) if isinstance(exc, ValueError)
+                  else httpget.short_error(exc, connect.host(request.writeback_url)))
+        return JSONResponse(status_code=200, content={"ok": False, "error": reason})
+
+
+# --- Ask SQRlane -------------------------------------------------------------
+
+
+@app.post("/api/ask")
+def api_ask(request: AskRequest):
+    """A question, routed to the Worker who owns it, answered from the run."""
+    try:
+        with tms.using(request.connection):
+            return ask.ask(request.question, scenario=request.scenario,
+                           use_llm=request.use_llm)
+    except Exception as exc:  # noqa: BLE001
+        return JSONResponse(status_code=200, content={
+            "question": request.question, "answered": False, "conversation": [],
+            "text": f"The desk could not answer: {type(exc).__name__}: {exc}",
+            "suggestions": ["Try again, or ask about a booking on the board."]})
+
+
+# --- The desk as an MCP server ---------------------------------------------
+# Add https://sqrlane.com/mcp as a connector in any MCP client and ask the same
+# Assistant the dashboard's Ask box does. Read-only tools; see src/mcp_server.py.
+
+
+@app.post("/mcp")
+async def mcp(request: Request):
+    try:
+        body = await request.json()
+    except ValueError:
+        return JSONResponse(status_code=400, content={
+            "jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "Parse error"}})
+    if isinstance(body, list):
+        replies = [r for r in (mcp_server.handle(m) for m in body if isinstance(m, dict)) if r]
+        return JSONResponse(replies) if replies else Response(status_code=202)
+    reply = mcp_server.handle(body if isinstance(body, dict) else {})
+    return JSONResponse(reply) if reply else Response(status_code=202)
+
+
+@app.get("/mcp")
+def mcp_get():
+    """No server-initiated stream: this server only answers requests."""
+    return Response(status_code=405, headers={"Allow": "POST"})

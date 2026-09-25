@@ -49,7 +49,7 @@ held for human approval.
 | | **Docs Worker** | Pulls the fields out of bills of lading, packing lists and invoices, and checks them against the booking | `LIVE` |
 | 04 Shipments & exceptions | **Milestones Worker** | Writes carrier notices onto the booking as milestones and ETAs, and answers where-is-my-box | `LIVE` |
 | | **Exception Worker** | Catches the rolled box and the mismatched document, and escalates what the desk cannot absorb — a breached booking goes to the Routing Worker | `LIVE` |
-| | **Assistant** | Answers questions about what is on the board | `SCRIPTED` |
+| | **Assistant** | Takes your question, hands it to the Worker who owns it, and says so when nobody does | `LIVE` |
 | 05 Billing & customs | **Invoice Worker** | Reconciles the carrier invoice against what was agreed, and drafts the dispute | `LIVE` |
 | | **Customs Worker** | Prepares the entry for the discharge country, and escalates what needs a person | `LIVE` |
 
@@ -134,6 +134,10 @@ API already allows).
 | `/app` | Redirects to the dashboard (`DASHBOARD_URL`, normally https://app.sqrlane.com), where the button lives |
 | `/video/<clip>` | The hero reel's clips, same-origin. 404 is fine — the hero renders without them |
 | `/api/health` | What a running instance can actually see. First stop when a deploy misbehaves |
+| `/api/ask` | The Ask box: a question, answered by the Worker who owns it |
+| `/api/tms/connect` | Connect your TMS: reads an export or an endpoint and shows the mapping |
+| `/api/tms/sample.csv` | A sample TMS export to try the connector with |
+| `/mcp` | The desk as an MCP server - add it as a connector in Claude |
 | `/api/gauges` | Live Rhine water levels from PEGELONLINE. No page shows them since `/how-it-works` was removed; the endpoint and its tests stay |
 | `POST /run` | One cycle: refresh risk, decide, draft, hand the consequences to the desk |
 | `GET /api/workflow` | The desk works the inbox once: triage, the work, the playbook checks, the queue |
@@ -227,6 +231,40 @@ undone by the model disagreeing on a later run. Lessons live in one JSON file (g
 
 ---
 
+## Ask SQRlane
+
+Type a question into the dashboard's Ask box - *Where is SHP-002? Why was SHP-001
+rerouted? What is waiting for my approval?* The Assistant hands it to the Worker who owns
+it, that Worker checks with the others it needs (you see the whole exchange, numbered),
+and answers from the board you are looking at. If no Worker owns the question, it says so
+and suggests what to do instead - it never makes an answer up. Asking changes nothing.
+
+The same desk is an **MCP server** at `https://www.sqrlane.com/mcp`: add it as a custom
+connector in Claude and ask it from there. Read-only tools: `ask_sqrlane`,
+`list_bookings`, `list_scenarios`.
+
+---
+
+## Connect your own TMS
+
+The board runs on a demo book by default. To run it on yours, open **TMS link** in the
+dashboard and either:
+
+- **upload an export** - a CSV or JSON of your in-transit bookings, straight out of your
+  TMS's saved search. Columns are matched by the names TMS exports use (Shipment No, POL,
+  POD, ETA, RDD, Carrier, Consignee ...), and the page shows exactly what was mapped; or
+- **point it at an endpoint** - an HTTPS address that returns your bookings as JSON, with
+  your token. It is read live on every run.
+
+Bookings on a lane the agents do not cover are listed with the reason and left alone.
+Every change the agents want to make is still queued for approval; add a write-back URL
+and each change you approve is sent there, one at a time - otherwise approved changes are
+exported for you to import. Nothing is stored on the server.
+
+No TMS to hand? **Try the sample export** (`/api/tms/sample.csv`).
+
+---
+
 ## The human-approval gate
 
 Drafts land in **Awaiting approval**, and so does every change queued into the TMS. A person
@@ -234,7 +272,8 @@ clicks **Approve** and it moves to **Approved — ready to send** (or **ready to
 
 That is the whole interaction, and it is deliberately the whole interaction. Approval is
 a state change: there is no SMTP, no email library and no transport of any kind anywhere
-in `src/`, no TMS client and no endpoint, and tests assert it stays that way. Say this out loud in the demo — human
+in `src/`, and tests assert it stays that way. The one exception is a TMS you connected
+yourself with a write-back URL: approving one of its changes sends that one change there. Say this out loud in the demo — human
 oversight is the responsible design, not a missing feature.
 
 ---
@@ -349,9 +388,9 @@ The demo runs itself; these are the things only a person can check.
 ## What this is not
 
 No real route optimisation (routes are pre-authored candidates the agent *chooses among*
-and justifies). No sending. **No live TMS connection** — working through the TMS is the
-design and both directions are modelled, but the far end is absent: no vendor, no
-credential, no endpoint, and nothing is ever written. **No mailbox connected** — the desk
+and justifies). No sending. **No native TMS integration** — the demo connector is the default, and
+your own TMS connects through an export or an HTTPS endpoint, not a vendor client; nothing
+is written without your approval of that one change. **No mailbox connected** — the desk
 works a synthetic inbox. **No retraining** — learning is lessons you can read and delete. No scheduler. No database. No paid
 data. The "AI Worker" framing on the header is cosmetic.
 

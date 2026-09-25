@@ -23,25 +23,80 @@ claim: the Workers do not do their work beside the TMS, they do it *in* it. A
 booking left on plan produces no write-back at all, which is a real answer
 rather than an omission.
 
-In this prototype the connector is a **demo** one and says so everywhere it is
-surfaced. The read direction is genuinely the only door to the book - change
-this file and the whole board changes - but the records behind it are the
-synthetic pool. The write direction stops at a described change: there is no
-client, no credential and no endpoint anywhere in this file, and a write-back is
-a dict that stays a dict.
+By default the connector is a **demo** one and says so everywhere it is
+surfaced: the records behind it are the synthetic pool, and a write-back is a
+dict that stays a dict. A forwarder can put their own book behind the same door
+(2026-09-25, on the owner's instruction): `using()` makes a connection from
+src/connect.py - an uploaded TMS export, or a live HTTPS endpoint - the book for
+one request, and every component follows, because they all read through
+`read_bookings()`. Nothing about the gate changes: a write-back to a real TMS is
+still queued, and leaves only when a person approves that one operation.
 
 That is the same discipline the Comms Agent keeps for email, for the same
 reason. Everything this system produces that leaves the building - an email, a
 booking amendment, a quote, a TMS write - waits for a person.
 """
 
+import contextlib
+import contextvars
+import copy
 import json
 from datetime import date, datetime, timedelta, timezone
 
-from src import config
+from src import config, connect
 
 CONNECTOR_NAME = "TMS (demo connector)"
 CONNECTOR_STATUS = "connected (demo)"
+
+# The connection this request is working on, or None for the demo book. A
+# context variable rather than a global, so two people using the dashboard at
+# once never see each other's book.
+_ACTIVE: contextvars.ContextVar = contextvars.ContextVar("tms_connection", default=None)
+
+
+@contextlib.contextmanager
+def using(spec: dict | None):
+    """Work on the TMS the dashboard connected, for the length of one request.
+
+    An API connection is fetched live, once, here - not once per component - so
+    every Worker in the run judges the same read of the book.
+    """
+    token = _ACTIVE.set(connect.resolve(spec))
+    try:
+        yield _ACTIVE.get()
+    finally:
+        _ACTIVE.reset(token)
+
+
+def active() -> dict | None:
+    """The connected TMS for this request, or None when the demo book is in use."""
+    return _ACTIVE.get()
+
+
+def connector_name() -> str:
+    conn = _ACTIVE.get()
+    return conn["name"] if conn else CONNECTOR_NAME
+
+
+def connector_status() -> str:
+    conn = _ACTIVE.get()
+    if not conn:
+        return CONNECTOR_STATUS
+    return "connected (live API)" if conn["kind"] == "api" else "connected (export)"
+
+
+def honesty() -> str:
+    conn = _ACTIVE.get()
+    if not conn:
+        return HONESTY
+    written = (f"an approved change is sent to {connect.host(conn['writeback_url'])}"
+               if conn.get("writeback_url") else
+               "approved changes are exported for you to import - nothing is written to it "
+               "from here")
+    read = ("read live from its endpoint on every run" if conn["kind"] == "api"
+            else "read from the export you uploaded")
+    return (f"Your TMS: {conn.get('source')}, {read}. Every write-back is queued, and "
+            f"{written}.")
 
 # Where this sits, in one line. The dashboard, the run payload and the roster all
 # render this rather than each writing their own version of it.
@@ -160,6 +215,17 @@ def read_bookings() -> list[dict]:
     record is stamped with where it came from, so a booking on screen can say
     which system it belongs to.
     """
+    conn = _ACTIVE.get()
+    if conn:
+        # A connected TMS: its records, as connect.py mapped them. A copy, so a
+        # component that annotates a booking cannot change the next one's read.
+        bookings = copy.deepcopy(conn["bookings"])
+        for booking in bookings:
+            booking["source_system"] = conn["name"]
+            booking["record_status"] = "synced"
+            booking["synced_at"] = conn.get("read_at")
+        return bookings
+
     raw = _load_json(config.SHIPMENTS_FILE)
     bookings = raw["shipments"]
     shift = _weeks_since_authored(raw.get("_authored_on", "")) * 7
@@ -316,14 +382,20 @@ def connection(board: list[dict]) -> dict:
         by_agent[op["agent"]] = by_agent.get(op["agent"], 0) + 1
     now = datetime.now(timezone.utc).replace(microsecond=0)
 
+    conn = _ACTIVE.get()
     return {
-        "connector": CONNECTOR_NAME,
-        "status": CONNECTOR_STATUS,
+        "connector": connector_name(),
+        "status": connector_status(),
+        "kind": conn["kind"] if conn else "demo",
+        "writeback_target": (connect.host(conn["writeback_url"])
+                             if conn and conn.get("writeback_url") else None),
         "role": "System of record",
         "positioning": POSITIONING,
         # A demo connector has no real sync history, so this is stated relative to
-        # the run rather than invented as a timestamp from nowhere.
-        "last_sync": (now - timedelta(minutes=2)).isoformat(),
+        # the run rather than invented as a timestamp from nowhere. A real one
+        # reports when it was actually read.
+        "last_sync": (conn.get("read_at") if conn and conn.get("read_at")
+                      else (now - timedelta(minutes=2)).isoformat()),
         "records_synced": len(board),
         "bookings_read": len(board),
         "bookings_affected": len({op["booking_ref"] for op in operations}),
@@ -336,5 +408,5 @@ def connection(board: list[dict]) -> dict:
         "writebacks": operations,
         "queued": len(operations),
         "queued_by_agent": by_agent,
-        "honesty": HONESTY,
+        "honesty": honesty(),
     }

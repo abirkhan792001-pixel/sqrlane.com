@@ -577,7 +577,7 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
     <section id="models">
       <h2 class="h32">The model layer</h2>
       <p class="lede copy14">
-        Five jobs with genuinely different requirements &mdash; and twelve of the sixteen
+        Six jobs with genuinely different requirements &mdash; and eleven of the sixteen
         agents need no model at all. Sizing each job separately, and not calling a model
         where code gives the same answer every time, is where nearly all the cost and
         latency savings live.
@@ -626,6 +626,13 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
               <td class="n">$0.15 / $0.20</td>
               <td>A labelling job with a fixed answer set, like screening. Rules answer it first anyway, and a person&rsquo;s corrections are applied after the model, so a small model&rsquo;s mistake is caught rather than trusted.</td>
             </tr>
+            <tr>
+              <td><b>Routing a question</b></td>
+              <td>One short call per question a person asks: which of the sixteen agents owns it, or none. Strict JSON.</td>
+              <td class="k">Qwen3.5-9B<span class="sub">or Gemma-3-27B</span></td>
+              <td class="n">$0.15 / $0.20</td>
+              <td>The model only picks who answers. The answer itself is assembled by code from the run &mdash; dates, prices and decisions never pass through it &mdash; and cue-phrase rules route the question when no model is configured.</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -634,7 +641,7 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
       <p class="copy16">
         The agents are named for the job a forwarding desk already has, in two layers: the
         risk layer, which runs when a lane moves, and the everyday desk, which runs on every
-        inbound mail. Four of the sixteen call a model. The rest are code &mdash; prices,
+        inbound mail. Five of the sixteen call a model. The rest are code &mdash; prices,
         weights, dates, rule checks and field values are computed, never generated &mdash;
         and code is both the cheapest and the most repeatable model there is.
       </p>
@@ -660,7 +667,7 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
             <tr><td><b>Exception</b></td><td>Opens the exception on a rolled box or a mismatched document; escalates what the desk cannot absorb.</td><td class="k">None</td></tr>
             <tr><td><b>Invoice</b></td><td>Reconciles the carrier invoice against the agreed rate; drafts the dispute.</td><td class="k">None</td></tr>
             <tr><td><b>Customs</b></td><td>Prepares the entry for the discharge country; escalates a transit, never files.</td><td class="k">None</td></tr>
-            <tr><td><b>Assistant</b></td><td>Answers questions about what is on the board.</td><td class="k">None today<span class="sub">scripted</span></td></tr>
+            <tr><td><b>Assistant</b></td><td>Takes a person&rsquo;s question, hands it to the agent who owns it, and says so when none does.</td><td class="k">Qwen3.5-9B<span class="sub">routing only &mdash; the answer is built from the run; rules as fallback</span></td></tr>
           </tbody>
         </table>
       </div>
