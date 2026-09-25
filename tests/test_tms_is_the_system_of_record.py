@@ -175,5 +175,112 @@ class EveryActionLandsOnTheRecord(unittest.TestCase):
                          "Nothing has been decided yet, so nothing can be queued.")
 
 
+class TheProductPageIsOneRealRun(unittest.TestCase):
+    """/product follows SHP-001 through the Hamburg strike and shows every field
+    each Worker writes on the record, the handoffs to the desk and the roster.
+    It is drawn from #product-run, a copy of one offline run - so it has to stay
+    one. Rebuild each fact from a fresh run here and compare: a page that shows
+    a change the connector would not queue is drawing a diagram of something the
+    code does not do. (It replaced the IN-108 transcript check on 2026-09-25,
+    when that exchange moved to /use-cases, where it is held the same way.)"""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        import re
+        from src import orchestrator, tms
+        page = (Path(__file__).resolve().parent.parent / "static" / "product.html").read_text()
+        block = re.search(r'<script type="application/json" id="product-run">(.*?)</script>',
+                          page, re.S)
+        assert block, "the run data is gone from /product"
+        cls.page = json.loads(block.group(1))
+        cls.cycle = orchestrator.run_cycle(live=False, inject=True, use_llm=False,
+                                         scenario=cls.page["scenario"])
+        cls.card = next(c for c in cls.cycle["shipments"] if c["id"] == cls.page["booking"]["id"])
+        cls.ops = tms.writebacks_for(cls.card)
+
+    def _writes(self, agent):
+        from datetime import date
+        out = []
+        for op in self.ops:
+            if op["agent"] != agent:
+                continue
+            for c in op["changes"]:
+                if c["field"] == "eta":
+                    out.append({"field": "eta", "shift_days": (date.fromisoformat(c["to"]) -
+                                                              date.fromisoformat(c["from"])).days})
+                else:
+                    out.append({k: c[k] for k in ("field", "from", "to") if c.get(k) is not None})
+        return out
+
+    def test_the_booking_is_the_one_the_connector_reads(self):
+        for key, value in self.page["booking"].items():
+            self.assertEqual(value, self.card[key], key)
+
+    def test_every_field_on_the_record_is_what_that_worker_queues(self):
+        steps = {s["who"]: s for s in self.page["steps"]}
+        for agent in ("Risk Worker", "Routing Worker", "Comms Worker"):
+            self.assertEqual(steps[agent]["writes"], self._writes(agent), agent)
+        self.assertEqual(self.page["gate"]["operations"], len(self.ops))
+        self.assertEqual(self.page["gate"]["changes"], sum(len(op["changes"]) for op in self.ops))
+
+    def test_every_agent_line_and_reason_is_the_runs_own(self):
+        d = self.card["decision"]
+        ev = next(e for e in self.cycle["risk"]["events"] if e["event_id"] in d["triggering_events"])
+        for key in ("event_id", "title", "type", "severity", "chokepoint"):
+            self.assertEqual(self.page["event"][key], ev[key], key)
+        self.assertTrue(ev["source"].startswith(self.page["event"]["outlet"]))
+        risk, routing, comms = self.page["steps"]
+        exc = next(op for op in self.ops if op["agent"] == "Risk Worker")
+        self.assertEqual(risk["says"], f"Flags {ev['event_id']} on {self.card['id']}.")
+        self.assertEqual(risk["why"], exc["reason"].split(" Revised ETA")[0] +
+                         f" Severity {ev['severity']}.")
+        self.assertEqual(routing["says"], d["headline"])
+        self.assertEqual(routing["why"], d["reasoning"])
+        self.assertEqual(self.page["join"]["decision"], d["headline"])
+        logs = [op for op in self.ops if op["agent"] == "Comms Worker"]
+        self.assertEqual([x["to"] for x in comms["drafts"]], [op["changes"][0]["to"] for op in logs])
+        for x, op in zip(comms["drafts"], logs):
+            if "subject" in x:
+                self.assertEqual(x["subject"], op["reason"])
+        check = next(c for c in self.cycle["workflow_handoffs"]["checks"]
+                     if c["booking"] == self.card["id"] and c["rule"] == "notify_delay_over_days")
+        self.assertEqual(comms["why"], f"Playbook check on the customer mail: {check['note']} "
+                                       f"({check['why']}).")
+        self.assertEqual(self.page["join"]["check"], {"note": check["note"], "why": check["why"]})
+
+    def test_the_handoffs_are_what_the_routing_worker_sent_the_desk(self):
+        sent = {(m["to"], m["text"], m.get("why")) for m in self.cycle["workflow_handoffs"]["messages"]
+                if m["item"] == self.card["id"]}
+        self.assertGreaterEqual(len(self.page["join"]["handoffs"]), 2)
+        for h in self.page["join"]["handoffs"]:
+            self.assertIn((h["to"], h["text"], h["why"]), sent)
+
+    def test_the_roster_is_the_code_s_roster(self):
+        from src import orchestrator, roster
+        risk = [{"name": w["name"], "mode": "live", "role": w["role"]} for w in orchestrator.WORKERS]
+        risk += [{"name": w["name"], "mode": w["mode"], "role": w["role"]}
+                 for w in roster.ROSTER if w["layer"] in ("risk", "record")]
+        self.assertEqual(self.page["roster"]["risk"], risk)
+        desk = self.page["roster"]["desk"]
+        self.assertEqual([(g["num"], g["title"]) for g in desk],
+                         [(g["num"], g["title"]) for g in roster.GROUPS])
+        on_page = [w for g in desk for w in g["workers"]]
+        in_code = {w["name"]: w for w in roster.ROSTER if w["layer"] == "workflow"}
+        self.assertEqual(sorted(w["name"] for w in on_page), sorted(in_code))
+        for w in on_page:
+            self.assertEqual((w["mode"], w["role"]), (in_code[w["name"]]["mode"],
+                                                      in_code[w["name"]]["role"]), w["name"])
+        self.assertEqual(len(self.page["roster"]["risk"]) + len(on_page), 16)
+
+    def test_no_date_is_printed_on_the_page(self):
+        """The bookings age forward weekly, so a date copied onto the page would be
+        wrong within a week. The ETA is carried as a shift in days instead."""
+        import json
+        import re
+        text = json.dumps(self.page)
+        self.assertIsNone(re.search(r"\d{4}-\d{2}-\d{2}", text), "a date leaked onto /product")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

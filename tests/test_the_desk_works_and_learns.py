@@ -160,27 +160,6 @@ class TheWorkersTalk(_TempLessons):
         self.assertEqual(len(notices), 1)
 
 
-    def test_the_product_page_transcript_is_what_the_workers_really_say(self):
-        """/product shows the conversation behind IN-108. It is copied from a run,
-        so it has to stay one: every line on the page must be on the bus, in the
-        same order, or the page is drawing a diagram of something the code does
-        not do."""
-        import html
-        import re
-        page = (ROOT / "static" / "product.html").read_text()
-        block = re.search(r'data-bus-item="(IN-\d+)">(.*?)</ol>', page, re.S)
-        self.assertIsNotNone(block, "the transcript block is gone from /product")
-        item, body = block.group(1), block.group(2)
-        said = [html.unescape(t).strip()
-                for t in re.findall(r'<span class="say">(.*?)</span>', body, re.S)]
-        self.assertGreaterEqual(len(said), 5)
-        spoken = [m["text"] for m in self.bus if m["item"] == item]
-        at = 0
-        for line in said:
-            self.assertIn(line, spoken[at:], f"not said on the bus (in order): {line}")
-            at = spoken.index(line, at) + 1
-
-
     def _scenes(self):
         import json
         import re

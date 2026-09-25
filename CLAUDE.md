@@ -137,9 +137,35 @@ answer another page's question**:
 | Page | The one thing it lands | Owns, exclusively |
 |---|---|---|
 | `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the integration tree, the FAQ, the book-a-demo block |
-| `/product` | Sixteen Workers on one book, every action gated | the roster in two parts (the everyday desk in five groups, then the risk half) and its LIVE/SCRIPTED/DEMO tags, how the agents talk and learn (`#talk`), the write-back field map, the approval gate, the systems the connector points at |
+| `/product` | Sixteen agents, one book, nothing lands without you | one booking walked field by field onto its TMS record (`#record`), the risk half handing its decision to the desk (`#talk`), the sixteen Workers in two layers with their LIVE/SCRIPTED/DEMO tags (`#roster`), the systems the connector points at (`#systems`) |
 | `/use-cases` | Six everyday jobs, one desk | one card grid: the six inbox jobs as cropped product mocks (`#everyday`) |
 | `/about` | What is real here and what is not | the live/synthetic/demo ledger, the honest quote, the modelled desk, the non-goals |
+
+**`/product` was rebuilt from scratch on 2026-09-25** (on the owner's instruction, the
+"One book" direction: a sticky record walk-through joined to the two-layer handoff).
+Its one question is *where does the agents' work land* - `/use-cases` owns *what the desk
+does*, so the five desk groups and the IN-108 exchange came off `/product`. Three parts:
+
+- **01 One booking** (`#record`) - SHP-001's TMS record sits sticky on the left; four
+  steps scroll past on the right (Risk, Routing, Comms, then *You* at the gate), and each
+  field a Worker writes turns to struck-through old value, new value and `Queued - not
+  written` as its step crosses the middle of the screen. Below 981px, or with reduced
+  motion, the record is simply finished, after the steps.
+- **02 Two layers, one book** (`#talk`, the anchor the home page links to) - the Routing
+  Worker's decision, handed to the Booking and Customs Workers, and the Playbook Worker's
+  check on the customer mail.
+- **03 The roster** (`#roster`) - all sixteen, risk layer then the desk in its five groups.
+
+**Every fact on it is one run.** `#product-run` is a copy of
+`orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")`, and
+`TheProductPageIsOneRealRun` in `tests/test_tms_is_the_system_of_record.py` rebuilds each
+field change, agent line, hover reason, handoff and roster entry from a fresh run and
+compares (checked by changing one routing code). Two consequences: the page is the **rules
+engine's** wording, which it says in its own note - on the live demo the model writes the
+same fields in its own words; and **no date is printed**, because the bookings age forward
+weekly - the ETA is "+2 days on the booked ETA", and a test fails if a date leaks in. The
+risk-to-desk handoffs (`workflow.from_risk`) now carry a `why` like every other message.
+The systems strip keeps its 2026-09-06 disclaimer waiver unchanged.
 
 **`/use-cases` is one card grid of the everyday desk** (2026-09-24, on the owner's
 instruction, rebuilt twice the same day: first as a single agent window after an
@@ -764,8 +790,9 @@ handoff, query, reply, check, revise, revised, verdict and escalation is a numbe
 on one bus (`Desk.post` / `Desk.ask`), and the dashboard shows it as the conversation
 behind each mail. The strongest single exchange is IN-108: the customer asks for a carrier
 their own playbook forbids; the Playbook Worker sends the booking back; the Booking Worker
-asks the Rate Worker for an approved one and rebooks. `/product#talk` quotes that exchange,
-and `tests/test_the_desk_works_and_learns.py` fails if the page ever says something the bus
+asks the Rate Worker for an approved one and rebooks. `/use-cases` card 02 shows that
+exchange (it moved off `/product` on 2026-09-25), and
+`tests/test_the_desk_works_and_learns.py` fails if the page ever says something the bus
 did not.
 
 **The Playbook Worker never edits another Worker's output.** It says what is wrong; the
