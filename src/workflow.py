@@ -1484,10 +1484,12 @@ def from_risk(cards) -> dict:
     playbooks = load_playbooks()
     messages, checks = [], []
 
-    def post(frm, to, kind, sid, text):
-        messages.append({"seq": len(messages) + 1, "from": NAMES.get(frm, frm), "from_id": frm,
-                         "to": NAMES.get(to, to), "to_id": to, "kind": kind,
-                         "item": sid, "text": text})
+    def post(frm, to, kind, sid, text, why=None):
+        msg = {"seq": len(messages) + 1, "from": NAMES.get(frm, frm), "from_id": frm,
+               "to": NAMES.get(to, to), "to_id": to, "kind": kind, "item": sid, "text": text}
+        if why:
+            msg["why"] = why
+        messages.append(msg)
 
     for card in cards:
         decision = card.get("decision") or {}
@@ -1499,18 +1501,25 @@ def from_risk(cards) -> dict:
             old, new = card.get("discharge_port"), decision.get("recommended_discharge_port")
             post("routing", "booking", "handoff", sid,
                  f"Amend {sid}: discharge {old} to {new}, routing "
-                 f"{card.get('route_id')} to {decision.get('recommended_route')}.")
+                 f"{card.get('route_id')} to {decision.get('recommended_route')}.",
+                 why="A reroute only counts once the carrier booking says so - until then "
+                     "the box is still booked into the old port.")
             before, after = roster.entry_for(old), roster.entry_for(new)
             if before and after and before.get("country") != after.get("country"):
                 post("routing", "customs", "handoff", sid,
                      f"Entry moves from {before['country']} to {after['country']}: a "
-                     f"different office and EORI apply, and the B/L has to be reissued.")
+                     f"different office and EORI apply, and the B/L has to be reissued.",
+                     why=f"Discharge at {new} instead of {old} means the import clears in "
+                         f"{after['country']}, not {before['country']}.")
         else:
             post("routing", "booking", "handoff", sid,
-                 f"Hold {sid} at the load port - no equipment release until the hold lifts.")
+                 f"Hold {sid} at the load port - no equipment release until the hold lifts.",
+                 why="A held box must not be released to the carrier until the hold lifts.")
         if decision.get("revised_eta"):
             post("routing", "milestones", "handoff", sid,
-                 f"ETA on {sid} moves to {decision['revised_eta']}.")
+                 f"ETA on {sid} moves to {decision['revised_eta']}.",
+                 why="The ETA lives on the record, so the next person to open the booking "
+                     "sees the new date without asking.")
 
         rules = playbooks.get(card.get("customer"), [])
         for draft in card.get("drafts") or []:
@@ -1523,7 +1532,8 @@ def from_risk(cards) -> dict:
                         result, note = "pass", f"{rule['value']} copied"
                     else:
                         post("playbook", "comms", "revise", sid,
-                             f"Customer mail on {sid}: copy {rule['value']}.")
+                             f"Customer mail on {sid}: copy {rule['value']}.",
+                             why=f"Customer rule: {(rule.get('why') or rule['type']).rstrip('.')}.")
                         cc.append(rule["value"])
                         result, note = "fixed", f"added {rule['value']} in copy"
                 elif rule["type"] == "notify_delay_over_days":

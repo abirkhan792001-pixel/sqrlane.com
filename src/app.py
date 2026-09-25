@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, RedirectResponse,
                                Response)
 from pydantic import BaseModel
@@ -57,6 +58,12 @@ VIDEO_DIR = STATIC_DIR / "video"         # the hero reel; absent in a fresh chec
 
 app = FastAPI(title="SQRlane",
               description="Demo prototype. Drafts emails; sends nothing.")
+
+# Only the dashboard's own origins may call the API from a browser - see
+# config.DASHBOARD_ORIGINS. The pages served from here are same-origin and
+# unaffected.
+app.add_middleware(CORSMiddleware, allow_origins=config.DASHBOARD_ORIGINS,
+                   allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
 
 
 class CorrectRequest(BaseModel):
@@ -169,8 +176,12 @@ def pitch():
 
 @app.get("/app")
 def dashboard():
-    """The demo itself. This is the page with the button."""
-    return _page(INDEX, "Dashboard")
+    """The demo moved to its own app at app.sqrlane.com (2026-09-25, on the owner's
+    instruction). A permanent redirect, so a link someone already shared still lands;
+    the browser carries any #fragment across. static/index.html is kept, unserved,
+    until the new dashboard has run in front of an audience - putting it back is
+    this one function."""
+    return RedirectResponse(config.DASHBOARD_URL, status_code=301)
 
 
 # A clip is identified by what it contains, not by when it was asked for. The

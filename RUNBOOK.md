@@ -71,7 +71,9 @@ If the folder already exists from before, refresh it first with `git pull`.
 You should see `Uvicorn running on http://127.0.0.1:8000`. Leave this window
 running — it *is* the server. Then open in a browser:
 
-- **http://127.0.0.1:8000/app** — the dashboard (this manual lives here)
+- **https://app.sqrlane.com** — the dashboard (this manual describes it); `/app` on this
+  server now redirects there. To point the dashboard at this local server, run it from the
+  `sqrlane-dashboard` repo with `VITE_API_BASE=http://127.0.0.1:8000 npm run dev`
 - `/` is the landing page, `/whitepaper` the technical paper
 - `/api/health` — the first thing to check if anything misbehaves: it says
   what the running instance can see and whether a provider is configured

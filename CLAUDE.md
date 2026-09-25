@@ -137,9 +137,35 @@ answer another page's question**:
 | Page | The one thing it lands | Owns, exclusively |
 |---|---|---|
 | `/` | There is a gap, and this closes it | the hero, the sources ticker, the manual-drain band and the cost-of-acting-late stack, the apps a decision is re-typed into, the integration tree, the FAQ, the book-a-demo block |
-| `/product` | Sixteen Workers on one book, every action gated | the roster in two parts (the everyday desk in five groups, then the risk half) and its LIVE/SCRIPTED/DEMO tags, how the agents talk and learn (`#talk`), the write-back field map, the approval gate, the systems the connector points at |
+| `/product` | Sixteen agents, one book, nothing lands without you | one booking walked field by field onto its TMS record (`#record`), the risk half handing its decision to the desk (`#talk`), the sixteen Workers in two layers with their LIVE/SCRIPTED/DEMO tags (`#roster`), the systems the connector points at (`#systems`) |
 | `/use-cases` | Six everyday jobs, one desk | one card grid: the six inbox jobs as cropped product mocks (`#everyday`) |
 | `/about` | What is real here and what is not | the live/synthetic/demo ledger, the honest quote, the modelled desk, the non-goals |
+
+**`/product` was rebuilt from scratch on 2026-09-25** (on the owner's instruction, the
+"One book" direction: a sticky record walk-through joined to the two-layer handoff).
+Its one question is *where does the agents' work land* - `/use-cases` owns *what the desk
+does*, so the five desk groups and the IN-108 exchange came off `/product`. Three parts:
+
+- **01 One booking** (`#record`) - SHP-001's TMS record sits sticky on the left; four
+  steps scroll past on the right (Risk, Routing, Comms, then *You* at the gate), and each
+  field a Worker writes turns to struck-through old value, new value and `Queued - not
+  written` as its step crosses the middle of the screen. Below 981px, or with reduced
+  motion, the record is simply finished, after the steps.
+- **02 Two layers, one book** (`#talk`, the anchor the home page links to) - the Routing
+  Worker's decision, handed to the Booking and Customs Workers, and the Playbook Worker's
+  check on the customer mail.
+- **03 The roster** (`#roster`) - all sixteen, risk layer then the desk in its five groups.
+
+**Every fact on it is one run.** `#product-run` is a copy of
+`orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")`, and
+`TheProductPageIsOneRealRun` in `tests/test_tms_is_the_system_of_record.py` rebuilds each
+field change, agent line, hover reason, handoff and roster entry from a fresh run and
+compares (checked by changing one routing code). Two consequences: the page is the **rules
+engine's** wording, which it says in its own note - on the live demo the model writes the
+same fields in its own words; and **no date is printed**, because the bookings age forward
+weekly - the ETA is "+2 days on the booked ETA", and a test fails if a date leaks in. The
+risk-to-desk handoffs (`workflow.from_risk`) now carry a `why` like every other message.
+The systems strip keeps its 2026-09-06 disclaimer waiver unchanged.
 
 **`/use-cases` is one card grid of the everyday desk** (2026-09-24, on the owner's
 instruction, rebuilt twice the same day: first as a single agent window after an
@@ -633,6 +659,24 @@ One booking ends the week still held, because under a persistent corridor closur
 better routing exists for it. Saying so is a real answer, not a gap, and the day's copy
 says it rather than claiming the board is clear.
 
+### The new dashboard at app.sqrlane.com (in progress, 2026-09-25)
+
+On the owner's instruction the dashboard is being rebuilt as its own app, after Peec AI's
+dashboard: built in **Lovable** (project `SQRlane Operations`, repo
+`abirkhan792001-pixel/sqrlane-dashboard` - TanStack Start, React, Tailwind, shadcn), deployed as
+a separate Vercel project on **app.sqrlane.com**. It has no backend of its own: it calls this
+API from the browser (`VITE_API_BASE=https://sqrlane.com`), and falls back to a recorded run
+with a "Showing a recorded run" badge when it cannot. That is why `src/app.py` carries a CORS
+allow-list, `config.DASHBOARD_ORIGINS` - app.sqrlane.com, the Lovable preview and its dev
+server, never `*` (`TheApiIsOpenOnlyToTheDashboard` holds it). The Lovable project's
+knowledge carries the same honesty rules as this file. **The cut-over is on branch
+`claude/dashboard-cutover`**: `/app` answers a 301 to `config.DASHBOARD_URL`
+(https://app.sqrlane.com), all fourteen demo links point there directly (the Workflow link to
+`/desk`), and `TheDemoMovedToItsOwnApp` fails if an old link or the redirect comes back.
+`static/index.html` is kept, unserved, until the new dashboard has run in front of an
+audience - restoring it is the one `dashboard()` function in `src/app.py`. **Merge that branch
+only once app.sqrlane.com is live and a real run works end to end.**
+
 ### The dashboard follows limns-admin
 
 The shell is modelled on [`Franvy/limns-admin`](https://github.com/Franvy/limns-admin),
@@ -764,8 +808,9 @@ handoff, query, reply, check, revise, revised, verdict and escalation is a numbe
 on one bus (`Desk.post` / `Desk.ask`), and the dashboard shows it as the conversation
 behind each mail. The strongest single exchange is IN-108: the customer asks for a carrier
 their own playbook forbids; the Playbook Worker sends the booking back; the Booking Worker
-asks the Rate Worker for an approved one and rebooks. `/product#talk` quotes that exchange,
-and `tests/test_the_desk_works_and_learns.py` fails if the page ever says something the bus
+asks the Rate Worker for an approved one and rebooks. `/use-cases` card 02 shows that
+exchange (it moved off `/product` on 2026-09-25), and
+`tests/test_the_desk_works_and_learns.py` fails if the page ever says something the bus
 did not.
 
 **The Playbook Worker never edits another Worker's output.** It says what is wrong; the
@@ -1678,6 +1723,13 @@ four claims in it are load-bearing and tested for by string:
 - the per-cycle cost figure **is an assumption, not a measurement**;
 - **any hard-coded model name is a scheduled outage**;
 - there are **no accuracy figures** anywhere, because none have been measured.
+
+**The model layer covers all sixteen agents** (2026-09-25): a fifth job, *classifying the
+inbox* (one batched call per inbox run, screening class), and a table of every agent with
+the model it uses - four call one (Risk, Routing, Comms, Inbox), twelve are code or
+scripted. The inbox call's ~950 input tokens are measured from the real prompt; its ~350
+output tokens are an estimate, and the page says which is which. Stage 04, *The desk*, is
+tagged Live now that `workflow.from_risk` hands the decision to the desk.
 
 Model guidance names **specific models from Lyceum's own catalogue with their per-token
 prices**, taken from their inference deck rather than from secondary sources, and dated

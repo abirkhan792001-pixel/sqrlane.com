@@ -367,6 +367,21 @@ GAUGE_TIMEOUT_SECONDS = _env_int("GAUGE_TIMEOUT_SECONDS", 5 if SERVERLESS else 6
 GAUGE_BUDGET_SECONDS = _env_int("GAUGE_BUDGET_SECONDS", 8 if SERVERLESS else 10)
 GAUGE_CACHE_SECONDS = _env_int("GAUGE_CACHE_SECONDS", 300)
 
+# The dashboard at app.sqrlane.com is a separate app (built in Lovable, repo
+# sqrlane-dashboard) that reads this API from the browser. Browsers only let
+# it do that for origins named here - an allow-list, never "*", so no other
+# site can drive the run button. The Lovable preview is listed so the editor
+# can show live data too; localhost:8080 is its dev server.
+# Where the dashboard lives. /app redirects here, and every "Open the demo"
+# link on the site points here directly.
+DASHBOARD_URL = os.environ.get("DASHBOARD_URL", "https://app.sqrlane.com")
+
+DASHBOARD_ORIGINS = [
+    "https://app.sqrlane.com",
+    "https://id-preview--14d353a6-8ae8-4da0-afcd-e57a47841822.lovable.app",
+    "http://localhost:8080",
+] + [o.strip() for o in os.environ.get("EXTRA_DASHBOARD_ORIGINS", "").split(",") if o.strip()]
+
 # ===========================================================================
 # Sources 4-16 - the structured public APIs (read by src/signals.py)
 #
