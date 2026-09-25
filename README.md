@@ -236,8 +236,11 @@ undone by the model disagreeing on a later run. Lessons live in one JSON file (g
 Type a question into the dashboard's Ask box - *Where is SHP-002? Why was SHP-001
 rerouted? What is waiting for my approval?* The Assistant hands it to the Worker who owns
 it, that Worker checks with the others it needs (you see the whole exchange, numbered),
-and answers from the board you are looking at. If no Worker owns the question, it says so
-and suggests what to do instead - it never makes an answer up. Asking changes nothing.
+and answers from the board you are looking at. A small, fast model routes the question
+and rewords the answer so it reads naturally - but every number, date and reference is
+checked against the run, and if the rewording changed any of them you see the desk's own
+wording instead. If no Worker owns the question, it says so and suggests what to do
+instead - it never makes an answer up. Asking changes nothing.
 
 The same desk is an **MCP server** at `https://www.sqrlane.com/mcp`: add it as a custom
 connector in Claude and ask it from there. Read-only tools: `ask_sqrlane`,

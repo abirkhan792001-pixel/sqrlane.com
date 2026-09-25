@@ -9,12 +9,15 @@ exchanges is returned, so the answer can be audited and not just read.
 
 Three rules, the same ones the rest of the product keeps:
 
-  * **Answers come from the run, never from the model.** Each answer is
-    assembled from a fresh run of the board the person is looking at - the
-    bookings read through the TMS link, the decisions the Route Advisor made,
-    the drafts, the queued write-backs, the desk's inbox. A model, when one is
-    configured, only helps decide *who* owns the question; dates, prices and
-    decisions never go through it.
+  * **The facts come from the run, never from the model.** Each answer is
+    assembled by code from a fresh run of the board the person is looking at -
+    the bookings read through the TMS link, the decisions the Route Advisor
+    made, the drafts, the queued write-backs, the desk's inbox. A small model,
+    when one is configured, does two things only: decides *who* owns the
+    question, and rewords the finished answer so it reads like a colleague
+    wrote it. The rewording is checked: every number, date, reference, route
+    code and status in the code's answer must survive it, and nothing new may
+    appear. If either fails, the code's own wording is shown instead.
   * **A question nobody owns is said to be nobody's.** If no Worker can answer,
     the Assistant says so, says why, and suggests what can be done - who to ask,
     what to connect, how to rephrase. It never produces a plausible answer from
@@ -178,7 +181,7 @@ def _model_route(question) -> tuple[str | None, str] | None:
                         if w["id"] != "assistant")
     try:
         reply = llm.complete_json(question, system=ROUTER_SYSTEM.format(workers=workers),
-                                  max_tokens=120)
+                                  max_tokens=300, tier="small")
     except llm.LLMError:
         return None
     worker = (reply or {}).get("worker") if isinstance(reply, dict) else None
@@ -187,6 +190,67 @@ def _model_route(question) -> tuple[str | None, str] | None:
     if worker in NAMES and worker not in ("you", "assistant", "person"):
         return worker, str(reply.get("reason") or "")[:160]
     return None
+
+
+# ---------------------------------------------------------------------------
+# Wording - the small model rewrites, the guard decides whether it may
+# ---------------------------------------------------------------------------
+
+PHRASER_SYSTEM = """You reword an answer from a freight forwarder's operations desk so it
+reads like a capable colleague wrote it: plain, warm, direct.
+Rules - breaking any one means your answer is thrown away:
+- Keep every number, date, amount, booking or mail reference, container, route code and
+  status exactly as written. Do not round, convert or reformat them.
+- Add nothing: no new fact, number, advice, apology or promise.
+- Keep the meaning of every status word (held, rerouted, on plan, not sent, not written).
+- 2-5 short sentences; a short list only if there are several items. No greeting, no
+  sign-off, no markdown headings.
+Reply with the reworded answer only."""
+
+# A fact is anything a person could act on wrongly if it changed: a reference
+# (SHP-002, HLCU-2261188, IN-108, R-HAM-STD), an amount or a date, any number.
+_FACT = re.compile(r"\b[A-Z]{1,6}(?:-[A-Z0-9]+)+\b|\d[\d,.:/-]*\d|\d")
+# Status words whose presence carries the decision. Dropping one changes meaning.
+_KEEP = ("held", "rerouted", "on plan", "not sent", "not written", "none sent",
+         "not in the book", "no worker", "unreadable", "nothing is booked", "recorded")
+
+
+def _facts_of(text: str) -> set:
+    return {m.group(0).rstrip(".,:") for m in _FACT.finditer(text or "")}
+
+
+def check_wording(original: str, reworded: str) -> str | None:
+    """Why the reworded answer may not be shown, or None when it may."""
+    if not reworded or not reworded.strip():
+        return "empty rewording"
+    before, after = _facts_of(original), _facts_of(reworded)
+    if before - after:
+        return "dropped " + ", ".join(sorted(before - after)[:4])
+    if after - before:
+        return "added " + ", ".join(sorted(after - before)[:4])
+    low_before, low_after = original.lower(), reworded.lower()
+    lost = [w for w in _KEEP if w in low_before and w not in low_after]
+    if lost:
+        return "lost the status " + ", ".join(lost)
+    return None
+
+
+def _worded(question: str, answer: dict, use_llm: bool) -> dict:
+    """The answer, reworded by the small model when that is allowed and safe."""
+    base = dict(answer, plain_text=answer["text"], worded_by="code")
+    if not (use_llm and llm.is_configured()):
+        return base
+    try:
+        reworded = llm.complete(f"Question: {question or '(a file was uploaded)'}\n\n"
+                                f"Answer to reword:\n{answer['text']}",
+                                system=PHRASER_SYSTEM, temperature=0.3, max_tokens=500,
+                                tier="small").strip()
+    except llm.LLMError as exc:
+        return dict(base, wording_note=f"kept the desk's wording - {str(exc)[:80]}")
+    refused = check_wording(answer["text"], reworded)
+    if refused:
+        return dict(base, wording_note=f"kept the desk's wording - the rewording {refused}")
+    return dict(base, text=reworded, worded_by="model", wording_model=llm.active_small_model())
 
 
 # ---------------------------------------------------------------------------
@@ -693,6 +757,7 @@ def ask(question: str, *, scenario: str | None = None, use_llm: bool = True,
         # this please" is about the file, and the file's answer stands.
         if not question or not (_rules_route(question)[0] or _board_matches(
                 question, run["shipments"])):
+            answer = _worded(question, answer, use_llm)
             return dict(answer, question=question, conversation=conv.messages, routed_to=None,
                         routed_by="upload", route_reason="each file goes to the Worker it "
                         "belongs to", asked_at=datetime.now(timezone.utc).replace(
@@ -733,6 +798,7 @@ def ask(question: str, *, scenario: str | None = None, use_llm: bool = True,
                       links=uploaded["links"] + answer["links"],
                       suggestions=uploaded["suggestions"] + answer["suggestions"])
 
+    answer = _worded(question, answer, use_llm)
     return {
         "question": question,
         "asked_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
@@ -746,8 +812,10 @@ def ask(question: str, *, scenario: str | None = None, use_llm: bool = True,
             "scenario": (run.get("scenario") or {}).get("name"),
             "connector": run["tms"]["connector"],
             "bookings": len(run["shipments"]),
-            "note": ("Answered from a fresh rules-only run of this board. Pressing Run reads "
-                     "the live sources and lets the model decide."),
+            "note": ("Facts from a fresh rules-only run of this board"
+                     + (", worded by a small model and checked against them"
+                        if answer.get("worded_by") == "model" else "")
+                     + ". Pressing Run reads the live sources and lets the model decide."),
         },
         "examples": EXAMPLES,
     }

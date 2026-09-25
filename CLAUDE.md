@@ -719,6 +719,29 @@ The Assistant's roster tag moved from `SCRIPTED` to `LIVE` (roster, `/product`'s
 blob, `/about`, the README and the whitepaper's agent table, which now counts five
 model-calling agents and a sixth job, *routing a question*).
 
+**The answer is worded by a small model, and checked** (2026-09-25, on the owner's
+instruction: "make it sound more natural and use a smaller model"). `llm.py` has a
+`tier="small"` - its own preference list (`GROQ_SMALL_MODEL_PREFERENCES`, Llama 3.1 8B
+first; `HF_SMALL_MODEL_PREFERENCES`), discovered at runtime like the main model, falling
+back to the main model when the key offers none, pinnable with `LLM_SMALL_MODEL`. Every
+model call in `ask.py` is small-tier (a test parses for it): the routing call, and
+`_worded()`, which rewrites the code's answer. `check_wording()` refuses the rewrite if
+any number, date, reference or route code was changed, dropped or added, or a status
+word (held, rerouted, on plan, not sent, not written ...) vanished; then the desk's own
+wording is shown with a `wording_note`. The response carries `worded_by`, `plain_text`
+(the code's answer, always) and `wording_model`. The main model still makes the
+reroute/hold call and writes the drafts - the small tier is only for jobs it is wasted on.
+
+**The map is every booking, re-read through the TMS link** (`GET|POST /api/map`, on the
+owner's instruction). Each call reads the book through `tms.using(connection)` - live for
+an API connection - runs the selected scenario rules-only, and returns `geo.build`'s map.
+Every lane now carries a `position`: the share of the voyage elapsed between the
+booking's ETD and ETA, placed along its lane by length, and labelled **"estimated from ETD
+and ETA - not vessel tracking"**, because there is none (the AIS feeds are paid). The
+dashboard polls every `MAP_REFRESH_SECONDS` (60). `data/geo.json` gained six Asia load
+ports so a connected TMS's lanes can be drawn; places carry `on_board` so a map can label
+only what the board uses.
+
 **Files go to the Worker they belong to** (2026-09-25, on the owner's instruction: "a
 ChatGPT-like interface with the ability to upload files"). `POST /api/ask` takes
 `attachments: [{name, content}]`; `src/uploads.py` says what each file is. A bookings

@@ -209,5 +209,110 @@ class TheDashboardCountsNotTrends(unittest.TestCase):
             self.assertNotIn(phrase, text)
 
 
+class TheWordingMayChangeButNotTheFacts(unittest.TestCase):
+    """A small model rewords the answer; the guard throws the rewording away if a
+    number, date, reference or status word changed, vanished or appeared."""
+
+    ORIGINAL = ("SHP-002 is held: No better option - hold and notify. Revised ETA "
+                "2026-10-19, 5 days later than booked, past the required-by date.")
+    GOOD = ("SHP-002 is being held - there's no better option, so hold it and let the "
+            "customer know. The revised ETA is 2026-10-19, 5 days later than booked, "
+            "which is past the required-by date.")
+
+    def test_a_faithful_rewording_passes(self):
+        self.assertIsNone(ask.check_wording(self.ORIGINAL, self.GOOD))
+
+    def test_a_changed_dropped_or_invented_fact_is_refused(self):
+        for bad in (self.GOOD.replace("2026-10-19", "2026-10-20"),
+                    self.GOOD.replace("SHP-002 ", "The booking "),
+                    self.GOOD + " Expect about 3 more days.",
+                    self.GOOD.replace("is being held", "was moved")):
+            with self.subTest(bad=bad[:60]):
+                self.assertIsNotNone(ask.check_wording(self.ORIGINAL, bad))
+
+    def test_a_refused_rewording_shows_the_desks_own_words(self):
+        from unittest import mock
+        from src import llm
+        with mock.patch.object(llm, "is_configured", return_value=True), \
+             mock.patch.object(llm, "complete_json", side_effect=llm.LLMError("off")), \
+             mock.patch.object(llm, "complete", return_value="SHP-002 arrives on 2026-10-01."):
+            result = ask.ask("Where is SHP-002?", scenario="hamburg", use_llm=True)
+        self.assertEqual(result["worded_by"], "code")
+        self.assertEqual(result["text"], result["plain_text"])
+        self.assertIn("kept the desk's wording", result["wording_note"])
+
+    def test_an_accepted_rewording_keeps_the_original_beside_it(self):
+        from unittest import mock
+        from src import llm
+        plain = put("Where is SHP-002?")["text"]
+        with mock.patch.object(llm, "is_configured", return_value=True), \
+             mock.patch.object(llm, "complete_json", side_effect=llm.LLMError("off")), \
+             mock.patch.object(llm, "complete", return_value=plain + " "):
+            result = ask.ask("Where is SHP-002?", scenario="hamburg", use_llm=True)
+        self.assertEqual(result["worded_by"], "model")
+        self.assertEqual(result["plain_text"], plain)
+
+
+class RoutingAndWordingUseTheSmallModel(unittest.TestCase):
+
+    def test_the_small_tier_picks_a_small_model_the_key_offers(self):
+        from unittest import mock
+        from src import config, llm
+        lineup = [{"id": m} for m in ("openai/gpt-oss-120b", "llama-3.3-70b-versatile",
+                                      "llama-3.1-8b-instant", "whisper-large-v3")]
+        with mock.patch.object(config, "LLM_PROVIDER", "groq"), \
+             mock.patch.object(config, "LLM_SMALL_MODEL", ""), \
+             mock.patch.object(llm, "_list_model_entries", return_value=lineup), \
+             mock.patch.dict(llm._resolved_small, clear=True):
+            self.assertEqual(llm.resolve_small_model("groq"), "llama-3.1-8b-instant")
+
+    def test_no_small_model_on_the_key_falls_back_to_the_main_one(self):
+        from unittest import mock
+        from src import config, llm
+        lineup = [{"id": "openai/gpt-oss-120b"}]
+        with mock.patch.object(config, "LLM_PROVIDER", "groq"), \
+             mock.patch.object(config, "LLM_SMALL_MODEL", ""), \
+             mock.patch.object(config, "LLM_MODEL", ""), \
+             mock.patch.object(llm, "_list_model_entries", return_value=lineup), \
+             mock.patch.dict(llm._resolved_small, clear=True), \
+             mock.patch.dict(llm._resolved, clear=True):
+            self.assertEqual(llm.resolve_small_model("groq"), "openai/gpt-oss-120b")
+
+    def test_ask_calls_the_model_only_on_the_small_tier(self):
+        import ast as _ast
+        tree = _ast.parse((SRC / "ask.py").read_text(encoding="utf-8"))
+        for node in _ast.walk(tree):
+            if isinstance(node, _ast.Call) and getattr(node.func, "attr", "") in (
+                    "complete", "complete_json"):
+                tiers = [k.value.value for k in node.keywords if k.arg == "tier"]
+                self.assertEqual(tiers, ["small"], "every model call in ask.py is small-tier")
+
+
+class TheMapIsEveryBookingReadThroughTheTms(unittest.TestCase):
+
+    def test_every_booking_is_placed_and_the_estimate_says_so(self):
+        from fastapi.testclient import TestClient
+        from src.app import app
+        data = TestClient(app).get("/api/map?scenario=hamburg").json()
+        self.assertEqual(data["mapped"], data["bookings"])
+        for lane in data["map"]["lanes"]:
+            with self.subTest(lane=lane["id"]):
+                self.assertIn("not vessel tracking", lane["position"]["basis"])
+                self.assertTrue(0 <= lane["position"]["progress"] <= 1)
+
+    def test_a_connected_book_is_what_the_map_shows(self):
+        from fastapi.testclient import TestClient
+        from src import config
+        from src.app import app
+        client = TestClient(app)
+        conn = client.post("/api/tms/connect", json={
+            "kind": "file", "filename": "s.csv",
+            "content": config.SAMPLE_TMS_EXPORT.read_text(encoding="utf-8")}).json()
+        data = client.post("/api/map", json={"scenario": "hamburg", "connection": conn}).json()
+        self.assertEqual({l["id"] for l in data["map"]["lanes"]},
+                         {b["id"] for b in conn["bookings"]})
+        self.assertEqual(data["connector"], conn["name"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

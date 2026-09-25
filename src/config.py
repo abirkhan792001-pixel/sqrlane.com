@@ -94,6 +94,20 @@ GROQ_MODEL_PREFERENCES = [
     "gemma2-9b-it",
 ]
 
+# The SMALL tier, for jobs a big model is wasted on: deciding which agent owns a
+# question, and rewording an answer that code already assembled. Same rule as
+# above - a preference among what the key offers, resolved at runtime, never a
+# pin. Non-reasoning models first: a reasoning model spends a short reply's token
+# budget thinking, and a truncated routing call is a failed one. If none of
+# these is offered, the small tier falls back to the main model.
+GROQ_SMALL_MODEL_PREFERENCES = [
+    "llama-3.1-8b-instant",
+    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "openai/gpt-oss-20b",
+    "qwen/qwen3-32b",
+]
+LLM_SMALL_MODEL = os.getenv("LLM_SMALL_MODEL", "").strip()   # pin, like LLM_MODEL
+
 # Never usable for this job: audio, safety classifiers, embeddings.
 GROQ_MODEL_EXCLUDE = ("whisper", "tts", "guard", "embed", "moderation", "rerank")
 
@@ -126,6 +140,12 @@ HF_MODEL_PREFERENCES = [
     "Qwen/Qwen2.5-72B-Instruct",
     "deepseek-ai/DeepSeek-V3-0324",
     "mistralai/Mistral-Small-24B-Instruct-2501",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "Qwen/Qwen2.5-7B-Instruct",
+]
+
+HF_SMALL_MODEL_PREFERENCES = [
+    "Qwen/Qwen3-8B",
     "meta-llama/Llama-3.1-8B-Instruct",
     "Qwen/Qwen2.5-7B-Instruct",
 ]
@@ -383,6 +403,8 @@ DASHBOARD_URL = os.environ.get("DASHBOARD_URL", "https://app.sqrlane.com")
 # endpoint gets the same kind of deadline every other third-party host does.
 TMS_MAX_BOOKINGS = _env_int("TMS_MAX_BOOKINGS", 50)
 TMS_TIMEOUT_SECONDS = _env_int("TMS_TIMEOUT_SECONDS", 10)
+# How often the dashboard's map re-reads the book through the TMS link.
+MAP_REFRESH_SECONDS = _env_int("MAP_REFRESH_SECONDS", 60)
 SAMPLE_TMS_EXPORT = DATA_DIR / "sample_tms_export.csv"
 SAMPLE_TMS_AUTHORED_ON = "2026-09-25"   # its dates roll forward from here, like the book's
 
