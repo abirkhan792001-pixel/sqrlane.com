@@ -34,7 +34,7 @@ import time
 from datetime import datetime, timezone
 
 from src import (comms_agent, config, geo, llm, risk_monitor, roster, route_advisor, tms,
-                 workflow)
+                 today, workflow)
 
 # What the dashboard colours a card by.
 STATE_FOR_DECISION = {"reroute": "rerouted", "hold": "hold", "no-action": "green"}
@@ -130,7 +130,7 @@ def initial_state() -> dict:
     shipments = tms.read_bookings()
     cards = [dict(_shipment_card(s, routes), state="green", decision=None, drafts=[])
              for s in shipments]
-    return {
+    state = {
         "ran_at": None,
         "state": "idle",
         "workers": _idle_workers(),
@@ -150,6 +150,8 @@ def initial_state() -> dict:
         "summary": {"reroute": 0, "hold": 0, "no-action": len(shipments), "drafts": 0},
         "notes": [],
     }
+    state["today"] = today.build(state)
+    return state
 
 
 def run_cycle(*, live=True, inject=True, use_llm=True, verbose=False,
@@ -323,7 +325,7 @@ def run_cycle(*, live=True, inject=True, use_llm=True, verbose=False,
     decided_by_model = sum(1 for c in cards if c["decision"]["decided_by"].startswith("llm"))
     drafted_by_model = sum(1 for c in cards for d in c["drafts"] if not d.get("fallback"))
 
-    return {
+    result = {
         "ran_at": _now_iso(),
         "state": "complete",
         "duration_seconds": round(time.monotonic() - started, 1),
@@ -365,6 +367,10 @@ def run_cycle(*, live=True, inject=True, use_llm=True, verbose=False,
         "summary": dict(tally, drafts=len(drafts)),
         "notes": notes,
     }
+    # What the run means for the person at the desk - computed from this very
+    # run, so Today can never show figures from a different one (src/today.py).
+    result["today"] = today.build(result)
+    return result
 
 
 def main():
