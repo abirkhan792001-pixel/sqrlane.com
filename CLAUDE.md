@@ -753,6 +753,21 @@ connection "connected" only on that. Every run write-back carries `queued_at` an
 `severity` of the event behind it, every desk output `queued_at`, so Approvals can sort
 and filter by fact. `/api/insights` accepts a `connection` like `/api/map`.
 
+**Today is organised around what a Head of Operations has to do, in order** (2026-09-26,
+on the owner's instruction, after a joint review with Lovable). Four jobs, most urgent
+first: *is my book at risk and how badly* (`at_stake`), *what must I decide*
+(`decisions`, counted in **bookings**, not items - one booking can carry six), *what is
+about to go wrong* (`runway`), *who must I tell* (`customers`). Every decision now carries
+`stay_delay_days`, `stay_exposure_eur`, `action_exposure_eur` and `costs_basis` - the same
+arithmetic its trail states in prose ("Doing nothing exposes EUR 91,000"), which a test
+checks; a hold keeps the cost of staying, and a booking with no commercial terms says
+"costs not priced" instead of showing a zero. The runway gives every booking one row -
+slack against the worst delay if nothing is done, and where the decision leaves it -
+with four statuses (breaks / resolved / close / clear), what still breaks on top. The
+desk's process view (`people_needed`, escalations by agent; `workload`) moved to the
+Agents page: how much the agents talked is not what the person running the desk acts on.
+Small totals are shown as counts ("1 of 13"), never as a percentage that overstates them.
+
 **Files go to the Worker they belong to** (2026-09-25, on the owner's instruction: "a
 ChatGPT-like interface with the ability to upload files"). `POST /api/ask` takes
 `attachments: [{name, content}]`; `src/uploads.py` says what each file is. A bookings

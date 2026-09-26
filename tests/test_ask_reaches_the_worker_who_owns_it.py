@@ -365,5 +365,66 @@ class TheQueueCanBeSortedByFacts(unittest.TestCase):
         self.assertIsNone(result["verified_at"])
 
 
+class TodayShowsWhatIsAtStakeInItsOwnUnits(unittest.TestCase):
+    """The rebuilt Today page: money at stake, customers, the runway and the
+    decision count are all the run's own arithmetic, in bookings and days."""
+
+    @classmethod
+    def setUpClass(cls):
+        from src import insights
+        cls.data = insights.build(scenario="hamburg")
+        cls.board = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+
+    def test_at_stake_is_the_advisors_own_arithmetic(self):
+        stake = self.data["at_stake"]
+        cards = {c["id"]: c for c in self.board["shipments"]}
+        for row in stake["rows"]:
+            d = cards[row["id"]]["decision"]
+            self.assertEqual(row["stay_exposure_eur"], d["stay_exposure_eur"])
+            self.assertEqual(row["action_exposure_eur"], d["action_exposure_eur"])
+            self.assertGreaterEqual(row["avoided_eur"], 0)
+            # The trail states the same number in prose.
+            self.assertTrue(any(f"{d['stay_exposure_eur']:,}" in t["finding"]
+                                for t in d["reasoning_trail"]))
+        self.assertEqual(stake["total_stay_eur"], sum(r["stay_exposure_eur"] for r in stake["rows"]))
+        hold = next(r for r in stake["rows"] if r["decision"] == "hold")
+        self.assertEqual(hold["avoided_eur"], 0, "a hold keeps the cost of staying")
+
+    def test_every_customer_to_notify_has_a_drafted_mail(self):
+        rows = self.data["customers"]["rows"]
+        self.assertEqual({b for r in rows for b in r["bookings"]},
+                         {c["id"] for c in self.board["shipments"] if c["state"] != "green"})
+        for row in rows:
+            self.assertGreaterEqual(row["drafts"], 1)
+
+    def test_the_runway_puts_what_still_breaks_on_top(self):
+        rows = self.data["runway"]["rows"]
+        self.assertEqual(len(rows), len(self.board["shipments"]))
+        self.assertEqual((rows[0]["id"], rows[0]["status"]), ("SHP-002", "breaks"))
+        statuses = {r["id"]: r["status"] for r in rows}
+        self.assertEqual(statuses["SHP-001"], "resolved")
+        for row in rows:
+            self.assertEqual(row["margin_days"], row["slack_days"] - row["worst_delay_days"])
+
+    def test_decisions_are_counted_in_bookings(self):
+        dec = self.data["decisions"]
+        self.assertLess(dec["bookings"], dec["items"])
+        self.assertEqual(self.data["mix"]["total"], sum(r["count"] for r in self.data["mix"]["rows"]))
+
+    def test_where_a_person_was_needed_matches_the_escalations(self):
+        from src import workflow
+        desk = workflow.run(use_llm=False)
+        self.assertEqual(sum(r["count"] for r in self.data["people_needed"]["rows"]),
+                         len(desk["escalations"]))
+
+    def test_a_booking_without_terms_says_its_costs_are_not_priced(self):
+        from src import connect, tms
+        conn = connect.read_export("Shipment No,POL,POD,ETA,RDD\nJ-1,Shanghai,Hamburg,"
+                                   "2026-10-06,2026-10-07\n", "x.csv")
+        with tms.using(dict(conn, kind="file")):
+            run = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+        self.assertIn("not priced", run["shipments"][0]["decision"]["costs_basis"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
