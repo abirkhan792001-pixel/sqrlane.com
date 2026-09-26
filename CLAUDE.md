@@ -742,6 +742,17 @@ dashboard polls every `MAP_REFRESH_SECONDS` (60). `data/geo.json` gained six Asi
 ports so a connected TMS's lanes can be drawn; places carry `on_board` so a map can label
 only what the board uses.
 
+**On watch, connection tests, and a queue sorted by facts** (2026-09-25, from Lovable's
+review, on the owner's instruction). `insights.watchlist()` lists bookings still on plan
+that are close to their limit - a known delay leaving `WATCH_MARGIN_DAYS` (2) of slack or
+less, or `THIN_SLACK_DAYS` (1) of slack or less - with the arithmetic in the reason; it is
+never a forecast, and nothing already actioned appears on it. `POST /api/tms/test` checks a
+read endpoint (read once, nothing kept) or a write-back (one POST marked `"test": true`,
+no operation) and returns the host and `verified_at`; the dashboard may call a
+connection "connected" only on that. Every run write-back carries `queued_at` and the
+`severity` of the event behind it, every desk output `queued_at`, so Approvals can sort
+and filter by fact. `/api/insights` accepts a `connection` like `/api/map`.
+
 **Files go to the Worker they belong to** (2026-09-25, on the owner's instruction: "a
 ChatGPT-like interface with the ability to upload files"). `POST /api/ask` takes
 `attachments: [{name, content}]`; `src/uploads.py` says what each file is. A bookings
