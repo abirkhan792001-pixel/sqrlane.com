@@ -426,5 +426,35 @@ class TodayShowsWhatIsAtStakeInItsOwnUnits(unittest.TestCase):
         self.assertIn("not priced", run["shipments"][0]["decision"]["costs_basis"])
 
 
+class TodayDescribesTheRunOnScreen(unittest.TestCase):
+    """Today's board figures come back with the run itself, so they can never
+    describe a different run than the rest of the screen."""
+
+    def test_every_run_and_the_calm_board_carry_today(self):
+        calm = orchestrator.initial_state()["today"]
+        self.assertEqual(calm["at_stake"]["total_stay_eur"], 0)
+        self.assertIsNone(calm["scenario"])
+        run = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+        self.assertEqual(run["today"]["at_stake"]["total_stay_eur"], 141100)
+        self.assertEqual(run["today"]["ran_at"], run["ran_at"])
+
+    def test_the_journey_is_what_the_run_did_for_each_booking(self):
+        run = orchestrator.run_cycle(live=False, use_llm=False, scenario="hamburg")
+        queued = {}
+        for op in run["tms"]["writebacks"]:
+            queued[op["booking_ref"]] = queued.get(op["booking_ref"], 0) + 1
+        lanes = {l["id"]: l for l in run["map"]["lanes"]}
+        for row in run["today"]["journey"]["rows"]:
+            with self.subTest(booking=row["id"]):
+                loop = {s["key"]: s for s in row["loop"]}
+                card = next(c for c in run["shipments"] if c["id"] == row["id"])
+                self.assertEqual(loop["decided"]["done"], card["state"] != "green")
+                self.assertEqual(loop["queued"]["done"], queued.get(row["id"], 0) > 0)
+                self.assertEqual(loop["drafted"]["done"], bool(card["drafts"]))
+                self.assertIsNone(loop["approved"]["done"], "approval is the person's step")
+                self.assertEqual(row["voyage"]["progress"], lanes[row["id"]]["position"]["progress"])
+                self.assertIn("not vessel tracking", row["voyage"]["basis"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

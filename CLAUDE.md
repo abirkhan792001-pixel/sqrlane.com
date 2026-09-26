@@ -768,6 +768,17 @@ desk's process view (`people_needed`, escalations by agent; `workload`) moved to
 Agents page: how much the agents talked is not what the person running the desk acts on.
 Small totals are shown as counts ("1 of 13"), never as a percentage that overstates them.
 
+**Today's board figures travel with the run** (`src/today.py`, 2026-09-26). They were first
+computed by `/api/insights` from its own rules-only run of the *selected* scenario - so
+Today showed Hamburg figures beside a board that had not been run, and after a live run
+(where the model decides) the two could disagree. Now `orchestrator.run_cycle()` and
+`initial_state()` both return a `today` block built from that very run: `at_stake`,
+`customers`, `runway`, `watchlist`, and `journey` - where each shipment is in its voyage
+(estimated from ETD/ETA, labelled as such) and in the agents' loop (detected, decided,
+drafted, queued; *approved* is the person's step and the dashboard records it).
+`/api/insights` keeps the desk's figures and still returns the board ones for older
+callers.
+
 **Files go to the Worker they belong to** (2026-09-25, on the owner's instruction: "a
 ChatGPT-like interface with the ability to upload files"). `POST /api/ask` takes
 `attachments: [{name, content}]`; `src/uploads.py` says what each file is. A bookings
@@ -1191,6 +1202,8 @@ here too, because this is what the next session reads to find its way around.
 │   ├── mcp_server.py         # the same desk as an MCP server, at /mcp
 │   ├── uploads.py            # a file dropped into Ask: export, mail, or unreadable
 │   ├── insights.py           # the dashboard's cards and charts, counted not trended
+│   ├── today.py              # what a run means at the desk: at stake, runway,
+│   │                         #   customers, each shipment's journey - from that run
 │   ├── simulation.py         # the authored week, replayed over the same board
 │   ├── geo.py                # the board on a map - derived from the run
 │   └── app.py                # FastAPI: serves the three pages + the API
