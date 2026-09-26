@@ -670,6 +670,14 @@ def advise(shipment: dict, routes: dict, events: list[dict], *, use_llm=True) ->
     delay_days = _projected_delay(assessment, decision, route_id)
     revised_eta = _shift_date(shipment["eta"], delay_days)
 
+    # What is at stake, as numbers the dashboard can rank on - the same
+    # arithmetic the trail states in prose ("Doing nothing exposes ..."). A hold
+    # keeps the booking where it is, so its cost is the cost of staying put.
+    current = assessment["current"]
+    chosen = next((c for c in assessment["candidates"] if c["route_id"] == route_id), current)
+    terms = shipment.get("commercial") or {}
+    priced = any(terms.get(k) for k in ("freight_eur", "late_eur_per_day", "breach_eur"))
+
     trail.append({"step": len(trail) + 1, "check": "Decision",
                   "finding": f"{decision.upper()}"
                              + (f" to {route_id}" if decision == "reroute" else "")
@@ -699,6 +707,12 @@ def advise(shipment: dict, routes: dict, events: list[dict], *, use_llm=True) ->
         "deadline_breached": (revised_eta > shipment["required_by"]
                               if shipment.get("required_by") else False),
         "slack_days": assessment["slack_days"],
+        "stay_delay_days": max(0, current["projected_delay_days"][1]),
+        "stay_exposure_eur": current["exposure_eur"],
+        "action_exposure_eur": (chosen["exposure_eur"] if decision == "reroute"
+                                else current["exposure_eur"]),
+        "costs_basis": ("from the booking's commercial terms" if priced
+                        else "no commercial terms on the booking - costs not priced"),
         "triggering_events": [e["event_id"] for e in assessment["current"]["exposed_to"]],
         "reasoning_trail": trail,
         "decided_by": decided_by,
