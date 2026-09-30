@@ -12,73 +12,73 @@
 <rect x="128" y="350" width="30" height="30" rx="7" fill="#0A0A0A"/>
 <text x="143" y="370" font-family="Geist" font-size="14" font-weight="600" fill="#FAFAFA" text-anchor="middle">01</text>
 <text x="174" y="375" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">The desk re-types the same facts.</text>
-<text x="128" y="414" font-family="Geist" font-size="17" font-weight="400" fill="#6B6B6B">Reference, container, ETA. Typed into six systems.</text>
+<text x="128" y="414" font-family="Geist" font-size="17" font-weight="400" fill="#6B6B6B">One booking number, one ETA. Six systems, six field names.</text>
 <g id="system-inbox">
-<rect x="128" y="446" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="244.0" y="478" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Inbox</text>
-<rect x="138.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="164.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="198.0" y="494" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="244.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="298.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="324.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="128" y="442" width="232" height="96" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="142" y="469" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">Inbox</text>
+<text x="142" y="499" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Subject ref</text>
+<rect x="244" y="484" width="104" height="22" rx="5" fill="#EBEBEB"/>
+<text x="296.0" y="499" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">HLCU-2261188</text>
+<text x="142" y="525" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Arrival</text>
+<rect x="288" y="510" width="60" height="22" rx="5" fill="#EBEBEB"/>
+<text x="318.0" y="525" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">10 Oct</text>
 </g>
 <g id="system-tms">
-<rect x="404" y="446" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="520.0" y="478" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">TMS</text>
-<rect x="414.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="440.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="474.0" y="494" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="520.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="574.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="600.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="404" y="442" width="232" height="96" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="418" y="469" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">TMS</text>
+<text x="418" y="499" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Job ref</text>
+<rect x="520" y="484" width="104" height="22" rx="5" fill="#EBEBEB"/>
+<text x="572.0" y="499" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">HLCU-2261188</text>
+<text x="418" y="525" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">ETA</text>
+<rect x="564" y="510" width="60" height="22" rx="5" fill="#EBEBEB"/>
+<text x="594.0" y="525" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">10 Oct</text>
 </g>
 <g id="system-carrier-portal">
-<rect x="680" y="446" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="796.0" y="478" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Carrier portal</text>
-<rect x="690.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="716.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="750.0" y="494" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="796.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="850.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="876.0" y="509" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="680" y="442" width="232" height="96" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="694" y="469" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">Carrier portal</text>
+<text x="694" y="499" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Booking no.</text>
+<rect x="796" y="484" width="104" height="22" rx="5" fill="#EBEBEB"/>
+<text x="848.0" y="499" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">HLCU-2261188</text>
+<text x="694" y="525" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">ETA POD</text>
+<rect x="840" y="510" width="60" height="22" rx="5" fill="#EBEBEB"/>
+<text x="870.0" y="525" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">10 Oct</text>
 </g>
 <g id="system-customer">
-<rect x="128" y="566" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="244.0" y="598" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customer</text>
-<rect x="138.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="164.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="198.0" y="614" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="244.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="298.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="324.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="128" y="566" width="232" height="96" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="142" y="593" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">Customer</text>
+<text x="142" y="623" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Your ref</text>
+<rect x="244" y="608" width="104" height="22" rx="5" fill="#EBEBEB"/>
+<text x="296.0" y="623" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">HLCU-2261188</text>
+<text x="142" y="649" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Arrival</text>
+<rect x="288" y="634" width="60" height="22" rx="5" fill="#EBEBEB"/>
+<text x="318.0" y="649" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">10 Oct</text>
 </g>
 <g id="system-invoice">
-<rect x="404" y="566" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="520.0" y="598" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Invoice</text>
-<rect x="414.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="440.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="474.0" y="614" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="520.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="574.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="600.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="404" y="566" width="232" height="96" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="418" y="593" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">Invoice</text>
+<text x="418" y="623" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Our ref</text>
+<rect x="520" y="608" width="104" height="22" rx="5" fill="#EBEBEB"/>
+<text x="572.0" y="623" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">HLCU-2261188</text>
+<text x="418" y="649" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Arrival date</text>
+<rect x="564" y="634" width="60" height="22" rx="5" fill="#EBEBEB"/>
+<text x="594.0" y="649" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">10 Oct</text>
 </g>
 <g id="system-customs">
-<rect x="680" y="566" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="796.0" y="598" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customs</text>
-<rect x="690.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="716.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="750.0" y="614" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="796.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="850.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="876.0" y="629" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="680" y="566" width="232" height="96" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="694" y="593" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">Customs</text>
+<text x="694" y="623" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Declarant ref</text>
+<rect x="796" y="608" width="104" height="22" rx="5" fill="#EBEBEB"/>
+<text x="848.0" y="623" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">HLCU-2261188</text>
+<text x="694" y="649" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Arrival</text>
+<rect x="840" y="634" width="60" height="22" rx="5" fill="#EBEBEB"/>
+<text x="870.0" y="649" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A" text-anchor="middle">10 Oct</text>
 </g>
 <g id="handoffs">
-<path d="M360 488.0 L404 488.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M636 488.0 L680 488.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M360 608.0 L404 608.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M636 608.0 L680 608.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M796.0 530 L796.0 566" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M360 490.0 L404 490.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M636 490.0 L680 490.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M360 614.0 L404 614.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M636 614.0 L680 614.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M796.0 538 L796.0 566" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
 </g>
 <rect x="128" y="690" width="784" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
 <text x="128" y="754" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">40%</text>

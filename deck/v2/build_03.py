@@ -22,28 +22,34 @@ def stat(x, big, lab, qual, src):
 
 # ---- 01 the desk re-types
 X1 = M
-panel(X1, "01", "The desk re-types the same facts.", "Reference, container, ETA. Typed into six systems.", "problem-retyping")
-BW, BH, GAP = 232, 84, 44
+panel(X1, "01", "The desk re-types the same facts.", "One booking number, one ETA. Six systems, six field names.", "problem-retyping")
+BW, BH, GAP = 232, 96, 44
+# The same two facts in every system, under a different field name each time.
+REF, ETA = "HLCU-2261188", "10 Oct"
+fields = {"Inbox": ("Subject ref", "Arrival"), "TMS": ("Job ref", "ETA"),
+          "Carrier portal": ("Booking no.", "ETA POD"), "Customer": ("Your ref", "Arrival"),
+          "Invoice": ("Our ref", "Arrival date"), "Customs": ("Declarant ref", "Arrival")}
 rows = [["Inbox", "TMS", "Carrier portal"], ["Customer", "Invoice", "Customs"]]
 pos = {}
 for r, names in enumerate(rows):
     for c, nm in enumerate(names):
-        bx, by = X1 + 32 + c * (BW + GAP), PY + 128 + r * 120
+        bx, by = X1 + 32 + c * (BW + GAP), PY + 124 + r * 124
         pos[nm] = (bx, by)
         s.g("system-" + nm.lower().replace(" ", "-"))
         s.R(bx, by, BW, BH, BG, 10, f' stroke="{INK}" stroke-opacity="0.14"')
-        s.T(bx + BW / 2, by + 32, nm, 15, 600, anchor="middle")
-        for k, f in enumerate(["ref", "container", "ETA"]):
-            fw = [52, 92, 52][k]; fx = bx + (BW - 212) / 2 + [0, 60, 160][k]
-            s.R(fx, by + 48, fw, 22, TRACK, 5)
-            s.T(fx + fw / 2, by + 63, f, 12.5, 500, MUT, anchor="middle")
+        s.T(bx + 14, by + 27, nm, 15, 600)
+        for k, (lab, val, vw) in enumerate([(fields[nm][0], REF, 104), (fields[nm][1], ETA, 60)]):
+            ry = by + 42 + k * 26
+            s.T(bx + 14, ry + 15, lab, 12.5, 400, MUT)
+            s.R(bx + BW - 12 - vw, ry, vw, 22, TRACK, 5)
+            s.T(bx + BW - 12 - vw / 2, ry + 15, val, 12.5, 500, INK, anchor="middle")
         s.end()
 s.g("handoffs")
 for a, b in [("Inbox", "TMS"), ("TMS", "Carrier portal"), ("Customer", "Invoice"), ("Invoice", "Customs")]:
     (ax, ay), (bx, by) = pos[a], pos[b]
     s.line(ax + BW, ay + BH / 2, bx, by + BH / 2, AMB, 0.8, 1.5)
 cx, cy = pos["Carrier portal"]
-s.line(cx + BW / 2, cy + BH, cx + BW / 2, cy + 120, AMB, 0.8, 1.5)
+s.line(cx + BW / 2, cy + BH, cx + BW / 2, cy + 124, AMB, 0.8, 1.5)
 s.end()
 s.rule(PY + 372, 0.08, X1 + 32, PW - 64)
 stat(X1 + 32, "40%", "of the day on admin", "upper estimate", "logistics industry surveys")
