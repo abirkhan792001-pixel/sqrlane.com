@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect id="background" x="0" y="0" width="1920" height="1080" fill="#FAFAFA"/>
+<g id="header">
+<rect x="96" y="104" width="10" height="10" rx="2" fill="#96580A"/>
+<text x="120" y="114" font-family="Geist" font-size="15" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">03 · THE WHY</text>
+<text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">€4bn a year of desk work. Nobody does all of it.</text>
+<text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6B6B6B">Risk platforms watch and stop. Execution AI starts after the decision. Both are funded.</text>
+<rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+</g>
+<g id="where-the-4bn-sits">
+<rect x="96" y="318" width="540" height="520" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<rect x="128" y="356" width="10" height="10" rx="2" fill="#0A0A0A"/>
+<text x="152" y="366" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">WHERE THE €4BN SITS</text>
+<text x="128" y="432" font-family="Geist" font-size="44" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">1.6M</text>
+<text x="128" y="460" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">people in European freight forwarding</text>
+<text x="128" y="502" font-family="Geist" font-size="17" font-weight="600" fill="#96580A">÷ 5</text>
+<text x="238" y="502" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">1 in 5 on an operating desk</text>
+<rect x="458" y="486" width="72" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
+<text x="494" y="501" font-family="Geist" font-size="12" font-weight="600" fill="#96580A" text-anchor="middle">assumed</text>
+<text x="128" y="568" font-family="Geist" font-size="44" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">320,000</text>
+<text x="128" y="596" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">operating desks</text>
+<text x="128" y="638" font-family="Geist" font-size="17" font-weight="600" fill="#96580A">× €13,600</text>
+<text x="238" y="638" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">admin cost per desk, per year</text>
+<rect x="128" y="668" width="476" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
+<text x="128" y="746" font-family="Geist" font-size="64" font-weight="600" fill="#0A0A0A" letter-spacing="-2">€4.36bn</text>
+<text x="128" y="778" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">a year in wages, spent on re-typing</text>
+<text x="128" y="808" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">UK: 66,187 staff across 6,737 firms, scaled to 163,000 EU firms</text>
+<text x="128" y="826" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">IBISWorld · SalaryExpert · €34k salary × 40% admin</text>
+</g>
+<g id="risk-platforms">
+<rect x="660" y="318" width="372" height="520" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="688" y="366" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="1.4">RISK PLATFORMS</text>
+<text x="688" y="412" font-family="Geist" font-size="26" font-weight="600" fill="#0A0A0A" letter-spacing="-0.5">Watch, then stop.</text>
+<text x="688" y="442" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">Never touch the booking.</text>
+<rect x="688.0" y="468" width="73.0" height="6" rx="3" fill="#0A0A0A"/>
+<text x="688.0" y="494" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" letter-spacing="0.8">WATCH</text>
+<rect x="769.0" y="468" width="73.0" height="6" rx="3" fill="#EBEBEB"/>
+<text x="769.0" y="494" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B" letter-spacing="0.8">DECIDE</text>
+<rect x="850.0" y="468" width="73.0" height="6" rx="3" fill="#EBEBEB"/>
+<text x="850.0" y="494" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B" letter-spacing="0.8">ACT</text>
+<rect x="931.0" y="468" width="73.0" height="6" rx="3" fill="#EBEBEB"/>
+<text x="931.0" y="494" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B" letter-spacing="0.8">RECORD</text>
+<rect x="688" y="522" width="316" height="34" rx="8" fill="#EBEBEB" fill-opacity="0.7"/>
+<text x="846.0" y="544" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Everstream</text>
+<rect x="688" y="564" width="316" height="34" rx="8" fill="#EBEBEB" fill-opacity="0.7"/>
+<text x="846.0" y="586" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Interos</text>
+<rect x="688" y="606" width="316" height="34" rx="8" fill="#EBEBEB" fill-opacity="0.7"/>
+<text x="846.0" y="628" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Resilinc</text>
+<rect x="688" y="722" width="316" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
+<text x="688" y="774" font-family="Geist" font-size="38" font-weight="600" fill="#0A0A0A" letter-spacing="-1">$1bn</text>
+<text x="688" y="800" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">Interos valuation, 2024</text>
+</g>
+<g id="the-seam">
+<rect x="1056" y="318" width="372" height="520" rx="14" fill="#96580A" fill-opacity="0.06" stroke="#96580A" stroke-opacity="0.45"/>
+<text x="1084" y="366" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">THE SEAM</text>
+<text x="1084" y="412" font-family="Geist" font-size="40" font-weight="600" fill="#0A0A0A" letter-spacing="-1">Decide.</text>
+<text x="1084" y="442" font-family="Geist" font-size="15" font-weight="400" fill="#96580A">Empty on both sides.</text>
+<rect x="1084.0" y="468" width="73.0" height="6" rx="3" fill="#96580A"/>
+<text x="1084.0" y="494" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" letter-spacing="0.8">WATCH</text>
+<rect x="1165.0" y="468" width="73.0" height="6" rx="3" fill="#96580A"/>
+<text x="1165.0" y="494" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" letter-spacing="0.8">DECIDE</text>
+<rect x="1246.0" y="468" width="73.0" height="6" rx="3" fill="#96580A"/>
+<text x="1246.0" y="494" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" letter-spacing="0.8">ACT</text>
+<rect x="1327.0" y="468" width="73.0" height="6" rx="3" fill="#96580A"/>
+<text x="1327.0" y="494" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" letter-spacing="0.8">RECORD</text>
+<text x="1084" y="554" font-family="Geist" font-size="21" font-weight="600" fill="#0A0A0A">One loop, one record.</text>
+<text x="1084" y="584" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">Watch and act are sold.</text>
+<text x="1084" y="606" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">The step between is not.</text>
+<rect x="1084" y="722" width="316" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+<rect x="1084" y="758" width="28" height="28" rx="7" fill="#0A0A0A"/>
+<path d="M1091 779h14 M1091 772h9.5 M1091 765h5" stroke="#FAFAFA" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text x="1124" y="779" font-family="Geist" font-size="20" font-weight="600" fill="#0A0A0A">sqrlane</text>
+<text x="1084" y="818" font-family="Geist" font-size="14" font-weight="500" fill="#96580A">Owns the decision, end to end.</text>
+</g>
+<g id="execution-ai">
+<rect x="1452" y="318" width="372" height="520" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1480" y="366" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="1.4">EXECUTION AI</text>
+<text x="1480" y="412" font-family="Geist" font-size="26" font-weight="600" fill="#0A0A0A" letter-spacing="-0.5">Act, once you decide.</text>
+<text x="1480" y="442" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">Never touch risk.</text>
+<rect x="1480.0" y="468" width="73.0" height="6" rx="3" fill="#EBEBEB"/>
+<text x="1480.0" y="494" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B" letter-spacing="0.8">WATCH</text>
+<rect x="1561.0" y="468" width="73.0" height="6" rx="3" fill="#EBEBEB"/>
+<text x="1561.0" y="494" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B" letter-spacing="0.8">DECIDE</text>
+<rect x="1642.0" y="468" width="73.0" height="6" rx="3" fill="#0A0A0A"/>
+<text x="1642.0" y="494" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" letter-spacing="0.8">ACT</text>
+<rect x="1723.0" y="468" width="73.0" height="6" rx="3" fill="#0A0A0A"/>
+<text x="1723.0" y="494" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" letter-spacing="0.8">RECORD</text>
+<rect x="1480" y="522" width="316" height="34" rx="8" fill="#EBEBEB" fill-opacity="0.7"/>
+<text x="1638.0" y="544" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">5U AI</text>
+<rect x="1480" y="564" width="316" height="34" rx="8" fill="#EBEBEB" fill-opacity="0.7"/>
+<text x="1638.0" y="586" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Augment</text>
+<rect x="1480" y="606" width="316" height="34" rx="8" fill="#EBEBEB" fill-opacity="0.7"/>
+<text x="1638.0" y="628" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Nexcade</text>
+<rect x="1480" y="648" width="316" height="34" rx="8" fill="#EBEBEB" fill-opacity="0.7"/>
+<text x="1638.0" y="670" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Zauber</text>
+<rect x="1480" y="722" width="316" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
+<text x="1480" y="774" font-family="Geist" font-size="38" font-weight="600" fill="#0A0A0A" letter-spacing="-1">$96.7M</text>
+<text x="1480" y="800" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">raised since Sept 2025</text>
+<text x="1480" y="822" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Augment $85M · Nexcade $8.5M · 5U AI $3.2M</text>
+</g>
+<g id="closing">
+<text x="96" y="900" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Anyone can send an alert. SQRlane makes the call, records why,</text>
+<text x="96" y="938" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">and puts it on the booking.</text>
+<text x="1824" y="900" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B" text-anchor="end">163,000 forwarding businesses in Europe. 24 of the top 25 run CargoWise.</text>
+<text x="1824" y="920" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B" text-anchor="end">IBISWorld 2025 · WiseTech Global FY25 · TAM derived, not measured.</text>
+</g>
+<g id="footer">
+<rect x="96" y="978" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+<rect x="96" y="1004" width="22" height="22" rx="6" fill="#0A0A0A"/>
+<path d="M101.5 1020h11 M101.5 1015h7.5 M101.5 1010h4" stroke="#FAFAFA" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="130" y="1021" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">sqrlane</text>
+<text x="200" y="1021" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">Automates the desk. Acts before the route breaks.</text>
+<text x="1824" y="1021" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="end" letter-spacing="1.2">SLIDE 04</text>
+</g>
+</svg>
