@@ -50,13 +50,16 @@ rows = [  # system, its field name, the ref as typed, the date as typed, typo?
 RX, RW, RH, RS = X1 + 304, 512, 32, 36
 R0 = PY + 122
 srcy = SRC_Y + SRC_H / 2
+TRUNK = (SRC_X + SRC_W + RX) / 2
 s.g("typed-six-times")
+s.line(SRC_X + SRC_W, srcy, TRUNK, srcy, INK, 0.3, 1.5)
+s.line(TRUNK, R0 + RH / 2, TRUNK, R0 + 5 * RS + RH / 2, INK, 0.3, 1.5)
 for i, (sysn, lab, ref, dt, typo) in enumerate(rows):
     ry = R0 + i * RS
     cy = ry + RH / 2
     col = AMB if typo else INK
-    s.raw(f'<path d="M{SRC_X + SRC_W} {srcy} C{SRC_X + SRC_W + 40} {srcy} {RX - 40} {cy} {RX} {cy}" '
-          f'stroke="{col}" stroke-opacity="{0.9 if typo else 0.22}" stroke-width="1.4" fill="none"/>')
+    s.line(TRUNK, cy, RX, cy, col, 0.9 if typo else 0.3, 1.5)
+    s.raw(f'<circle cx="{RX}" cy="{cy}" r="3" fill="{col}" fill-opacity="{1 if typo else 0.45}"/>')
     s.g("row-" + sysn.lower().replace(" ", "-"))
     s.R(RX, ry, RW, RH, AMB if typo else BG, 8,
         f' fill-opacity="{0.07 if typo else 1}" stroke="{col}" stroke-opacity="{0.5 if typo else 0.12}"')

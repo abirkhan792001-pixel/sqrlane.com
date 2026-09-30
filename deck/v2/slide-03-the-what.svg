@@ -25,7 +25,10 @@
 <text x="146" y="618" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">the one true copy</text>
 </g>
 <g id="typed-six-times">
-<path d="M340 547.0 C380 547.0 360 456.0 400 456.0" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.4" fill="none"/>
+<path d="M340 547.0 L370.0 547.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M370.0 456.0 L370.0 636.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M370.0 456.0 L400 456.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<circle cx="400" cy="456.0" r="3" fill="#0A0A0A" fill-opacity="0.45"/>
 <g id="row-tms">
 <rect x="400" y="440" width="512" height="32" rx="8" fill="#FAFAFA" fill-opacity="1" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="414" y="461.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">TMS</text>
@@ -33,7 +36,8 @@
 <text x="756" y="461.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">HLCU-2261188</text>
 <text x="898" y="461.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">10/10/2026</text>
 </g>
-<path d="M340 547.0 C380 547.0 360 492.0 400 492.0" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.4" fill="none"/>
+<path d="M370.0 492.0 L400 492.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<circle cx="400" cy="492.0" r="3" fill="#0A0A0A" fill-opacity="0.45"/>
 <g id="row-carrier-portal">
 <rect x="400" y="476" width="512" height="32" rx="8" fill="#FAFAFA" fill-opacity="1" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="414" y="497.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Carrier portal</text>
@@ -41,7 +45,8 @@
 <text x="756" y="497.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">HLCU-2261188</text>
 <text x="898" y="497.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">2026-10-10</text>
 </g>
-<path d="M340 547.0 C380 547.0 360 528.0 400 528.0" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.4" fill="none"/>
+<path d="M370.0 528.0 L400 528.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<circle cx="400" cy="528.0" r="3" fill="#0A0A0A" fill-opacity="0.45"/>
 <g id="row-customer-mail">
 <rect x="400" y="512" width="512" height="32" rx="8" fill="#FAFAFA" fill-opacity="1" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="414" y="533.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Customer mail</text>
@@ -49,7 +54,8 @@
 <text x="756" y="533.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">HLCU-2261188</text>
 <text x="898" y="533.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">10 October</text>
 </g>
-<path d="M340 547.0 C380 547.0 360 564.0 400 564.0" stroke="#96580A" stroke-opacity="0.9" stroke-width="1.4" fill="none"/>
+<path d="M370.0 564.0 L400 564.0" stroke="#96580A" stroke-opacity="0.9" stroke-width="1.5" fill="none"/>
+<circle cx="400" cy="564.0" r="3" fill="#96580A" fill-opacity="1"/>
 <g id="row-customs">
 <rect x="400" y="548" width="512" height="32" rx="8" fill="#96580A" fill-opacity="0.07" stroke="#96580A" stroke-opacity="0.5"/>
 <text x="414" y="569.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Customs</text>
@@ -57,7 +63,8 @@
 <text x="756" y="569.0" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" text-anchor="end">HLCU-2216188</text>
 <text x="898" y="569.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">10.10.26</text>
 </g>
-<path d="M340 547.0 C380 547.0 360 600.0 400 600.0" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.4" fill="none"/>
+<path d="M370.0 600.0 L400 600.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<circle cx="400" cy="600.0" r="3" fill="#0A0A0A" fill-opacity="0.45"/>
 <g id="row-invoice">
 <rect x="400" y="584" width="512" height="32" rx="8" fill="#FAFAFA" fill-opacity="1" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="414" y="605.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Invoice</text>
@@ -65,7 +72,8 @@
 <text x="756" y="605.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">HLCU-2261188</text>
 <text x="898" y="605.0" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" text-anchor="end">Oct 10</text>
 </g>
-<path d="M340 547.0 C380 547.0 360 636.0 400 636.0" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.4" fill="none"/>
+<path d="M370.0 636.0 L400 636.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<circle cx="400" cy="636.0" r="3" fill="#0A0A0A" fill-opacity="0.45"/>
 <g id="row-tracking-sheet">
 <rect x="400" y="620" width="512" height="32" rx="8" fill="#FAFAFA" fill-opacity="1" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="414" y="641.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Tracking sheet</text>
