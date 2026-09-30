@@ -165,7 +165,7 @@ mark("Outlook", MX + 32, cy + 40, 15)
 s.T(MX + 54, cy + 52, "RE: Where is MEDU-1774390?", 12.5, 600)
 s.T(MX + 32, cy + 69, "MEDU-1774390 (electronics) is on the water on", 11.5, 400, MUT)
 s.T(MX + 32, cy + 85, "Asia → Suez → Antwerp, discharging at Antwerp.", 11.5, 400, MUT)
-s.T(MX + 16 + BWb - 16, cy + 52, "Draft, not sent", 11, 600, AMBR, anchor="end")
+s.T(MX + 16 + BWb - 16, cy + 52, "Draft ready", 11, 600, AMBR, anchor="end")
 s.R(MX + 16 + BWb - 92, cy + DHh - 34, 76, 26, INK, 8)
 s.T(MX + 16 + BWb - 54, cy + DHh - 16, "Approve", 12, 600, CARD, anchor="middle")
 # the Ask box: suggested questions as chips inside it, then the input line.

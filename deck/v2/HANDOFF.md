@@ -62,22 +62,26 @@ in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 - Closing line: "Ask the desk anything. Every step recorded, and approved by you."
   "Built for the 40%" is gone.
 
-## Slide 08, the risk layer (built 2026-09-30)
+## Slide 08, the risk layer (second pass, 2026-09-30)
 
-Same frame as slide 07, so the two read as a pair. Left, the Risk view: a bell, two
-pop-ups (a regional source, NDR Hamburg, "Warnstreik im Hamburger Hafen", then "Risk
-agent · working… Checking 7 bookings against it."), "This run" in one line with tags (60
-sources watched · live, 1 event · strike, high, 3 bookings touched · of 7, 2 · 1 reroute ·
-hold, 0 sent or written), then the decisions as a thread: SHP-001 rerouted via Rotterdam
-("Arrives 12 Oct, due 14 Oct", slide 02's frame), the Comms agent's real customer mail to
-Katrin Vogel ("Draft, not sent", Approve), and SHP-002 held. Right, "How the risk layer
-works": WATCH (60 sources by family: news 41, rivers 7, weather and sea 4, hazards 5,
-government 2, markets 1) → Risk → Routing (reroute / hold / no change) → Comms and Planner
-(scripted) → the desk (12 agents, faded, slide 07) → You approve → TMS link, then "One
-event, earlier": NDR Hamburg first, ver.di +22 min, NOS Nieuws +4 h, international wires
-+23 h, labelled **demo scenario** because the strike and its trail are authored. The
-language is not named; the outlet is. Closing line: "The earlier the call, the more
-options you have and the less it costs."
+Same frame as slide 07. Left, the Risk view: bell; pop-ups with the official **NDR mark**
+(simple-icons, CC0, added to `channel_marks.json`), "Regional source · NDR Hamburg,
+Warnstreik im Hamburger Hafen", then "Risk agent · working… Checking 7 bookings against
+it."; "This run": 60 sources watched (live) › 1 event (strike, high) › 3 decisions (2
+reroute, 1 hold) › **€46,500 cost avoided** (vs doing nothing) › 0 sent or written. The
+decisions: SHP-001 rerouted via Rotterdam (12 Oct, due 14 Oct); the Comms agent's mail to
+Katrin Vogel ("Draft ready", Approve); SHP-002 held - "Hold the boxes instead of
+discharging into the strike" - with the hold instruction to Maersk and the notice to
+Nordmed Pharma drafted. Under them: "Cost avoided = €141,100 if nothing is done, minus
+€94,600 with these calls. From each synthetic booking's own terms." (`today.at_stake`;
+SHP-001 avoids €29,196, SHP-005 €17,304, SHP-002 €0 - the hold saves nothing, it only
+tells people early). Right: WATCH with the six families, then "Coming live soon" -
+AIS vessel positions, freight indices, prediction markets, port calls - as dashed chips
+fading out; then Risk, Routing, Comms, Planner (scripted) on one uniform grid; the desk
+faded; You approve → TMS link; the detection trail (demo scenario).
+
+"Draft, not sent" now reads "Draft ready" on slides 07 and 08, on the owner's instruction;
+the Approve button still carries the gate, and nothing is ever sent.
 
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 

@@ -50,10 +50,8 @@
 <g id="popup-news">
 <rect x="430" y="363" width="318" height="56" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
 <rect x="430" y="360" width="318" height="56" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<rect x="442" y="371" width="34" height="34" rx="7" fill="#0A0A0A"/>
-<rect x="448.8" y="381.2" width="21.08" height="2.72" rx="1" fill="#FFFFFF"/>
-<rect x="448.8" y="386.98" width="21.08" height="2.72" rx="1" fill="#FFFFFF"/>
-<rect x="448.8" y="392.76" width="13.600000000000001" height="2.72" rx="1" fill="#FFFFFF"/>
+<rect x="440" y="369" width="38" height="38" rx="10" fill="#F3F3F3"/>
+<g id="mark-ndr" transform="translate(445.0 374.0) scale(1.1667)"><path fill="#0C1754" d="M5.184 19.325l-3.137-5.648v5.649H0V9.64h2.149l3.267 6.025V9.641h2.047v9.684zm2.279-9.684V.537H8.61v9.104zm0 13.822v-4.138H8.61v4.138zM12.037 9.64c2.395 0 3.63 1.147 3.63 3.368v2.918c0 2.28-1.19 3.398-3.63 3.398H8.61V9.641zm-.19 7.855c1.163 0 1.728-.581 1.728-1.771v-2.498c0-1.176-.58-1.757-1.727-1.757h-1.03v6.026zm9.845 1.83l-1.728-3.718h-1.161v3.717h-2.15V9.641h3.384c2.381 0 3.513.944 3.513 2.962 0 1.335-.493 2.134-1.597 2.613L24 19.326zm-1.568-5.475c.857 0 1.365-.494 1.365-1.32 0-.858-.377-1.177-1.365-1.177H18.76v2.498h1.365z"/></g>
 <circle cx="476" cy="370" r="8" fill="#EA001D" stroke="#FFFFFF" stroke-width="2"/>
 <text x="476" y="374" font-family="Geist" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
 <text x="490" y="383" font-family="Geist" font-size="11" font-weight="500" fill="#9A9A9A">Regional source · NDR Hamburg</text>
@@ -91,14 +89,16 @@
 <text x="518.0" y="529.6" font-family="Geist" font-size="10" font-weight="600" fill="#EA001D" text-anchor="middle">strike · high</text>
 <text x="600.0" y="490" font-family="Geist" font-size="18" font-weight="400" fill="#C8C8C8">›</text>
 <text x="614.0" y="490" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-1">3</text>
-<text x="614.0" y="509" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A">bookings touched</text>
-<rect x="614.0" y="517" width="42" height="18" rx="9.0" fill="#F3F3F3"/>
-<text x="635.0" y="529.6" font-family="Geist" font-size="10" font-weight="600" fill="#4A4A4A" text-anchor="middle">of 7</text>
+<text x="614.0" y="509" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A">decisions</text>
+<rect x="614.0" y="517" width="72" height="18" rx="9.0" fill="#E8F1FF"/>
+<text x="650.0" y="529.6" font-family="Geist" font-size="10" font-weight="600" fill="#006BFF" text-anchor="middle">2 reroute</text>
+<rect x="691.0" y="517" width="54" height="18" rx="9.0" fill="#FDF3E3"/>
+<text x="718.0" y="529.6" font-family="Geist" font-size="10" font-weight="600" fill="#96580A" text-anchor="middle">1 hold</text>
 <text x="744.0" y="490" font-family="Geist" font-size="18" font-weight="400" fill="#C8C8C8">›</text>
-<text x="758.0" y="490" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-1">2 · 1</text>
-<text x="758.0" y="509" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A">reroute · hold</text>
-<rect x="758.0" y="517" width="60" height="18" rx="9.0" fill="#E8F1FF"/>
-<text x="788.0" y="529.6" font-family="Geist" font-size="10" font-weight="600" fill="#006BFF" text-anchor="middle">decided</text>
+<text x="758.0" y="490" font-family="Geist" font-size="25" font-weight="600" fill="#0A0A0A" letter-spacing="-1">€46,500</text>
+<text x="758.0" y="509" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A">cost avoided</text>
+<rect x="758.0" y="517" width="114" height="18" rx="9.0" fill="#E7F5EC"/>
+<text x="815.0" y="529.6" font-family="Geist" font-size="10" font-weight="600" fill="#0F7B3F" text-anchor="middle">vs doing nothing</text>
 <text x="888.0" y="490" font-family="Geist" font-size="18" font-weight="400" fill="#C8C8C8">›</text>
 <text x="902.0" y="490" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-1">0</text>
 <text x="902.0" y="509" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A">sent or written</text>
@@ -107,162 +107,181 @@
 </g>
 <g id="decisions">
 <rect x="308" y="558" width="756" height="312" rx="16" fill="#F6F8FB" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<rect x="324" y="579" width="724" height="76" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="324" y="576" width="724" height="76" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.1"/>
-<circle cx="350.0" cy="596.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
-<circle cx="348.2" cy="600.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
-<circle cx="344.0" cy="602.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
-<circle cx="339.8" cy="600.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
-<circle cx="338.0" cy="596.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
-<circle cx="339.8" cy="591.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
-<circle cx="344.0" cy="590.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
-<circle cx="348.2" cy="591.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
-<text x="360" y="601" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Routing agent</text>
-<text x="458" y="601" font-family="Geist" font-size="12" font-weight="400" fill="#9A9A9A">SHP-001 · Automotive parts, Shanghai → Munich</text>
-<rect x="972" y="588" width="62" height="20" rx="10.0" fill="#E8F1FF"/>
-<text x="1003.0" y="601.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">reroute</text>
-<text x="340" y="624" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Reroute via Rotterdam. Arrives 12 Oct, due 14 Oct.</text>
-<text x="340" y="642" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Hamburg: up to 5 days late against 4 days of slack. Rotterdam adds 2 days, with no active risk.</text>
-<rect x="324" y="671" width="724" height="84" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="324" y="668" width="724" height="84" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.1"/>
-<circle cx="350.0" cy="688.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
-<circle cx="348.2" cy="692.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
-<circle cx="344.0" cy="694.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
-<circle cx="339.8" cy="692.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
-<circle cx="338.0" cy="688.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
-<circle cx="339.8" cy="683.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
-<circle cx="344.0" cy="682.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
-<circle cx="348.2" cy="683.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
-<text x="360" y="693" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Comms agent</text>
-<text x="456" y="693" font-family="Geist" font-size="12" font-weight="400" fill="#9A9A9A">Drafted a mail to Katrin Vogel, Bavaria Drivetrain.</text>
-<g id="mark-outlook" transform="translate(340.0 706.0) scale(0.4688)"><path fill="#0072c6" d="M19.484 7.937v5.477l1.916 1.205a.5.5 0 0 0 .21 0l8.238-5.554a1.174 1.174 0 0 0-.959-1.128Z"/><path fill="#0072c6" d="m19.484 15.457l1.747 1.2a.52.52 0 0 0 .543 0c-.3.181 8.073-5.378 8.073-5.378v10.066a1.408 1.408 0 0 1-1.49 1.555h-8.874zm-9.044-2.525a1.61 1.61 0 0 0-1.42.838a4.13 4.13 0 0 0-.526 2.218A4.05 4.05 0 0 0 9.02 18.2a1.6 1.6 0 0 0 2.771.022a4 4 0 0 0 .515-2.2a4.37 4.37 0 0 0-.5-2.281a1.54 1.54 0 0 0-1.366-.809"/><path fill="#0072c6" d="M2.153 5.155v21.427L18.453 30V2Zm10.908 14.336a3.23 3.23 0 0 1-2.7 1.361a3.19 3.19 0 0 1-2.64-1.318A5.46 5.46 0 0 1 6.706 16.1a5.87 5.87 0 0 1 1.036-3.616a3.27 3.27 0 0 1 2.744-1.384a3.12 3.12 0 0 1 2.61 1.321a5.64 5.64 0 0 1 1 3.484a5.76 5.76 0 0 1-1.035 3.586"/></g>
-<text x="362" y="718" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A">HLCU-2261188 Automotive parts: revised ETA</text>
-<text x="340" y="738" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">We are bringing it in through Rotterdam instead of Hamburg, 2 days later than planned.</text>
-<text x="944" y="718" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" text-anchor="end">Draft, not sent</text>
-<rect x="956" y="702" width="78" height="26" rx="8" fill="#0A0A0A"/>
-<text x="995" y="720" font-family="Geist" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Approve</text>
-<rect x="324" y="771" width="724" height="64" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="324" y="768" width="724" height="64" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.1"/>
-<circle cx="350.0" cy="788.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
-<circle cx="348.2" cy="792.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
-<circle cx="344.0" cy="794.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
-<circle cx="339.8" cy="792.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
-<circle cx="338.0" cy="788.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
-<circle cx="339.8" cy="783.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
-<circle cx="344.0" cy="782.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
-<circle cx="348.2" cy="783.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
-<text x="360" y="793" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Routing agent</text>
-<text x="458" y="793" font-family="Geist" font-size="12" font-weight="400" fill="#9A9A9A">SHP-002 · Reefer pharma, Ningbo → Hamburg</text>
-<rect x="991" y="780" width="43" height="20" rx="10.0" fill="#FDF3E3"/>
-<text x="1012.5" y="793.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">hold</text>
-<text x="340" y="816" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Hold, and tell the customer now. No alternate on file lands any better.</text>
+<rect x="324" y="573" width="724" height="76" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
+<rect x="324" y="570" width="724" height="76" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.1"/>
+<circle cx="350.0" cy="590.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
+<circle cx="348.2" cy="594.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
+<circle cx="344.0" cy="596.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
+<circle cx="339.8" cy="594.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
+<circle cx="338.0" cy="590.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
+<circle cx="339.8" cy="585.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
+<circle cx="344.0" cy="584.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
+<circle cx="348.2" cy="585.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
+<text x="360" y="595" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Routing agent</text>
+<text x="458" y="595" font-family="Geist" font-size="12" font-weight="400" fill="#9A9A9A">SHP-001 · Automotive parts, Shanghai → Munich</text>
+<rect x="972" y="582" width="62" height="20" rx="10.0" fill="#E8F1FF"/>
+<text x="1003.0" y="595.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">reroute</text>
+<text x="340" y="618" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Reroute via Rotterdam. Arrives 12 Oct, due 14 Oct.</text>
+<text x="340" y="636" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Hamburg: up to 5 days late against 4 days of slack. Rotterdam adds 2 days, with no active risk.</text>
+<rect x="324" y="657" width="724" height="84" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
+<rect x="324" y="654" width="724" height="84" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.1"/>
+<circle cx="350.0" cy="674.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
+<circle cx="348.2" cy="678.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
+<circle cx="344.0" cy="680.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
+<circle cx="339.8" cy="678.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
+<circle cx="338.0" cy="674.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
+<circle cx="339.8" cy="669.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
+<circle cx="344.0" cy="668.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
+<circle cx="348.2" cy="669.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
+<text x="360" y="679" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Comms agent</text>
+<text x="456" y="679" font-family="Geist" font-size="12" font-weight="400" fill="#9A9A9A">Drafted a mail to Katrin Vogel, Bavaria Drivetrain.</text>
+<g id="mark-outlook" transform="translate(340.0 692.0) scale(0.4688)"><path fill="#0072c6" d="M19.484 7.937v5.477l1.916 1.205a.5.5 0 0 0 .21 0l8.238-5.554a1.174 1.174 0 0 0-.959-1.128Z"/><path fill="#0072c6" d="m19.484 15.457l1.747 1.2a.52.52 0 0 0 .543 0c-.3.181 8.073-5.378 8.073-5.378v10.066a1.408 1.408 0 0 1-1.49 1.555h-8.874zm-9.044-2.525a1.61 1.61 0 0 0-1.42.838a4.13 4.13 0 0 0-.526 2.218A4.05 4.05 0 0 0 9.02 18.2a1.6 1.6 0 0 0 2.771.022a4 4 0 0 0 .515-2.2a4.37 4.37 0 0 0-.5-2.281a1.54 1.54 0 0 0-1.366-.809"/><path fill="#0072c6" d="M2.153 5.155v21.427L18.453 30V2Zm10.908 14.336a3.23 3.23 0 0 1-2.7 1.361a3.19 3.19 0 0 1-2.64-1.318A5.46 5.46 0 0 1 6.706 16.1a5.87 5.87 0 0 1 1.036-3.616a3.27 3.27 0 0 1 2.744-1.384a3.12 3.12 0 0 1 2.61 1.321a5.64 5.64 0 0 1 1 3.484a5.76 5.76 0 0 1-1.035 3.586"/></g>
+<text x="362" y="704" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A">HLCU-2261188 Automotive parts: revised ETA</text>
+<text x="340" y="724" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">We are bringing it in through Rotterdam instead of Hamburg, 2 days later than planned.</text>
+<text x="944" y="704" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" text-anchor="end">Draft ready</text>
+<rect x="956" y="688" width="78" height="26" rx="8" fill="#0A0A0A"/>
+<text x="995" y="706" font-family="Geist" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Approve</text>
+<rect x="324" y="749" width="724" height="82" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
+<rect x="324" y="746" width="724" height="82" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.1"/>
+<circle cx="350.0" cy="766.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
+<circle cx="348.2" cy="770.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
+<circle cx="344.0" cy="772.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
+<circle cx="339.8" cy="770.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
+<circle cx="338.0" cy="766.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
+<circle cx="339.8" cy="761.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
+<circle cx="344.0" cy="760.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
+<circle cx="348.2" cy="761.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
+<text x="360" y="771" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Routing agent</text>
+<text x="458" y="771" font-family="Geist" font-size="12" font-weight="400" fill="#9A9A9A">SHP-002 · Reefer pharma, Ningbo → Hamburg</text>
+<rect x="991" y="758" width="43" height="20" rx="10.0" fill="#FDF3E3"/>
+<text x="1012.5" y="771.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">hold</text>
+<text x="340" y="794" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Hold the boxes instead of discharging into the strike. No other route lands any better.</text>
+<g id="mark-outlook" transform="translate(340.0 804.0) scale(0.4375)"><path fill="#0072c6" d="M19.484 7.937v5.477l1.916 1.205a.5.5 0 0 0 .21 0l8.238-5.554a1.174 1.174 0 0 0-.959-1.128Z"/><path fill="#0072c6" d="m19.484 15.457l1.747 1.2a.52.52 0 0 0 .543 0c-.3.181 8.073-5.378 8.073-5.378v10.066a1.408 1.408 0 0 1-1.49 1.555h-8.874zm-9.044-2.525a1.61 1.61 0 0 0-1.42.838a4.13 4.13 0 0 0-.526 2.218A4.05 4.05 0 0 0 9.02 18.2a1.6 1.6 0 0 0 2.771.022a4 4 0 0 0 .515-2.2a4.37 4.37 0 0 0-.5-2.281a1.54 1.54 0 0 0-1.366-.809"/><path fill="#0072c6" d="M2.153 5.155v21.427L18.453 30V2Zm10.908 14.336a3.23 3.23 0 0 1-2.7 1.361a3.19 3.19 0 0 1-2.64-1.318A5.46 5.46 0 0 1 6.706 16.1a5.87 5.87 0 0 1 1.036-3.616a3.27 3.27 0 0 1 2.744-1.384a3.12 3.12 0 0 1 2.61 1.321a5.64 5.64 0 0 1 1 3.484a5.76 5.76 0 0 1-1.035 3.586"/></g>
+<text x="360" y="816" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Comms drafted the hold instruction to Maersk and the notice to Nordmed Pharma.</text>
+<text x="1034" y="816" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" text-anchor="end">Draft ready</text>
+<text x="326" y="846" font-family="Geist" font-size="10.5" font-weight="400" fill="#9A9A9A">Cost avoided = €141,100 if nothing is done, minus €94,600 with these calls. From each synthetic booking's own terms.</text>
 </g>
 </g>
 <g id="how-the-risk-layer-works">
 <rect x="1120" y="306" width="704" height="584" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="1144" y="342" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">HOW THE RISK LAYER WORKS</text>
-<text x="1800" y="342" font-family="Geist" font-size="12" font-weight="500" fill="#9A9A9A" text-anchor="end">4 agents · Planner scripted</text>
+<text x="1800" y="342" font-family="Geist" font-size="12" font-weight="500" fill="#9A9A9A" text-anchor="end">4 agents · 3 live, Planner scripted</text>
 <g id="watch">
-<rect x="1144" y="364" width="656" height="70" rx="12" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<text x="1158" y="386" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">WATCH</text>
-<text x="1214" y="386" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">60 sources, read together on every run</text>
-<rect x="1158" y="400" width="69" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1168" y="415" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">News</text>
-<text x="1218" y="415" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">41</text>
-<rect x="1233" y="400" width="75" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1243" y="415" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Rivers</text>
-<text x="1299" y="415" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">7</text>
-<rect x="1314" y="400" width="119" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1324" y="415" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Weather &amp; sea</text>
-<text x="1424" y="415" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">4</text>
-<rect x="1439" y="400" width="81" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1449" y="415" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Hazards</text>
-<text x="1511" y="415" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">5</text>
-<rect x="1526" y="400" width="100" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1536" y="415" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Government</text>
-<text x="1617" y="415" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">2</text>
-<rect x="1632" y="400" width="81" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1642" y="415" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Markets</text>
-<text x="1704" y="415" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">1</text>
+<rect x="1144" y="362" width="656" height="100" rx="12" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
+<text x="1158" y="384" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">WATCH</text>
+<text x="1214" y="384" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">60 sources, read together on every run</text>
+<rect x="1158" y="396" width="69" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1168" y="411" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">News</text>
+<text x="1218" y="411" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">41</text>
+<rect x="1233" y="396" width="75" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1243" y="411" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Rivers</text>
+<text x="1299" y="411" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">7</text>
+<rect x="1314" y="396" width="119" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1324" y="411" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Weather &amp; sea</text>
+<text x="1424" y="411" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">4</text>
+<rect x="1439" y="396" width="81" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1449" y="411" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Hazards</text>
+<text x="1511" y="411" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">5</text>
+<rect x="1526" y="396" width="100" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1536" y="411" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Government</text>
+<text x="1617" y="411" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">2</text>
+<rect x="1632" y="396" width="81" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1642" y="411" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A">Markets</text>
+<text x="1704" y="411" font-family="Geist" font-size="11" font-weight="700" fill="#006BFF" text-anchor="end">1</text>
+<text x="1158" y="443" font-family="Geist" font-size="11" font-weight="600" fill="#9A9A9A">Coming live soon</text>
+<rect x="1266" y="428" width="148" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.19" stroke-dasharray="3 3" fill-opacity="0.85"/>
+<text x="1277" y="443" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">AIS vessel positions</text>
+<rect x="1420" y="428" width="116" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.13" stroke-dasharray="3 3" fill-opacity="0.60"/>
+<text x="1431" y="443" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">Freight indices</text>
+<rect x="1542" y="428" width="135" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.08" stroke-dasharray="3 3" fill-opacity="0.38"/>
+<text x="1553" y="443" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">Prediction markets</text>
+<rect x="1683" y="428" width="85" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.04" stroke-dasharray="3 3" fill-opacity="0.20"/>
+<text x="1694" y="443" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">Port calls</text>
+<rect x="1774" y="428" width="70" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.02" stroke-dasharray="3 3" fill-opacity="0.08"/>
+<defs><linearGradient id="soon-fade" x1="0" y1="0" x2="1" y2="0"><stop offset="0.55" stop-color="#FAFAFA" stop-opacity="0"/><stop offset="1" stop-color="#FAFAFA" stop-opacity="1"/></linearGradient></defs>
+<rect x="1266" y="426" width="520" height="26" fill="url(#soon-fade)"/>
 </g>
-<path d="M1472.0 434 L1472.0 449" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<path d="M1467.5 448 L1472.0 454 L1476.5 448" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1472.0 462 L1472.0 469" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 468 L1472.0 474 L1476.5 468" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <g id="risk-agent">
-<rect x="1144" y="458" width="656" height="46" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1158" y="486.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Risk</text>
-<rect x="1262" y="471.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
-<text x="1291.0" y="485.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
-<text x="1332" y="485.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">reads every source, flags what touches a booking</text>
+<rect x="1144" y="477" width="656" height="42" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1158" y="503" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Risk</text>
+<rect x="1252" y="488.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1281.0" y="502.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1344" y="502.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">reads every source, flags what touches a booking</text>
 </g>
-<path d="M1472.0 504 L1472.0 519" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<path d="M1467.5 518 L1472.0 524 L1476.5 518" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1472.0 519 L1472.0 526" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 525 L1472.0 531 L1476.5 525" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <g id="routing-agent">
-<rect x="1144" y="528" width="656" height="46" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1158" y="556.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Routing</text>
-<rect x="1262" y="541.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
-<text x="1291.0" y="555.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
-<text x="1332" y="555.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">weighs slack against delay</text>
-<rect x="1711" y="541" width="75" height="20" rx="10.0" fill="#F3F3F3"/>
-<text x="1748.5" y="554.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#4A4A4A" text-anchor="middle">no change</text>
-<rect x="1662" y="541" width="43" height="20" rx="10.0" fill="#FDF3E3"/>
-<text x="1683.5" y="554.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">hold</text>
-<rect x="1594" y="541" width="62" height="20" rx="10.0" fill="#E8F1FF"/>
-<text x="1625.0" y="554.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">reroute</text>
+<rect x="1144" y="534" width="656" height="42" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1158" y="560" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Routing</text>
+<rect x="1252" y="545.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1281.0" y="559.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1344" y="559.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">weighs slack against delay</text>
+<rect x="1711" y="545" width="75" height="20" rx="10.0" fill="#F3F3F3"/>
+<text x="1748.5" y="558.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#4A4A4A" text-anchor="middle">no change</text>
+<rect x="1662" y="545" width="43" height="20" rx="10.0" fill="#FDF3E3"/>
+<text x="1683.5" y="558.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">hold</text>
+<rect x="1594" y="545" width="62" height="20" rx="10.0" fill="#E8F1FF"/>
+<text x="1625.0" y="558.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">reroute</text>
 </g>
-<path d="M1472.0 574 L1472.0 589" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<path d="M1467.5 588 L1472.0 594 L1476.5 588" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<g id="comms-and-planner">
-<rect x="1144" y="598" width="324.0" height="44" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1158" y="625" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Comms</text>
-<rect x="1218" y="610.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
-<text x="1247.0" y="624.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
-<text x="1286" y="624.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">drafts carrier and customer mail</text>
-<rect x="1476.0" y="598" width="324.0" height="44" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1490.0" y="625" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Planner</text>
-<rect x="1556.0" y="610.5" width="88" height="19" rx="9.5" fill="#F3F3F3"/>
-<text x="1600.0" y="624.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#6B6B6B" text-anchor="middle">1 · scripted</text>
-<text x="1654.0" y="624.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">checks before departure</text>
+<path d="M1472.0 576 L1472.0 583" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 582 L1472.0 588 L1476.5 582" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<g id="comms-agent">
+<rect x="1144" y="591" width="656" height="42" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1158" y="617" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Comms</text>
+<rect x="1252" y="602.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1281.0" y="616.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1344" y="616.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">drafts the carrier and customer mail</text>
 </g>
-<path d="M1472.0 642 L1472.0 657" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<path d="M1467.5 656 L1472.0 662 L1476.5 656" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1472.0 633 L1472.0 640" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 639 L1472.0 645 L1476.5 639" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<g id="planner-agent">
+<rect x="1144" y="648" width="656" height="42" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1158" y="674" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Planner</text>
+<rect x="1252" y="659.5" width="58" height="19" rx="9.5" fill="#F3F3F3"/>
+<text x="1281.0" y="673.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#6B6B6B" text-anchor="middle">1 agent</text>
+<text x="1344" y="673.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">checks bookings before departure · scripted</text>
+</g>
+<path d="M1472.0 690 L1472.0 697" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 696 L1472.0 702 L1476.5 696" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <g id="the-desk">
-<rect x="1144" y="666" width="656" height="40" rx="10" fill="#F3F3F3" stroke="#0A0A0A" stroke-opacity="0.10" stroke-dasharray="4 3"/>
-<text x="1158" y="691" font-family="Geist" font-size="13.5" font-weight="600" fill="#7A7A7A">The desk</text>
-<rect x="1230" y="676.5" width="70" height="19" rx="9.5" fill="#FFFFFF"/>
-<text x="1265.0" y="690.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#7A7A7A" text-anchor="middle">12 agents</text>
-<text x="1312" y="691" font-family="Geist" font-size="11.5" font-weight="400" fill="#8A8A8A">amends the booking, moves the entry, sets the new ETA</text>
-<text x="1786" y="691" font-family="Geist" font-size="11.5" font-weight="600" fill="#8A8A8A" text-anchor="end">slide 07</text>
+<rect x="1144" y="705" width="656" height="42" rx="10" fill="#F3F3F3" stroke="#0A0A0A" stroke-opacity="0.10" stroke-dasharray="4 3"/>
+<text x="1158" y="731" font-family="Geist" font-size="13.5" font-weight="600" fill="#7A7A7A">The desk</text>
+<rect x="1252" y="716.5" width="70" height="19" rx="9.5" fill="#FFFFFF"/>
+<text x="1287.0" y="730.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#7A7A7A" text-anchor="middle">12 agents</text>
+<text x="1344" y="730.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#8A8A8A">amends the booking, moves the entry, sets the new ETA</text>
 <defs><linearGradient id="desk-fade" x1="0" y1="0" x2="1" y2="0"><stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0"/><stop offset="0.95" stop-color="#FFFFFF" stop-opacity="1"/></linearGradient></defs>
-<rect x="1142" y="664" width="660" height="44" fill="url(#desk-fade)"/>
+<rect x="1142" y="703" width="660" height="46" fill="url(#desk-fade)"/>
 </g>
-<path d="M1472.0 706 L1472.0 721" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<path d="M1467.5 720 L1472.0 726 L1476.5 720" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1472.0 747 L1472.0 754" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 753 L1472.0 759 L1476.5 753" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <g id="gate-and-record">
-<rect x="1144" y="730" width="314.0" height="42" rx="10" fill="#0A0A0A"/>
-<text x="1158" y="756" font-family="Geist" font-size="13.5" font-weight="700" fill="#FFFFFF">You approve</text>
-<text x="1252" y="756" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">every reroute, every mail</text>
-<path d="M1462.0 751 L1477.0 751" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<path d="M1476.0 746.5 L1482.0 751 L1476.0 755.5" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<rect x="1486.0" y="730" width="314.0" height="42" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1500.0" y="756" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">TMS link</text>
-<rect x="1570.0" y="741.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
-<text x="1599.0" y="755.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
-<text x="1638.0" y="755.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">writes it onto the booking</text>
+<rect x="1144" y="762" width="314.0" height="42" rx="10" fill="#0A0A0A"/>
+<text x="1158" y="788" font-family="Geist" font-size="13.5" font-weight="700" fill="#FFFFFF">You approve</text>
+<text x="1252" y="787.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">every reroute, every mail</text>
+<path d="M1462.0 783 L1477.0 783" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1476.0 778.5 L1482.0 783 L1476.0 787.5" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<rect x="1486.0" y="762" width="314.0" height="42" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1500.0" y="788" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">TMS link</text>
+<rect x="1570.0" y="773.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1599.0" y="787.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1638.0" y="787.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">writes it onto the booking</text>
 </g>
 <g id="detection-trail">
-<text x="1144" y="802" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">ONE EVENT, EARLIER</text>
-<text x="1290" y="802" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">the Hamburg strike · demo scenario</text>
-<rect x="1144" y="814" width="136" height="24" rx="6" fill="#006BFF"/>
-<text x="1212.0" y="830" font-family="Geist" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">NDR Hamburg · first</text>
-<text x="1285" y="830" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="1296" y="814" width="117" height="24" rx="6" fill="#F3F3F3"/>
-<text x="1354.5" y="830" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">ver.di · +22 min</text>
-<text x="1418" y="830" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="1429" y="814" width="123" height="24" rx="6" fill="#F3F3F3"/>
-<text x="1490.5" y="830" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">NOS Nieuws · +4 h</text>
-<text x="1557" y="830" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="1568" y="814" width="185" height="24" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.3"/>
-<text x="1660.5" y="830" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" text-anchor="middle">International wires · +23 h</text>
+<text x="1144" y="828" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">ONE EVENT, EARLIER</text>
+<text x="1290" y="828" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">the Hamburg strike · demo scenario</text>
+<rect x="1144" y="840" width="136" height="24" rx="6" fill="#006BFF"/>
+<text x="1212.0" y="856" font-family="Geist" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">NDR Hamburg · first</text>
+<text x="1285" y="856" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1296" y="840" width="117" height="24" rx="6" fill="#F3F3F3"/>
+<text x="1354.5" y="856" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">ver.di · +22 min</text>
+<text x="1418" y="856" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1429" y="840" width="123" height="24" rx="6" fill="#F3F3F3"/>
+<text x="1490.5" y="856" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">NOS Nieuws · +4 h</text>
+<text x="1557" y="856" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1568" y="840" width="185" height="24" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.3"/>
+<text x="1660.5" y="856" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" text-anchor="middle">International wires · +23 h</text>
 </g>
 </g>
 <text x="96" y="946" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">The earlier the call, the more options you have and the less it costs.</text>

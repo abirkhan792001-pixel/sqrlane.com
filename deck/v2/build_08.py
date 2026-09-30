@@ -110,7 +110,8 @@ P2W = 290; P2X = MX + MW - P2W
 P1W = 318; P1X = P2X - 26 - P1W
 s.g("popup-news")
 soft_card(P1X, PT, P1W, PH_, 14)
-news_mark(P1X + 12, PT + 11, 34)
+s.R(P1X + 10, PT + 9, 38, 38, GREY_BG, 10)
+mark("NDR", P1X + 15, PT + 14, 28)
 s.raw(f'<circle cx="{P1X + 46}" cy="{PT + 10}" r="8" fill="{RED}" stroke="{CARD}" stroke-width="2"/>')
 s.T(P1X + 46, PT + 14, "1", 10, 700, CARD, anchor="middle")
 s.T(P1X + 60, PT + 23, "Regional source · NDR Hamburg", 11, 500, GREY)
@@ -132,8 +133,8 @@ RED_BG = "#FEECEC"
 OY, OH = TOP + 124, 114
 STEPS = [("60", "sources watched", "live", GREEN_BG, GREEN),
          ("1", "event", "strike · high", RED_BG, RED),
-         ("3", "bookings touched", "of 7", GREY_BG, "#4A4A4A"),
-         ("2 · 1", "reroute · hold", "decided", BLUE_BG, BLUE),
+         ("3", "decisions", None, None, None),
+         ("€46,500", "cost avoided", "vs doing nothing", GREEN_BG, GREEN),
          ("0", "sent or written", "until you approve", GREEN_BG, GREEN)]
 s.g("this-run")
 s.card(MX, OY, MW, OH, 12)
@@ -142,9 +143,13 @@ s.T(MX + MW - 18, OY + 25, "Hamburg strike · demo scenario", 12, 400, GREY, anc
 sw_ = (MW - 36) / 5
 for k, (n, lab, tag, tf, ti) in enumerate(STEPS):
     x = MX + 18 + k * sw_
-    s.T(x, OY + 60, n, 30, 600, ls=-1)
+    s.T(x, OY + 60, n, 25 if len(n) > 3 else 30, 600, ls=-1)
     s.T(x, OY + 79, lab, 12, 500, "#4A4A4A")
-    pill(x, OY + 87, tag, tf, ti, anchor="start", size=10, h=18)
+    if tag:
+        pill(x, OY + 87, tag, tf, ti, anchor="start", size=10, h=18)
+    else:                                              # the three decisions, split
+        w1 = pill(x, OY + 87, "2 reroute", BLUE_BG, BLUE, anchor="start", size=10, h=18)
+        pill(x + w1 + 5, OY + 87, "1 hold", AMBR_BG, AMBR, anchor="start", size=10, h=18)
     if k < 4:
         s.T(x + sw_ - 14, OY + 60, "›", 18, 400, "#C8C8C8")
 s.end()
@@ -153,7 +158,7 @@ s.end()
 CY0 = OY + OH + 14; CHh = BOT - 20 - CY0
 s.g("decisions")
 s.R(MX, CY0, MW, CHh, "#F6F8FB", 16, f' stroke="{INK}" stroke-opacity="0.10"')
-cy = CY0 + 18
+cy = CY0 + 12
 BWb = MW - 32
 # SHP-001: the reroute (the booking from slides 02 and 03)
 soft_card(MX + 16, cy, BWb, 76, 14, op=0.10)
@@ -163,7 +168,7 @@ s.T(MX + 150, cy + 25, "SHP-001 · Automotive parts, Shanghai → Munich", 12, 4
 pill(MX + 16 + BWb - 14, cy + 12, "reroute", BLUE_BG, BLUE)
 s.T(MX + 32, cy + 48, "Reroute via Rotterdam. Arrives 12 Oct, due 14 Oct.", 13.5, 600)
 s.T(MX + 32, cy + 66, "Hamburg: up to 5 days late against 4 days of slack. Rotterdam adds 2 days, with no active risk.", 11.5, 400, MUT)
-cy += 92
+cy += 84
 # the customer mail the Comms agent drafted for it
 DHh = 84
 soft_card(MX + 16, cy, BWb, DHh, 14, op=0.10)
@@ -173,17 +178,22 @@ s.T(MX + 148, cy + 25, "Drafted a mail to Katrin Vogel, Bavaria Drivetrain.", 12
 mark("Outlook", MX + 32, cy + 38, 15)
 s.T(MX + 54, cy + 50, "HLCU-2261188 Automotive parts: revised ETA", 12.5, 600)
 s.T(MX + 32, cy + 70, "We are bringing it in through Rotterdam instead of Hamburg, 2 days later than planned.", 11.5, 400, MUT)
-s.T(MX + 16 + BWb - 104, cy + 50, "Draft, not sent", 11, 600, AMBR, anchor="end")
+s.T(MX + 16 + BWb - 104, cy + 50, "Draft ready", 11, 600, AMBR, anchor="end")
 s.R(MX + 16 + BWb - 92, cy + DHh - 50, 78, 26, INK, 8)
 s.T(MX + 16 + BWb - 53, cy + DHh - 32, "Approve", 12, 600, CARD, anchor="middle")
-cy += DHh + 16
+cy += DHh + 8
 # SHP-002: the hold - the call with no good option
-soft_card(MX + 16, cy, BWb, 64, 14, op=0.10)
+soft_card(MX + 16, cy, BWb, 82, 14, op=0.10)
 agent_mark(MX + 36, cy + 20)
 s.T(MX + 52, cy + 25, "Routing agent", 12.5, 600, BLUE)
 s.T(MX + 150, cy + 25, "SHP-002 · Reefer pharma, Ningbo → Hamburg", 12, 400, GREY)
 pill(MX + 16 + BWb - 14, cy + 12, "hold", AMBR_BG, AMBR)
-s.T(MX + 32, cy + 48, "Hold, and tell the customer now. No alternate on file lands any better.", 12.5, 500, INK)
+s.T(MX + 32, cy + 48, "Hold the boxes instead of discharging into the strike. No other route lands any better.", 12.5, 500, INK)
+mark("Outlook", MX + 32, cy + 58, 14)
+s.T(MX + 52, cy + 70, "Comms drafted the hold instruction to Maersk and the notice to Nordmed Pharma.", 11.5, 400, MUT)
+s.T(MX + 16 + BWb - 14, cy + 70, "Draft ready", 11, 600, AMBR, anchor="end")
+cy += 90
+s.T(MX + 18, cy + 10, "Cost avoided = €141,100 if nothing is done, minus €94,600 with these calls. From each synthetic booking's own terms.", 10.5, 400, GREY)
 s.end()
 s.end()
 
@@ -193,7 +203,7 @@ hx, hw = HX + 24, HW - 48
 s.g("how-the-risk-layer-works")
 s.card(HX, TOP, HW, BOT - TOP)
 s.T(hx, TOP + 36, "HOW THE RISK LAYER WORKS", 13, 600, AMB, ls=1.4)
-s.T(HX + HW - 24, TOP + 36, "4 agents · Planner scripted", 12, 500, GREY, anchor="end")
+s.T(HX + HW - 24, TOP + 36, "4 agents · 3 live, Planner scripted", 12, 500, GREY, anchor="end")
 
 def arrow(y1, y2, x=None):
     x = x or hx + hw / 2
@@ -213,81 +223,94 @@ def step(y, name, n, what, h=44, fill=CARD, ink=INK, sub=MUT, stroke=0.16, nx=No
     cw = count_chip(nx or hx + 118, y + h / 2 - 9.5, n)
     s.T((nx or hx + 118) + cw + 12, y + h / 2 + 4.5, what, 11.5, 400, sub)
 
-y = TOP + 58
-# WATCH: the 60 sources, by family (risk_monitor.expected_sources())
+y = TOP + 56
+# WATCH: the 60 live sources by family, then what comes next, fading out
 s.g("watch")
-s.R(hx, y, hw, 70, BG, 12, f' stroke="{INK}" stroke-opacity="0.10"')
+s.R(hx, y, hw, 100, BG, 12, f' stroke="{INK}" stroke-opacity="0.10"')
 s.T(hx + 14, y + 22, "WATCH", 10.5, 700, MUT, ls=1.2)
 s.T(hx + 70, y + 22, "60 sources, read together on every run", 11.5, 400, MUT)
 fx = hx + 14
 for fam, n in (("News", 41), ("Rivers", 7), ("Weather & sea", 4), ("Hazards", 5), ("Government", 2), ("Markets", 1)):
     lab = fam.replace("&", "&amp;")
     w = round(len(fam) * 6.3 + len(str(n)) * 7 + 30)
-    s.R(fx, y + 36, w, 22, CARD, 6, f' stroke="{INK}" stroke-opacity="0.12"')
-    s.T(fx + 10, y + 51, lab, 11, 500, "#3A3A3A")
-    s.T(fx + w - 9, y + 51, str(n), 11, 700, BLUE, anchor="end")
+    s.R(fx, y + 34, w, 22, CARD, 6, f' stroke="{INK}" stroke-opacity="0.12"')
+    s.T(fx + 10, y + 49, lab, 11, 500, "#3A3A3A")
+    s.T(fx + w - 9, y + 49, str(n), 11, 700, BLUE, anchor="end")
     fx += w + 6
+s.T(hx + 14, y + 81, "Coming live soon", 11, 600, GREY)
+fx = hx + 122
+for k, nxt in enumerate(("AIS vessel positions", "Freight indices", "Prediction markets", "Port calls", "")):
+    op = (0.85, 0.6, 0.38, 0.2, 0.08)[k]
+    w = round(len(nxt) * 6.3 + 22) if nxt else 70
+    s.R(fx, y + 66, w, 22, CARD, 6, f' stroke="{INK}" stroke-opacity="{0.22 * op:.2f}" stroke-dasharray="3 3" fill-opacity="{op:.2f}"')
+    if nxt: s.T(fx + 11, y + 81, nxt, 11, 500, "#6B6B6B")
+    fx += w + 6
+s.raw('<defs><linearGradient id="soon-fade" x1="0" y1="0" x2="1" y2="0">'
+      f'<stop offset="0.55" stop-color="{BG}" stop-opacity="0"/><stop offset="1" stop-color="{BG}" stop-opacity="1"/>'
+      '</linearGradient></defs>')
+s.R(hx + 122, y + 64, hw - 136, 26, "url(#soon-fade)")
 s.end()
-y += 70; arrow(y, y + 20); y += 24
+y += 100; arrow(y, y + 12); y += 15
 
-s.g("risk-agent"); step(y, "Risk", "1 agent", "reads every source, flags what touches a booking", h=46); s.end()
-y += 46; arrow(y, y + 20); y += 24
+# every agent step on the same grid: name, count, what it does
+NX = hx + 108
+ROWH = 42
+def row(name, n, what, grp, chip=None, right=None):
+    global y
+    s.g(grp)
+    s.R(hx, y, hw, ROWH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
+    s.T(hx + 14, y + 26, name, 13.5, 600)
+    cw = count_chip(NX, y + 11.5, n, *(chip or ()))
+    s.T(NX + 92, y + 25.5, what, 11.5, 400, MUT)
+    if right: right(y)
+    s.end()
+    y += ROWH
+def outcomes(yy):
+    ox = hx + hw - 14
+    for lab, f, i in (("no change", GREY_BG, "#4A4A4A"), ("hold", AMBR_BG, AMBR), ("reroute", BLUE_BG, BLUE)):
+        ox -= pill(ox, yy + 11, lab, f, i) + 6
 
-s.g("routing-agent")
-step(y, "Routing", "1 agent", "weighs slack against delay", h=46)
-ox = hx + hw - 14
-for lab, f, i in (("no change", GREY_BG, "#4A4A4A"), ("hold", AMBR_BG, AMBR), ("reroute", BLUE_BG, BLUE)):
-    ox -= pill(ox, y + 13, lab, f, i) + 6
-s.end()
-y += 46; arrow(y, y + 20); y += 24
-
-s.g("comms-and-planner")
-GW = (hw - 8) / 2
-s.R(hx, y, GW, 44, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
-s.T(hx + 14, y + 27, "Comms", 13.5, 600)
-cw = count_chip(hx + 74, y + 12.5, "1 agent")
-s.T(hx + 74 + cw + 10, y + 26.5, "drafts carrier and customer mail", 11.5, 400, MUT)
-px = hx + GW + 8
-s.R(px, y, GW, 44, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
-s.T(px + 14, y + 27, "Planner", 13.5, 600)
-cw = count_chip(px + 80, y + 12.5, "1 · scripted", GREY_BG, "#6B6B6B")
-s.T(px + 80 + cw + 10, y + 26.5, "checks before departure", 11.5, 400, MUT)
-s.end()
-y += 44; arrow(y, y + 20); y += 24
+row("Risk", "1 agent", "reads every source, flags what touches a booking", "risk-agent")
+arrow(y, y + 12); y += 15
+row("Routing", "1 agent", "weighs slack against delay", "routing-agent", right=outcomes)
+arrow(y, y + 12); y += 15
+row("Comms", "1 agent", "drafts the carrier and customer mail", "comms-agent")
+arrow(y, y + 12); y += 15
+row("Planner", "1 agent", "checks bookings before departure · scripted", "planner-agent", chip=(GREY_BG, "#6B6B6B"))
+arrow(y, y + 12); y += 15
 
 # the desk: slide 07, faded here as the risk layer was there
 s.g("the-desk")
-s.R(hx, y, hw, 40, GREY_BG, 10, f' stroke="{INK}" stroke-opacity="0.10" stroke-dasharray="4 3"')
-s.T(hx + 14, y + 25, "The desk", 13.5, 600, "#7A7A7A")
-cw = count_chip(hx + 86, y + 10.5, "12 agents", CARD, "#7A7A7A")
-s.T(hx + 86 + cw + 12, y + 25, "amends the booking, moves the entry, sets the new ETA", 11.5, 400, "#8A8A8A")
-s.T(hx + hw - 14, y + 25, "slide 07", 11.5, 600, "#8A8A8A", anchor="end")
+s.R(hx, y, hw, ROWH, GREY_BG, 10, f' stroke="{INK}" stroke-opacity="0.10" stroke-dasharray="4 3"')
+s.T(hx + 14, y + 26, "The desk", 13.5, 600, "#7A7A7A")
+count_chip(NX, y + 11.5, "12 agents", CARD, "#7A7A7A")
+s.T(NX + 92, y + 25.5, "amends the booking, moves the entry, sets the new ETA", 11.5, 400, "#8A8A8A")
 s.raw('<defs><linearGradient id="desk-fade" x1="0" y1="0" x2="1" y2="0">'
       f'<stop offset="0.35" stop-color="{CARD}" stop-opacity="0"/><stop offset="0.95" stop-color="{CARD}" stop-opacity="1"/>'
       '</linearGradient></defs>')
-s.R(hx - 2, y - 2, hw + 4, 44, "url(#desk-fade)")
+s.R(hx - 2, y - 2, hw + 4, ROWH + 4, "url(#desk-fade)")
 s.end()
-y += 40; arrow(y, y + 20); y += 24
+y += ROWH; arrow(y, y + 12); y += 15
 
 s.g("gate-and-record")
 GW2 = (hw - 28) / 2
-s.R(hx, y, GW2, 42, INK, 10)
+s.R(hx, y, GW2, ROWH, INK, 10)
 s.T(hx + 14, y + 26, "You approve", 13.5, 700, CARD)
-s.T(hx + 108, y + 26, "every reroute, every mail", 11.5, 400, "#D6D6D6")
+s.T(hx + 108, y + 25.5, "every reroute, every mail", 11.5, 400, "#D6D6D6")
 ax1 = hx + GW2 + 4
 s.line(ax1, y + 21, ax1 + 15, y + 21, INK, 0.3, 1.5)
 s.raw(f'<path d="M{ax1+14} {y+16.5} L{ax1+20} {y+21} L{ax1+14} {y+25.5}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
 tx = hx + GW2 + 28
-s.R(tx, y, GW2, 42, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
+s.R(tx, y, GW2, ROWH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
 s.T(tx + 14, y + 26, "TMS link", 13.5, 600)
 cw = count_chip(tx + 84, y + 11.5, "1 agent")
 s.T(tx + 84 + cw + 10, y + 25.5, "writes it onto the booking", 11.5, 400, MUT)
 s.end()
-y += 42
+y += ROWH
 
 # one event, earlier: the detection trail of the authored strike
 s.g("detection-trail")
-y += 30
+y += 24
 s.T(hx, y, "ONE EVENT, EARLIER", 10.5, 700, MUT, ls=1.2)
 s.T(hx + 146, y, "the Hamburg strike · demo scenario", 11.5, 400, MUT)
 y += 12
