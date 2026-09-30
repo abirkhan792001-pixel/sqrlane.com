@@ -2,6 +2,7 @@
 """Slide 05 - The Job 1/2. One file end to end: the clock, the 26 handoffs, what the
 TMS holds and does not, and what a clean file earns."""
 from kit import *
+GREEN = "#0F7B3F"
 s = Slide()
 s.header("04 · THE JOB, 1 OF 2", "45 days, 7 parties, €127 of margin.",
          "The TMS stores the booking. It does not decide or move anything.")
@@ -25,9 +26,9 @@ s.g("clock")
 for d in days:
     w = d * unit
     big = d == 32
-    s.R(round(bx, 1), TY + 68, round(w, 1), 26, INK if big else TRACK, 6, ' fill-opacity="0.85"' if big else "")
+    s.R(round(bx, 1), TY + 68, round(w, 1), 26, TRACK, 6)
     if d in (3, 32):
-        s.T(round(bx + w / 2, 1), TY + 86, f"{d:g}d", 13, 600, BG if big else MUT, anchor="middle")
+        s.T(round(bx + w / 2, 1), TY + 86, f"{d:g}d", 13, 600, INK if big else MUT, anchor="middle")
     bx += w + GAPB
 s.T(BX0, TY + 114, "opens", 12, 400, MUT)
 s.T(BX1, TY + 114, "closes", 12, 400, MUT, anchor="end")
@@ -35,19 +36,20 @@ s.end()
 s.rule(TY + 128, 0.08, x0, W - 2 * M - 64)
 
 HY = TY + 156
-s.T(x0, HY, "WHO THEY TALK TO", 13, 600, MUT, ls=1.4)
+s.T(x0, HY, "WHO THEY TALK TO", 13, 600, AMB, ls=1.4)
 for c, st in zip(CX, STAGES):
     s.T(c, HY, st, 13, 600, INK, anchor="middle")
 RX = 1392
-s.T(RX, HY, "REACHED ON", 13, 600, MUT, ls=1.4)
+s.T(RX, HY, "REACHED ON", 13, 600, AMB, ls=1.4)
+s.T(W - M - 32, HY, "not every one", 12, 400, MUT, anchor="end")
 parties = [
-    ("Customer", [1, 1, 1, 1, 1, 0, 1, 1], ["email", "phone", "WhatsApp"]),
-    ("Shipping line", [0, 1, 1, 1, 1, 0, 0, 1], ["portal", "EDI", "email"]),
-    ("Origin agent", [0, 0, 1, 1, 0, 0, 0, 0], ["email", "WhatsApp"]),
-    ("Port terminal", [0, 0, 0, 1, 1, 1, 0, 0], ["portal"]),
-    ("Haulier", [0, 1, 0, 0, 0, 0, 1, 1], ["phone", "WhatsApp"]),
-    ("Customs broker", [0, 0, 0, 1, 0, 1, 1, 0], ["email", "portal"]),
-    ("Consignee", [0, 0, 0, 0, 1, 0, 1, 1], ["email", "phone"]),
+    ("Customer", [1, 1, 1, 1, 1, 0, 1, 1], ["Outlook", "Gmail", "Slack", "WhatsApp"]),
+    ("Shipping line", [0, 1, 1, 1, 1, 0, 0, 1], ["portal", "EDI", "INTTRA", "Outlook"]),
+    ("Origin agent", [0, 0, 1, 1, 0, 0, 0, 0], ["Outlook", "WeChat", "WhatsApp"]),
+    ("Port terminal", [0, 0, 0, 1, 1, 1, 0, 0], ["Portbase", "DAKOSY", "portal"]),
+    ("Haulier", [0, 1, 0, 0, 0, 0, 1, 1], ["phone", "WhatsApp", "SMS", "TIMOCOM"]),
+    ("Customs broker", [0, 0, 0, 1, 0, 1, 1, 0], ["Outlook", "ATLAS", "portal"]),
+    ("Consignee", [0, 0, 0, 0, 1, 0, 1, 1], ["Outlook", "Teams", "phone"]),
 ]
 assert sum(sum(p[1]) for p in parties) == 26
 s.g("handoffs")
@@ -56,18 +58,19 @@ for r, (name, marks, chans) in enumerate(parties):
     s.T(x0, ry, name, 14, 500)
     for c, m in zip(CX, marks):
         if m:
-            s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="6.5" fill="{INK}"/>')
+            s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="6.5" fill="{AMB}"/>')
         else:
             s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="2" fill="{INK}" fill-opacity="0.2"/>')
     cx = RX
     for ch in chans:
-        w = len(ch) * 7.4 + 22
-        s.R(cx, ry - 17, round(w), 22, TRACK, 11)
-        s.T(round(cx + w / 2), ry - 2, ch, 12.5, 500, INK, anchor="middle")
+        w = len(ch) * 7.2 + 32
+        s.R(cx, ry - 17, round(w), 22, AMB, 6, ' fill-opacity="0.12"')
+        s.raw(f'<circle cx="{cx + 11}" cy="{ry - 6}" r="2.5" fill="{AMB}"/>')
+        s.T(cx + 19, ry - 2, ch, 12.5, 600, AMB)
         cx += w + 6
 s.end()
 s.rule(TY + TH - 48, 0.08, x0, W - 2 * M - 64)
-s.T(x0, TY + TH - 18, "26 handoffs, 7 parties, 5 channels. Before Teams, SMS and every carrier’s own portal.", 15, 400, MUT)
+s.T(x0, TY + TH - 18, "26 handoffs, 7 parties, 15 channels. Every dot is a mail, a portal login or a call.", 15, 400, MUT)
 s.end()
 
 # ---- bottom: what the TMS does, what a clean file earns
@@ -84,7 +87,7 @@ for i, (head, items, ok) in enumerate(cols):
     for k, it in enumerate(items):
         iy = BY + 106 + k * 28
         if ok:
-            s.raw(f'<path d="M{cx} {iy - 5} l4 4 l8 -9" stroke="{INK}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+            s.raw(f'<path d="M{cx} {iy - 5} l4 4 l8 -9" stroke="{GREEN}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
         else:
             s.raw(f'<path d="M{cx + 1} {iy - 12} l9 9 M{cx + 10} {iy - 12} l-9 9" stroke="{AMB}" stroke-width="2" fill="none" stroke-linecap="round"/>')
         s.T(cx + 22, iy, it, 15, 400)
@@ -97,7 +100,7 @@ RX0, RW = M + LW + 28, W - 2 * M - LW - 28
 s.g("what-a-clean-file-earns")
 s.card(RX0, BY, RW, BH)
 ex = RX0 + 32
-s.T(ex, BY + 38, "WHAT A CLEAN FILE EARNS", 13, 600, MUT, ls=1.4)
+s.T(ex, BY + 38, "WHAT A CLEAN FILE EARNS", 13, 600, AMB, ls=1.4)
 s.T(RX0 + RW - 32, BY + 40, "per container", 13, 400, MUT, anchor="end")
 rows = [("Billed to the customer", "€1,913", "100.0%", 1913, False, False),
         ("Paid to the carrier", "−€1,475", "−77.1%", 1475, False, False),
