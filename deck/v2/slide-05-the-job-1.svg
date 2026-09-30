@@ -8,175 +8,164 @@
 <rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
 </g>
 <g id="one-file">
-<rect x="96" y="306" width="1728" height="400" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<rect x="96" y="306" width="1728" height="416" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="128" y="348" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="1.4">ONE FILE, END TO END</text>
 <text x="336" y="349" font-family="Geist" font-size="15" font-weight="500" fill="#6B6B6B">Shanghai to Munich · 45 days</text>
-<text x="128" y="392" font-family="Geist" font-size="15" font-weight="500" fill="#0A0A0A">The clock</text>
+<text x="128" y="418" font-family="Geist" font-size="15" font-weight="500" fill="#0A0A0A">The clock</text>
 <g id="clock">
-<rect x="336" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
-<text x="356.7" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">1</text>
-<rect x="381.4" y="374" width="65.4" height="26" rx="6" fill="#EBEBEB"/>
-<text x="414.1" y="392" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" text-anchor="middle">3d</text>
-<text x="414.1" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">3</text>
-<rect x="450.8" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
-<text x="471.5" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">3</text>
-<rect x="496.3" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
-<text x="517.0" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">5</text>
-<rect x="541.7" y="374" width="697.7" height="26" rx="6" fill="#EBEBEB"/>
-<text x="890.5" y="392" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">32d</text>
-<text x="890.5" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">4</text>
-<rect x="1243.3" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
-<text x="1264.0" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">2</text>
-<rect x="1288.8" y="374" width="19.6" height="26" rx="6" fill="#EBEBEB"/>
-<text x="1298.6" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">4</text>
-<rect x="1312.4" y="374" width="19.6" height="26" rx="6" fill="#EBEBEB"/>
-<text x="1322.2" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">4</text>
-<text x="128" y="422" font-family="Geist" font-size="15" font-weight="500" fill="#0A0A0A">Handoffs</text>
-<text x="1792" y="392" font-family="Geist" font-size="15" font-weight="600" fill="#96580A" text-anchor="end">22 of 26 handoffs</text>
-<text x="1792" y="414" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B" text-anchor="end">fall outside the 32 days at sea</text>
+<text x="336" y="386" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Before sailing</text>
+<rect x="336" y="396" width="288.8" height="36" rx="8" fill="#96580A" fill-opacity="0.14"/>
+<text x="350" y="419" font-family="Geist" font-size="15" font-weight="600" fill="#96580A">12 handoffs</text>
+<text x="630.8" y="386" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">At sea · 32 days</text>
+<rect x="630.8" y="396" width="1026.8" height="36" rx="8" fill="#EBEBEB"/>
+<text x="644.8" y="419" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">4 handoffs</text>
+<text x="1643.6" y="419" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B" text-anchor="end">the lane goes unwatched</text>
+<text x="1663.6" y="386" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">After arrival</text>
+<rect x="1663.6" y="396" width="128.4" height="36" rx="8" fill="#96580A" fill-opacity="0.14"/>
+<text x="1677.6" y="419" font-family="Geist" font-size="15" font-weight="600" fill="#96580A">10 handoffs</text>
 </g>
-<rect x="128" y="434" width="1664" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
-<text x="128" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">WHO THEY TALK TO</text>
-<text x="400" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Enquiry</text>
-<text x="524" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Quote</text>
-<text x="648" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Book</text>
-<text x="772" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Docs</text>
-<text x="896" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">In transit</text>
-<text x="1020" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customs</text>
-<text x="1144" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Delivery</text>
-<text x="1268" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Invoice</text>
-<text x="1392" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">REACHED ON</text>
-<text x="1792" y="462" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B" text-anchor="end">not every one</text>
+<rect x="128" y="452" width="1664" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="128" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">WHO THEY TALK TO</text>
+<text x="400" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Enquiry</text>
+<text x="524" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Quote</text>
+<text x="648" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Book</text>
+<text x="772" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Docs</text>
+<text x="896" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">In transit</text>
+<text x="1020" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customs</text>
+<text x="1144" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Delivery</text>
+<text x="1268" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Invoice</text>
+<text x="1392" y="482" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">REACHED ON</text>
+<text x="1792" y="482" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B" text-anchor="end">not every one</text>
 <g id="handoffs">
-<text x="128" y="494" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Customer</text>
-<circle cx="400" cy="489" r="6.5" fill="#96580A"/>
-<circle cx="524" cy="489" r="6.5" fill="#96580A"/>
-<circle cx="648" cy="489" r="6.5" fill="#96580A"/>
-<circle cx="772" cy="489" r="6.5" fill="#96580A"/>
-<circle cx="896" cy="489" r="6.5" fill="#96580A"/>
-<circle cx="1020" cy="489" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1144" cy="489" r="6.5" fill="#96580A"/>
-<circle cx="1268" cy="489" r="6.5" fill="#96580A"/>
-<text x="1392" y="494" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
-<text x="1416" y="494" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  Gmail  ·  Slack  ·  WhatsApp</text>
-<text x="128" y="519" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Shipping line</text>
-<circle cx="400" cy="514" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="524" cy="514" r="6.5" fill="#96580A"/>
-<circle cx="648" cy="514" r="6.5" fill="#96580A"/>
-<circle cx="772" cy="514" r="6.5" fill="#96580A"/>
-<circle cx="896" cy="514" r="6.5" fill="#96580A"/>
-<circle cx="1020" cy="514" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1144" cy="514" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1268" cy="514" r="6.5" fill="#96580A"/>
-<text x="1392" y="519" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
-<text x="1416" y="519" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">portal  ·  EDI  ·  INTTRA  ·  Outlook</text>
-<text x="128" y="544" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Origin agent</text>
-<circle cx="400" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="524" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="648" cy="539" r="6.5" fill="#96580A"/>
-<circle cx="772" cy="539" r="6.5" fill="#96580A"/>
-<circle cx="896" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1020" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1144" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1268" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<text x="1392" y="544" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
-<text x="1416" y="544" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  WeChat  ·  WhatsApp</text>
-<text x="128" y="569" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Port terminal</text>
-<circle cx="400" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="524" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="648" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="772" cy="564" r="6.5" fill="#96580A"/>
-<circle cx="896" cy="564" r="6.5" fill="#96580A"/>
-<circle cx="1020" cy="564" r="6.5" fill="#96580A"/>
-<circle cx="1144" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1268" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<text x="1392" y="569" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
-<text x="1416" y="569" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Portbase  ·  DAKOSY  ·  portal</text>
-<text x="128" y="594" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Haulier</text>
-<circle cx="400" cy="589" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="524" cy="589" r="6.5" fill="#96580A"/>
-<circle cx="648" cy="589" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="772" cy="589" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="896" cy="589" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1020" cy="589" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1144" cy="589" r="6.5" fill="#96580A"/>
-<circle cx="1268" cy="589" r="6.5" fill="#96580A"/>
-<text x="1392" y="594" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
-<text x="1416" y="594" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">phone  ·  WhatsApp  ·  SMS  ·  TIMOCOM</text>
-<text x="128" y="619" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Customs broker</text>
-<circle cx="400" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="524" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="648" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="772" cy="614" r="6.5" fill="#96580A"/>
-<circle cx="896" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1020" cy="614" r="6.5" fill="#96580A"/>
-<circle cx="1144" cy="614" r="6.5" fill="#96580A"/>
-<circle cx="1268" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<text x="1392" y="619" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
-<text x="1416" y="619" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  ATLAS  ·  portal</text>
-<text x="128" y="644" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Consignee</text>
-<circle cx="400" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="524" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="648" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="772" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="896" cy="639" r="6.5" fill="#96580A"/>
-<circle cx="1020" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<circle cx="1144" cy="639" r="6.5" fill="#96580A"/>
-<circle cx="1268" cy="639" r="6.5" fill="#96580A"/>
-<text x="1392" y="644" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
-<text x="1416" y="644" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  Teams  ·  phone</text>
+<text x="128" y="514" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Customer</text>
+<circle cx="400" cy="509" r="6.5" fill="#96580A"/>
+<circle cx="524" cy="509" r="6.5" fill="#96580A"/>
+<circle cx="648" cy="509" r="6.5" fill="#96580A"/>
+<circle cx="772" cy="509" r="6.5" fill="#96580A"/>
+<circle cx="896" cy="509" r="6.5" fill="#96580A"/>
+<circle cx="1020" cy="509" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1144" cy="509" r="6.5" fill="#96580A"/>
+<circle cx="1268" cy="509" r="6.5" fill="#96580A"/>
+<text x="1392" y="514" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
+<text x="1416" y="514" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  Gmail  ·  Slack  ·  WhatsApp</text>
+<text x="128" y="539" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Shipping line</text>
+<circle cx="400" cy="534" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="524" cy="534" r="6.5" fill="#96580A"/>
+<circle cx="648" cy="534" r="6.5" fill="#96580A"/>
+<circle cx="772" cy="534" r="6.5" fill="#96580A"/>
+<circle cx="896" cy="534" r="6.5" fill="#96580A"/>
+<circle cx="1020" cy="534" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1144" cy="534" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1268" cy="534" r="6.5" fill="#96580A"/>
+<text x="1392" y="539" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
+<text x="1416" y="539" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">portal  ·  EDI  ·  INTTRA  ·  Outlook</text>
+<text x="128" y="564" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Origin agent</text>
+<circle cx="400" cy="559" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="524" cy="559" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="648" cy="559" r="6.5" fill="#96580A"/>
+<circle cx="772" cy="559" r="6.5" fill="#96580A"/>
+<circle cx="896" cy="559" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1020" cy="559" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1144" cy="559" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1268" cy="559" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<text x="1392" y="564" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="564" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  WeChat  ·  WhatsApp</text>
+<text x="128" y="589" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Port terminal</text>
+<circle cx="400" cy="584" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="524" cy="584" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="648" cy="584" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="772" cy="584" r="6.5" fill="#96580A"/>
+<circle cx="896" cy="584" r="6.5" fill="#96580A"/>
+<circle cx="1020" cy="584" r="6.5" fill="#96580A"/>
+<circle cx="1144" cy="584" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1268" cy="584" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<text x="1392" y="589" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="589" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Portbase  ·  DAKOSY  ·  portal</text>
+<text x="128" y="614" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Haulier</text>
+<circle cx="400" cy="609" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="524" cy="609" r="6.5" fill="#96580A"/>
+<circle cx="648" cy="609" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="772" cy="609" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="896" cy="609" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1020" cy="609" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1144" cy="609" r="6.5" fill="#96580A"/>
+<circle cx="1268" cy="609" r="6.5" fill="#96580A"/>
+<text x="1392" y="614" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
+<text x="1416" y="614" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">phone  ·  WhatsApp  ·  SMS  ·  TIMOCOM</text>
+<text x="128" y="639" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Customs broker</text>
+<circle cx="400" cy="634" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="524" cy="634" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="648" cy="634" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="772" cy="634" r="6.5" fill="#96580A"/>
+<circle cx="896" cy="634" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1020" cy="634" r="6.5" fill="#96580A"/>
+<circle cx="1144" cy="634" r="6.5" fill="#96580A"/>
+<circle cx="1268" cy="634" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<text x="1392" y="639" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="639" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  ATLAS  ·  portal</text>
+<text x="128" y="664" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Consignee</text>
+<circle cx="400" cy="659" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="524" cy="659" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="648" cy="659" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="772" cy="659" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="896" cy="659" r="6.5" fill="#96580A"/>
+<circle cx="1020" cy="659" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
+<circle cx="1144" cy="659" r="6.5" fill="#96580A"/>
+<circle cx="1268" cy="659" r="6.5" fill="#96580A"/>
+<text x="1392" y="664" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="664" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  Teams  ·  phone</text>
 </g>
-<rect x="128" y="658" width="1664" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
-<text x="128" y="688" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">26 handoffs, 7 parties, 15 channels. Every dot is a mail, a portal login or a call.</text>
+<rect x="128" y="674" width="1664" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="128" y="704" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">26 handoffs, 7 parties, 15 channels. Every dot is a mail, a portal login or a call.</text>
 </g>
 <g id="where-the-tms-sits">
-<rect x="96" y="728" width="700" height="224" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="128" y="768" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="1.4">WHERE THE TMS SITS</text>
-<text x="128" y="804" font-family="Geist" font-size="12" font-weight="600" fill="#0A0A0A" letter-spacing="1.2">IT HOLDS</text>
-<path d="M128 829 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="150" y="834" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">The booking and its dates</text>
-<path d="M128 857 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="150" y="862" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">The rate that was agreed</text>
-<path d="M128 885 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="150" y="890" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">The documents on file</text>
-<text x="458" y="804" font-family="Geist" font-size="12" font-weight="600" fill="#96580A" letter-spacing="1.2">IT DOES NOT</text>
-<path d="M459 822 l9 9 M468 822 l-9 9" stroke="#96580A" stroke-width="2" fill="none" stroke-linecap="round"/>
-<text x="480" y="834" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">Watch anything</text>
-<path d="M459 850 l9 9 M468 850 l-9 9" stroke="#96580A" stroke-width="2" fill="none" stroke-linecap="round"/>
-<text x="480" y="862" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">Decide anything</text>
-<path d="M459 878 l9 9 M468 878 l-9 9" stroke="#96580A" stroke-width="2" fill="none" stroke-linecap="round"/>
-<text x="480" y="890" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">Type itself</text>
-<path d="M434 790 L434 894" stroke="#0A0A0A" stroke-opacity="0.1" stroke-width="1" fill="none"/>
-<rect x="128" y="906" width="636" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
-<text x="128" y="932" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">The TMS is the record. The desk types into it.</text>
+<rect x="96" y="742" width="700" height="212" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="128" y="782" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="1.4">WHERE THE TMS SITS</text>
+<text x="128" y="812" font-family="Geist" font-size="12" font-weight="600" fill="#0A0A0A" letter-spacing="1.2">IT HOLDS</text>
+<path d="M128 835 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="150" y="840" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">The booking and its dates</text>
+<path d="M128 859 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="150" y="864" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">The rate that was agreed</text>
+<path d="M128 883 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="150" y="888" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">The documents on file</text>
+<text x="458" y="812" font-family="Geist" font-size="12" font-weight="600" fill="#96580A" letter-spacing="1.2">IT DOES NOT</text>
+<path d="M459 828 l9 9 M468 828 l-9 9" stroke="#96580A" stroke-width="2" fill="none" stroke-linecap="round"/>
+<text x="480" y="840" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">Watch anything</text>
+<path d="M459 852 l9 9 M468 852 l-9 9" stroke="#96580A" stroke-width="2" fill="none" stroke-linecap="round"/>
+<text x="480" y="864" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">Decide anything</text>
+<path d="M459 876 l9 9 M468 876 l-9 9" stroke="#96580A" stroke-width="2" fill="none" stroke-linecap="round"/>
+<text x="480" y="888" font-family="Geist" font-size="15" font-weight="400" fill="#0A0A0A">Type itself</text>
+<path d="M434 798 L434 896" stroke="#0A0A0A" stroke-opacity="0.1" stroke-width="1" fill="none"/>
+<rect x="128" y="910" width="636" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="128" y="936" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">The TMS is the record. The desk types into it.</text>
 </g>
 <g id="what-a-clean-file-earns">
-<rect x="824" y="728" width="1000" height="224" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="856" y="766" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">WHAT A CLEAN FILE EARNS</text>
-<text x="1792" y="768" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B" text-anchor="end">per container</text>
-<text x="856" y="798" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Billed to the customer</text>
-<rect x="1066" y="787" width="380" height="12" rx="3" fill="#D4D4D4"/>
-<text x="1694" y="798" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">€1,913</text>
-<text x="1792" y="798" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">100.0%</text>
-<text x="856" y="822" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Paid to the carrier</text>
-<rect x="1066" y="811" width="293" height="12" rx="3" fill="#D4D4D4"/>
-<text x="1694" y="822" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">−€1,475</text>
-<text x="1792" y="822" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">−77.1%</text>
-<text x="856" y="846" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Gross profit</text>
-<rect x="1066" y="835" width="87" height="12" rx="3" fill="#D4D4D4"/>
-<text x="1694" y="846" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">€438</text>
-<text x="1792" y="846" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">22.9%</text>
-<text x="856" y="870" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Running the desk</text>
-<rect x="1066" y="859" width="62" height="12" rx="3" fill="#D4D4D4"/>
-<text x="1694" y="870" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">−€311</text>
-<text x="1792" y="870" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">−16.3%</text>
-<text x="856" y="894" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Left over</text>
-<rect x="1066" y="883" width="25" height="12" rx="3" fill="#96580A"/>
-<text x="1694" y="894" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="end">€127</text>
-<text x="1792" y="894" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="end">6.6%</text>
-<rect x="856" y="906" width="936" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
-<text x="856" y="932" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">€6.60 kept on every €100 billed. That is the good day.</text>
-<text x="1792" y="932" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B" text-anchor="end">K+N Sea Logistics FY25 · CHF at 1.07</text>
+<rect x="824" y="742" width="1000" height="212" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="856" y="780" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">WHAT A CLEAN FILE EARNS</text>
+<text x="1792" y="782" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B" text-anchor="end">per container</text>
+<text x="856" y="808" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Billed to the customer</text>
+<rect x="1066" y="797" width="380" height="12" rx="3" fill="#D4D4D4"/>
+<text x="1694" y="808" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">€1,913</text>
+<text x="1792" y="808" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">100.0%</text>
+<text x="856" y="830" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Paid to the carrier</text>
+<rect x="1066" y="819" width="293" height="12" rx="3" fill="#D4D4D4"/>
+<text x="1694" y="830" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">−€1,475</text>
+<text x="1792" y="830" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">−77.1%</text>
+<text x="856" y="852" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Gross profit</text>
+<rect x="1066" y="841" width="87" height="12" rx="3" fill="#D4D4D4"/>
+<text x="1694" y="852" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">€438</text>
+<text x="1792" y="852" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">22.9%</text>
+<text x="856" y="874" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Running the desk</text>
+<rect x="1066" y="863" width="62" height="12" rx="3" fill="#D4D4D4"/>
+<text x="1694" y="874" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A" text-anchor="end">−€311</text>
+<text x="1792" y="874" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B" text-anchor="end">−16.3%</text>
+<text x="856" y="896" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Left over</text>
+<rect x="1066" y="885" width="25" height="12" rx="3" fill="#96580A"/>
+<text x="1694" y="896" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="end">€127</text>
+<text x="1792" y="896" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="end">6.6%</text>
+<rect x="856" y="910" width="936" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="856" y="936" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">€6.60 kept on every €100 billed. That is the good day.</text>
+<text x="1792" y="936" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B" text-anchor="end">K+N Sea Logistics FY25 · CHF at 1.07</text>
 </g>
 <g id="footer">
 <rect x="96" y="978" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>

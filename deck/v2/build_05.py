@@ -8,7 +8,7 @@ s.header("04 · THE JOB, 1 OF 2", "45 days, 7 parties, €127 of margin.",
          "The TMS stores the booking. It does not decide or move anything.")
 
 # ---- one file, end to end
-TY, TH = 306, 400
+TY, TH = 306, 416
 s.g("one-file")
 s.card(M, TY, W - 2 * M, TH)
 x0 = M + 32
@@ -16,28 +16,27 @@ STAGES = ["Enquiry", "Quote", "Book", "Docs", "In transit", "Customs", "Delivery
 CX = [400 + i * 124 for i in range(8)]
 s.T(x0, TY + 42, "ONE FILE, END TO END", 13, 600, MUT, ls=1.4)
 s.T(CX[0] - 64, TY + 43, "Shanghai to Munich · 45 days", 15, 500, MUT)
-s.T(x0, TY + 86, "The clock", 15, 500)
-days = [1.9, 3, 1.9, 1.9, 32, 1.9, 0.9, 0.9]
-BX0, BX1, GAPB = CX[0] - 64, CX[-1] + 64, 4
-unit = (BX1 - BX0 - GAPB * (len(days) - 1)) / sum(days)
+# The clock, in three phases. Handoffs per phase are summed from the grid below;
+# widths follow the days (45 in all, 32 at sea).
+s.T(x0, TY + 112, "The clock", 15, 500)
+phases = [("Before sailing", 9, 12, True), ("At sea · 32 days", 32, 4, False), ("After arrival", 4, 10, True)]
+assert sum(p[2] for p in phases) == 26 and sum(p[1] for p in phases) == 45
+BX0, BX1, GAPB = CX[0] - 64, W - M - 32, 6
+unit = (BX1 - BX0 - GAPB * 2) / 45
 bx = BX0
 s.g("clock")
-PER_STAGE = [1, 3, 3, 5, 4, 2, 4, 4]   # handoffs per stage, summed from the grid below
-for d, n in zip(days, PER_STAGE):
+for name, d, n, busy in phases:
     w = d * unit
-    big = d == 32
-    s.R(round(bx, 1), TY + 68, round(w, 1), 26, TRACK, 6)
-    if d in (3, 32):
-        s.T(round(bx + w / 2, 1), TY + 86, f"{d:g}d", 13, 600, INK if big else MUT, anchor="middle")
-    s.T(round(bx + w / 2, 1), TY + 116, str(n), 14, 600, AMB, anchor="middle")
+    s.T(round(bx, 1), TY + 80, name, 13, 500, MUT)
+    s.R(round(bx, 1), TY + 90, round(w, 1), 36, AMB if busy else TRACK, 8, ' fill-opacity="0.14"' if busy else "")
+    s.T(round(bx + 14, 1), TY + 113, f"{n} handoffs", 15, 600, AMB if busy else INK)
+    if not busy:
+        s.T(round(bx + w - 14, 1), TY + 113, "the lane goes unwatched", 13, 400, MUT, anchor="end")
     bx += w + GAPB
-s.T(x0, TY + 116, "Handoffs", 15, 500)
-s.T(W - M - 32, TY + 86, "22 of 26 handoffs", 15, 600, AMB, anchor="end")
-s.T(W - M - 32, TY + 108, "fall outside the 32 days at sea", 13, 400, MUT, anchor="end")
 s.end()
-s.rule(TY + 128, 0.08, x0, W - 2 * M - 64)
+s.rule(TY + 146, 0.08, x0, W - 2 * M - 64)
 
-HY = TY + 156
+HY = TY + 176
 s.T(x0, HY, "WHO THEY TALK TO", 13, 600, AMB, ls=1.4)
 for c, st in zip(CX, STAGES):
     s.T(c, HY, st, 13, 600, INK, anchor="middle")
@@ -71,7 +70,7 @@ s.T(x0, TY + TH - 18, "26 handoffs, 7 parties, 15 channels. Every dot is a mail,
 s.end()
 
 # ---- bottom: what the TMS does, what a clean file earns
-BY, BH = 728, 224
+BY, BH = 742, 212
 LW = 700
 s.g("where-the-tms-sits")
 s.card(M, BY, LW, BH)
@@ -80,17 +79,17 @@ cols = [("IT HOLDS", ["The booking and its dates", "The rate that was agreed", "
         ("IT DOES NOT", ["Watch anything", "Decide anything", "Type itself"], False)]
 for i, (head, items, ok) in enumerate(cols):
     cx = x0 + i * 330
-    s.T(cx, BY + 76, head, 12, 600, INK if ok else AMB, ls=1.2)
+    s.T(cx, BY + 70, head, 12, 600, INK if ok else AMB, ls=1.2)
     for k, it in enumerate(items):
-        iy = BY + 106 + k * 28
+        iy = BY + 98 + k * 24
         if ok:
             s.raw(f'<path d="M{cx} {iy - 5} l4 4 l8 -9" stroke="{GREEN}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
         else:
             s.raw(f'<path d="M{cx + 1} {iy - 12} l9 9 M{cx + 10} {iy - 12} l-9 9" stroke="{AMB}" stroke-width="2" fill="none" stroke-linecap="round"/>')
         s.T(cx + 22, iy, it, 15, 400)
-s.line(x0 + 306, BY + 62, x0 + 306, BY + 166, INK, 0.1, 1)
-s.rule(BY + 178, 0.08, x0, LW - 64)
-s.T(x0, BY + 204, "The TMS is the record. The desk types into it.", 16, 600)
+s.line(x0 + 306, BY + 56, x0 + 306, BY + 154, INK, 0.1, 1)
+s.rule(BY + 168, 0.08, x0, LW - 64)
+s.T(x0, BY + 194, "The TMS is the record. The desk types into it.", 16, 600)
 s.end()
 
 RX0, RW = M + LW + 28, W - 2 * M - LW - 28
@@ -106,14 +105,14 @@ rows = [("Billed to the customer", "€1,913", "100.0%", 1913, False, False),
         ("Left over", "€127", "6.6%", 127, True, True)]
 BAR0, BARW = ex + 210, 380
 for k, (lab, val, pct, v, bold, hi) in enumerate(rows):
-    ry = BY + 70 + k * 24
+    ry = BY + 66 + k * 22
     s.T(ex, ry, lab, 14, 600 if bold else 400)
     s.R(BAR0, ry - 11, max(4, round(BARW * v / 1913)), 12, AMB if hi else MID, 3)
     s.T(RX0 + RW - 130, ry, val, 14, 600, AMB if hi else INK, anchor="end")
     s.T(RX0 + RW - 32, ry, pct, 14, 600 if hi else 400, AMB if hi else MUT, anchor="end")
-s.rule(BY + 178, 0.08, ex, RW - 64)
-s.T(ex, BY + 204, "€6.60 kept on every €100 billed. That is the good day.", 16, 600)
-s.T(RX0 + RW - 32, BY + 204, "K+N Sea Logistics FY25 · CHF at 1.07", 11.5, 400, MUT, anchor="end")
+s.rule(BY + 168, 0.08, ex, RW - 64)
+s.T(ex, BY + 194, "€6.60 kept on every €100 billed. That is the good day.", 16, 600)
+s.T(RX0 + RW - 32, BY + 194, "K+N Sea Logistics FY25 · CHF at 1.07", 11.5, 400, MUT, anchor="end")
 s.end()
 
 s.footer(5)
