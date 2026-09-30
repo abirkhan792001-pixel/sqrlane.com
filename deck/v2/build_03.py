@@ -22,35 +22,51 @@ def stat(x, big, lab, qual, src):
 
 # ---- 01 the desk re-types
 X1 = M
-panel(X1, "01", "The desk re-types the same facts.", "One booking number, one ETA. Six systems, six field names.", "problem-retyping")
-BW, BH, GAP = 232, 96, 44
-# The same two facts in every system, under a different field name each time.
-REF, ETA = "HLCU-2261188", "10 Oct"
-fields = {"Inbox": ("Subject ref", "Arrival"), "TMS": ("Job ref", "ETA"),
-          "Carrier portal": ("Booking no.", "ETA POD"), "Customer": ("Your ref", "Arrival"),
-          "Invoice": ("Our ref", "Arrival date"), "Customs": ("Declarant ref", "Arrival")}
-rows = [["Inbox", "TMS", "Carrier portal"], ["Customer", "Invoice", "Customs"]]
-pos = {}
-for r, names in enumerate(rows):
-    for c, nm in enumerate(names):
-        bx, by = X1 + 32 + c * (BW + GAP), PY + 124 + r * 124
-        pos[nm] = (bx, by)
-        s.g("system-" + nm.lower().replace(" ", "-"))
-        s.R(bx, by, BW, BH, BG, 10, f' stroke="{INK}" stroke-opacity="0.14"')
-        s.T(bx + 14, by + 27, nm, 15, 600)
-        for k, (lab, val, vw) in enumerate([(fields[nm][0], REF, 104), (fields[nm][1], ETA, 60)]):
-            ry = by + 42 + k * 26
-            s.T(bx + 14, ry + 15, lab, 12.5, 400, MUT)
-            s.R(bx + BW - 12 - vw, ry, vw, 22, TRACK, 5)
-            s.T(bx + BW - 12 - vw / 2, ry + 15, val, 12.5, 500, INK, anchor="middle")
-        s.end()
-s.g("handoffs")
-for a, b in [("Inbox", "TMS"), ("TMS", "Carrier portal"), ("Customer", "Invoice"), ("Invoice", "Customs")]:
-    (ax, ay), (bx, by) = pos[a], pos[b]
-    s.line(ax + BW, ay + BH / 2, bx, by + BH / 2, AMB, 0.8, 1.5)
-cx, cy = pos["Carrier portal"]
-s.line(cx + BW / 2, cy + BH, cx + BW / 2, cy + 124, AMB, 0.8, 1.5)
+panel(X1, "01", "The desk re-types the same facts.", "One booking, typed out by hand into every system it touches.", "problem-retyping")
+# One source, typed out by hand six times: a new field name, a new date format,
+# and one transposed digit nobody catches. Illustrative.
+REF = "HLCU-2261188"
+SRC_X, SRC_Y, SRC_W, SRC_H = X1 + 32, PY + 144, 212, 170
+s.g("source-mail")
+s.R(SRC_X, SRC_Y, SRC_W, SRC_H, BG, 12, f' stroke="{INK}" stroke-opacity="0.18"')
+s.T(SRC_X + 18, SRC_Y + 30, "CARRIER MAIL", 12, 600, MUT, ls=1.4)
+s.T(SRC_X + 18, SRC_Y + 58, "Booking confirmed", 16, 600)
+s.T(SRC_X + 18, SRC_Y + 92, "Booking", 12.5, 400, MUT)
+s.T(SRC_X + SRC_W - 18, SRC_Y + 92, REF, 13, 600, anchor="end")
+s.T(SRC_X + 18, SRC_Y + 118, "ETA", 12.5, 400, MUT)
+s.T(SRC_X + SRC_W - 18, SRC_Y + 118, "10 Oct", 13, 600, anchor="end")
+s.rule(SRC_Y + 134, 0.08, SRC_X + 18, SRC_W - 36)
+s.T(SRC_X + 18, SRC_Y + 156, "the one true copy", 12.5, 400, MUT)
 s.end()
+
+rows = [  # system, its field name, the ref as typed, the date as typed, typo?
+    ("TMS", "Job ref", REF, "10/10/2026", False),
+    ("Carrier portal", "Booking no.", REF, "2026-10-10", False),
+    ("Customer mail", "Your ref", REF, "10 October", False),
+    ("Customs", "Declarant ref", "HLCU-2216188", "10.10.26", True),
+    ("Invoice", "Our ref", REF, "Oct 10", False),
+    ("Tracking sheet", "Ref", REF, "10-OCT-26", False),
+]
+RX, RW, RH, RS = X1 + 304, 512, 32, 36
+R0 = PY + 122
+srcy = SRC_Y + SRC_H / 2
+s.g("typed-six-times")
+for i, (sysn, lab, ref, dt, typo) in enumerate(rows):
+    ry = R0 + i * RS
+    cy = ry + RH / 2
+    col = AMB if typo else INK
+    s.raw(f'<path d="M{SRC_X + SRC_W} {srcy} C{SRC_X + SRC_W + 40} {srcy} {RX - 40} {cy} {RX} {cy}" '
+          f'stroke="{col}" stroke-opacity="{0.9 if typo else 0.22}" stroke-width="1.4" fill="none"/>')
+    s.g("row-" + sysn.lower().replace(" ", "-"))
+    s.R(RX, ry, RW, RH, AMB if typo else BG, 8,
+        f' fill-opacity="{0.07 if typo else 1}" stroke="{col}" stroke-opacity="{0.5 if typo else 0.12}"')
+    s.T(RX + 14, cy + 5, sysn, 13.5, 600)
+    s.T(RX + 136, cy + 5, lab, 12.5, 400, MUT)
+    s.T(RX + 356, cy + 5, ref, 13, 600 if typo else 500, col, anchor="end")
+    s.T(RX + RW - 14, cy + 5, dt, 13, 500, INK, anchor="end")
+    s.end()
+s.end()
+s.T(RX + 14, R0 + 6 * RS + 16, "Same booking. Six field names, six date formats, one typo.", 13, 500, MUT)
 s.rule(PY + 372, 0.08, X1 + 32, PW - 64)
 stat(X1 + 32, "40%", "of the day on admin", "upper estimate", "logistics industry surveys")
 stat(X1 + 440, "€13,600", "per desk, per year", "€34k average salary × 40%", "SalaryExpert 2025 · DE and NL")
