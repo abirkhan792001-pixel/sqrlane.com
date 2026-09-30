@@ -175,13 +175,13 @@
 <g id="front-doors">
 <rect x="1144" y="416" width="408" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
 <text x="1158" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Inbox</text>
-<rect x="1206" y="426" width="58" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1235.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">1 agent</text>
+<rect x="1206" y="426" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1235.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1276" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">reads every mail, routes it to its owner</text>
 <rect x="1560" y="416" width="240" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
 <text x="1574" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Assistant</text>
-<rect x="1648" y="426" width="58" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1677.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">1 agent</text>
+<rect x="1648" y="426" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1677.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1716" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">your questions</text>
 </g>
 <path d="M1472.0 456 L1472.0 463" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
@@ -194,8 +194,8 @@
 <rect x="1158.0" y="506" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="1172.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">01</text>
 <text x="1196.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Quote</text>
-<rect x="1286.0" y="517" width="64" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1318.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">2 agents</text>
+<rect x="1286.0" y="517" width="64" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1318.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">2 agents</text>
 <text x="1172.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prices it, drafts the quote</text>
 <rect x="1172.0" y="566" width="42" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1193.0" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Rate</text>
@@ -206,8 +206,8 @@
 <rect x="1370.0" y="506" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="1384.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">02</text>
 <text x="1408.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Book</text>
-<rect x="1504.0" y="517" width="58" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1533.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">1 agent</text>
+<rect x="1504.0" y="517" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1533.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1384.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Opens the booking from the mail</text>
 <rect x="1384.0" y="566" width="61" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1414.5" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Booking</text>
@@ -216,8 +216,8 @@
 <rect x="1582.0" y="506" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="1596.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">03</text>
 <text x="1620.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Documents</text>
-<rect x="1716.0" y="517" width="58" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1745.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">1 agent</text>
+<rect x="1716.0" y="517" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1745.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1596.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks each field on the B/L</text>
 <rect x="1596.0" y="566" width="42" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1617.0" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Docs</text>
@@ -226,8 +226,8 @@
 <rect x="1158.0" y="606" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="1172.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">04</text>
 <text x="1196.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">In transit</text>
-<rect x="1286.0" y="617" width="64" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1318.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">2 agents</text>
+<rect x="1286.0" y="617" width="64" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1318.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">2 agents</text>
 <text x="1172.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Updates the ETA, flags rollovers</text>
 <rect x="1172.0" y="666" width="80" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1212.0" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Milestones</text>
@@ -238,8 +238,8 @@
 <rect x="1370.0" y="606" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="1384.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">05</text>
 <text x="1408.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Arrival</text>
-<rect x="1504.0" y="617" width="58" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1533.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">1 agent</text>
+<rect x="1504.0" y="617" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1533.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1384.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prepares the entry, never files</text>
 <rect x="1384.0" y="666" width="61" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1414.5" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Customs</text>
@@ -248,8 +248,8 @@
 <rect x="1582.0" y="606" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="1596.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">06</text>
 <text x="1620.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Billing</text>
-<rect x="1716.0" y="617" width="58" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1745.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">1 agent</text>
+<rect x="1716.0" y="617" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1745.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1596.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks the bill against the rate</text>
 <rect x="1596.0" y="666" width="61" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1626.5" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Invoice</text>
@@ -275,8 +275,8 @@
 <path d="M1476.0 777.5 L1482.0 782 L1476.0 786.5" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <rect x="1486.0" y="762" width="314.0" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
 <text x="1500.0" y="787" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">TMS link</text>
-<rect x="1570.0" y="772" width="58" height="19" rx="9.5" fill="#EAF1F8"/>
-<text x="1599.0" y="785.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">1 agent</text>
+<rect x="1570.0" y="772" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1599.0" y="785.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1638.0" y="787" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">writes it onto the booking</text>
 </g>
 <g id="worked-together">
