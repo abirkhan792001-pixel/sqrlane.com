@@ -27,7 +27,8 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 | 06 | `build_06.py` → `slide-06-the-job-2.svg` (version A, the owner's pick) | final |
 | 07 | `build_07.py` → `slide-07-the-how-1.svg` (rebuilt: the desk) | built, awaiting feedback |
 | 08 | `build_08.py` → `slide-08-the-how-2.svg` (the risk layer) | built, awaiting feedback |
-| 09 | Who am I (founder) | to do |
+| 09 | `build_09.py` → `slide-09-integrations.svg` (integrations) | built, awaiting feedback |
+| 10 | Who am I (founder) | to do |
 | A | Appendix: sources for slide 06 (`SOURCES` list in `build_06.py`) | later, not now |
 
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
@@ -93,6 +94,25 @@ A "Confidence, building" grid (from the Hamburg trail) was tried top right and r
 "Draft, not sent" now reads "Draft ready" on slides 07 and 08, on the owner's instruction;
 the Approve button still carries the gate, and nothing is ever sent.
 
+## Slide 09, integrations (first pass, 2026-09-30, on the owner's instruction)
+
+Slide 09 became integrations; Who am I moves to 10. Eyebrow `07 · INTEGRATIONS`, headline
+"Works inside the tools you already run.", closing "No new system to keep. The work lands
+where your desk already looks." Same frame as 07/08. Left, the TMS link view reading the
+sample export (`data/sample_tms_export.csv`, named bookings.csv on screen): 10 rows read,
+16 columns mapped (0 unmapped), 7 covered, 3 not covered with the connector's reasons
+(LA, Gdansk, no readable ETA), 0 written; six mapped columns; JOB-24126's reroute
+write-back (HAM → RTM, R-HAM-STD → R-RTM-ALT, ETA +2 days), "Queued, not written" +
+Approve. All from `connect.read_export` + a rules-only Hamburg run on that book (8 changes
+on 2 bookings, hence Approvals 8). Right, "Where SQRlane connects": Your TMS (CargoWise,
+SAP, Oracle, Descartes marks; export/endpoint in, approved changes out to your URL: works
+today; native connectors: next), Mail and chat (Outlook, Gmail, Teams, Slack, WhatsApp,
+WeChat; works today by dropping a mail file into Ask; mailbox and chat links: next), 60
+public sources (live), Your AI assistant (Claude + MCP marks, sqrlane.com/mcp, read-only,
+live). A two-line disclosure under it says none of the named systems is connected.
+Claude (`logos:claude-icon`) and MCP (`simple-icons:modelcontextprotocol`) marks were
+added to `channel_marks.json`, both CC0.
+
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 
 Where it came from: the old web deck says "60% goes to coordination, only 40% goes to the
@@ -134,7 +154,7 @@ Agent copy (accepted by the owner):
 
 ## Accepted copy changes for the remaining slides
 
-- **09 The How 2/2:** headline "Know early, while you still have options."; "42 live.
+- **08 The How 2/2 (done, kept for the record):** headline "Know early, while you still have options."; "42 live.
   Rest is phase two." becomes "60 live sources. AIS, freight indices and prediction
   markets come next."; drop the "triggered · 92%" number from the mock (reads as a real
   confidence score); the drafted mail's revised ETA must fit slide 02 (due 14 Oct, ETA
