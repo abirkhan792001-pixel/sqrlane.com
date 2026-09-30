@@ -94,24 +94,29 @@ A "Confidence, building" grid (from the Hamburg trail) was tried top right and r
 "Draft, not sent" now reads "Draft ready" on slides 07 and 08, on the owner's instruction;
 the Approve button still carries the gate, and nothing is ever sent.
 
-## Slide 09, integrations (first pass, 2026-09-30, on the owner's instruction)
+## Slide 09, integrations (second version, rebuilt from scratch, 2026-09-30)
 
-Slide 09 became integrations; Who am I moves to 10. Eyebrow `07 · INTEGRATIONS`, headline
-"Works inside the tools you already run.", closing "No new system to keep. The work lands
-where your desk already looks." Same frame as 07/08. Left, the TMS link view reading the
-sample export (`data/sample_tms_export.csv`, named bookings.csv on screen): 10 rows read,
-16 columns mapped (0 unmapped), 7 covered, 3 not covered with the connector's reasons
-(LA, Gdansk, no readable ETA), 0 written; six mapped columns; JOB-24126's reroute
-write-back (HAM → RTM, R-HAM-STD → R-RTM-ALT, ETA +2 days), "Queued, not written" +
-Approve. All from `connect.read_export` + a rules-only Hamburg run on that book (8 changes
-on 2 bookings, hence Approvals 8). Right, "Where SQRlane connects": Your TMS (CargoWise,
-SAP, Oracle, Descartes marks; export/endpoint in, approved changes out to your URL: works
-today; native connectors: next), Mail and chat (Outlook, Gmail, Teams, Slack, WhatsApp,
-WeChat; works today by dropping a mail file into Ask; mailbox and chat links: next), 60
-public sources (live), Your AI assistant (Claude + MCP marks, sqrlane.com/mcp, read-only,
-live). A two-line disclosure under it says none of the named systems is connected.
-Claude (`logos:claude-icon`) and MCP (`simple-icons:modelcontextprotocol`) marks were
-added to `channel_marks.json`, both CC0.
+The owner rejected the first version (a TMS-link dashboard mock; in git at `e1f3feb`) and
+asked for: less text, cleaner, the Zauber/Peec integration stack, logos in an orbit
+around each agent, and a neural-network flow of how the agents talk. Now: headline
+"Works inside the tools you already run.", subline "Each agent works where its job
+already lives. They all talk on one bus." Eight agent nodes on an ellipse round a black
+SQRlane centre ("16 agents · one bus"); faint dashed spokes to the centre are the bus;
+blue curves with message dots are real handoffs (Inbox→Docs/Rate/Playbook,
+Docs→TMS link, Rate→Playbook, Playbook→Comms, Risk→TMS link/Comms,
+Assistant→TMS link/Risk). Orbits: Inbox (Outlook, Gmail), Docs (PDF, Word, Excel,
+image, XML), Playbook (Word, OneDrive, Google Drive), Rate (Excel, Google Sheets), TMS
+link (CargoWise icon clipped from its wordmark, SAP, Oracle, Descartes), Comms (Teams,
+Slack, WhatsApp, WeChat), Assistant (Claude, Cursor, VS Code, via MCP), Risk (NDR, DW,
+NASA, +57). One grey line at the foot: live today are the 60 sources and MCP; TMS and
+mail are read from exports and files; native links come next.
+
+Not shown, on purpose: SharePoint and BBC (their marks were withdrawn from simple-icons,
+so there is no official file to inline) and the rate-management vendors in the Zauber
+reference (no official marks, and SQRlane prices from a rate sheet, not an RMS). New
+marks in `channel_marks.json`: PDF, Word, Excel, Image, XML (vscode-icons, MIT),
+OneDrive, Google Drive, Cursor, VS Code, Claude (logos, CC0), Google Sheets, DW, NASA,
+MCP (simple-icons, CC0, brand hex filled in for `currentColor`).
 
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 

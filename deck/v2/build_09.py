@@ -1,293 +1,178 @@
 #!/usr/bin/env python3
-"""Slide 09 - Integrations: how SQRlane plugs into the tools a desk already runs. The
-same frame as slides 07 and 08. Left, the product's TMS link view, reading a bookings
-export: what it read, how every column was mapped, what it could not cover (said, not
-guessed), and one change queued back onto a booking. Right, every place SQRlane
-connects: the TMS, mail and chat, the 60 sources, and an AI assistant over MCP, each
-with what works today and what is coming.
+"""Slide 09 - Integrations, rebuilt from scratch on the owner's brief: less text, logos in
+an orbit around each agent, and the agents joined as one network.
 
-Every figure on the left is from connect.read_export() on data/sample_tms_export.csv
-(renamed bookings.csv on screen) and orchestrator.run_cycle(live=False, use_llm=False,
-scenario="hamburg") with that export as the book: 10 rows, 16 columns mapped, 0
-unmapped, 7 covered, 3 not covered with the connector's own reasons, 8 changes queued
-on 2 bookings. JOB-24126's reroute is the Routing agent's write-back; its ETA is shown
-as "+2 days", because the run's dates age forward. The vendor marks are official
-files; none of those systems is connected, and the slide says so beside them."""
+Eight agent nodes on an ellipse around SQRlane. Each carries an outward-facing arc of the
+tools its job lives in (official marks only, inlined byte-for-byte; a mark that cannot be
+had is left out, never redrawn). Faint spokes run from every agent to the centre: the one
+message bus. Blue links are real handoffs on that bus (workflow.py / orchestrator):
+Inbox passes mail to Docs, Rate and the Playbook; Docs feeds the booking in the TMS; Rate's
+quote goes to the Playbook; the Playbook checks Comms' mail; Risk hands its decision to
+the TMS record and to Comms; the Assistant asks the TMS link and Risk.
+
+One line under the network says what is connected in this build, because a real logo
+reads as a live integration."""
 from kit import *
 import json, math, pathlib, re
 
-BLUE, BLUE_BG = "#006BFF", "#E8F1FF"
-GREEN, GREEN_BG = "#0F7B3F", "#E7F5EC"
-AMBR, AMBR_BG = "#96580A", "#FDF3E3"
-GREY, GREY_BG = "#9A9A9A", "#F3F3F3"
-RED = "#EA001D"
+BLUE = "#006BFF"
+GREY = "#9A9A9A"
 
 s = Slide()
 s.header("07 · INTEGRATIONS", "Works inside the tools you already run.",
-         "Your TMS stays the system of record. SQRlane reads from it, and writes back only what you approve.")
-TOP, BOT = 306, 890
+         "Each agent works where its job already lives. They all talk on one bus.")
 
 HERE = pathlib.Path(__file__).parent
 CH = json.loads((HERE / "channel_marks.json").read_text())   # Iconify, CC0/MIT
-TM = json.loads((HERE / "tms_marks.json").read_text())       # official marks, see HANDOFF
+TM = json.loads((HERE / "tms_marks.json").read_text())
 
-def pill(x, y, text, fill, ink, anchor="end", size=10.5, h=20):
-    w = round(len(text) * size * 0.6 + 18)
-    x0 = x - w if anchor == "end" else x
-    s.R(x0, y, w, h, fill, h / 2)
-    s.T(x0 + w / 2, y + h / 2 + size * 0.36, text, size, 600, ink, anchor="middle")
-    return w
+CX, CY, RX, RY = 960, 622, 650, 204
+N_R = 42          # agent node radius
+B_R = 22          # logo bubble radius
 
-def mark(name, x, y, size, fill=None):
-    """An official mark, byte-for-byte, scaled into a size x size box. Never redrawn."""
+def uid():
+    uid.n += 1
+    return f"m{uid.n}-"
+uid.n = 0
+
+def scoped(body):
+    p = uid()
+    return re.sub(r'(id="|url\(#|href="#)([^")]+)', lambda g: g.group(1) + p + g.group(2), body)
+
+def mark(name, cx, cy, size):
+    """An official mark, byte-for-byte, centred in a size x size box. Never redrawn."""
     m = CH[name]; sc = size / max(m["w"], m["h"])
-    body = re.sub(r'(id="|url\(#|href="#)([^")]+)', lambda g: g.group(1) + "o9-" + g.group(2), m["body"])
-    dx = x + (size - m["w"] * sc) / 2; dy = y + (size - m["h"] * sc) / 2
-    col = f' color="{fill}"' if fill else ""
-    s.raw(f'<g id="mark-{name.lower()}"{col} transform="translate({dx:.1f} {dy:.1f}) scale({sc:.4f})">{body}</g>')
+    dx = cx - m["w"] * sc / 2; dy = cy - m["h"] * sc / 2
+    s.raw(f'<g id="mark-{name.lower()}" transform="translate({dx:.1f} {dy:.1f}) scale({sc:.4f})">{scoped(m["body"])}</g>')
 
-def tms_mark(name, x, cy, h):
-    """A TMS vendor's mark at height h, left-aligned at x. Returns its width."""
-    m = TM[name]; sc = h / m["h"]; w = m["w"] * sc
+def tms_word(name, cx, cy, width):
+    """A TMS vendor's wordmark, fitted to width, centred."""
+    m = TM[name]; sc = width / m["w"]; h = m["h"] * sc
+    x, y = cx - width / 2, cy - h / 2
     if m["kind"] == "png":
-        s.raw(f'<image id="mark-{name.lower()}" x="{x:.1f}" y="{cy - h / 2:.1f}" width="{w:.1f}" height="{h:.1f}" href="{m["href"]}"/>')
+        s.raw(f'<image id="mark-{name.lower()}" x="{x:.1f}" y="{y:.1f}" width="{width:.1f}" height="{h:.1f}" href="{m["href"]}"/>')
     else:
-        body = re.sub(r'(id="|url\(#|href="#)([^")]+)', lambda g: g.group(1) + "t9-" + g.group(2), m["body"])
-        s.raw(f'<g id="mark-{name.lower()}" transform="translate({x:.1f} {cy - h / 2:.1f}) scale({sc:.4f})">{body}</g>')
-    return w
+        s.raw(f'<g id="mark-{name.lower()}" transform="translate({x:.1f} {y:.1f}) scale({sc:.4f})">{scoped(m["body"])}</g>')
+
+def cargowise_icon(cx, cy, h=24):
+    """CargoWise's own icon: the left square of its official wordmark, clipped. Not redrawn."""
+    m = TM["CargoWise"]; sc = h / m["h"]; w = m["w"] * sc
+    x, y = cx - h * 0.5, cy - h / 2
+    cid = uid() + "cw"
+    s.raw(f'<clipPath id="{cid}"><rect x="{x:.1f}" y="{y:.1f}" width="{h:.1f}" height="{h:.1f}"/></clipPath>'
+          f'<image id="mark-cargowise" clip-path="url(#{cid})" x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" href="{m["href"]}"/>')
 
 def agent_mark(cx, cy, r=6, col=BLUE):
-    for i in range(8):                                   # the agent: a ring of dots
+    for i in range(8):
         a = i * math.pi / 4
         s.raw(f'<circle cx="{cx + r * math.cos(a):.1f}" cy="{cy + r * math.sin(a):.1f}" r="{r * 0.27:.1f}" fill="{col}" fill-opacity="{0.35 + 0.08 * i:.2f}"/>')
 
-def soft_card(x, y, w, h, r=14, fill=CARD, op=0.12):
-    s.R(x, y + 3, w, h, INK, r, ' fill-opacity="0.04"')
-    s.R(x, y, w, h, fill, r, f' stroke="{INK}" stroke-opacity="{op}"')
+# (name, angle in degrees on the ellipse, orbit radius, tools). A tool is a channel mark
+# name, ("tms", vendor, pill width), ("cw",) for the CargoWise icon, or ("more", text).
+NODES = [
+    ("Inbox",     180, 80, ["Outlook", "Gmail"]),
+    ("Docs",      225, 84, ["PDF", "Word", "Excel", "Image", "XML"]),
+    ("Playbook",  270, 80, ["Word", "OneDrive", "GoogleDrive"]),
+    ("Rate",      315, 80, ["Excel", "GoogleSheets"]),
+    ("TMS link",    0, 96, [("cw",), ("tms", "SAP", 40), ("tms", "Oracle", 70), ("tms", "Descartes", 84)]),
+    ("Comms",      45, 84, ["Teams", "Slack", "WhatsApp", "WeChat"]),
+    ("Assistant",  90, 80, ["Claude", "Cursor", "VSCode"]),
+    ("Risk",      135, 84, ["NDR", "DW", "NASA", ("more", "+57")]),
+]
+POS = {}
+for name, ang, _, _ in NODES:
+    a = math.radians(ang)
+    POS[name] = (CX + RX * math.cos(a), CY + RY * math.sin(a))
 
-def h_arrow(x, y, op=0.3):
-    s.line(x, y, x + 12, y, INK, op, 1.5)
-    s.raw(f'<path d="M{x+11} {y-4} L{x+16} {y} L{x+11} {y+4}" stroke="{INK}" stroke-opacity="{op}" stroke-width="1.5" fill="none"/>')
-
-# ================================================================ the dashboard: TMS link
-FX, FW = M, 1000
-s.g("dashboard")
-s.R(FX, TOP, FW, BOT - TOP, CARD, 14, f' stroke="{INK}" stroke-opacity="0.14"')
-s.g("window-bar")
-s.R(FX, TOP, FW, 40, "#F4F4F4", 14); s.R(FX, TOP + 26, FW, 14, "#F4F4F4")
-s.rule(TOP + 40, 0.09, FX, FW)
-for i in range(3):
-    s.raw(f'<circle cx="{FX + 22 + i * 18}" cy="{TOP + 20}" r="5.5" fill="#DEDEDE"/>')
-s.R(FX + FW / 2 - 150, TOP + 9, 300, 22, CARD, 6, f' stroke="{INK}" stroke-opacity="0.08"')
-s.T(FX + FW / 2, TOP + 25, "SQRlane · Desk", 12, 500, MUT, anchor="middle")
+# ---- the bus: a faint spoke from every agent to the centre
+s.g("bus")
+s.raw(f'<ellipse cx="{CX}" cy="{CY}" rx="{RX}" ry="{RY}" fill="none" stroke="{INK}" stroke-opacity="0.06" stroke-width="1"/>')
+for name, (x, y) in POS.items():
+    s.line(CX, CY, x, y, INK, 0.10, 1, dash="3 5")
 s.end()
 
-SBW, SY0 = 180, TOP + 41
-s.g("sidebar")
-s.R(FX + SBW, SY0, 1, BOT - SY0 - 1, INK, extra=' fill-opacity="0.08"')
-s.R(FX + 22, SY0 + 22, 24, 24, INK, 6)
-s.raw(f'<path d="M{FX+28} {SY0+39}h12 M{FX+28} {SY0+34}h8 M{FX+28} {SY0+29}h4.5" stroke="{BG}" stroke-width="1.9" stroke-linecap="round" fill="none"/>')
-s.T(FX + 56, SY0 + 40, "sqrlane", 16, 600)
-ny = SY0 + 80
-for name, count, on in (("Today", None, False), ("Risk", "1", False), ("Approvals", "8", False),
-                        ("Shipments", "7", False), ("Agents", "16", False), ("TMS link", None, True)):
-    if on: s.R(FX + 12, ny, SBW - 24, 32, GREY_BG, 8)
-    s.T(FX + 26, ny + 21, name, 13.5, 600 if on else 500, INK if on else "#4A4A4A")
-    if count:
-        cw = len(count) * 7 + 14
-        s.R(FX + SBW - 22 - cw, ny + 7, cw, 18, BLUE_BG if name == "Approvals" else GREY_BG, 9)
-        s.T(FX + SBW - 22 - cw / 2, ny + 20, count, 11, 600, BLUE if name == "Approvals" else "#6B6B6B", anchor="middle")
-    ny += 36
+# ---- the network: real handoffs between agents, curved through the middle
+LINKS = [("Inbox", "Docs"), ("Inbox", "Rate"), ("Inbox", "Playbook"), ("Docs", "TMS link"),
+         ("Rate", "Playbook"), ("Playbook", "Comms"), ("Risk", "TMS link"), ("Risk", "Comms"),
+         ("Assistant", "TMS link"), ("Assistant", "Risk")]
+s.g("network")
+for a, b in LINKS:
+    (x1, y1), (x2, y2) = POS[a], POS[b]
+    mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+    near = math.dist((x1, y1), (x2, y2)) < 600                 # neighbours: a gentle bend
+    k = 0.18 if near else 0.55
+    qx, qy = mx + (CX - mx) * k, my + (CY - my) * k           # bend toward the bus
+    s.raw(f'<path d="M{x1:.1f} {y1:.1f} Q{qx:.1f} {qy:.1f} {x2:.1f} {y2:.1f}" stroke="{BLUE}" stroke-opacity="0.28" stroke-width="1.4" fill="none"/>')
+    for t, op in ((0.32, 0.9), (0.62, 0.45)):                  # messages in flight
+        px = (1 - t) ** 2 * x1 + 2 * (1 - t) * t * qx + t ** 2 * x2
+        py = (1 - t) ** 2 * y1 + 2 * (1 - t) * t * qy + t ** 2 * y2
+        s.raw(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="3.2" fill="{BLUE}" fill-opacity="{op}"/>')
 s.end()
 
-MX = FX + SBW + 32; MW = FX + FW - 32 - MX
-
-s.g("page-header")
-s.T(MX, TOP + 90, "TMS link", 26, 600, ls=-0.6)
+# ---- the centre: SQRlane
+s.g("sqrlane")
+s.raw(f'<circle cx="{CX}" cy="{CY}" r="86" fill="none" stroke="{BLUE}" stroke-opacity="0.12" stroke-width="1"/>')
+s.raw(f'<circle cx="{CX}" cy="{CY + 3}" r="58" fill="{INK}" fill-opacity="0.06"/>')
+s.raw(f'<circle cx="{CX}" cy="{CY}" r="58" fill="{INK}"/>')
+mx0, my0 = CX - 11, CY - 22
+s.raw(f'<path d="M{mx0} {my0+18}h22 M{mx0} {my0+9}h15 M{mx0} {my0}h8" stroke="{BG}" stroke-width="3.4" stroke-linecap="round" fill="none"/>')
+s.T(CX, CY + 24, "sqrlane", 15, 600, BG, anchor="middle")
+s.R(CX - 70, CY + 90, 140, 24, BG, 12)
+s.T(CX, CY + 106.5, "16 agents · one bus", 12.5, 500, MUT, anchor="middle")
 s.end()
 
-# ---- two pop-ups: an export lands, the TMS Link agent maps it
-PT, PH_ = TOP + 54, 56
-P2W = 290; P2X = MX + MW - P2W
-P1W = 280; P1X = P2X - 26 - P1W
-s.g("popup-file")
-soft_card(P1X, PT, P1W, PH_, 14)
-s.R(P1X + 10, PT + 9, 38, 38, GREEN_BG, 10)
-fx0, fy0 = P1X + 20, PT + 16                              # a plain file pictogram
-s.raw(f'<path d="M{fx0} {fy0} h12 l6 6 v18 h-18 z M{fx0+12} {fy0} v6 h6" stroke="{GREEN}" stroke-width="1.5" fill="{CARD}" stroke-linejoin="round"/>')
-s.T(fx0 + 9, fy0 + 20, "CSV", 6.5, 700, GREEN, anchor="middle")
-s.T(P1X + 60, PT + 23, "Your TMS · bookings export", 11, 500, GREY)
-s.T(P1X + 60, PT + 42, "bookings.csv · 10 rows", 12.5, 600)
-s.end()
-h_arrow(P1X + P1W + 5, PT + PH_ / 2)
-s.g("popup-agent")
-soft_card(P2X, PT, P2W, PH_, 14)
-s.R(P2X, PT, P2W, PH_, "none", 14, f' stroke="{BLUE}" stroke-width="0.8" stroke-opacity="0.45"')
-agent_mark(P2X + 22, PT + 19, 6)
-s.T(P2X + 38, PT + 23, "TMS Link agent", 12.5, 600, BLUE)
-s.T(P2X + P2W - 14, PT + 23, "working…", 11, 500, GREY, anchor="end")
-s.T(P2X + 14, PT + 44, "Mapping 16 columns onto the booking.", 12, 400, INK)
-s.end()
+# ---- each agent, with its tools in orbit
+def bubble_w(tool):
+    if isinstance(tool, tuple) and tool[0] == "tms":
+        return tool[2] + 26
+    return B_R * 2
 
-# ---- the read in one line, each figure with its tag
-OY, OH = TOP + 124, 114
-STEPS = [("10", "rows read", "from your export", GREY_BG, "#4A4A4A"),
-         ("16", "columns mapped", "0 unmapped", GREEN_BG, GREEN),
-         ("7", "bookings covered", "on modelled lanes", BLUE_BG, BLUE),
-         ("3", "not covered", "said, not guessed", AMBR_BG, AMBR),
-         ("0", "written", "until you approve", GREEN_BG, GREEN)]
-s.g("this-read")
-s.card(MX, OY, MW, OH, 12)
-s.T(MX + 18, OY + 25, "This read", 13, 600)
-s.T(MX + MW - 18, OY + 25, "synthetic export · Hamburg strike scenario", 12, 400, GREY, anchor="end")
-sw_ = (MW - 36) / 5
-for k, (n, lab, tag, tf, ti) in enumerate(STEPS):
-    x = MX + 18 + k * sw_
-    s.T(x, OY + 60, n, 30, 600, ls=-1)
-    s.T(x, OY + 79, lab, 12, 500, "#4A4A4A")
-    pill(x, OY + 87, tag, tf, ti, anchor="start", size=10, h=18)
-    if k < 4:
-        s.T(x + sw_ - 14, OY + 60, "›", 18, 400, "#C8C8C8")
-s.end()
-
-# ---- the mapping, and what it could not cover
-CY0 = OY + OH + 14; CHh = BOT - 20 - CY0
-s.g("mapping-and-writeback")
-s.R(MX, CY0, MW, CHh, "#F6F8FB", 16, f' stroke="{INK}" stroke-opacity="0.10"')
-cy = CY0 + 12
-BWb = MW - 32
-LW = 380; RX = MX + 16 + LW + 10; RW = BWb - LW - 10
-
-# left: mapped, not guessed
-soft_card(MX + 16, cy, LW, 178, 14, op=0.10)
-s.T(MX + 32, cy + 25, "Mapped, not guessed", 12.5, 600)
-s.T(MX + 16 + LW - 14, cy + 25, "6 of 16", 11, 500, GREY, anchor="end")
-s.T(MX + 32, cy + 48, "YOUR COLUMN", 9.5, 700, GREY, ls=1)
-s.T(MX + 158, cy + 48, "SQRLANE READS IT AS", 9.5, 700, GREY, ls=1)
-my = cy + 56
-for col, field in (("Shipment No", "the booking"), ("POD", "discharge port"), ("ETA", "arrival, delay measured from it"),
-                   ("RDD", "customer's date, slack to it"), ("Reefer", "cold chain"), ("Late Penalty per Day", "what a day late costs")):
-    s.rule(my, 0.07, MX + 32, LW - 32)
-    s.T(MX + 32, my + 16, col, 11.5, 600, "#3A3A3A")
-    s.T(MX + 158, my + 16, field, 11.5, 400, MUT)
-    my += 19
-
-# right: not covered, out loud
-soft_card(RX, cy, RW, 178, 14, op=0.10)
-s.T(RX + 16, cy + 25, "Not covered, said out loud", 12.5, 600)
-pill(RX + RW - 14, cy + 12, "3 rows", AMBR_BG, AMBR)
-ny2 = cy + 50
-for ref, why in (("JOB-24166", "Los Angeles: not a modelled port"),
-                 ("JOB-24171", "Gdansk: not a modelled port"),
-                 ("JOB-24175", "no readable ETA to measure from")):
-    s.R(RX + 16, ny2, RW - 32, 36, BG, 8, f' stroke="{INK}" stroke-opacity="0.07"')
-    s.T(RX + 28, ny2 + 23, ref, 11.5, 600)
-    s.T(RX + 110, ny2 + 23, why, 11.5, 400, MUT)
-    ny2 += 42
-cy += 186
-
-# the write-back: one change, queued onto the booking it came from
-WH = CY0 + CHh - 12 - cy
-soft_card(MX + 16, cy, BWb, WH, 14, op=0.10)
-agent_mark(MX + 36, cy + 20)
-s.T(MX + 52, cy + 25, "Routing agent", 12.5, 600, BLUE)
-s.T(MX + 150, cy + 25, "JOB-24126 · Bicycle frames, Kaohsiung → Berlin", 12, 400, GREY)
-pill(MX + 16 + BWb - 14, cy + 12, "reroute", BLUE_BG, BLUE)
-fx = MX + 32
-for off, lab, old, new in ((0, "Port of discharge", "HAM", "RTM"), (172, "Routing code", "R-HAM-STD", "R-RTM-ALT"), (390, "ETA", "booked", "+2 days")):
-    fx = MX + 32 + off
-    s.T(fx, cy + 50, lab.upper(), 9.5, 700, GREY, ls=1)
-    s.T(fx, cy + 70, old, 12.5, 400, GREY)
-    ow = sum(6.6 if c.islower() else 8.2 for c in old)
-    s.line(fx, cy + 66, fx + ow, cy + 66, GREY, 0.8, 1)
-    s.T(fx + ow + 10, cy + 70, "→", 12.5, 400, GREY)
-    s.T(fx + ow + 30, cy + 70, new, 12.5, 600, INK)
-by = cy + WH - 38
-s.R(MX + 16 + BWb - 92, by, 78, 26, INK, 8)
-s.T(MX + 16 + BWb - 53, by + 18, "Approve", 12, 600, CARD, anchor="middle")
-s.T(MX + 16 + BWb - 104, by + 17.5, "Queued, not written", 11, 600, AMBR, anchor="end")
-s.end()
-s.end()
-
-# ================================================================ where SQRlane connects
-HX = FX + FW + 24; HW = W - M - HX
-hx, hw = HX + 24, HW - 48
-s.g("where-sqrlane-connects")
-s.card(HX, TOP, HW, BOT - TOP)
-s.T(hx, TOP + 36, "WHERE SQRLANE CONNECTS", 13, 600, AMB, ls=1.4)
-s.T(HX + HW - 24, TOP + 36, "reads in · writes back after you approve", 12, 500, GREY, anchor="end")
-
-def status(x, y, text, live):
-    """A status line: green dot for what works today, grey dashed for what comes next."""
-    if live:
-        s.raw(f'<circle cx="{x + 4}" cy="{y - 4}" r="4" fill="{GREEN}"/>')
-        s.T(x + 14, y, text, 11, 600, GREEN)
+def draw_tool(tool, bx, by):
+    w = bubble_w(tool); h = B_R * 2
+    s.R(bx - w / 2, by - h / 2 + 2, w, h, INK, h / 2, ' fill-opacity="0.05"')
+    s.R(bx - w / 2, by - h / 2, w, h, CARD, h / 2, f' stroke="{INK}" stroke-opacity="0.10"')
+    if isinstance(tool, str):
+        mark(tool, bx, by, 22)
+    elif tool[0] == "cw":
+        cargowise_icon(bx, by, 24)
+    elif tool[0] == "tms":
+        tms_word(tool[1], bx, by, tool[2])
     else:
-        s.raw(f'<circle cx="{x + 4}" cy="{y - 4}" r="3.5" fill="none" stroke="#B4B4B4" stroke-width="1.2" stroke-dasharray="2 1.5"/>')
-        s.T(x + 14, y, text, 11, 600, GREY)
+        s.T(bx, by + 4.5, tool[1], 12.5, 600, MUT, anchor="middle")
 
-def block(y, h, title, direction, grp):
-    s.g(grp)
-    s.R(hx, y, hw, h, CARD, 12, f' stroke="{INK}" stroke-opacity="0.16"')
-    s.T(hx + 16, y + 26, title, 13.5, 600)
-    pill(hx + hw - 14, y + 11, direction, BLUE_BG, BLUE)
-
-y = TOP + 56
-# 1. the TMS: the system of record, both directions
-block(y, 162, "Your TMS", "reads in · writes back", "tms")
-mx = hx + 16
-for name, hgt in (("CargoWise", 20), ("SAP", 20), ("Oracle", 11), ("Descartes", 14)):
-    s.R(mx, y + 42, 140, 36, BG, 8, f' stroke="{INK}" stroke-opacity="0.07"')
-    w = TM[name]["w"] * hgt / TM[name]["h"]
-    tms_mark(name, mx + (140 - w) / 2, y + 60, hgt)
-    mx += 150
-s.T(hx + 16, y + 102, "In: a bookings export (CSV or JSON), or a live HTTPS endpoint, mapped by column name.", 11.5, 400, MUT)
-s.T(hx + 16, y + 120, "Out: each approved change, one at a time, to a write-back URL you name.", 11.5, 400, MUT)
-status(hx + 16, y + 146, "Works today", True)
-status(hx + 124, y + 146, "Native connectors, next", False)
-s.end()
-y += 172
-
-# 2. mail and chat: where the work arrives
-block(y, 120, "Mail and chat", "reads in", "mail-and-chat")
-mx = hx + 16
-for name in ("Outlook", "Gmail", "Teams", "Slack", "WhatsApp", "WeChat"):
-    s.R(mx, y + 40, 36, 36, BG, 8, f' stroke="{INK}" stroke-opacity="0.07"')
-    mark(name, mx + 8, y + 48, 20)
-    mx += 44
-s.T(mx + 8, y + 56, "The desk works every mail: routed,", 11.5, 400, MUT)
-s.T(mx + 8, y + 72, "checked against the playbook, drafted.", 11.5, 400, MUT)
-status(hx + 16, y + 104, "Works today: drop a mail file into Ask", True)
-status(hx + 290, y + 104, "Mailbox and chat links, next", False)
-s.end()
-y += 130
-
-# 3. the sources: the world, read live
-block(y, 78, "60 public sources", "reads in", "sources")
-s.T(hx + 16, y + 48, "News, rivers, weather and sea, hazards, government filings, rates.", 11.5, 400, MUT)
-s.T(hx + 16, y + 65, "Free and keyless, so there is no account to set up.", 11.5, 400, MUT)
-status(hx + hw - 104, y + 60, "Live today", True)
-s.end()
-y += 88
-
-# 4. an AI assistant over MCP
-block(y, 78, "Your AI assistant", "asks the desk", "assistant")
-s.R(hx + 16, y + 36, 32, 32, BG, 8, f' stroke="{INK}" stroke-opacity="0.07"')
-mark("Claude", hx + 22, y + 42, 20)
-s.R(hx + 54, y + 36, 32, 32, BG, 8, f' stroke="{INK}" stroke-opacity="0.07"')
-mark("MCP", hx + 61, y + 43, 18, INK)
-s.T(hx + 98, y + 50, "Ask the desk from Claude or any MCP client.", 11.5, 400, MUT)
-s.T(hx + 98, y + 67, "sqrlane.com/mcp · read-only", 11.5, 600, "#3A3A3A")
-status(hx + hw - 104, y + 60, "Live today", True)
-s.end()
-y += 88
+for name, ang, orb, tools in NODES:
+    x, y = POS[name]
+    s.g(f"agent-{name.lower().replace(' ', '-')}")
+    out = math.radians(ang)
+    # spread the tools along the arc: each takes the room it needs across the arc's direction
+    tx, ty = -math.sin(out), math.cos(out)
+    ang_sizes = [(abs(bubble_w(tl) * tx) + abs(2 * B_R * ty) + 10) / orb for tl in tools]
+    total = sum(ang_sizes)
+    a0 = out - total / 2
+    # the orbit line, a little longer than the tools
+    a_s, a_e = a0 - 0.22, a0 + total + 0.22
+    p1 = (x + orb * math.cos(a_s), y + orb * math.sin(a_s))
+    p2 = (x + orb * math.cos(a_e), y + orb * math.sin(a_e))
+    large = 1 if (a_e - a_s) > math.pi else 0
+    s.raw(f'<path d="M{p1[0]:.1f} {p1[1]:.1f} A{orb} {orb} 0 {large} 1 {p2[0]:.1f} {p2[1]:.1f}" stroke="{INK}" stroke-opacity="0.12" stroke-width="1" fill="none"/>')
+    # the node
+    s.raw(f'<circle cx="{x:.1f}" cy="{y + 3:.1f}" r="{N_R}" fill="{INK}" fill-opacity="0.05"/>')
+    s.raw(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{N_R}" fill="{CARD}" stroke="{BLUE}" stroke-opacity="0.35" stroke-width="1.2"/>')
+    agent_mark(x, y - 10, 6)
+    s.T(x, y + 15, name, 13, 600, anchor="middle")
+    # the tools
+    a = a0
+    for tl, sz in zip(tools, ang_sizes):
+        c = a + sz / 2
+        draw_tool(tl, x + orb * math.cos(c), y + orb * math.sin(c))
+        a += sz
+    s.end()
 
 s.g("disclosure")
-s.T(hx, y + 14, "None of the named systems is connected in this build: no vendor credential, no native client.", 10.5, 400, GREY)
-s.T(hx, y + 30, "SQRlane reads what they export or an endpoint you give it, and writes nothing until you approve.", 10.5, 400, GREY)
-s.end()
+s.T(M, 954, "Logos show where each agent works. Live today: the 60 public sources and MCP. "
+    "TMS and mail are read from exports and files; native links come next.",
+    12.5, 400, GREY)
 s.end()
 
-s.T(M, 946, "No new system to keep. The work lands where your desk already looks.", 28, 600, ls=-0.6)
 s.footer(9)
 s.write("slide-09-integrations.svg")
