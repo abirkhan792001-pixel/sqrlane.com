@@ -25,29 +25,35 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 | 04 | `build_04.py` → `slide-04-the-why.svg` | final |
 | 05 | `build_05.py` → `slide-05-the-job-1.svg` | final |
 | 06 | `build_06.py` → `slide-06-the-job-2.svg` (version A, the owner's pick) | final |
-| 07 | `build_07.py` → `slide-07-the-how-1.svg` | built, awaiting feedback |
-| 08 | new: the agent roster slide (see below) | proposed, not built |
-| 09 | The How 2 of 2 (know early, while options exist) | to do |
-| 10 | Who am I (founder) | to do |
+| 07 | `build_07.py` → `slide-07-the-how-1.svg` (rebuilt: the desk) | built, awaiting feedback |
+| 08 | The How 2 of 2: the risk layer (know early, while options exist) | to do |
+| 09 | Who am I (founder) | to do |
 | A | Appendix: sources for slide 06 (`SOURCES` list in `build_06.py`) | later, not now |
 
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
 in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 
-## Next step (awaiting the owner's go)
+## Slide 07, rebuilt (2026-09-30, on the owner's plan)
 
-Proposed and explained to the owner, who had not yet answered:
+The separate roster slide was dropped: the How is two slides, 07 the desk and 08 the
+risk layer. Slide 07 has two blocks:
 
-1. **New slide 08, "Every step of the file has an agent."** Five columns in work order,
-   the same stages as slide 05's clock: Inbox & rules (Inbox, Playbook), Quotes (Rate,
-   RFQ), Bookings & documents (Booking, Docs), Shipments & exceptions (Milestones,
-   Exception, Assistant), Billing & customs (Invoice, Customs). One plain line per agent
-   (copy below). A slim band above for the risk layer (Risk, Routing, Comms, Planner
-   tagged SCRIPTED); a band below for the TMS link (DEMO) where everything lands and
-   waits for approval. One header note "all live"; tag only the two exceptions.
-2. **Slide 07's right panel** (the 16-agent roster) then duplicates slide 08. Replace it
-   with "What happened to this mail": the agents' sequence on SHP-001 (read, fields
-   extracted, amendment drafted, checked against the playbook, queued).
+- **Left, the product:** the dashboard's Today view in a browser frame. Every figure,
+  row, agent path and subject is from one offline run of `src/workflow.run(use_llm=False)`:
+  13 mails, 8 of 13 handled end to end, 5 held for a person, 24 drafts and TMS changes
+  waiting (desk only; the 36 on the live Approvals page adds the risk run's 12). IN-108 is
+  shown opened with the Playbook's own send-back ("ONE is not an approved carrier - use
+  Maersk or Hapag-Lloyd."). The browser bar says "Demo run · synthetic inbox": keep it.
+  No risk feed or board outcome on this slide; those are slide 08's.
+- **Right, under the hood:** IN (Outlook, Teams, Slack, WhatsApp tagged NEXT; your TMS
+  export / API tagged TODAY) → three front doors (Inbox, Assistant, Risk layer ·
+  slide 08) → four stations with two agents each → the Playbook rail → You approve → OUT
+  through the TMS link (export or your URL TODAY; CargoWise, SAP, Oracle, Descartes
+  NEXT). 2 + 8 + 1 + 4 + TMS link = 16. Footnotes carry the scripted/demo tags and "None
+  of these vendors is connected". The four TMS marks are in `tms_marks.json`, extracted
+  byte-for-byte from `static/landing.html`'s `#stack`.
+- Cloud storage and rate-management logos were left off: no connector exists. Carrier
+  portal / Customs / Invoicing badges were left off the OUT row to keep it lean.
 
 Agent copy (accepted by the owner):
 - Inbox: Reads every mail, links it to the booking, and passes it to the right agent.
