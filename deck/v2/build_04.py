@@ -5,7 +5,8 @@ s = Slide()
 s.header("03 · THE WHY", "€4bn a year of desk work. Nobody does all of it.",
          "Risk tools alert. Execution tools act. Neither decides.")
 
-Y, HGT = 318, 520
+Y, HGT = 318, 560
+RULE, BIG, CAP, SRC = Y + 424, Y + 484, Y + 510, Y + 530   # shared bottom grid
 
 # ---- the market, counted
 LX, LW = M, 540
@@ -13,22 +14,22 @@ s.g("where-the-4bn-sits")
 s.card(LX, Y, LW, HGT)
 x = LX + 32
 s.label(x, Y + 48, "WHERE THE €4BN SITS", INK, 13)
-VX = x + 150                      # values right-aligned here, words start after
-rows = [("1.6M", "people in European freight forwarding", INK),
-        ("÷ 5", "on an operating desk, assumed", AMB),
-        ("320,000", "operating desks", INK),
-        ("× €13,600", "admin cost per desk, per year", AMB)]
-for i, (v, lab, col) in enumerate(rows):
-    ry = Y + 118 + i * 58
-    s.T(VX, ry, v, 26, 600, col, anchor="end", ls=-0.5)
-    s.T(VX + 20, ry, lab, 15, 400, MUT)
-    if i < 3:
-        s.rule(ry + 22, 0.06, x, LW - 64)
-s.rule(Y + 330, 0.14, x, LW - 64)
-s.T(VX, Y + 402, "=", 26, 600, AMB, anchor="end")
-s.T(VX + 20, Y + 412, "€4.36bn", 64, 600, ls=-2)
-s.T(VX + 22, Y + 446, "a year spent on re-typing", 16, 500)
-s.T(x, Y + 496, "IBISWorld · SalaryExpert · UK staff per firm, scaled to 163,000 EU firms", 12, 400, MUT)
+def step(y, big, lab):
+    s.T(x, y, big, 44, 600, ls=-1.2); s.T(x, y + 28, lab, 15, 400, MUT)
+def op(y, sym, lab, chip=None):
+    s.T(x, y, sym, 17, 600, AMB); s.T(x + 110, y, lab, 15, 400, MUT)
+    if chip:
+        s.R(x + 330, y - 16, 72, 22, AMB, 6, ' fill-opacity="0.12"')
+        s.T(x + 366, y - 1, chip, 12, 600, AMB, anchor="middle")
+step(Y + 118, "1.6M", "people in European freight forwarding")
+op(Y + 190, "÷ 5", "1 in 5 on an operating desk", "assumed")
+step(Y + 262, "320,000", "operating desks")
+op(Y + 334, "× €13,600", "admin cost per desk, per year")
+s.rule(RULE, 0.1, x, LW - 64)
+s.T(x, BIG, "€4.36bn", 56, 600, ls=-1.6)
+s.T(x, CAP + 2, "a year in wages, spent on re-typing", 16, 500)
+s.T(x, SRC + 6, "UK: 66,187 staff across 6,737 firms, scaled to 163,000 EU firms", 12, 400, MUT)
+s.T(x, SRC + 22, "IBISWorld · SalaryExpert · €34k salary × 40% admin", 12, 400, MUT)
 s.end()
 
 # ---- three columns: risk platforms, the seam, execution AI
@@ -64,28 +65,28 @@ for i, (idn, lab, title, sub, on, vendors, big, cap, src) in enumerate(cols):
         s.T(bx, Y + 176, nm, 11, 600 if active else 500, hi if active else MUT, ls=0.8)
     if vendors:
         for k, v in enumerate(vendors):
-            s.R(ix, Y + 200 + k * 36, CW3 - 56, 28, TRACK, 8, ' fill-opacity="0.7"')
-            s.T(ix + (CW3 - 56) / 2, Y + 219 + k * 36, v, 14, 500, anchor="middle")
-        s.rule(Y + 428, 0.1, ix, CW3 - 56)
-        s.T(ix, Y + 470, big, 38, 600, ls=-1)
-        s.T(ix, Y + 494, cap, 14, 400, MUT)
+            s.R(ix, Y + 200 + k * 36, CW3 - 56, 30, TRACK, 8, ' fill-opacity="0.7"')
+            s.T(ix + (CW3 - 56) / 2, Y + 220 + k * 36, v, 14, 500, anchor="middle")
+        s.rule(RULE, 0.1, ix, CW3 - 56)
+        s.T(ix, BIG, big, 44, 600, ls=-1.2)
+        s.T(ix, CAP, cap, 14, 400, MUT)
         if src:
-            s.T(ix, Y + 512, src, 11.5, 400, MUT)
+            s.T(ix, SRC, src, 11.5, 400, MUT)
     else:
         s.T(ix, Y + 236, "One loop, one record.", 21, 600)
         s.T(ix, Y + 266, "Watch and act are sold.", 15, 400, MUT)
         s.T(ix, Y + 288, "The step between is not.", 15, 400, MUT)
-        s.rule(Y + 428, 0.12, ix, CW3 - 56)
-        s.R(ix, Y + 452, 28, 28, INK, 7)
-        s.raw(f'<path d="M{ix+7} {Y+473}h14 M{ix+7} {Y+466}h9.5 M{ix+7} {Y+459}h5" stroke="{BG}" stroke-width="2.2" stroke-linecap="round" fill="none"/>')
-        s.T(ix + 40, Y + 473, "sqrlane", 20, 600)
-        s.T(ix, Y + 506, "Owns the decision, end to end.", 14, 500, AMB)
+        s.rule(RULE, 0.12, ix, CW3 - 56)
+        s.R(ix, BIG - 26, 30, 30, INK, 7)
+        s.raw(f'<path d="M{ix+7} {BIG-4}h15 M{ix+7} {BIG-11}h10 M{ix+7} {BIG-18}h5" stroke="{BG}" stroke-width="2.2" stroke-linecap="round" fill="none"/>')
+        s.T(ix + 42, BIG - 4, "sqrlane", 24, 600)
+        s.T(ix, CAP, "Owns the decision, end to end.", 14, 500, AMB)
     s.end()
 
 s.g("closing")
-s.T(M, 912, "Anyone can alert. SQRlane decides, and puts it on the booking.", 34, 600, ls=-0.8)
-s.T(W - M, 900, "163,000 forwarding businesses in Europe. 24 of the top 25 run CargoWise.", 12.5, 400, MUT, anchor="end")
-s.T(W - M, 920, "IBISWorld 2025 · WiseTech Global FY25 · TAM derived, not measured.", 12.5, 400, MUT, anchor="end")
+s.T(M, 938, "Anyone can alert. SQRlane decides, and puts it on the booking.", 34, 600, ls=-0.8)
+s.T(W - M, 922, "163,000 forwarding businesses in Europe. 24 of the top 25 run CargoWise.", 12.5, 400, MUT, anchor="end")
+s.T(W - M, 940, "IBISWorld 2025 · WiseTech Global FY25 · TAM derived, not measured.", 12.5, 400, MUT, anchor="end")
 s.end()
 s.footer(4)
 s.write("slide-04-the-why.svg")
