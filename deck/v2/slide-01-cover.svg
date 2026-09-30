@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect id="background" width="1920" height="1080" fill="#DBDBCD"/>
+
+  <g id="top-bar">
+    <g id="mark">
+      <rect x="96" y="80" width="32" height="32" rx="8" fill="#0A0A0A"/>
+      <path d="M104 104h16 M104 97h11 M104 90h6" stroke="#DBDBCD" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+    </g>
+    <text id="site" x="144" y="103" font-family="Geist" font-size="20" font-weight="500" fill="#0A0A0A">sqrlane.com</text>
+    <text id="deck-label" x="1824" y="103" font-family="Geist Mono" font-size="14" font-weight="500" letter-spacing="2.4" fill="#6E6E66" text-anchor="end">INVESTMENT DECK · 2026</text>
+    <rect id="top-rule" x="96" y="144" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.14"/>
+  </g>
+
+  <g id="hero">
+    <g id="eyebrow">
+      <rect x="96" y="360" width="10" height="10" rx="2" fill="#96580A"/>
+      <text x="120" y="370" font-family="Geist Mono" font-size="16" font-weight="500" letter-spacing="3" fill="#6E6E66">AI AGENTS FOR FREIGHT FORWARDERS</text>
+    </g>
+    <text id="wordmark" x="88" y="590" font-family="Geist" font-size="240" font-weight="600" letter-spacing="-11" fill="#0A0A0A">sqrlane</text>
+    <text id="tagline" x="96" y="746" font-family="Geist" font-size="48" font-weight="500" letter-spacing="-1.2" fill="#0A0A0A">Agents that act before a trade lane breaks.</text>
+    <text id="subline" x="96" y="800" font-family="Geist" font-size="26" font-weight="400" fill="#6E6E66">They watch the lane, decide each booking and do the TMS work. You approve every change.</text>
+  </g>
+
+  <g id="lane-motif">
+    <g id="lane-leg-sea">
+      <path d="M1196 470 H1560" stroke="#0A0A0A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </g>
+    <g id="lane-leg-blocked">
+      <path d="M1560 470 C1640 470 1680 380 1776 380" stroke="#6E6E66" stroke-width="2.5" stroke-dasharray="7 8" fill="none" stroke-linecap="round"/>
+    </g>
+    <g id="lane-leg-reroute">
+      <path d="M1560 470 C1640 470 1680 560 1776 560" stroke="#0A0A0A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <g id="node-sha">
+      <circle cx="1196" cy="470" r="8" fill="#DBDBCD" stroke="#0A0A0A" stroke-width="2.5"/>
+      <text x="1196" y="512" font-family="Geist Mono" font-size="15" font-weight="500" letter-spacing="1.5" fill="#0A0A0A" text-anchor="middle">SHA</text>
+    </g>
+    <g id="node-suez">
+      <circle cx="1400" cy="470" r="8" fill="#DBDBCD" stroke="#0A0A0A" stroke-width="2.5"/>
+      <text x="1400" y="512" font-family="Geist Mono" font-size="15" font-weight="500" letter-spacing="1.5" fill="#0A0A0A" text-anchor="middle">SUEZ</text>
+    </g>
+    <g id="node-ham">
+      <circle cx="1776" cy="380" r="24" fill="#96580A" fill-opacity="0.14"/>
+      <circle cx="1776" cy="380" r="9" fill="#96580A"/>
+      <text x="1776" y="340" font-family="Geist Mono" font-size="15" font-weight="500" letter-spacing="1.5" fill="#0A0A0A" text-anchor="middle">HAM</text>
+      <text x="1776" y="436" font-family="Geist Mono" font-size="13" font-weight="500" letter-spacing="1.2" fill="#96580A" text-anchor="middle">STRIKE</text>
+    </g>
+    <g id="node-rtm">
+      <circle cx="1776" cy="560" r="9" fill="#0A0A0A"/>
+      <text x="1776" y="602" font-family="Geist Mono" font-size="15" font-weight="500" letter-spacing="1.5" fill="#0A0A0A" text-anchor="middle">RTM</text>
+    </g>
+    <g id="decision-tag">
+      <rect x="1572" y="626" width="252" height="34" rx="17" fill="#0A0A0A" fill-opacity="0.06" stroke="#0A0A0A" stroke-opacity="0.16"/>
+      <circle cx="1592" cy="643" r="4" fill="#96580A"/>
+      <text x="1606" y="648" font-family="Geist Mono" font-size="13" font-weight="500" letter-spacing="0.6" fill="#0A0A0A">REROUTE · AWAITING YOU</text>
+    </g>
+  </g>
+
+  <g id="bottom-bar">
+    <rect id="bottom-rule" x="96" y="928" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.14"/>
+    <g id="founder">
+      <text x="96" y="982" font-family="Geist" font-size="22" font-weight="600" fill="#0A0A0A">Abir Khan</text>
+      <text x="96" y="1012" font-family="Geist" font-size="16" font-weight="400" fill="#6E6E66">Founder</text>
+    </g>
+    <g id="loop">
+      <text x="1196" y="982" font-family="Geist Mono" font-size="13" font-weight="500" letter-spacing="2.4" fill="#6E6E66">ONE LOOP</text>
+      <text x="1196" y="1012" font-family="Geist" font-size="18" font-weight="500" fill="#0A0A0A">Watch  →  Decide  →  Act  →  Record</text>
+    </g>
+    <g id="contact">
+      <text x="1824" y="982" font-family="Geist" font-size="18" font-weight="500" fill="#0A0A0A" text-anchor="end">khan.abirhilal@gmail.com</text>
+      <text x="1824" y="1012" font-family="Geist" font-size="16" font-weight="400" fill="#6E6E66" text-anchor="end">+91 7596947806</text>
+    </g>
+  </g>
+</svg>
