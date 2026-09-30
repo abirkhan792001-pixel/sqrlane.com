@@ -76,45 +76,8 @@ s.T(MX, TOP + 82, "Today", 26, 600, ls=-0.6)
 s.T(MX, TOP + 105, "The desk worked the morning inbox.", 13, 400, MUT)
 s.end()
 
-# ---- the Ask box: a question, to the agent who owns it
-AY, AH = TOP + 126, 100
-s.g("ask-box")
-s.R(MX, AY + 3, MW, AH, INK, 20, ' fill-opacity="0.04"')          # soft shadow
-s.R(MX, AY, MW, AH, CARD, 20, f' stroke="{INK}" stroke-opacity="0.12"')
-s.T(MX + 24, AY + 36, "Where is MEDU-1774390?", 17, 400, INK)
-by = AY + AH - 44
-s.R(MX + 18, by, 32, 32, GREY_BG, 10)
-s.raw(f'<path d="M{MX+39} {by+11} l-7.5 7.5 a3 3 0 0 0 4.2 4.2 l8 -8 a5 5 0 0 0 -7 -7 l-8 8 a7 7 0 0 0 9.9 9.9 l6 -6" '
-      f'transform="translate(-2 -2) scale(0.78) translate({(MX+34)*0.282:.1f} {(by+16)*0.282:.1f})" stroke="#4A4A4A" stroke-width="2" fill="none" stroke-linecap="round"/>')
-s.R(MX + 58, by, 134, 32, BLUE_BG, 10)
-agent_mark(MX + 76, by + 16)
-s.T(MX + 92, by + 21, "Ask SQRlane", 13, 600, BLUE)
-s.raw(f'<circle cx="{MX + MW - 34}" cy="{by + 16}" r="18" fill="{INK}"/>')
-s.raw(f'<path d="M{MX+MW-34} {by+24} v-15 M{MX+MW-40} {by+15} l6 -6 l6 6" stroke="{CARD}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
-s.end()
-
-# the answer - src/ask.py routes this question to the Milestones agent; its own words
-s.g("ask-answer")
-ay = AY + AH + 10
-s.R(MX, ay, MW, 46, BLUE_BG, 12)
-agent_mark(MX + 22, ay + 23)
-s.T(MX + 40, ay + 28, "Milestones agent", 12.5, 600, BLUE)
-s.T(MX + 158, ay + 28, "SHP-004, Shenzhen to Antwerp, is on plan. No active risk on its route.", 13, 400, INK)
-s.end()
-
-# suggested questions - each one answered by src/ask.py today
-s.g("suggestions")
-sy = ay + 58
-sx = MX
-for q in ("What is waiting for my approval?", "Price 2 x 40HC Shanghai to Rotterdam", "Which invoices are disputed?"):
-    w = round(len(q) * 6.4 + 26)
-    s.R(sx, sy, w, 30, CARD, 15, f' stroke="{INK}" stroke-opacity="0.12"')
-    s.T(sx + w / 2, sy + 20, q, 12, 500, "#4A4A4A", anchor="middle")
-    sx += w + 8
-s.end()
-
 # ---- four stat cards: label, pill, one number
-SCY, SCH, gap = sy + 44, 84, 12
+SCY, SCH, gap = TOP + 124, 78, 12
 scw = (MW - 3 * gap) / 4
 STATS = [("Mails worked", "all routed", BLUE_BG, BLUE, "13"),
          ("Handled end to end", "no person", GREEN_BG, GREEN, "8"),
@@ -124,43 +87,91 @@ s.g("stat-cards")
 for i, (lab, pl, pf, pi, val) in enumerate(STATS):
     x = MX + i * (scw + gap)
     s.card(x, SCY, scw, SCH, 12)
-    s.T(x + 16, SCY + 26, lab, 12.5, 500, MUT)
-    s.T(x + 16, SCY + 68, val, 36, 600, ls=-1.2)
-    pill(x + scw - 14, SCY + 50, pl, pf, pi)
+    s.T(x + 16, SCY + 25, lab, 12.5, 500, MUT)
+    s.T(x + 16, SCY + 63, val, 34, 600, ls=-1.2)
+    pill(x + scw - 14, SCY + 46, pl, pf, pi)
 s.end()
 
-# ---- a mail lands, an agent works it (IN-111 and the Customs agent's own output)
-NY = SCY + SCH + 14; NH = BOT - 20 - NY
-NW = 330
-s.g("mail-arrives")
-s.R(MX, NY + 3, NW, NH, INK, 16, ' fill-opacity="0.04"')
-s.R(MX, NY, NW, NH, CARD, 16, f' stroke="{INK}" stroke-opacity="0.12"')
-ix, iy = MX + 18, NY + NH / 2 - 26
-s.R(ix, iy, 52, 52, GREY_BG, 12)
-mark("Outlook", ix + 10, iy + 10, 32)
-s.raw(f'<circle cx="{ix + 50}" cy="{iy + 3}" r="10" fill="{RED}" stroke="{CARD}" stroke-width="2"/>')
-s.T(ix + 50, iy + 7.5, "1", 11.5, 700, CARD, anchor="middle")
-tx = ix + 72
-s.T(tx, NY + NH / 2 - 14, "New mail · Maison Cardelle SAS", 11.5, 500, GREY)
-s.T(tx, NY + NH / 2 + 6, "Arrival notice: MEDU-2209471", 14, 600)
-s.T(tx, NY + NH / 2 + 25, "at Fos-sur-Mer", 12.5, 400, MUT)
+CY0 = SCY + SCH + 16                      # the two feeds start here
+LW_ = 432                                 # the conversation's width
+RX_ = MX + LW_ + 16; RW_ = MX + MW - RX_  # the mail feed's
+
+def soft_card(x, y, w, h, r=14, fill=CARD):
+    s.R(x, y + 3, w, h, INK, r, ' fill-opacity="0.04"')
+    s.R(x, y, w, h, fill, r, f' stroke="{INK}" stroke-opacity="0.12"')
+
+# ---- the conversation: you ask, the owning agent answers, its draft waits for you.
+# Answer: ask.ask() routes the question to the Milestones agent (its own words, date left
+# out because bookings age forward). Draft: the Milestones agent's real reply to IN-106,
+# the same question from the customer, "DRAFT - not sent".
+s.g("conversation")
+cy = CY0
+q = "Where is MEDU-1774390?"
+qw = round(len(q) * 7.6 + 32)
+s.R(MX + LW_ - qw, cy, qw, 36, INK, 18)
+s.T(MX + LW_ - qw / 2, cy + 23, q, 13.5, 500, CARD, anchor="middle")
+cy += 48
+soft_card(MX, cy, LW_ - 40, 70)
+agent_mark(MX + 22, cy + 22)
+s.T(MX + 38, cy + 27, "Milestones agent", 12.5, 600, BLUE)
+s.T(MX + LW_ - 56, cy + 27, "LIVE", 10, 700, GREEN, anchor="end", ls=0.8)
+s.T(MX + 16, cy + 52, "SHP-004, Shenzhen to Antwerp, is on plan.", 13, 400, INK)
+cy += 82
+DH_ = 128
+soft_card(MX, cy, LW_ - 40, DH_)
+s.T(MX + 16, cy + 26, "Drafted a reply to Pieter Claes, Kempen Electronics.", 12.5, 500, INK)
+s.rule(cy + 40, 0.08, MX + 16, LW_ - 72)
+mark("Outlook", MX + 16, cy + 50, 16)
+s.T(MX + 40, cy + 63, "RE: Where is MEDU-1774390?", 12.5, 600)
+s.T(MX + 16, cy + 84, "MEDU-1774390 (electronics) is on the water on", 12, 400, MUT)
+s.T(MX + 16, cy + 101, "Asia → Suez → Antwerp, discharging at Antwerp.", 12, 400, MUT)
+s.T(MX + 16, cy + 119, "Draft, not sent", 11, 600, AMBR)
+s.R(MX + LW_ - 40 - 96, cy + DH_ - 38, 80, 28, INK, 8)
+s.T(MX + LW_ - 40 - 56, cy + DH_ - 19, "Approve", 12, 600, CARD, anchor="middle")
 s.end()
-ax0 = MX + NW
-s.line(ax0 + 8, NY + NH / 2, ax0 + 24, NY + NH / 2, INK, 0.3, 1.5)
-s.raw(f'<path d="M{ax0+23} {NY+NH/2-4.5} L{ax0+29} {NY+NH/2} L{ax0+23} {NY+NH/2+4.5}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
-GX = ax0 + 36; GWd = MX + MW - GX
-s.g("agent-works-it")
-s.R(GX, NY + 3, GWd, NH, INK, 16, ' fill-opacity="0.04"')
-s.R(GX, NY, GWd, NH, CARD, 16, f' stroke="{INK}" stroke-opacity="0.12"')
-agent_mark(GX + 26, NY + 28, 7)
-s.T(GX + 44, NY + 33, "Customs agent", 13.5, 600)
-pill(GX + GWd - 16, NY + 18, "done", GREEN_BG, GREEN)
-s.T(GX + 18, NY + 62, "Entry prepared for France. Not filed.", 14, 400, INK)
-s.R(GX + 18, NY + NH - 36, 70, 22, GREY_BG, 6)
-s.T(GX + 53, NY + NH - 21, "SHP-007", 11.5, 600, "#3A3A3A", anchor="middle")
-s.T(GX + 98, NY + NH - 21, "Queued, not written", 11.5, 600, AMBR)
-s.R(GX + GWd - 96, NY + NH - 40, 80, 28, INK, 8)
-s.T(GX + GWd - 56, NY + NH - 21, "Approve", 12, 600, CARD, anchor="middle")
+
+# the input, at the foot of the thread
+IY = BOT - 20 - 50
+s.g("ask-box")
+soft_card(MX, IY, LW_, 50, 25)
+s.R(MX + 9, IY + 9, 32, 32, GREY_BG, 16)
+s.raw(f'<path d="M{MX+30} {IY+20} l-7.5 7.5 a3 3 0 0 0 4.2 4.2 l8 -8 a5 5 0 0 0 -7 -7 l-8 8 a7 7 0 0 0 9.9 9.9 l6 -6" '
+      f'transform="translate(-2 -2) scale(0.78) translate({(MX+25)*0.282:.1f} {(IY+25)*0.282:.1f})" stroke="#4A4A4A" stroke-width="2" fill="none" stroke-linecap="round"/>')
+s.R(MX + 48, IY + 9, 124, 32, BLUE_BG, 16)
+agent_mark(MX + 66, IY + 25)
+s.T(MX + 82, IY + 30, "Ask SQRlane", 12.5, 600, BLUE)
+s.T(MX + 184, IY + 30, "Ask the desk anything", 13, 400, GREY)
+s.raw(f'<circle cx="{MX + LW_ - 25}" cy="{IY + 25}" r="16" fill="{INK}"/>')
+s.raw(f'<path d="M{MX+LW_-25} {IY+32} v-13 M{MX+LW_-30.5} {IY+24} l5.5 -5.5 l5.5 5.5" stroke="{CARD}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+s.end()
+
+# ---- the mail feed: a mail lands, the agent that owns it works it (IN-111, Customs)
+s.g("mail-feed")
+fy = CY0
+soft_card(RX_, fy, RW_, 64)
+s.R(RX_ + 12, fy + 12, 40, 40, GREY_BG, 10)
+mark("Outlook", RX_ + 18, fy + 18, 28)
+s.raw(f'<circle cx="{RX_ + 50}" cy="{fy + 13}" r="8.5" fill="{RED}" stroke="{CARD}" stroke-width="2"/>')
+s.T(RX_ + 50, fy + 17, "1", 10.5, 700, CARD, anchor="middle")
+s.T(RX_ + 64, fy + 26, "New mail · Maison Cardelle SAS", 11, 500, GREY)
+s.T(RX_ + 64, fy + 46, "Arrival notice: MEDU-2209471", 13, 600)
+fy += 76
+soft_card(RX_, fy, RW_, 100)
+agent_mark(RX_ + 22, fy + 22)
+s.T(RX_ + 38, fy + 27, "Customs agent", 12.5, 600, BLUE)
+pill(RX_ + RW_ - 12, fy + 14, "done", GREEN_BG, GREEN)
+s.T(RX_ + 16, fy + 55, "Entry prepared for France. Not filed.", 12.5, 400, INK)
+s.R(RX_ + 16, fy + 70, 64, 20, GREY_BG, 5)
+s.T(RX_ + 48, fy + 84, "SHP-007", 11, 600, "#3A3A3A", anchor="middle")
+s.T(RX_ + 88, fy + 84, "Queued, not written", 11, 600, AMBR)
+fy += 116
+s.T(RX_, fy + 10, "SUGGESTED", 10, 700, GREY, ls=1.2)
+fy += 20
+for q in ("What is waiting for my approval?", "Price 2 x 40HC Shanghai to Rotterdam", "Which invoices are disputed?"):
+    s.R(RX_, fy, RW_, 30, CARD, 15, f' stroke="{INK}" stroke-opacity="0.12"')
+    s.T(RX_ + 14, fy + 20, q, 12, 500, "#4A4A4A")
+    s.T(RX_ + RW_ - 14, fy + 20, "›", 13, 500, GREY, anchor="end")
+    fy += 36
 s.end()
 s.end()
 

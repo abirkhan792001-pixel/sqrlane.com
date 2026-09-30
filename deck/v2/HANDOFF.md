@@ -35,15 +35,15 @@ in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 
 ## Slide 07, current version (fourth rebuild, 2026-09-30)
 
-- **Left, the Today view:** window bar ("SQRlane · Desk"), sidebar without counts, "Today"
-  header (no button), the **Ask SQRlane** box with "Where is MEDU-1774390?" and, under it,
-  the real answer: `ask.ask()` routes it to the Milestones agent, which says SHP-004 is
-  on plan with no active risk (the date is left out, because bookings age forward).
-  Three suggested questions, each answered by `ask.ask()` today. Four stat cards
-  (13 / 8 / 5 / 24). Then an **Outlook notification** (official mark from
-  `channel_marks.json`, red badge) for IN-111, "Arrival notice: MEDU-2209471 at
-  Fos-sur-Mer", and the **Customs agent's** real output for it: "Entry prepared for
-  France. Not filed." on SHP-007, queued, not written, with an Approve button.
+- **Left, the Today view (now a conversation, after the Zauber reference):** four stat
+  cards (13 / 8 / 5 / 24) on top. Under them, left: a chat thread. You ask "Where is
+  MEDU-1774390?"; the Milestones agent answers (`ask.ask()` routes it there: SHP-004 is
+  on plan); then "Drafted a reply to Pieter Claes, Kempen Electronics." with the draft
+  card "RE: Where is MEDU-1774390?" - the Milestones agent's real reply to IN-106, the
+  same question from the customer, marked "Draft, not sent" with an Approve button (never
+  Send: nothing in this build sends). The Ask input sits at the foot of the thread.
+  Right: the Outlook notification for IN-111 and the Customs agent's real output, then
+  three suggested questions, each answered by `ask.ask()` today.
 - **The "Demo run · synthetic inbox" label was removed on the owner's instruction.** The
   figures are still counts from one run on the synthetic inbox, so say that out loud when
   presenting. The remaining disclosures: "14 live · Planner scripted · TMS link demo" in
