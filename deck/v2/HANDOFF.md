@@ -33,27 +33,37 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
 in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 
-## Slide 07, rebuilt (2026-09-30, on the owner's plan)
+## Slide 07, rebuilt twice (2026-09-30)
 
-The separate roster slide was dropped: the How is two slides, 07 the desk and 08 the
-risk layer. Slide 07 has two blocks:
+The first rebuild (dashboard with inbox rows and approvals, plus IN/OUT integration rows
+with Today/Next brackets) was sent back as too much content. On the owner's instruction:
+a very clean dashboard overview with infographics, no integrations, and the focus on how
+the 16 agents work together and how the work is structured. Current version:
 
-- **Left, the product:** the dashboard's Today view in a browser frame. Every figure,
-  row, agent path and subject is from one offline run of `src/workflow.run(use_llm=False)`:
-  13 mails, 8 of 13 handled end to end, 5 held for a person, 24 drafts and TMS changes
-  waiting (desk only; the 36 on the live Approvals page adds the risk run's 12). IN-108 is
-  shown opened with the Playbook's own send-back ("ONE is not an approved carrier - use
-  Maersk or Hapag-Lloyd."). The browser bar says "Demo run · synthetic inbox": keep it.
-  No risk feed or board outcome on this slide; those are slide 08's.
-- **Right, under the hood:** IN (Outlook, Teams, Slack, WhatsApp tagged NEXT; your TMS
-  export / API tagged TODAY) → three front doors (Inbox, Assistant, Risk layer ·
-  slide 08) → four stations with two agents each → the Playbook rail → You approve → OUT
-  through the TMS link (export or your URL TODAY; CargoWise, SAP, Oracle, Descartes
-  NEXT). 2 + 8 + 1 + 4 + TMS link = 16. Footnotes carry the scripted/demo tags and "None
-  of these vendors is connected". The four TMS marks are in `tms_marks.json`, extracted
-  byte-for-byte from `static/landing.html`'s `#stack`.
-- Cloud storage and rate-management logos were left off: no connector exists. Carrier
-  portal / Customs / Invoicing badges were left off the OUT row to keep it lean.
+- **Left, the Overview:** sidebar, four stat cards (13 mails worked, 8 of 13 handled end
+  to end, 5 held for a person, 24 awaiting approval = 10 drafts and 14 TMS changes) and
+  two infographics: "How the 13 mails ended" (one square per mail, ids 101-113, blue
+  handled / amber held) and "What came in" (13 mails by the job they start: Quote 1,
+  Book 4, Documents 2, In transit 3, Arrival 2, Billing 1). All counted from
+  `src/workflow.run(use_llm=False)`; the window bar says "Demo run · synthetic inbox".
+  Chart pair validated with the dataviz script (#3D72A8, #96580A).
+- **Right, how the work is structured:** Risk layer band (4 agents, slide 08) → Inbox
+  and Assistant → the desk as six stages in shipment order (Quote: Rate, RFQ · Book:
+  Booking · Documents: Docs · In transit: Milestones, Exception · Arrival: Customs ·
+  Billing: Invoice) → Playbook → You approve → TMS link (demo) → "one mail, together":
+  IN-108's real path. Tags in the panel header: 14 live, Planner scripted, TMS link demo.
+- The closing line is now "Every step recorded, checked against the customer's rules,
+  and approved by you." **"Built for the 40%" was removed** (see below).
+
+## The 40% does not hold (checked 2026-09-30)
+
+Slide 03 says "40% of the day on admin, upper estimate, logistics industry surveys" and
+slides 02, 03 (EUR 13,600 = 34k x 40%) and 04 build on it. No named source says that.
+The nearest Grade A figure, Asana's Anatomy of Work 2022, says the opposite shape: 58% of
+a knowledge worker's day goes to coordination, 33% to skilled work, under 10% to strategy
+(10,624 knowledge workers, not forwarders). nShift, a vendor, reports about a third of
+logistics workers spend over half their time on manual tasks (Grade B at best). The rest
+is vendor blogs (Grade C). The owner has not yet decided how to fix slides 02-04.
 
 Agent copy (accepted by the owner):
 - Inbox: Reads every mail, links it to the booking, and passes it to the right agent.

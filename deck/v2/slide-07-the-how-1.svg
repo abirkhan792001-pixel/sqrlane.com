@@ -8,338 +8,269 @@
 <rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
 </g>
 <g id="dashboard">
-<rect x="96" y="306" width="1052" height="584" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<g id="browser-bar">
-<rect x="96" y="306" width="1052" height="40" rx="14" fill="#F2F2F2"/>
-<rect x="96" y="332" width="1052" height="14" fill="#F2F2F2"/>
-<rect x="96" y="346" width="1052" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
-<circle cx="118" cy="326" r="5.5" fill="#E0E0E0"/>
-<circle cx="136" cy="326" r="5.5" fill="#E0E0E0"/>
-<circle cx="154" cy="326" r="5.5" fill="#E0E0E0"/>
-<rect x="476" y="315" width="292" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.08"/>
-<text x="622" y="331" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B" text-anchor="middle">SQRlane · Desk</text>
-<rect x="936" y="315" width="196" height="22" rx="6" fill="#96580A" fill-opacity="0.10"/>
-<text x="1034" y="331" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">Demo run · synthetic inbox</text>
+<rect x="96" y="306" width="940" height="584" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<g id="window-bar">
+<rect x="96" y="306" width="940" height="36" rx="14" fill="#F4F4F4"/>
+<rect x="96" y="328" width="940" height="14" fill="#F4F4F4"/>
+<rect x="96" y="342" width="940" height="1" fill="#0A0A0A" fill-opacity="0.09"/>
+<circle cx="116" cy="324" r="5" fill="#DEDEDE"/>
+<circle cx="132" cy="324" r="5" fill="#DEDEDE"/>
+<circle cx="148" cy="324" r="5" fill="#DEDEDE"/>
+<rect x="843" y="314" width="179" height="20" rx="10" fill="#F6EEE3"/>
+<text x="932.5" y="328" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">Demo run · synthetic inbox</text>
 </g>
 <g id="sidebar">
-<rect x="97" y="347" width="172" height="542" fill="#FBFBFB"/>
-<rect x="268" y="347" width="1" height="542" fill="#0A0A0A" fill-opacity="0.08"/>
-<rect x="114" y="367" width="22" height="22" rx="6" fill="#0A0A0A"/>
-<path d="M119.5 383h11 M119.5 378h7.5 M119.5 373h4" stroke="#FAFAFA" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-<text x="146" y="384" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">sqrlane</text>
-<text x="116" y="425" font-family="Geist" font-size="10" font-weight="600" fill="#6B6B6B" letter-spacing="1.2">DESK</text>
-<rect x="106" y="437" width="152" height="28" rx="6" fill="#EBEBEB"/>
-<text x="116" y="456" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A">Today</text>
-<text x="116" y="488" font-family="Geist" font-size="13" font-weight="500" fill="#3A3A3A">Inbox</text>
-<rect x="226" y="475" width="26" height="17" rx="8.5" fill="#E8F0FA"/>
-<text x="239.0" y="487.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#1F5FA8" text-anchor="middle">13</text>
-<text x="116" y="520" font-family="Geist" font-size="13" font-weight="500" fill="#3A3A3A">Approvals</text>
-<rect x="226" y="507" width="26" height="17" rx="8.5" fill="#E8F0FA"/>
-<text x="239.0" y="519.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#1F5FA8" text-anchor="middle">24</text>
-<text x="116" y="552" font-family="Geist" font-size="13" font-weight="500" fill="#3A3A3A">Lessons</text>
-<text x="116" y="579" font-family="Geist" font-size="10" font-weight="600" fill="#6B6B6B" letter-spacing="1.2">BOOK</text>
-<text x="116" y="610" font-family="Geist" font-size="13" font-weight="500" fill="#3A3A3A">Shipments</text>
-<rect x="233" y="597" width="19" height="17" rx="8.5" fill="#E8F0FA"/>
-<text x="242.5" y="609.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#1F5FA8" text-anchor="middle">7</text>
-<text x="116" y="642" font-family="Geist" font-size="13" font-weight="500" fill="#3A3A3A">TMS link</text>
-<text x="116" y="669" font-family="Geist" font-size="10" font-weight="600" fill="#6B6B6B" letter-spacing="1.2">RISK</text>
-<text x="116" y="700" font-family="Geist" font-size="13" font-weight="500" fill="#3A3A3A">Risk feed</text>
-<text x="116" y="732" font-family="Geist" font-size="13" font-weight="500" fill="#3A3A3A">Board</text>
+<rect x="97" y="343" width="164" height="546" fill="#FBFBFB"/>
+<rect x="260" y="343" width="1" height="546" fill="#0A0A0A" fill-opacity="0.08"/>
+<rect x="114" y="365" width="22" height="22" rx="6" fill="#0A0A0A"/>
+<path d="M119.5 381h11 M119.5 376h7.5 M119.5 371h4" stroke="#FAFAFA" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="146" y="382" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">SQRlane</text>
+<rect x="106" y="419" width="144" height="30" rx="7" fill="#EBEBEB"/>
+<text x="118" y="439" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A">Overview</text>
+<text x="118" y="473" font-family="Geist" font-size="13" font-weight="500" fill="#4A4A4A">Inbox</text>
+<text x="238" y="473" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B" text-anchor="end">13</text>
+<text x="118" y="507" font-family="Geist" font-size="13" font-weight="500" fill="#4A4A4A">Approvals</text>
+<text x="238" y="507" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B" text-anchor="end">24</text>
+<text x="118" y="541" font-family="Geist" font-size="13" font-weight="500" fill="#4A4A4A">Shipments</text>
+<text x="238" y="541" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B" text-anchor="end">7</text>
+<text x="118" y="575" font-family="Geist" font-size="13" font-weight="500" fill="#4A4A4A">Agents</text>
+<text x="238" y="575" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B" text-anchor="end">16</text>
+<text x="118" y="609" font-family="Geist" font-size="13" font-weight="500" fill="#4A4A4A">TMS link</text>
 </g>
-<g id="page-header">
-<text x="292" y="384" font-family="Geist" font-size="24" font-weight="600" fill="#0A0A0A" letter-spacing="-0.5">Today</text>
-<text x="292" y="405" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">The desk worked the morning inbox. Nothing is sent or written until you approve.</text>
-<rect x="992" y="366" width="132" height="30" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="1058.0" y="386" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">Work the inbox</text>
-</g>
+<text x="288" y="386" font-family="Geist" font-size="22" font-weight="600" fill="#0A0A0A" letter-spacing="-0.4">Overview</text>
+<text x="288" y="407" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">The desk worked the morning inbox.</text>
 <g id="stat-cards">
-<rect x="292.0" y="422" width="199.0" height="80" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="308.0" y="446" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Mails worked</text>
-<text x="308.0" y="476" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.8">13</text>
-<text x="308.0" y="492" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">every mail routed to its owner</text>
-<rect x="503.0" y="422" width="199.0" height="80" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="519.0" y="446" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Handled end to end</text>
-<text x="519.0" y="476" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.8">8 of 13</text>
-<text x="519.0" y="492" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">no person needed before approval</text>
-<rect x="714.0" y="422" width="199.0" height="80" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="730.0" y="446" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Held for a person</text>
-<text x="730.0" y="476" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.8">5</text>
-<text x="730.0" y="492" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">held rather than guessed</text>
-<rect x="925.0" y="422" width="199.0" height="80" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="941.0" y="446" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Waiting for you</text>
-<text x="941.0" y="476" font-family="Geist" font-size="28" font-weight="600" fill="#96580A" letter-spacing="-0.8">24</text>
-<text x="941.0" y="492" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">drafts and TMS changes</text>
+<rect x="288.0" y="428" width="171.0" height="104" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="304.0" y="456" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Mails worked</text>
+<rect x="373.0" y="484" width="74" height="20" rx="10" fill="#EAF1F8"/>
+<text x="410.0" y="498" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">13 routed</text>
+<text x="304.0" y="500" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">13</text>
+<text x="304.0" y="520" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">every mail to its owner</text>
+<rect x="471.0" y="428" width="171.0" height="104" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="487.0" y="456" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Handled end to end</text>
+<rect x="556.0" y="484" width="74" height="20" rx="10" fill="#EAF1F8"/>
+<text x="593.0" y="498" font-family="Geist" font-size="10.5" font-weight="600" fill="#3D72A8" text-anchor="middle">no person</text>
+<text x="487.0" y="500" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">8</text>
+<text x="517.0" y="500" font-family="Geist" font-size="18" font-weight="500" fill="#6B6B6B">of 13</text>
+<text x="487.0" y="520" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">worked through to approval</text>
+<rect x="654.0" y="428" width="171.0" height="104" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="670.0" y="456" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Held for a person</text>
+<rect x="727.0" y="484" width="86" height="20" rx="10" fill="#F6EEE3"/>
+<text x="770.0" y="498" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">not guessed</text>
+<text x="670.0" y="500" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">5</text>
+<text x="670.0" y="520" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">a person decides</text>
+<rect x="837.0" y="428" width="171.0" height="104" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="853.0" y="456" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Awaiting your approval</text>
+<rect x="947.0" y="484" width="49" height="20" rx="10" fill="#EBEBEB"/>
+<text x="971.5" y="498" font-family="Geist" font-size="10.5" font-weight="600" fill="#4A4A4A" text-anchor="middle">gated</text>
+<text x="853.0" y="500" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">24</text>
+<text x="853.0" y="520" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">10 drafts · 14 TMS changes</text>
 </g>
-<g id="inbox-panel">
-<rect x="292" y="514" width="470" height="360" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="308" y="542" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">Inbox</text>
-<text x="354" y="542" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">13 mails · who worked each one</text>
-<g id="mail-in-101">
-<rect x="308" y="556" width="438" height="1" fill="#0A0A0A" fill-opacity="0.07"/>
-<text x="308" y="577" font-family="Geist" font-size="11.5" font-weight="600" fill="#6B6B6B">IN-101</text>
-<text x="362" y="577" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Pricing request: Shenzhen to Antwerp, 3 x 40HC</text>
-<rect x="362" y="585" width="46" height="18" rx="4" fill="#EBEBEB"/>
-<text x="385.0" y="598" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Inbox</text>
-<text x="413" y="598" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="422" y="585" width="33" height="18" rx="4" fill="#EBEBEB"/>
-<text x="438.5" y="598" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">RFQ</text>
-<text x="460" y="598" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="469" y="585" width="39" height="18" rx="4" fill="#EBEBEB"/>
-<text x="488.5" y="598" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Rate</text>
-<text x="513" y="598" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="522" y="585" width="64" height="18" rx="4" fill="#EBEBEB"/>
-<text x="554.0" y="598" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Playbook</text>
+<g id="chart-how-mails-ended">
+<rect x="288" y="546" width="352" height="324" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="308" y="578" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">How the 13 mails ended</text>
+<text x="308" y="598" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">One square per mail</text>
+<rect x="308" y="618" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="327.0" y="641.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">101</text>
+<rect x="352" y="618" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="371.0" y="641.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">103</text>
+<rect x="396" y="618" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="415.0" y="641.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">106</text>
+<rect x="440" y="618" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="459.0" y="641.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">107</text>
+<rect x="484" y="618" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="503.0" y="641.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">108</text>
+<rect x="528" y="618" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="547.0" y="641.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">110</text>
+<rect x="572" y="618" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="591.0" y="641.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">111</text>
+<rect x="308" y="662" width="38" height="38" rx="6" fill="#3D72A8"/>
+<text x="327.0" y="685.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">113</text>
+<rect x="352" y="662" width="38" height="38" rx="6" fill="#96580A"/>
+<text x="371.0" y="685.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">102</text>
+<rect x="396" y="662" width="38" height="38" rx="6" fill="#96580A"/>
+<text x="415.0" y="685.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">104</text>
+<rect x="440" y="662" width="38" height="38" rx="6" fill="#96580A"/>
+<text x="459.0" y="685.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">105</text>
+<rect x="484" y="662" width="38" height="38" rx="6" fill="#96580A"/>
+<text x="503.0" y="685.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">109</text>
+<rect x="528" y="662" width="38" height="38" rx="6" fill="#96580A"/>
+<text x="547.0" y="685.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">112</text>
+<circle cx="314" cy="719" r="5" fill="#3D72A8"/>
+<text x="328" y="724" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A">End to end</text>
+<text x="620" y="724" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="end">8</text>
+<text x="328" y="742" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">worked through to your approval</text>
+<circle cx="314" cy="765" r="5" fill="#96580A"/>
+<text x="328" y="770" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A">Held for a person</text>
+<text x="620" y="770" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="end">5</text>
+<text x="328" y="788" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">a detail no agent could verify</text>
+<rect x="308" y="820" width="312" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="308" y="842" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Held: 3 bookings missing a detail, 1 rolled box,</text>
+<text x="308" y="858" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">1 transit leaving the EU.</text>
 </g>
-<g id="mail-in-103">
-<rect x="308" y="609.2" width="438" height="1" fill="#0A0A0A" fill-opacity="0.07"/>
-<text x="308" y="630.2" font-family="Geist" font-size="11.5" font-weight="600" fill="#6B6B6B">IN-103</text>
-<text x="362" y="630.2" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Final documents for HLCU-2261188</text>
-<rect x="362" y="638.2" width="46" height="18" rx="4" fill="#EBEBEB"/>
-<text x="385.0" y="651.2" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Inbox</text>
-<text x="413" y="651.2" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="422" y="638.2" width="39" height="18" rx="4" fill="#EBEBEB"/>
-<text x="441.5" y="651.2" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Docs</text>
-<text x="466" y="651.2" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="475" y="638.2" width="64" height="18" rx="4" fill="#EBEBEB"/>
-<text x="507.0" y="651.2" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Playbook</text>
-<text x="544" y="651.2" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="553" y="638.2" width="71" height="18" rx="4" fill="#EBEBEB"/>
-<text x="588.5" y="651.2" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Exception</text>
-<rect x="650" y="619.2" width="96" height="17" rx="4" fill="#FBEFE0"/>
-<text x="698.0" y="630.7" font-family="Geist" font-size="9" font-weight="600" fill="#96580A" text-anchor="middle" letter-spacing="0.6">1 MISMATCH</text>
-</g>
-<g id="mail-in-105">
-<rect x="308" y="662.4000000000001" width="438" height="1" fill="#0A0A0A" fill-opacity="0.07"/>
-<text x="308" y="683.4000000000001" font-family="Geist" font-size="11.5" font-weight="600" fill="#6B6B6B">IN-105</text>
-<text x="362" y="683.4000000000001" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Rollover notice: CMDU-4410765</text>
-<rect x="362" y="691.4000000000001" width="46" height="18" rx="4" fill="#EBEBEB"/>
-<text x="385.0" y="704.4000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Inbox</text>
-<text x="413" y="704.4000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="422" y="691.4000000000001" width="77" height="18" rx="4" fill="#EBEBEB"/>
-<text x="460.5" y="704.4000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Milestones</text>
-<text x="504" y="704.4000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="513" y="691.4000000000001" width="64" height="18" rx="4" fill="#EBEBEB"/>
-<text x="545.0" y="704.4000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Playbook</text>
-<text x="582" y="704.4000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="591" y="691.4000000000001" width="71" height="18" rx="4" fill="#EBEBEB"/>
-<text x="626.5" y="704.4000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Exception</text>
-<text x="667" y="704.4000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="676" y="691.4000000000001" width="58" height="18" rx="4" fill="#E8F0FA"/>
-<text x="705.0" y="704.4000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#1F5FA8" text-anchor="middle">Routing</text>
-<rect x="650" y="672.4000000000001" width="96" height="17" rx="4" fill="#96580A"/>
-<text x="698.0" y="683.9000000000001" font-family="Geist" font-size="9" font-weight="600" fill="#FAFAFA" text-anchor="middle" letter-spacing="0.6">HELD FOR YOU</text>
-</g>
-<g id="mail-in-108">
-<rect x="300" y="718.6000000000001" width="454" height="93.2" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="308" y="736.6000000000001" font-family="Geist" font-size="11.5" font-weight="600" fill="#6B6B6B">IN-108</text>
-<text x="362" y="736.6000000000001" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Please book 1 x 40RH vaccines Ningbo to Hamburg</text>
-<rect x="362" y="744.6000000000001" width="46" height="18" rx="4" fill="#EBEBEB"/>
-<text x="385.0" y="757.6000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Inbox</text>
-<text x="413" y="757.6000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="422" y="744.6000000000001" width="58" height="18" rx="4" fill="#EBEBEB"/>
-<text x="451.0" y="757.6000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Booking</text>
-<text x="485" y="757.6000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="494" y="744.6000000000001" width="39" height="18" rx="4" fill="#EBEBEB"/>
-<text x="513.5" y="757.6000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Docs</text>
-<text x="538" y="757.6000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="547" y="744.6000000000001" width="39" height="18" rx="4" fill="#EBEBEB"/>
-<text x="566.5" y="757.6000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Rate</text>
-<text x="591" y="757.6000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="600" y="744.6000000000001" width="64" height="18" rx="4" fill="#96580A"/>
-<text x="632.0" y="757.6000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#FAFAFA" text-anchor="middle">Playbook</text>
-<text x="669" y="757.6000000000001" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="678" y="744.6000000000001" width="58" height="18" rx="4" fill="#E8F0FA"/>
-<text x="707.0" y="757.6000000000001" font-family="Geist" font-size="10.5" font-weight="500" fill="#1F5FA8" text-anchor="middle">Planner</text>
-<path d="M627.0 771.6000000000001 L632.0 765.6000000000001 L637.0 771.6000000000001 Z" fill="#96580A" fill-opacity="0.14"/>
-<rect x="362" y="771.6000000000001" width="380" height="38" rx="6" fill="#96580A" fill-opacity="0.10"/>
-<text x="372" y="786.6000000000001" font-family="Geist" font-size="9" font-weight="700" fill="#96580A" letter-spacing="0.7">PLAYBOOK SENT IT BACK · RULE: GDP-AUDITED REEFER CARRIERS ONLY</text>
-<text x="372" y="802.6000000000001" font-family="Geist" font-size="11.5" font-weight="500" fill="#0A0A0A">ONE is not an approved carrier - use Maersk or Hapag-Lloyd.</text>
-</g>
-<g id="mail-in-110">
-<rect x="308" y="814.8000000000002" width="438" height="1" fill="#0A0A0A" fill-opacity="0.07"/>
-<text x="308" y="835.8000000000002" font-family="Geist" font-size="11.5" font-weight="600" fill="#6B6B6B">IN-110</text>
-<text x="362" y="835.8000000000002" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Freight invoice HL-88213407</text>
-<rect x="362" y="843.8000000000002" width="46" height="18" rx="4" fill="#EBEBEB"/>
-<text x="385.0" y="856.8000000000002" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Inbox</text>
-<text x="413" y="856.8000000000002" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="422" y="843.8000000000002" width="58" height="18" rx="4" fill="#EBEBEB"/>
-<text x="451.0" y="856.8000000000002" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Invoice</text>
-<text x="485" y="856.8000000000002" font-family="Geist" font-size="11" font-weight="500" fill="#6B6B6B">›</text>
-<rect x="494" y="843.8000000000002" width="64" height="18" rx="4" fill="#EBEBEB"/>
-<text x="526.0" y="856.8000000000002" font-family="Geist" font-size="10.5" font-weight="500" fill="#3A3A3A" text-anchor="middle">Playbook</text>
+<g id="chart-what-came-in">
+<rect x="652" y="546" width="356" height="324" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="672" y="578" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">What came in</text>
+<text x="672" y="598" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">13 mails, by the job they start</text>
+<text x="672" y="639.0" font-family="Geist" font-size="12.5" font-weight="500" fill="#3A3A3A">Quote</text>
+<rect x="760" y="628.0" width="204" height="14" rx="4" fill="#EBEBEB"/>
+<rect x="760" y="628.0" width="51.0" height="14" rx="4" fill="#3A3A3A"/>
+<text x="988" y="639.0" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="end">1</text>
+<text x="672" y="677.6666666666666" font-family="Geist" font-size="12.5" font-weight="500" fill="#3A3A3A">Book</text>
+<rect x="760" y="666.6666666666666" width="204" height="14" rx="4" fill="#EBEBEB"/>
+<rect x="760" y="666.6666666666666" width="204.0" height="14" rx="4" fill="#3A3A3A"/>
+<text x="988" y="677.6666666666666" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="end">4</text>
+<text x="672" y="716.3333333333334" font-family="Geist" font-size="12.5" font-weight="500" fill="#3A3A3A">Documents</text>
+<rect x="760" y="705.3333333333334" width="204" height="14" rx="4" fill="#EBEBEB"/>
+<rect x="760" y="705.3333333333334" width="102.0" height="14" rx="4" fill="#3A3A3A"/>
+<text x="988" y="716.3333333333334" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="end">2</text>
+<text x="672" y="755.0" font-family="Geist" font-size="12.5" font-weight="500" fill="#3A3A3A">In transit</text>
+<rect x="760" y="744.0" width="204" height="14" rx="4" fill="#EBEBEB"/>
+<rect x="760" y="744.0" width="153.0" height="14" rx="4" fill="#3A3A3A"/>
+<text x="988" y="755.0" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="end">3</text>
+<text x="672" y="793.6666666666666" font-family="Geist" font-size="12.5" font-weight="500" fill="#3A3A3A">Arrival</text>
+<rect x="760" y="782.6666666666666" width="204" height="14" rx="4" fill="#EBEBEB"/>
+<rect x="760" y="782.6666666666666" width="102.0" height="14" rx="4" fill="#3A3A3A"/>
+<text x="988" y="793.6666666666666" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="end">2</text>
+<text x="672" y="832.3333333333333" font-family="Geist" font-size="12.5" font-weight="500" fill="#3A3A3A">Billing</text>
+<rect x="760" y="821.3333333333333" width="204" height="14" rx="4" fill="#EBEBEB"/>
+<rect x="760" y="821.3333333333333" width="51.0" height="14" rx="4" fill="#3A3A3A"/>
+<text x="988" y="832.3333333333333" font-family="Geist" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="end">1</text>
 </g>
 </g>
-<g id="approvals-panel">
-<rect x="776" y="514" width="348" height="360" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="792" y="542" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A">Approvals</text>
-<text x="1108" y="542" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B" text-anchor="end">24 waiting</text>
-<rect x="792" y="556" width="316" height="26" rx="6" fill="#EBEBEB"/>
-<rect x="794.0" y="558" width="104.0" height="22" rx="5" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.08"/>
-<text x="846.0" y="573" font-family="Geist" font-size="11.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">Awaiting</text>
-<text x="950.0" y="573" font-family="Geist" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">Approved</text>
-<text x="1054.0" y="573" font-family="Geist" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">All</text>
-<text x="792" y="600" font-family="Geist" font-size="11.5" font-weight="700" fill="#0A0A0A" letter-spacing="0.4">NEW-108</text>
-<text x="856" y="600" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">new booking, from IN-108</text>
-<g id="approval-new-108-1">
-<rect x="788" y="610" width="324" height="46" rx="8" fill="#F3F3F3" stroke="#0A0A0A" stroke-opacity="0.08"/>
-<rect x="798" y="625" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.3"/>
-<text x="820" y="630" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">New booking, Hapag-Lloyd</text>
-<text x="820" y="647" font-family="Geist" font-size="9.5" font-weight="700" fill="#6B6B6B" letter-spacing="0.8">TMS</text>
-<text x="850" y="647" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A">QUEUED - not written</text>
-<rect x="1034" y="622" width="60" height="22" rx="5" fill="#0A0A0A"/>
-<text x="1064" y="637" font-family="Geist" font-size="11" font-weight="600" fill="#FAFAFA" text-anchor="middle">Approve</text>
+<g id="how-the-work-is-structured">
+<rect x="1060" y="306" width="764" height="584" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1084" y="342" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">HOW THE WORK IS STRUCTURED</text>
+<text x="1800" y="342" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="end">14 live · Planner scripted · TMS link demo</text>
+<g id="risk-layer">
+<rect x="1084" y="362" width="716" height="40" rx="10" fill="#EAF1F8" stroke="#3D72A8" stroke-opacity="0.35" stroke-dasharray="4 3"/>
+<text x="1098" y="387" font-family="Geist" font-size="13.5" font-weight="600" fill="#3D72A8">Risk layer</text>
+<rect x="1180" y="373" width="62" height="18" rx="9" fill="#FFFFFF"/>
+<text x="1211.0" y="386" font-family="Geist" font-size="10" font-weight="600" fill="#3D72A8" text-anchor="middle">4 agents</text>
+<text x="1254" y="387" font-family="Geist" font-size="11.5" font-weight="400" fill="#3D72A8">watches 60 sources, decides reroute or hold, hands it to the desk</text>
+<text x="1786" y="387" font-family="Geist" font-size="11.5" font-weight="600" fill="#3D72A8" text-anchor="end">slide 08</text>
 </g>
-<g id="approval-new-108-2">
-<rect x="788" y="660" width="324" height="46" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.08"/>
-<rect x="798" y="675" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.3"/>
-<text x="820" y="680" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Booking request to carrier</text>
-<text x="820" y="697" font-family="Geist" font-size="9.5" font-weight="700" fill="#6B6B6B" letter-spacing="0.8">MAIL</text>
-<text x="856" y="697" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A">DRAFT - not sent</text>
-<rect x="1034" y="672" width="60" height="22" rx="5" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.18"/>
-<text x="1064" y="687" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" text-anchor="middle">Approve</text>
-</g>
-<g id="approval-new-108-3">
-<rect x="788" y="710" width="324" height="46" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.08"/>
-<rect x="798" y="725" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.3"/>
-<text x="820" y="730" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Confirmation to customer</text>
-<text x="820" y="747" font-family="Geist" font-size="9.5" font-weight="700" fill="#6B6B6B" letter-spacing="0.8">MAIL</text>
-<text x="856" y="747" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A">DRAFT - not sent</text>
-<rect x="1034" y="722" width="60" height="22" rx="5" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.18"/>
-<text x="1064" y="737" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" text-anchor="middle">Approve</text>
-</g>
-<text x="792" y="770" font-family="Geist" font-size="11.5" font-weight="700" fill="#0A0A0A" letter-spacing="0.4">SHP-005</text>
-<text x="856" y="770" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">from IN-110</text>
-<g id="approval-shp-005-1">
-<rect x="788" y="780" width="324" height="46" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.08"/>
-<rect x="798" y="795" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.3"/>
-<text x="820" y="800" font-family="Geist" font-size="12.5" font-weight="500" fill="#0A0A0A">Invoice query to carrier</text>
-<text x="820" y="817" font-family="Geist" font-size="9.5" font-weight="700" fill="#6B6B6B" letter-spacing="0.8">MAIL</text>
-<text x="856" y="817" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A">DRAFT - not sent</text>
-<rect x="1034" y="792" width="60" height="22" rx="5" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.18"/>
-<text x="1064" y="807" font-family="Geist" font-size="11" font-weight="600" fill="#0A0A0A" text-anchor="middle">Approve</text>
-</g>
-<text x="792" y="858" font-family="Geist" font-size="11.5" font-weight="500" fill="#6B6B6B">+ 20 more, grouped by booking</text>
-</g>
-<path id="cursor" d="M1084 638 l0 17 l4.5 -4.3 l3.2 7 l2.8 -1.3 l-3.1 -6.8 l6 -0.3 Z" fill="#0A0A0A" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
-</g>
-<g id="under-the-hood">
-<rect x="1172" y="306" width="652" height="584" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1196" y="342" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">16 AGENTS, ONE DESK</text>
-<text x="1800" y="342" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B" text-anchor="end">how a mail moves</text>
-<text x="1196" y="374" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">IN · WHERE WORK ARRIVES</text>
-<g id="in-row">
-<path d="M1196 398 L1196 392" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1642.0 398 L1642.0 392" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1196 392 L1642.0 392" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<rect x="1396.0" y="384" width="46" height="18" fill="#FFFFFF"/>
-<rect x="1400.0" y="385" width="38" height="17" rx="4" fill="#EBEBEB"/>
-<text x="1419.0" y="396.5" font-family="Geist" font-size="9" font-weight="600" fill="#6B6B6B" text-anchor="middle" letter-spacing="0.6">NEXT</text>
-<path d="M1650.0 398 L1650.0 392" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1800.0 398 L1800.0 392" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1650.0 392 L1800.0 392" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<rect x="1698.0" y="384" width="54" height="18" fill="#FFFFFF"/>
-<rect x="1702.0" y="385" width="46" height="17" rx="4" fill="#0F7B3F"/>
-<text x="1725.0" y="396.5" font-family="Geist" font-size="9" font-weight="600" fill="#FAFAFA" text-anchor="middle" letter-spacing="0.6">TODAY</text>
-<rect x="1196.0" y="408" width="105.5" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<g id="mark-outlook" transform="translate(1206.0 417.0) scale(0.5625)"><path fill="#0072c6" d="M19.484 7.937v5.477l1.916 1.205a.5.5 0 0 0 .21 0l8.238-5.554a1.174 1.174 0 0 0-.959-1.128Z"/><path fill="#0072c6" d="m19.484 15.457l1.747 1.2a.52.52 0 0 0 .543 0c-.3.181 8.073-5.378 8.073-5.378v10.066a1.408 1.408 0 0 1-1.49 1.555h-8.874zm-9.044-2.525a1.61 1.61 0 0 0-1.42.838a4.13 4.13 0 0 0-.526 2.218A4.05 4.05 0 0 0 9.02 18.2a1.6 1.6 0 0 0 2.771.022a4 4 0 0 0 .515-2.2a4.37 4.37 0 0 0-.5-2.281a1.54 1.54 0 0 0-1.366-.809"/><path fill="#0072c6" d="M2.153 5.155v21.427L18.453 30V2Zm10.908 14.336a3.23 3.23 0 0 1-2.7 1.361a3.19 3.19 0 0 1-2.64-1.318A5.46 5.46 0 0 1 6.706 16.1a5.87 5.87 0 0 1 1.036-3.616a3.27 3.27 0 0 1 2.744-1.384a3.12 3.12 0 0 1 2.61 1.321a5.64 5.64 0 0 1 1 3.484a5.76 5.76 0 0 1-1.035 3.586"/></g>
-<text x="1232.0" y="431" font-family="Geist" font-size="12" font-weight="500" fill="#0A0A0A">Outlook</text>
-<rect x="1309.5" y="408" width="105.5" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<g id="mark-teams" transform="translate(1319.5 417.6) scale(0.0703)"><defs><linearGradient id="c2-SVGCo9xpmZW" x1="17.372%" x2="82.628%" y1="-6.51%" y2="106.51%"><stop offset="0%" stop-color="#5a62c3"/><stop offset="50%" stop-color="#4d55bd"/><stop offset="100%" stop-color="#3940ab"/></linearGradient><path id="c2-SVGhJCUgeMn" d="M136.93 64.476v12.8a32.7 32.7 0 0 1-5.953-.952a38.7 38.7 0 0 1-26.79-22.742h21.848c6.008.022 10.872 4.887 10.895 10.894"/></defs><path fill="#5059c9" d="M178.563 89.302h66.125c6.248 0 11.312 5.065 11.312 11.312v60.231c0 22.96-18.613 41.574-41.573 41.574h-.197c-22.96.003-41.576-18.607-41.579-41.568V95.215a5.91 5.91 0 0 1 5.912-5.913"/><circle cx="223.256" cy="50.605" r="26.791" fill="#5059c9"/><circle cx="139.907" cy="38.698" r="38.698" fill="#7b83eb"/><path fill="#7b83eb" d="M191.506 89.302H82.355c-6.173.153-11.056 5.276-10.913 11.449v68.697c-.862 37.044 28.445 67.785 65.488 68.692c37.043-.907 66.35-31.648 65.489-68.692v-68.697c.143-6.173-4.74-11.296-10.913-11.449"/><path d="M142.884 89.302v96.268a10.96 10.96 0 0 1-6.787 10.062c-1.3.55-2.697.833-4.108.833H76.68c-.774-1.965-1.488-3.93-2.084-5.953a72.5 72.5 0 0 1-3.155-21.076v-68.703c-.143-6.163 4.732-11.278 10.895-11.43z" opacity=".1"/><path d="M136.93 89.302v102.222c0 1.411-.283 2.808-.833 4.108a10.96 10.96 0 0 1-10.062 6.787H79.48c-1.012-1.965-1.965-3.93-2.798-5.954a59 59 0 0 1-2.084-5.953a72.5 72.5 0 0 1-3.155-21.076v-68.703c-.143-6.163 4.732-11.278 10.895-11.43z" opacity=".2"/><path d="M136.93 89.302v90.315c-.045 5.998-4.896 10.85-10.895 10.895H74.597a72.5 72.5 0 0 1-3.155-21.076v-68.703c-.143-6.163 4.732-11.278 10.895-11.43z" opacity=".2"/><path d="M130.977 89.302v90.315c-.046 5.998-4.897 10.85-10.895 10.895H74.597a72.5 72.5 0 0 1-3.155-21.076v-68.703c-.143-6.163 4.732-11.278 10.895-11.43z" opacity=".2"/><path d="M142.884 58.523v18.753c-1.012.06-1.965.12-2.977.12s-1.965-.06-2.977-.12a32.7 32.7 0 0 1-5.953-.952a38.7 38.7 0 0 1-26.791-22.742a33 33 0 0 1-1.905-5.954h29.708c6.007.023 10.872 4.887 10.895 10.895" opacity=".1"/><use href="#c2-SVGhJCUgeMn" opacity=".2"/><use href="#c2-SVGhJCUgeMn" opacity=".2"/><path d="M130.977 64.476v11.848a38.7 38.7 0 0 1-26.791-22.743h15.896c6.008.023 10.872 4.888 10.895 10.895" opacity=".2"/><path fill="url(#c2-SVGCo9xpmZW)" d="M10.913 53.581h109.15c6.028 0 10.914 4.886 10.914 10.913v109.151c0 6.027-4.886 10.913-10.913 10.913H10.913C4.886 184.558 0 179.672 0 173.645V64.495C0 58.466 4.886 53.58 10.913 53.58"/><path fill="#fff" d="M94.208 95.125h-21.82v59.416H58.487V95.125H36.769V83.599h57.439z"/></g>
-<text x="1345.5" y="431" font-family="Geist" font-size="12" font-weight="500" fill="#0A0A0A">Teams</text>
-<rect x="1423.0" y="408" width="105.5" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<g id="mark-slack" transform="translate(1433.0 417.0) scale(0.0703)"><path fill="#e01e5a" d="M53.841 161.32c0 14.832-11.987 26.82-26.819 26.82S.203 176.152.203 161.32c0-14.831 11.987-26.818 26.82-26.818H53.84zm13.41 0c0-14.831 11.987-26.818 26.819-26.818s26.819 11.987 26.819 26.819v67.047c0 14.832-11.987 26.82-26.82 26.82c-14.83 0-26.818-11.988-26.818-26.82z"/><path fill="#36c5f0" d="M94.07 53.638c-14.832 0-26.82-11.987-26.82-26.819S79.239 0 94.07 0s26.819 11.987 26.819 26.819v26.82zm0 13.613c14.832 0 26.819 11.987 26.819 26.819s-11.987 26.819-26.82 26.819H26.82C11.987 120.889 0 108.902 0 94.069c0-14.83 11.987-26.818 26.819-26.818z"/><path fill="#2eb67d" d="M201.55 94.07c0-14.832 11.987-26.82 26.818-26.82s26.82 11.988 26.82 26.82s-11.988 26.819-26.82 26.819H201.55zm-13.41 0c0 14.832-11.988 26.819-26.82 26.819c-14.831 0-26.818-11.987-26.818-26.82V26.82C134.502 11.987 146.489 0 161.32 0s26.819 11.987 26.819 26.819z"/><path fill="#ecb22e" d="M161.32 201.55c14.832 0 26.82 11.987 26.82 26.818s-11.988 26.82-26.82 26.82c-14.831 0-26.818-11.988-26.818-26.82V201.55zm0-13.41c-14.831 0-26.818-11.988-26.818-26.82c0-14.831 11.987-26.818 26.819-26.818h67.25c14.832 0 26.82 11.987 26.82 26.819s-11.988 26.819-26.82 26.819z"/></g>
-<text x="1459.0" y="431" font-family="Geist" font-size="12" font-weight="500" fill="#0A0A0A">Slack</text>
-<rect x="1536.5" y="408" width="105.5" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<g id="mark-whatsapp" transform="translate(1546.6 417.0) scale(0.0698)"><defs><linearGradient id="c4-SVGK3KZq49U" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stop-color="#1faf38"/><stop offset="100%" stop-color="#60d669"/></linearGradient><linearGradient id="c4-SVGefMkoEOd" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stop-color="#f9f9f9"/><stop offset="100%" stop-color="#fff"/></linearGradient></defs><path fill="url(#c4-SVGK3KZq49U)" d="M5.463 127.456c-.006 21.677 5.658 42.843 16.428 61.499L4.433 252.697l65.232-17.104a123 123 0 0 0 58.8 14.97h.054c67.815 0 123.018-55.183 123.047-123.01c.013-32.867-12.775-63.773-36.009-87.025c-23.23-23.25-54.125-36.061-87.043-36.076c-67.823 0-123.022 55.18-123.05 123.004"/><path fill="url(#c4-SVGefMkoEOd)" d="M1.07 127.416c-.007 22.457 5.86 44.38 17.014 63.704L0 257.147l67.571-17.717c18.618 10.151 39.58 15.503 60.91 15.511h.055c70.248 0 127.434-57.168 127.464-127.423c.012-34.048-13.236-66.065-37.3-90.15C194.633 13.286 162.633.014 128.536 0C58.276 0 1.099 57.16 1.071 127.416m40.24 60.376l-2.523-4.005c-10.606-16.864-16.204-36.352-16.196-56.363C22.614 69.029 70.138 21.52 128.576 21.52c28.3.012 54.896 11.044 74.9 31.06c20.003 20.018 31.01 46.628 31.003 74.93c-.026 58.395-47.551 105.91-105.943 105.91h-.042c-19.013-.01-37.66-5.116-53.922-14.765l-3.87-2.295l-40.098 10.513z"/><path fill="#fff" d="M96.678 74.148c-2.386-5.303-4.897-5.41-7.166-5.503c-1.858-.08-3.982-.074-6.104-.074c-2.124 0-5.575.799-8.492 3.984c-2.92 3.188-11.148 10.892-11.148 26.561s11.413 30.813 13.004 32.94c1.593 2.123 22.033 35.307 54.405 48.073c26.904 10.609 32.379 8.499 38.218 7.967c5.84-.53 18.844-7.702 21.497-15.139c2.655-7.436 2.655-13.81 1.859-15.142c-.796-1.327-2.92-2.124-6.105-3.716s-18.844-9.298-21.763-10.361c-2.92-1.062-5.043-1.592-7.167 1.597c-2.124 3.184-8.223 10.356-10.082 12.48c-1.857 2.129-3.716 2.394-6.9.801c-3.187-1.598-13.444-4.957-25.613-15.806c-9.468-8.442-15.86-18.867-17.718-22.056c-1.858-3.184-.199-4.91 1.398-6.497c1.431-1.427 3.186-3.719 4.78-5.578c1.588-1.86 2.118-3.187 3.18-5.311c1.063-2.126.531-3.986-.264-5.579c-.798-1.593-6.987-17.343-9.819-23.64"/></g>
-<text x="1572.5" y="431" font-family="Geist" font-size="12" font-weight="500" fill="#0A0A0A">WhatsApp</text>
-<rect x="1650.0" y="408" width="150" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<text x="1662.0" y="431" font-family="Geist" font-size="11.5" font-weight="600" fill="#0A0A0A">Your TMS export / API</text>
-</g>
-<path d="M1498.0 444 L1498.0 453" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
-<path d="M1493.5 452 L1498.0 458 L1502.5 452" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<path d="M1442.0 402 L1442.0 409" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<path d="M1437.5 408 L1442.0 414 L1446.5 408" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
 <g id="front-doors">
-<rect x="1196.0" y="462" width="196.0" height="58" rx="10" fill="#0A0A0A"/>
-<text x="1208.0" y="484" font-family="Geist" font-size="14" font-weight="600" fill="#FAFAFA">Inbox</text>
-<text x="1380.0" y="484" font-family="Geist" font-size="10.5" font-weight="500" fill="#BDBDBD" text-anchor="end">1 agent</text>
-<text x="1208.0" y="506" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">reads every mail, routes it</text>
-<rect x="1400.0" y="462" width="196.0" height="58" rx="10" fill="#0A0A0A"/>
-<text x="1412.0" y="484" font-family="Geist" font-size="14" font-weight="600" fill="#FAFAFA">Assistant</text>
-<text x="1584.0" y="484" font-family="Geist" font-size="10.5" font-weight="500" fill="#BDBDBD" text-anchor="end">1 agent</text>
-<text x="1412.0" y="506" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">takes your questions</text>
-<rect x="1604.0" y="462" width="196.0" height="58" rx="10" fill="#E8F0FA" stroke="#1F5FA8" stroke-opacity="0.35" stroke-dasharray="4 3"/>
-<text x="1616.0" y="484" font-family="Geist" font-size="14" font-weight="600" fill="#1F5FA8">Risk layer</text>
-<text x="1788.0" y="484" font-family="Geist" font-size="10.5" font-weight="500" fill="#1F5FA8" text-anchor="end">4 agents</text>
-<text x="1616.0" y="506" font-family="Geist" font-size="11.5" font-weight="400" fill="#1F5FA8">sends decisions · slide 08</text>
+<rect x="1084" y="416" width="520" height="40" rx="10" fill="#0A0A0A"/>
+<text x="1098" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#FAFAFA">Inbox</text>
+<rect x="1146" y="427" width="56" height="18" rx="9" fill="#2A2A2A"/>
+<text x="1174.0" y="440" font-family="Geist" font-size="10" font-weight="600" fill="#D6D6D6" text-anchor="middle">1 agent</text>
+<text x="1214" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">reads every mail, links it to the booking, hands it on</text>
+<rect x="1612" y="416" width="188" height="40" rx="10" fill="#0A0A0A"/>
+<text x="1626" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#FAFAFA">Assistant</text>
+<text x="1700" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">your questions</text>
 </g>
-<path d="M1498.0 520 L1498.0 529" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
-<path d="M1493.5 528 L1498.0 534 L1502.5 528" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
-<g id="stations">
-<rect x="1196.0" y="538" width="145.0" height="80" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1208.0" y="560" font-family="Geist" font-size="10.5" font-weight="700" fill="#96580A" letter-spacing="0.8">01</text>
-<text x="1329.0" y="560" font-family="Geist" font-size="10.5" font-weight="500" fill="#6B6B6B" text-anchor="end">2 agents</text>
-<text x="1208.0" y="584" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Quotes</text>
-<text x="1208.0" y="604" font-family="Geist" font-size="10.5" font-weight="400" fill="#6B6B6B">Rate · RFQ</text>
-<path d="M1268.5 618 L1268.5 630" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
-<rect x="1349.0" y="538" width="145.0" height="80" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1361.0" y="560" font-family="Geist" font-size="10.5" font-weight="700" fill="#96580A" letter-spacing="0.8">02</text>
-<text x="1482.0" y="560" font-family="Geist" font-size="10.5" font-weight="500" fill="#6B6B6B" text-anchor="end">2 agents</text>
-<text x="1361.0" y="584" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Bookings &amp; docs</text>
-<text x="1361.0" y="604" font-family="Geist" font-size="10.5" font-weight="400" fill="#6B6B6B">Booking · Docs</text>
-<path d="M1421.5 618 L1421.5 630" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
-<rect x="1502.0" y="538" width="145.0" height="80" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1514.0" y="560" font-family="Geist" font-size="10.5" font-weight="700" fill="#96580A" letter-spacing="0.8">03</text>
-<text x="1635.0" y="560" font-family="Geist" font-size="10.5" font-weight="500" fill="#6B6B6B" text-anchor="end">2 agents</text>
-<text x="1514.0" y="584" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Shipments</text>
-<text x="1514.0" y="604" font-family="Geist" font-size="10.5" font-weight="400" fill="#6B6B6B">Milestones · Exception</text>
-<path d="M1574.5 618 L1574.5 630" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
-<rect x="1655.0" y="538" width="145.0" height="80" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="1667.0" y="560" font-family="Geist" font-size="10.5" font-weight="700" fill="#96580A" letter-spacing="0.8">04</text>
-<text x="1788.0" y="560" font-family="Geist" font-size="10.5" font-weight="500" fill="#6B6B6B" text-anchor="end">2 agents</text>
-<text x="1667.0" y="584" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Billing &amp; customs</text>
-<text x="1667.0" y="604" font-family="Geist" font-size="10.5" font-weight="400" fill="#6B6B6B">Invoice · Customs</text>
-<path d="M1727.5 618 L1727.5 630" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+<path d="M1442.0 456 L1442.0 463" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<path d="M1437.5 462 L1442.0 468 L1446.5 462" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<g id="the-desk">
+<rect x="1084" y="470" width="716" height="234" rx="12" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
+<text x="1098" y="492" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">THE DESK</text>
+<text x="1168" y="492" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">8 agents, in the order a shipment lives</text>
+<g id="stage-quote">
+<rect x="1098.0" y="506" width="224.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1112.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">01</text>
+<text x="1136.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Quote</text>
+<text x="1112.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prices it, drafts the quote</text>
+<rect x="1112.0" y="566" width="42" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1133.0" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Rate</text>
+<rect x="1159.0" y="566" width="35" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1176.5" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">RFQ</text>
 </g>
-<g id="playbook-rail">
-<rect x="1196" y="630" width="604" height="36" rx="8" fill="#96580A" fill-opacity="0.10"/>
-<text x="1208" y="653" font-family="Geist" font-size="13" font-weight="700" fill="#96580A">Playbook</text>
-<text x="1280" y="653" font-family="Geist" font-size="11" font-weight="500" fill="#96580A">checks every output against the customer's rules, sends back what breaks them</text>
+<g id="stage-book">
+<rect x="1330.0" y="506" width="224.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1344.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">02</text>
+<text x="1368.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Book</text>
+<text x="1344.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Opens the booking from the mail</text>
+<rect x="1344.0" y="566" width="61" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1374.5" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Booking</text>
 </g>
-<path d="M1498.0 666 L1498.0 675" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
-<path d="M1493.5 674 L1498.0 680 L1502.5 674" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
-<g id="the-gate">
-<rect x="1196" y="684" width="604" height="40" rx="8" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.5" stroke-width="1.5"/>
-<text x="1210" y="710" font-family="Geist" font-size="14" font-weight="700" fill="#0A0A0A">You approve</text>
-<text x="1308" y="710" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">each draft and each change. Nothing is sent or written before that.</text>
+<g id="stage-documents">
+<rect x="1562.0" y="506" width="224.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1576.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">03</text>
+<text x="1600.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Documents</text>
+<text x="1576.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks each field on the B/L</text>
+<rect x="1576.0" y="566" width="42" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1597.0" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Docs</text>
 </g>
-<path d="M1498.0 724 L1498.0 733" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
-<path d="M1493.5 732 L1498.0 738 L1502.5 732" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
-<g id="out-row">
-<text x="1196" y="752" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">OUT · THROUGH THE TMS LINK</text>
-<path d="M1196 774 L1196 768" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1346 774 L1346 768" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1196 768 L1346 768" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<rect x="1244.0" y="760" width="54" height="18" fill="#FFFFFF"/>
-<rect x="1248.0" y="761" width="46" height="17" rx="4" fill="#0F7B3F"/>
-<text x="1271.0" y="772.5" font-family="Geist" font-size="9" font-weight="600" fill="#FAFAFA" text-anchor="middle" letter-spacing="0.6">TODAY</text>
-<path d="M1354 774 L1354 768" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1800 774 L1800 768" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<path d="M1354 768 L1800 768" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.2" fill="none"/>
-<rect x="1554.0" y="760" width="46" height="18" fill="#FFFFFF"/>
-<rect x="1558.0" y="761" width="38" height="17" rx="4" fill="#EBEBEB"/>
-<text x="1577.0" y="772.5" font-family="Geist" font-size="9" font-weight="600" fill="#6B6B6B" text-anchor="middle" letter-spacing="0.6">NEXT</text>
-<rect x="1196" y="784" width="150" height="40" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<text x="1208" y="809" font-family="Geist" font-size="11.5" font-weight="600" fill="#0A0A0A">Export or your URL</text>
-<rect x="1354" y="784" width="446" height="40" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
-<image id="mark-cargowise" x="1368.0" y="791.0" width="101.2" height="26" href="data:image/png;base64,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"/>
-<g id="mark-sap" transform="translate(1507.6 795.0) scale(0.07087)"><defs><linearGradient id="t5-it-sap-grad" x1="50%" x2="50%" y1="0%" y2="100.002%"><stop offset="0%" stop-color="#00aeef"/><stop offset="21.2%" stop-color="#0097dc"/><stop offset="51.9%" stop-color="#007cc5"/><stop offset="79.2%" stop-color="#006cb8"/><stop offset="100%" stop-color="#0066b3"/></linearGradient></defs><path fill="url(#t5-it-sap-grad)" d="M0 253.281h258.764L512 0H0z"/><path fill="#fff" d="M303.848 50.656H253.28l.17 118.93l-44.032-118.975h-43.66l-37.587 99.36c-3.996-25.283-30.135-34.007-50.702-40.542c-13.581-4.362-27.996-10.779-27.85-17.87c.113-5.82 7.712-11.218 22.813-10.413c10.131.546 19.08 1.362 36.883 9.962l17.505-30.506c-16.233-8.263-38.679-13.48-57.084-13.497h-.113c-21.461 0-39.331 6.95-50.408 18.405C11.493 73.502 7.328 83.667 7.16 94.907c-.282 15.467 5.386 26.432 17.296 35.195c10.064 7.374 22.936 12.158 34.277 15.67c13.987 4.334 25.413 8.105 25.272 16.131c-.112 2.927-1.216 5.662-3.32 7.869c-3.49 3.602-8.837 4.953-16.239 5.1c-14.28.303-24.86-1.943-41.724-11.91l-15.574 30.9c16.846 9.58 34.728 14.386 55.047 14.386l4.57-.034c17.685-.32 32.037-4.559 43.44-13.733c.654-.524 1.239-1.053 1.847-1.588l-1.914 9.862l42.664-.135l7.655-19.599c8.048 2.747 17.2 4.267 26.915 4.267c9.467 0 18.371-1.441 26.268-4.03l5.336 19.362l76.547.073l.186-44.68h16.289c39.371 0 62.645-20.037 62.645-53.639c-.013-37.423-22.638-53.723-70.795-53.723zM187.372 152.318c-5.882 0-11.398-1.025-16.142-2.826l15.962-50.403h.31l15.703 50.544c-4.728 1.689-10.115 2.685-15.839 2.685zm119.436-28.959h-11.11V82.74h11.116c14.803 0 26.623 4.93 26.623 20.048c-.013 15.647-11.82 20.572-26.623 20.572"/></g>
-<g id="mark-oracle" transform="translate(1582.3 799.2) scale(0.14179)"><path fill="#ea1b22" d="M221.034 43.303h33.832l-17.889-28.781l-32.833 52.037h-14.942l39.935-62.508c1.736-2.525 4.63-4.051 7.84-4.051c3.104 0 5.998 1.473 7.682 3.946l40.093 62.613H269.81l-7.05-11.628h-34.253zM376.251 54.93V.631h-12.68v59.614c0 1.631.631 3.21 1.841 4.42s2.841 1.894 4.63 1.894h57.825l7.472-11.628zm-209.78-9.734c12.313 0 22.31-9.944 22.31-22.256c0-12.313-9.997-22.31-22.31-22.31h-55.473v65.93h12.676v-54.3h41.956c5.893 0 10.628 4.789 10.628 10.682c0 5.892-4.735 10.68-10.628 10.68l-35.747-.052l37.851 32.99h18.416l-25.466-21.362zM32.97 66.559C14.77 66.56 0 51.827 0 33.622C0 15.416 14.77.632 32.97.632h38.32c18.204 0 32.963 14.784 32.963 32.99c0 18.205-14.759 32.937-32.964 32.937zm37.468-11.628c11.791 0 21.341-9.524 21.341-21.31S82.228 12.26 70.437 12.26h-36.62c-11.787 0-21.342 9.576-21.342 21.362S22.03 54.93 33.816 54.93zm240.78 11.628c-18.204 0-32.99-14.732-32.99-32.937c0-18.206 14.786-32.99 32.99-32.99h45.514l-7.42 11.628H312.06c-11.786 0-21.362 9.576-21.362 21.362s9.576 21.309 21.362 21.309h45.723l-7.472 11.628zm155.06-11.628c-9.734 0-17.995-6.524-20.52-15.522h54.194l7.471-11.628h-61.665c2.525-8.945 10.786-15.521 20.52-15.521h37.2L511 .63h-45.565c-18.205 0-32.99 14.785-32.99 32.99s14.785 32.938 32.99 32.938h39.094L512 54.931z"/></g>
-<image id="mark-descartes" x="1693.3" y="797.5" width="92.7" height="13" href="data:image/png;base64,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"/>
+<g id="stage-in-transit">
+<rect x="1098.0" y="606" width="224.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1112.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">04</text>
+<text x="1136.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">In transit</text>
+<text x="1112.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Updates the ETA, flags rollovers</text>
+<rect x="1112.0" y="666" width="80" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1152.0" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Milestones</text>
+<rect x="1197.0" y="666" width="74" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1234.0" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Exception</text>
 </g>
-<text x="1196" y="854" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">Native TMS connectors are next. None of these vendors is connected.</text>
-<text x="1196" y="870" font-family="Geist" font-size="11" font-weight="400" fill="#6B6B6B">Planner is scripted. The TMS link is a demo connector.</text>
+<g id="stage-arrival">
+<rect x="1330.0" y="606" width="224.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1344.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">05</text>
+<text x="1368.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Arrival</text>
+<text x="1344.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prepares the entry, never files</text>
+<rect x="1344.0" y="666" width="61" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1374.5" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Customs</text>
 </g>
-<text x="96" y="946" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Every system on one screen. Every step recorded. You approve each change.</text>
-<text x="1824" y="944" font-family="Geist" font-size="20" font-weight="600" fill="#96580A" text-anchor="end">Built for the 40%.</text>
+<g id="stage-billing">
+<rect x="1562.0" y="606" width="224.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1576.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">06</text>
+<text x="1600.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Billing</text>
+<text x="1576.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks the bill against the rate</text>
+<rect x="1576.0" y="666" width="61" height="20" rx="5" fill="#EBEBEB"/>
+<text x="1606.5" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Invoice</text>
+</g>
+</g>
+<path d="M1210.0 704 L1210.0 712" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+<path d="M1442.0 704 L1442.0 712" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+<path d="M1674.0 704 L1674.0 712" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+<g id="playbook">
+<rect x="1084" y="712" width="716" height="36" rx="10" fill="#F6EEE3"/>
+<text x="1098" y="735" font-family="Geist" font-size="13.5" font-weight="600" fill="#96580A">Playbook</text>
+<rect x="1170" y="721" width="56" height="18" rx="9" fill="#FFFFFF"/>
+<text x="1198.0" y="734" font-family="Geist" font-size="10" font-weight="600" fill="#96580A" text-anchor="middle">1 agent</text>
+<text x="1238" y="735" font-family="Geist" font-size="11.5" font-weight="400" fill="#96580A">checks every output against the customer's rules, sends back what breaks them</text>
+</g>
+<path d="M1442.0 748 L1442.0 755" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<path d="M1437.5 754 L1442.0 760 L1446.5 754" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<g id="gate-and-record">
+<rect x="1084" y="762" width="344.0" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.55" stroke-width="1.5"/>
+<text x="1098" y="787" font-family="Geist" font-size="13.5" font-weight="700" fill="#0A0A0A">You approve</text>
+<text x="1192" y="787" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">every draft, every change</text>
+<path d="M1432.0 782 L1447.0 782" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<path d="M1446.0 777.5 L1452.0 782 L1446.0 786.5" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>
+<rect x="1456.0" y="762" width="344.0" height="40" rx="10" fill="#0A0A0A"/>
+<text x="1470.0" y="787" font-family="Geist" font-size="13.5" font-weight="600" fill="#FAFAFA">TMS link</text>
+<text x="1542.0" y="787" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">writes it onto the booking</text>
+<rect x="1740.0" y="773" width="38" height="18" rx="9" fill="#2A2A2A"/>
+<text x="1759.0" y="786" font-family="Geist" font-size="10" font-weight="600" fill="#D6D6D6" text-anchor="middle">demo</text>
+</g>
+<g id="worked-together">
+<text x="1084" y="830" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">ONE MAIL, TOGETHER</text>
+<text x="1234" y="830" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">IN-108, a vaccine booking</text>
+<rect x="1084" y="842" width="50" height="22" rx="5" fill="#EBEBEB"/>
+<text x="1109.0" y="857" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Inbox</text>
+<text x="1139" y="857" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1150" y="842" width="62" height="22" rx="5" fill="#EBEBEB"/>
+<text x="1181.0" y="857" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Booking</text>
+<text x="1217" y="857" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1228" y="842" width="43" height="22" rx="5" fill="#EBEBEB"/>
+<text x="1249.5" y="857" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Docs</text>
+<text x="1276" y="857" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1287" y="842" width="43" height="22" rx="5" fill="#EBEBEB"/>
+<text x="1308.5" y="857" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Rate</text>
+<text x="1335" y="857" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1346" y="842" width="157" height="22" rx="5" fill="#96580A"/>
+<text x="1424.5" y="857" font-family="Geist" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">Playbook sends it back</text>
+<text x="1508" y="857" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1519" y="842" width="112" height="22" rx="5" fill="#EBEBEB"/>
+<text x="1575.0" y="857" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Booking rebooks</text>
+<text x="1636" y="857" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">›</text>
+<rect x="1647" y="842" width="87" height="22" rx="5" fill="#0A0A0A"/>
+<text x="1690.5" y="857" font-family="Geist" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">You approve</text>
+</g>
+</g>
+<text x="96" y="946" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Every step recorded, checked against the customer's rules, and approved by you.</text>
 <g id="footer">
 <rect x="96" y="978" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
 <rect x="96" y="1004" width="22" height="22" rx="6" fill="#0A0A0A"/>
