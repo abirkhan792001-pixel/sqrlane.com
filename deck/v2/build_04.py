@@ -39,7 +39,7 @@ cols = [
     ("the-seam", "THE SEAM", "Decide.", "Nobody owns this step.", [0, 1, 2, 3],
      None, None, None, None),
     ("execution-ai", "EXECUTION AI", "They act.", "Only after you decide.", [2, 3],
-     ["5U AI", "Augment", "Nexcade", "Zauber"], "$96.7M", "raised since Sept 2025",
+     ["5U AI", "Augment", "Nexcade", "Zauber", "Nemox", "HappyRobot"], "$96.7M", "raised since Sept 2025",
      "Augment $85M · Nexcade $8.5M · 5U AI $3.2M"),
 ]
 STEPS = ["WATCH", "DECIDE", "ACT", "RECORD"]
@@ -64,14 +64,8 @@ for i, (idn, lab, title, sub, on, vendors, big, cap, src) in enumerate(cols):
         s.T(bx, Y + 176, nm, 11, 600 if active else 500, hi if active else MUT, ls=0.8)
     if vendors:
         for k, v in enumerate(vendors):
-            s.R(ix, Y + 200 + k * 38, CW3 - 56, 30, TRACK, 8, ' fill-opacity="0.7"')
-            s.T(ix + (CW3 - 56) / 2, Y + 220 + k * 38, v, 14, 500, anchor="middle")
-        if idn == "execution-ai":
-            s.T(ix, Y + 370, "ADJACENT", 11, 600, MUT, ls=1.2)
-            hw = (CW3 - 56 - 8) / 2
-            for k, v in enumerate(["Nemox", "HappyRobot"]):
-                s.R(ix + k * (hw + 8), Y + 380, hw, 30, CARD, 8, f' stroke="{INK}" stroke-opacity="0.14" stroke-dasharray="4 4"')
-                s.T(ix + k * (hw + 8) + hw / 2, Y + 400, v, 14, 500, MUT, anchor="middle")
+            s.R(ix, Y + 200 + k * 36, CW3 - 56, 28, TRACK, 8, ' fill-opacity="0.7"')
+            s.T(ix + (CW3 - 56) / 2, Y + 219 + k * 36, v, 14, 500, anchor="middle")
         s.rule(Y + 428, 0.1, ix, CW3 - 56)
         s.T(ix, Y + 470, big, 38, 600, ls=-1)
         s.T(ix, Y + 494, cap, 14, 400, MUT)
