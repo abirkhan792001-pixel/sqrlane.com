@@ -122,6 +122,7 @@ s.line(ax, PT + PH_ / 2, ax + 12, PT + PH_ / 2, INK, 0.3, 1.5)
 s.raw(f'<path d="M{ax+11} {PT+PH_/2-4} L{ax+16} {PT+PH_/2} L{ax+11} {PT+PH_/2+4}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
 s.g("popup-agent")
 soft_card(P2X, PT, P2W, PH_, 14)
+s.R(P2X, PT, P2W, PH_, "none", 14, f' stroke="{BLUE}" stroke-width="1.2"')
 agent_mark(P2X + 22, PT + 19, 6)
 s.T(P2X + 38, PT + 23, "Risk agent", 12.5, 600, BLUE)
 s.T(P2X + P2W - 14, PT + 23, "working…", 11, 500, GREY, anchor="end")
@@ -142,15 +143,17 @@ s.T(MX + 18, OY + 25, "This run", 13, 600)
 s.T(MX + MW - 18, OY + 25, "Hamburg strike · demo scenario", 12, 400, GREY, anchor="end")
 sw_ = (MW - 36) / 5
 for k, (n, lab, tag, tf, ti) in enumerate(STEPS):
-    x = MX + 18 + k * sw_
-    s.T(x, OY + 60, n, 25 if len(n) > 3 else 30, 600, ls=-1)
+    x = MX + 18 + k * sw_ + (6 if n.startswith("€") else 0)
+    if n.startswith("€"):
+        s.R(x - 6, OY + 34, sw_ - 12, OH - 42, GREEN_BG, 10, f' stroke="{GREEN}" stroke-width="1.2"')
+    s.T(x, OY + 60, n, 27 if len(n) > 3 else 30, 600, GREEN if n.startswith("€") else INK, ls=-1)
     s.T(x, OY + 79, lab, 12, 500, "#4A4A4A")
     if tag:
-        pill(x, OY + 87, tag, tf, ti, anchor="start", size=10, h=18)
+        pill(x, OY + 87, tag, CARD if n.startswith("€") else tf, ti, anchor="start", size=10, h=18)
     else:                                              # the three decisions, split
         w1 = pill(x, OY + 87, "2 reroute", BLUE_BG, BLUE, anchor="start", size=10, h=18)
         pill(x + w1 + 5, OY + 87, "1 hold", AMBR_BG, AMBR, anchor="start", size=10, h=18)
-    if k < 4:
+    if k < 4 and not STEPS[k + 1][0].startswith("€") and not n.startswith("€"):
         s.T(x + sw_ - 14, OY + 60, "›", 18, 400, "#C8C8C8")
 s.end()
 
@@ -178,9 +181,12 @@ s.T(MX + 148, cy + 25, "Drafted a mail to Katrin Vogel, Bavaria Drivetrain.", 12
 mark("Outlook", MX + 32, cy + 38, 15)
 s.T(MX + 54, cy + 50, "HLCU-2261188 Automotive parts: revised ETA", 12.5, 600)
 s.T(MX + 32, cy + 70, "We are bringing it in through Rotterdam instead of Hamburg, 2 days later than planned.", 11.5, 400, MUT)
-s.T(MX + 16 + BWb - 104, cy + 50, "Draft ready", 11, 600, AMBR, anchor="end")
-s.R(MX + 16 + BWb - 92, cy + DHh - 50, 78, 26, INK, 8)
-s.T(MX + 16 + BWb - 53, cy + DHh - 32, "Approve", 12, 600, CARD, anchor="middle")
+def draft_gate(top, h):
+    by = top + h - 38
+    s.R(MX + 16 + BWb - 92, by, 78, 26, INK, 8)
+    s.T(MX + 16 + BWb - 53, by + 18, "Approve", 12, 600, CARD, anchor="middle")
+    s.T(MX + 16 + BWb - 104, by + 17.5, "Draft ready", 11, 600, AMBR, anchor="end")
+draft_gate(cy, DHh)
 cy += DHh + 8
 # SHP-002: the hold - the call with no good option
 soft_card(MX + 16, cy, BWb, 82, 14, op=0.10)
@@ -191,7 +197,7 @@ pill(MX + 16 + BWb - 14, cy + 12, "hold", AMBR_BG, AMBR)
 s.T(MX + 32, cy + 48, "Hold the boxes instead of discharging into the strike. No other route lands any better.", 12.5, 500, INK)
 mark("Outlook", MX + 32, cy + 58, 14)
 s.T(MX + 52, cy + 70, "Comms drafted the hold instruction to Maersk and the notice to Nordmed Pharma.", 11.5, 400, MUT)
-s.T(MX + 16 + BWb - 14, cy + 70, "Draft ready", 11, 600, AMBR, anchor="end")
+draft_gate(cy, 82)
 cy += 90
 s.T(MX + 18, cy + 10, "Cost avoided = €141,100 if nothing is done, minus €94,600 with these calls. From each synthetic booking's own terms.", 10.5, 400, GREY)
 s.end()
@@ -226,7 +232,7 @@ def step(y, name, n, what, h=44, fill=CARD, ink=INK, sub=MUT, stroke=0.16, nx=No
 y = TOP + 56
 # WATCH: the 60 live sources by family, then what comes next, fading out
 s.g("watch")
-s.R(hx, y, hw, 100, BG, 12, f' stroke="{INK}" stroke-opacity="0.10"')
+s.R(hx, y, hw, 94, BG, 12, f' stroke="{INK}" stroke-opacity="0.10"')
 s.T(hx + 14, y + 22, "WATCH", 10.5, 700, MUT, ls=1.2)
 s.T(hx + 70, y + 22, "60 sources, read together on every run", 11.5, 400, MUT)
 fx = hx + 14
@@ -237,47 +243,56 @@ for fam, n in (("News", 41), ("Rivers", 7), ("Weather & sea", 4), ("Hazards", 5)
     s.T(fx + 10, y + 49, lab, 11, 500, "#3A3A3A")
     s.T(fx + w - 9, y + 49, str(n), 11, 700, BLUE, anchor="end")
     fx += w + 6
-s.T(hx + 14, y + 81, "Coming live soon", 11, 600, GREY)
+s.T(hx + 14, y + 79, "Coming live soon", 11, 600, GREY)
 fx = hx + 122
 for k, nxt in enumerate(("AIS vessel positions", "Freight indices", "Prediction markets", "Port calls", "")):
     op = (0.85, 0.6, 0.38, 0.2, 0.08)[k]
     w = round(len(nxt) * 6.3 + 22) if nxt else 70
-    s.R(fx, y + 66, w, 22, CARD, 6, f' stroke="{INK}" stroke-opacity="{0.22 * op:.2f}" stroke-dasharray="3 3" fill-opacity="{op:.2f}"')
-    if nxt: s.T(fx + 11, y + 81, nxt, 11, 500, "#6B6B6B")
+    s.R(fx, y + 64, w, 22, CARD, 6, f' stroke="{INK}" stroke-opacity="{0.22 * op:.2f}" stroke-dasharray="3 3" fill-opacity="{op:.2f}"')
+    if nxt: s.T(fx + 11, y + 79, nxt, 11, 500, "#6B6B6B")
     fx += w + 6
 s.raw('<defs><linearGradient id="soon-fade" x1="0" y1="0" x2="1" y2="0">'
       f'<stop offset="0.55" stop-color="{BG}" stop-opacity="0"/><stop offset="1" stop-color="{BG}" stop-opacity="1"/>'
       '</linearGradient></defs>')
-s.R(hx + 122, y + 64, hw - 136, 26, "url(#soon-fade)")
+s.R(hx + 122, y + 62, hw - 136, 26, "url(#soon-fade)")
 s.end()
-y += 100; arrow(y, y + 12); y += 15
+y += 94; arrow(y, y + 11); y += 13
 
 # every agent step on the same grid: name, count, what it does
 NX = hx + 108
-ROWH = 42
-def row(name, n, what, grp, chip=None, right=None):
+ROWH = 38
+def row(name, n, what, grp, chip=None, right=None, h=None):
     global y
     s.g(grp)
-    s.R(hx, y, hw, ROWH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
-    s.T(hx + 14, y + 26, name, 13.5, 600)
-    cw = count_chip(NX, y + 11.5, n, *(chip or ()))
-    s.T(NX + 92, y + 25.5, what, 11.5, 400, MUT)
+    s.R(hx, y, hw, h or ROWH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
+    s.T(hx + 14, y + 24, name, 13.5, 600)
+    cw = count_chip(NX, y + 9.5, n, *(chip or ()))
+    s.T(NX + 92, y + 23.5, what, 11.5, 400, MUT)
     if right: right(y)
     s.end()
-    y += ROWH
+    y += h or ROWH
 def outcomes(yy):
     ox = hx + hw - 14
     for lab, f, i in (("no change", GREY_BG, "#4A4A4A"), ("hold", AMBR_BG, AMBR), ("reroute", BLUE_BG, BLUE)):
-        ox -= pill(ox, yy + 11, lab, f, i) + 6
+        ox -= pill(ox, yy + 9, lab, f, i) + 6
 
 row("Risk", "1 agent", "reads every source, flags what touches a booking", "risk-agent")
-arrow(y, y + 12); y += 15
-row("Routing", "1 agent", "weighs slack against delay", "routing-agent", right=outcomes)
-arrow(y, y + 12); y += 15
+arrow(y, y + 11); y += 13
+def cost_impact(yy):
+    bx0, bw0 = NX, 240
+    s.T(hx + 14, yy + 52, "Cost impact", 11, 600, GREY)
+    for k, (lab, v, col) in enumerate((("doing nothing", 141100, AMBR), ("these calls", 94600, BLUE))):
+        by = yy + 44 + k * 16
+        s.R(bx0, by, bw0 * v / 141100, 8, col, 4)
+        s.T(bx0 + bw0 * v / 141100 + 8, by + 8, f"€{v:,} · {lab}", 10.5, 500, MUT)
+    s.T(hx + hw - 14, yy + 62, "€46,500 avoided", 13, 700, GREEN, anchor="end")
+row("Routing", "1 agent", "weighs slack against delay, prices every option", "routing-agent",
+    right=lambda yy: (outcomes(yy), cost_impact(yy)), h=80)
+arrow(y, y + 11); y += 13
 row("Comms", "1 agent", "drafts the carrier and customer mail", "comms-agent")
-arrow(y, y + 12); y += 15
+arrow(y, y + 11); y += 13
 row("Planner", "1 agent", "checks bookings before departure · scripted", "planner-agent", chip=(GREY_BG, "#6B6B6B"))
-arrow(y, y + 12); y += 15
+arrow(y, y + 11); y += 13
 
 # the desk: slide 07, faded here as the risk layer was there
 s.g("the-desk")
@@ -290,7 +305,7 @@ s.raw('<defs><linearGradient id="desk-fade" x1="0" y1="0" x2="1" y2="0">'
       '</linearGradient></defs>')
 s.R(hx - 2, y - 2, hw + 4, ROWH + 4, "url(#desk-fade)")
 s.end()
-y += ROWH; arrow(y, y + 12); y += 15
+y += ROWH; arrow(y, y + 11); y += 13
 
 s.g("gate-and-record")
 GW2 = (hw - 28) / 2
