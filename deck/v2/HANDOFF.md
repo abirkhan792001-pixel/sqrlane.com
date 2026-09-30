@@ -26,7 +26,7 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 | 05 | `build_05.py` → `slide-05-the-job-1.svg` | final |
 | 06 | `build_06.py` → `slide-06-the-job-2.svg` (version A, the owner's pick) | final |
 | 07 | `build_07.py` → `slide-07-the-how-1.svg` (rebuilt: the desk) | built, awaiting feedback |
-| 08 | The How 2 of 2: the risk layer (know early, while options exist) | to do |
+| 08 | `build_08.py` → `slide-08-the-how-2.svg` (the risk layer) | built, awaiting feedback |
 | 09 | Who am I (founder) | to do |
 | A | Appendix: sources for slide 06 (`SOURCES` list in `build_06.py`) | later, not now |
 
@@ -61,6 +61,23 @@ in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
   Assistant and the TMS link are white cards; step numbers are grey.
 - Closing line: "Ask the desk anything. Every step recorded, and approved by you."
   "Built for the 40%" is gone.
+
+## Slide 08, the risk layer (built 2026-09-30)
+
+Same frame as slide 07, so the two read as a pair. Left, the Risk view: a bell, two
+pop-ups (a regional source, NDR Hamburg, "Warnstreik im Hamburger Hafen", then "Risk
+agent · working… Checking 7 bookings against it."), "This run" in one line with tags (60
+sources watched · live, 1 event · strike, high, 3 bookings touched · of 7, 2 · 1 reroute ·
+hold, 0 sent or written), then the decisions as a thread: SHP-001 rerouted via Rotterdam
+("Arrives 12 Oct, due 14 Oct", slide 02's frame), the Comms agent's real customer mail to
+Katrin Vogel ("Draft, not sent", Approve), and SHP-002 held. Right, "How the risk layer
+works": WATCH (60 sources by family: news 41, rivers 7, weather and sea 4, hazards 5,
+government 2, markets 1) → Risk → Routing (reroute / hold / no change) → Comms and Planner
+(scripted) → the desk (12 agents, faded, slide 07) → You approve → TMS link, then "One
+event, earlier": NDR Hamburg first, ver.di +22 min, NOS Nieuws +4 h, international wires
++23 h, labelled **demo scenario** because the strike and its trail are authored. The
+language is not named; the outlet is. Closing line: "The earlier the call, the more
+options you have and the less it costs."
 
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 
