@@ -3,14 +3,14 @@
 <g id="header">
 <rect x="96" y="104" width="10" height="10" rx="2" fill="#96580A"/>
 <text x="120" y="114" font-family="Geist" font-size="15" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">03 · THE WHY</text>
-<text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">€4bn a year of desk work. Nobody does all of it.</text>
+<text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">€6bn a year of desk work. Nobody does all of it.</text>
 <text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6B6B6B">Risk tools alert. Execution tools act. Neither decides.</text>
 <rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
 </g>
-<g id="where-the-4bn-sits">
+<g id="where-the-6bn-sits">
 <rect x="96" y="318" width="540" height="560" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <rect x="128" y="356" width="10" height="10" rx="2" fill="#0A0A0A"/>
-<text x="152" y="366" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">WHERE THE €4BN SITS</text>
+<text x="152" y="366" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">WHERE THE €6BN SITS</text>
 <text x="128" y="436" font-family="Geist" font-size="44" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">1.6M</text>
 <text x="128" y="464" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">people in European freight forwarding</text>
 <text x="128" y="508" font-family="Geist" font-size="17" font-weight="600" fill="#96580A">÷ 5</text>
@@ -19,13 +19,15 @@
 <text x="494" y="507" font-family="Geist" font-size="12" font-weight="600" fill="#96580A" text-anchor="middle">assumed</text>
 <text x="128" y="580" font-family="Geist" font-size="44" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">320,000</text>
 <text x="128" y="608" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">operating desks</text>
-<text x="128" y="652" font-family="Geist" font-size="17" font-weight="600" fill="#96580A">× €13,600</text>
-<text x="238" y="652" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">admin cost per desk, per year</text>
+<text x="128" y="652" font-family="Geist" font-size="17" font-weight="600" fill="#96580A">× €19,700</text>
+<text x="238" y="652" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">cost per desk, per year</text>
+<rect x="458" y="636" width="72" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
+<text x="494" y="651" font-family="Geist" font-size="12" font-weight="600" fill="#96580A" text-anchor="middle">assumed</text>
 <rect x="128" y="742" width="476" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
-<text x="128" y="802" font-family="Geist" font-size="56" font-weight="600" fill="#0A0A0A" letter-spacing="-1.6">€4.36bn</text>
-<text x="128" y="830" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">a year in wages, spent on re-typing</text>
+<text x="128" y="802" font-family="Geist" font-size="56" font-weight="600" fill="#0A0A0A" letter-spacing="-1.6">€6.30bn</text>
+<text x="128" y="830" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">a year in wages, spent on coordination</text>
 <text x="128" y="854" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">UK: 66,187 staff across 6,737 firms, scaled to 163,000 EU firms</text>
-<text x="128" y="870" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">IBISWorld · SalaryExpert · €34k salary × 40% admin</text>
+<text x="128" y="870" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">IBISWorld · SalaryExpert · Asana · €34k salary × 58%</text>
 </g>
 <g id="risk-platforms">
 <rect x="660" y="318" width="372" height="560" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>

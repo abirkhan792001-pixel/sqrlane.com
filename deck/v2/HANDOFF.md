@@ -33,35 +33,50 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
 in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 
-## Slide 07, current version (third rebuild, 2026-09-30)
+## Slide 07, current version (fourth rebuild, 2026-09-30)
 
-Owner's feedback on the second version: keep the window bar and Today header of the first
-rebuild; the dashboard was still overdone, so minimal, less text, only the dashboard's
-own colours (blue #006BFF, green #0F7B3F, amber #96580A, greys); add a ChatGPT-style
-search box with suggestions; the risk band very light grey; and show plainly how many
-agents work each step.
-
-- **Left:** window bar ("SQRlane · Desk", "Demo run · synthetic inbox"), sidebar, Today
-  header with "Work the inbox", an **Ask SQRlane** box (src/ask.py is live) with three
-  suggested questions, each checked to be answered by `ask.ask()` today; four stat
-  cards (13 / 8 / 5 / 24) with coloured pills; one "What came in" row (Quote 1, Book 4,
-  Documents 2, In transit 3, Arrival 2, Billing 1). All from `workflow.run(use_llm=False)`.
-- **Right, "How the work is structured"** (the owner's pick of the second version's
-  panel, restored): Risk layer in light grey (4 agents, slide 08) → Inbox and Assistant
-  → the desk's six stages → Playbook → You approve → TMS link → IN-108's real path.
-  Every step carries an amber agent-count chip ("1 agent", "2 agents"), as the owner
-  asked. Counts: 4 + 1 + 1 + (2+1+1+2+1+1) + 1 + 1 = 16.
+- **Left, the Today view:** window bar ("SQRlane · Desk"), sidebar without counts, "Today"
+  header (no button), the **Ask SQRlane** box with "Where is MEDU-1774390?" and, under it,
+  the real answer: `ask.ask()` routes it to the Milestones agent, which says SHP-004 is
+  on plan with no active risk (the date is left out, because bookings age forward).
+  Three suggested questions, each answered by `ask.ask()` today. Four stat cards
+  (13 / 8 / 5 / 24). Then an **Outlook notification** (official mark from
+  `channel_marks.json`, red badge) for IN-111, "Arrival notice: MEDU-2209471 at
+  Fos-sur-Mer", and the **Customs agent's** real output for it: "Entry prepared for
+  France. Not filed." on SHP-007, queued, not written, with an Approve button.
+- **The "Demo run · synthetic inbox" label was removed on the owner's instruction.** The
+  figures are still counts from one run on the synthetic inbox, so say that out loud when
+  presenting. The remaining disclosures: "14 live · Planner scripted · TMS link demo" in
+  the right panel, and "Queued, not written" on the agent card.
+- **Right, "How the work is structured":** the second version's panel, restored at the
+  owner's request, with the risk layer in light grey and an agent-count chip on every
+  step. Colour has one job each: **blue = an agent** (every count chip, as in the Ask
+  box), **amber = the Playbook's check** (band, ticks, "sends it back"), **black = the one
+  thing a person does: approve** ("You approve" is the only black block). Inbox,
+  Assistant and the TMS link are white cards; step numbers are grey.
 - Closing line: "Ask the desk anything. Every step recorded, and approved by you."
+  "Built for the 40%" is gone.
 
-## The 40% does not hold (checked 2026-09-30)
+## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 
-Slide 03 says "40% of the day on admin, upper estimate, logistics industry surveys" and
-slides 02, 03 (EUR 13,600 = 34k x 40%) and 04 build on it. No named source says that.
-The nearest Grade A figure, Asana's Anatomy of Work 2022, says the opposite shape: 58% of
-a knowledge worker's day goes to coordination, 33% to skilled work, under 10% to strategy
-(10,624 knowledge workers, not forwarders). nShift, a vendor, reports about a third of
-logistics workers spend over half their time on manual tasks (Grade B at best). The rest
-is vendor blogs (Grade C). The owner has not yet decided how to fix slides 02-04.
+Where it came from: the old web deck says "60% goes to coordination, only 40% goes to the
+skilled work (Asana 2022)". The v2 deck took the 40% skilled-work share and labelled it
+"admin", which is the wrong way round. On top of that, 60% is Asana's 2021 figure; the
+2022 index says **58%** of the day goes to coordination, 33% to skilled work and under 10%
+to strategy (10,624 knowledge workers, Germany included, not forwarders specifically).
+`docs/problem-brief.md` now says so, so the error cannot creep back.
+
+- **Slide 02:** the bar reads "58% coordination" against "the actual job", with Asana's
+  own definition under it (chasing status, searching for information, switching apps)
+  and the source. The closing line changed from "is stuck doing data entry." to "is stuck
+  chasing status." so the claim matches its source.
+- **Slide 03:** "58% of the day on coordination" and "€19,700 per desk, per year"
+  (€34k x 58% = €19,720).
+- **Slide 04:** 320,000 desks x €19,700 = **€6.30bn** (was €4.36bn); headline "€6bn a year
+  of desk work"; the x €19,700 line carries an "assumed" chip, because applying an
+  office-worker average to forwarding desks is an assumption.
+- Not changed: `static/deck.html`, `static/what.html` and `docs/replit-deck-prompt.md`
+  still say 60% under the 2022 label. Out of this deck's scope; flagged to the owner.
 
 Agent copy (accepted by the owner):
 - Inbox: Reads every mail, links it to the booking, and passes it to the right agent.

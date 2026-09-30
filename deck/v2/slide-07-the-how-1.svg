@@ -18,8 +18,6 @@
 <circle cx="154" cy="326" r="5.5" fill="#DEDEDE"/>
 <rect x="446.0" y="315" width="300" height="22" rx="6" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.08"/>
 <text x="596.0" y="331" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B" text-anchor="middle">SQRlane · Desk</text>
-<rect x="885" y="315" width="197" height="22" rx="11.0" fill="#FDF3E3"/>
-<text x="983.5" y="330.14" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">Demo run · synthetic inbox</text>
 </g>
 <g id="sidebar">
 <rect x="276" y="347" width="1" height="542" fill="#0A0A0A" fill-opacity="0.08"/>
@@ -29,98 +27,109 @@
 <rect x="108" y="427" width="156" height="32" rx="8" fill="#F3F3F3"/>
 <text x="122" y="448" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Today</text>
 <text x="122" y="484" font-family="Geist" font-size="13.5" font-weight="500" fill="#4A4A4A">Inbox</text>
-<text x="250" y="484" font-family="Geist" font-size="12.5" font-weight="500" fill="#9A9A9A" text-anchor="end">13</text>
 <text x="122" y="520" font-family="Geist" font-size="13.5" font-weight="500" fill="#4A4A4A">Approvals</text>
-<text x="250" y="520" font-family="Geist" font-size="12.5" font-weight="500" fill="#9A9A9A" text-anchor="end">24</text>
 <text x="122" y="556" font-family="Geist" font-size="13.5" font-weight="500" fill="#4A4A4A">Shipments</text>
-<text x="250" y="556" font-family="Geist" font-size="12.5" font-weight="500" fill="#9A9A9A" text-anchor="end">7</text>
 <text x="122" y="592" font-family="Geist" font-size="13.5" font-weight="500" fill="#4A4A4A">Agents</text>
-<text x="250" y="592" font-family="Geist" font-size="12.5" font-weight="500" fill="#9A9A9A" text-anchor="end">16</text>
 </g>
 <g id="page-header">
-<text x="308" y="390" font-family="Geist" font-size="26" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Today</text>
-<text x="308" y="413" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">The desk worked the morning inbox. Nothing is sent or written until you approve.</text>
-<rect x="926" y="370" width="138" height="34" rx="8" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
-<text x="995" y="392" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">Work the inbox</text>
+<text x="308" y="388" font-family="Geist" font-size="26" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Today</text>
+<text x="308" y="411" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">The desk worked the morning inbox.</text>
 </g>
 <g id="ask-box">
-<rect x="308" y="443" width="756" height="116" rx="20" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="308" y="440" width="756" height="116" rx="20" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="332" y="478" font-family="Geist" font-size="17" font-weight="400" fill="#8A8A8A">Where is MEDU-1774390?</text>
-<rect x="546" y="462" width="1.6" height="22" fill="#0A0A0A"/>
-<rect x="326" y="510" width="32" height="32" rx="10" fill="#F3F3F3"/>
-<path d="M347 521 l-7.5 7.5 a3 3 0 0 0 4.2 4.2 l8 -8 a5 5 0 0 0 -7 -7 l-8 8 a7 7 0 0 0 9.9 9.9 l6 -6" transform="translate(-2 -2) scale(0.78) translate(96.4 148.3)" stroke="#4A4A4A" stroke-width="2" fill="none" stroke-linecap="round"/>
-<rect x="366" y="510" width="134" height="32" rx="10" fill="#E8F1FF"/>
-<circle cx="390.0" cy="526.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
-<circle cx="388.2" cy="530.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
-<circle cx="384.0" cy="532.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
-<circle cx="379.8" cy="530.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
-<circle cx="378.0" cy="526.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
-<circle cx="379.8" cy="521.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
-<circle cx="384.0" cy="520.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
-<circle cx="388.2" cy="521.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
-<text x="400" y="531" font-family="Geist" font-size="13" font-weight="600" fill="#006BFF">Ask SQRlane</text>
-<circle cx="1030" cy="526" r="18" fill="#F3F3F3"/>
-<path d="M1030 534 v-15 M1024 525 l6 -6 l6 6" stroke="#6B6B6B" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="308" y="435" width="756" height="100" rx="20" fill="#0A0A0A" fill-opacity="0.04"/>
+<rect x="308" y="432" width="756" height="100" rx="20" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="332" y="468" font-family="Geist" font-size="17" font-weight="400" fill="#0A0A0A">Where is MEDU-1774390?</text>
+<rect x="326" y="488" width="32" height="32" rx="10" fill="#F3F3F3"/>
+<path d="M347 499 l-7.5 7.5 a3 3 0 0 0 4.2 4.2 l8 -8 a5 5 0 0 0 -7 -7 l-8 8 a7 7 0 0 0 9.9 9.9 l6 -6" transform="translate(-2 -2) scale(0.78) translate(96.4 142.1)" stroke="#4A4A4A" stroke-width="2" fill="none" stroke-linecap="round"/>
+<rect x="366" y="488" width="134" height="32" rx="10" fill="#E8F1FF"/>
+<circle cx="390.0" cy="504.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
+<circle cx="388.2" cy="508.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
+<circle cx="384.0" cy="510.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
+<circle cx="379.8" cy="508.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
+<circle cx="378.0" cy="504.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
+<circle cx="379.8" cy="499.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
+<circle cx="384.0" cy="498.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
+<circle cx="388.2" cy="499.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
+<text x="400" y="509" font-family="Geist" font-size="13" font-weight="600" fill="#006BFF">Ask SQRlane</text>
+<circle cx="1030" cy="504" r="18" fill="#0A0A0A"/>
+<path d="M1030 512 v-15 M1024 503 l6 -6 l6 6" stroke="#FFFFFF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g id="ask-answer">
+<rect x="308" y="542" width="756" height="46" rx="12" fill="#E8F1FF"/>
+<circle cx="336.0" cy="565.0" r="1.6" fill="#006BFF" fill-opacity="0.35"/>
+<circle cx="334.2" cy="569.2" r="1.6" fill="#006BFF" fill-opacity="0.43"/>
+<circle cx="330.0" cy="571.0" r="1.6" fill="#006BFF" fill-opacity="0.51"/>
+<circle cx="325.8" cy="569.2" r="1.6" fill="#006BFF" fill-opacity="0.59"/>
+<circle cx="324.0" cy="565.0" r="1.6" fill="#006BFF" fill-opacity="0.67"/>
+<circle cx="325.8" cy="560.8" r="1.6" fill="#006BFF" fill-opacity="0.75"/>
+<circle cx="330.0" cy="559.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
+<circle cx="334.2" cy="560.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
+<text x="348" y="570" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Milestones agent</text>
+<text x="466" y="570" font-family="Geist" font-size="13" font-weight="400" fill="#0A0A0A">SHP-004, Shenzhen to Antwerp, is on plan. No active risk on its route.</text>
 </g>
 <g id="suggestions">
-<rect x="308" y="572" width="231" height="30" rx="15" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="423.5" y="592" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A" text-anchor="middle">What is waiting for my approval?</text>
-<rect x="547" y="572" width="256" height="30" rx="15" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="675.0" y="592" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A" text-anchor="middle">Price 2 x 40HC Shanghai to Rotterdam</text>
-<rect x="811" y="572" width="205" height="30" rx="15" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="913.5" y="592" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A" text-anchor="middle">Which invoices are disputed?</text>
+<rect x="308" y="600" width="231" height="30" rx="15" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="423.5" y="620" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A" text-anchor="middle">What is waiting for my approval?</text>
+<rect x="547" y="600" width="256" height="30" rx="15" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="675.0" y="620" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A" text-anchor="middle">Price 2 x 40HC Shanghai to Rotterdam</text>
+<rect x="811" y="600" width="205" height="30" rx="15" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="913.5" y="620" font-family="Geist" font-size="12" font-weight="500" fill="#4A4A4A" text-anchor="middle">Which invoices are disputed?</text>
 </g>
 <g id="stat-cards">
-<rect x="308.0" y="624" width="180.0" height="92" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="324.0" y="651" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Mails worked</text>
-<text x="324.0" y="698" font-family="Geist" font-size="38" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">13</text>
-<rect x="393.0" y="680" width="81" height="20" rx="10.0" fill="#E8F1FF"/>
-<text x="433.5" y="693.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">all routed</text>
-<rect x="500.0" y="624" width="180.0" height="92" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="516.0" y="651" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Handled end to end</text>
-<text x="516.0" y="698" font-family="Geist" font-size="38" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">8</text>
-<rect x="591.0" y="680" width="75" height="20" rx="10.0" fill="#E7F5EC"/>
-<text x="628.5" y="693.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#0F7B3F" text-anchor="middle">no person</text>
-<rect x="692.0" y="624" width="180.0" height="92" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="708.0" y="651" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Held for a person</text>
-<text x="708.0" y="698" font-family="Geist" font-size="38" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">5</text>
-<rect x="815.0" y="680" width="43" height="20" rx="10.0" fill="#FDF3E3"/>
-<text x="836.5" y="693.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">held</text>
-<rect x="884.0" y="624" width="180.0" height="92" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="900.0" y="651" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Awaiting approval</text>
-<text x="900.0" y="698" font-family="Geist" font-size="38" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">24</text>
-<rect x="969.0" y="680" width="81" height="20" rx="10.0" fill="#E8F1FF"/>
-<text x="1009.5" y="693.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">you decide</text>
+<rect x="308.0" y="644" width="180.0" height="84" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="324.0" y="670" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Mails worked</text>
+<text x="324.0" y="712" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">13</text>
+<rect x="393.0" y="694" width="81" height="20" rx="10.0" fill="#E8F1FF"/>
+<text x="433.5" y="707.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">all routed</text>
+<rect x="500.0" y="644" width="180.0" height="84" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="516.0" y="670" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Handled end to end</text>
+<text x="516.0" y="712" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">8</text>
+<rect x="591.0" y="694" width="75" height="20" rx="10.0" fill="#E7F5EC"/>
+<text x="628.5" y="707.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#0F7B3F" text-anchor="middle">no person</text>
+<rect x="692.0" y="644" width="180.0" height="84" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="708.0" y="670" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Held for a person</text>
+<text x="708.0" y="712" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">5</text>
+<rect x="815.0" y="694" width="43" height="20" rx="10.0" fill="#FDF3E3"/>
+<text x="836.5" y="707.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">held</text>
+<rect x="884.0" y="644" width="180.0" height="84" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="900.0" y="670" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B">Awaiting approval</text>
+<text x="900.0" y="712" font-family="Geist" font-size="36" font-weight="600" fill="#0A0A0A" letter-spacing="-1.2">24</text>
+<rect x="969.0" y="694" width="81" height="20" rx="10.0" fill="#E8F1FF"/>
+<text x="1009.5" y="707.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">you decide</text>
 </g>
-<g id="what-came-in">
-<rect x="308" y="728" width="756" height="140" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="326" y="756" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">What came in</text>
-<text x="1046" y="756" font-family="Geist" font-size="12.5" font-weight="500" fill="#9A9A9A" text-anchor="end">13 mails</text>
-<text x="326.0" y="800.0" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Quote</text>
-<text x="326.0" y="832.0" font-family="Geist" font-size="24" font-weight="600" fill="#0A0A0A">1</text>
-<rect x="326.0" y="846.0" width="96.0" height="8" rx="4" fill="#F3F3F3"/>
-<rect x="326.0" y="846.0" width="24.0" height="8" rx="4" fill="#006BFF"/>
-<text x="446.0" y="800.0" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Book</text>
-<text x="446.0" y="832.0" font-family="Geist" font-size="24" font-weight="600" fill="#0A0A0A">4</text>
-<rect x="446.0" y="846.0" width="96.0" height="8" rx="4" fill="#F3F3F3"/>
-<rect x="446.0" y="846.0" width="96.0" height="8" rx="4" fill="#006BFF"/>
-<text x="566.0" y="800.0" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Documents</text>
-<text x="566.0" y="832.0" font-family="Geist" font-size="24" font-weight="600" fill="#0A0A0A">2</text>
-<rect x="566.0" y="846.0" width="96.0" height="8" rx="4" fill="#F3F3F3"/>
-<rect x="566.0" y="846.0" width="48.0" height="8" rx="4" fill="#006BFF"/>
-<text x="686.0" y="800.0" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">In transit</text>
-<text x="686.0" y="832.0" font-family="Geist" font-size="24" font-weight="600" fill="#0A0A0A">3</text>
-<rect x="686.0" y="846.0" width="96.0" height="8" rx="4" fill="#F3F3F3"/>
-<rect x="686.0" y="846.0" width="72.0" height="8" rx="4" fill="#006BFF"/>
-<text x="806.0" y="800.0" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Arrival</text>
-<text x="806.0" y="832.0" font-family="Geist" font-size="24" font-weight="600" fill="#0A0A0A">2</text>
-<rect x="806.0" y="846.0" width="96.0" height="8" rx="4" fill="#F3F3F3"/>
-<rect x="806.0" y="846.0" width="48.0" height="8" rx="4" fill="#006BFF"/>
-<text x="926.0" y="800.0" font-family="Geist" font-size="12" font-weight="500" fill="#6B6B6B">Billing</text>
-<text x="926.0" y="832.0" font-family="Geist" font-size="24" font-weight="600" fill="#0A0A0A">1</text>
-<rect x="926.0" y="846.0" width="96.0" height="8" rx="4" fill="#F3F3F3"/>
-<rect x="926.0" y="846.0" width="24.0" height="8" rx="4" fill="#006BFF"/>
+<g id="mail-arrives">
+<rect x="308" y="745" width="330" height="128" rx="16" fill="#0A0A0A" fill-opacity="0.04"/>
+<rect x="308" y="742" width="330" height="128" rx="16" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<rect x="326" y="780.0" width="52" height="52" rx="12" fill="#F3F3F3"/>
+<g id="mark-outlook" transform="translate(336.0 790.0) scale(1.0000)"><path fill="#0072c6" d="M19.484 7.937v5.477l1.916 1.205a.5.5 0 0 0 .21 0l8.238-5.554a1.174 1.174 0 0 0-.959-1.128Z"/><path fill="#0072c6" d="m19.484 15.457l1.747 1.2a.52.52 0 0 0 .543 0c-.3.181 8.073-5.378 8.073-5.378v10.066a1.408 1.408 0 0 1-1.49 1.555h-8.874zm-9.044-2.525a1.61 1.61 0 0 0-1.42.838a4.13 4.13 0 0 0-.526 2.218A4.05 4.05 0 0 0 9.02 18.2a1.6 1.6 0 0 0 2.771.022a4 4 0 0 0 .515-2.2a4.37 4.37 0 0 0-.5-2.281a1.54 1.54 0 0 0-1.366-.809"/><path fill="#0072c6" d="M2.153 5.155v21.427L18.453 30V2Zm10.908 14.336a3.23 3.23 0 0 1-2.7 1.361a3.19 3.19 0 0 1-2.64-1.318A5.46 5.46 0 0 1 6.706 16.1a5.87 5.87 0 0 1 1.036-3.616a3.27 3.27 0 0 1 2.744-1.384a3.12 3.12 0 0 1 2.61 1.321a5.64 5.64 0 0 1 1 3.484a5.76 5.76 0 0 1-1.035 3.586"/></g>
+<circle cx="376" cy="783.0" r="10" fill="#EA001D" stroke="#FFFFFF" stroke-width="2"/>
+<text x="376" y="787.5" font-family="Geist" font-size="11.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+<text x="398" y="792.0" font-family="Geist" font-size="11.5" font-weight="500" fill="#9A9A9A">New mail · Maison Cardelle SAS</text>
+<text x="398" y="812.0" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Arrival notice: MEDU-2209471</text>
+<text x="398" y="831.0" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">at Fos-sur-Mer</text>
+</g>
+<path d="M646 806.0 L662 806.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M661 801.5 L667 806.0 L661 810.5" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<g id="agent-works-it">
+<rect x="674" y="745" width="390" height="128" rx="16" fill="#0A0A0A" fill-opacity="0.04"/>
+<rect x="674" y="742" width="390" height="128" rx="16" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<circle cx="707.0" cy="770.0" r="1.9" fill="#006BFF" fill-opacity="0.35"/>
+<circle cx="704.9" cy="774.9" r="1.9" fill="#006BFF" fill-opacity="0.43"/>
+<circle cx="700.0" cy="777.0" r="1.9" fill="#006BFF" fill-opacity="0.51"/>
+<circle cx="695.1" cy="774.9" r="1.9" fill="#006BFF" fill-opacity="0.59"/>
+<circle cx="693.0" cy="770.0" r="1.9" fill="#006BFF" fill-opacity="0.67"/>
+<circle cx="695.1" cy="765.1" r="1.9" fill="#006BFF" fill-opacity="0.75"/>
+<circle cx="700.0" cy="763.0" r="1.9" fill="#006BFF" fill-opacity="0.83"/>
+<circle cx="704.9" cy="765.1" r="1.9" fill="#006BFF" fill-opacity="0.91"/>
+<text x="718" y="775" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Customs agent</text>
+<rect x="1005" y="760" width="43" height="20" rx="10.0" fill="#E7F5EC"/>
+<text x="1026.5" y="773.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#0F7B3F" text-anchor="middle">done</text>
+<text x="692" y="804" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Entry prepared for France. Not filed.</text>
+<rect x="692" y="834" width="70" height="22" rx="6" fill="#F3F3F3"/>
+<text x="727" y="849" font-family="Geist" font-size="11.5" font-weight="600" fill="#3A3A3A" text-anchor="middle">SHP-007</text>
+<text x="772" y="849" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A">Queued, not written</text>
+<rect x="968" y="830" width="80" height="28" rx="8" fill="#0A0A0A"/>
+<text x="1008" y="849" font-family="Geist" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Approve</text>
 </g>
 </g>
 <g id="how-the-work-is-structured">
@@ -138,16 +147,16 @@
 <path d="M1472.0 402 L1472.0 409" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <path d="M1467.5 408 L1472.0 414 L1476.5 408" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <g id="front-doors">
-<rect x="1144" y="416" width="408" height="40" rx="10" fill="#0A0A0A"/>
-<text x="1158" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#FAFAFA">Inbox</text>
-<rect x="1206" y="426" width="58" height="19" rx="9.5" fill="#2A2A2A"/>
-<text x="1235.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#D6D6D6" text-anchor="middle">1 agent</text>
-<text x="1276" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">reads every mail, routes it to its owner</text>
-<rect x="1560" y="416" width="240" height="40" rx="10" fill="#0A0A0A"/>
-<text x="1574" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#FAFAFA">Assistant</text>
-<rect x="1648" y="426" width="58" height="19" rx="9.5" fill="#2A2A2A"/>
-<text x="1677.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#D6D6D6" text-anchor="middle">1 agent</text>
-<text x="1716" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">your questions</text>
+<rect x="1144" y="416" width="408" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1158" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Inbox</text>
+<rect x="1206" y="426" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1235.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1276" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">reads every mail, routes it to its owner</text>
+<rect x="1560" y="416" width="240" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1574" y="441" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Assistant</text>
+<rect x="1648" y="426" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1677.0" y="439.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1716" y="441" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">your questions</text>
 </g>
 <path d="M1472.0 456 L1472.0 463" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <path d="M1467.5 462 L1472.0 468 L1476.5 462" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
@@ -157,10 +166,10 @@
 <text x="1228" y="492" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">8 agents, in the order a shipment lives</text>
 <g id="stage-quote">
 <rect x="1158.0" y="506" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1172.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">01</text>
+<text x="1172.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">01</text>
 <text x="1196.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Quote</text>
-<rect x="1286.0" y="517" width="64" height="19" rx="9.5" fill="#FDF3E3"/>
-<text x="1318.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">2 agents</text>
+<rect x="1286.0" y="517" width="64" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1318.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">2 agents</text>
 <text x="1172.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prices it, drafts the quote</text>
 <rect x="1172.0" y="566" width="42" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1193.0" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Rate</text>
@@ -169,30 +178,30 @@
 </g>
 <g id="stage-book">
 <rect x="1370.0" y="506" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1384.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">02</text>
+<text x="1384.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">02</text>
 <text x="1408.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Book</text>
-<rect x="1504.0" y="517" width="58" height="19" rx="9.5" fill="#FDF3E3"/>
-<text x="1533.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">1 agent</text>
+<rect x="1504.0" y="517" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1533.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1384.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Opens the booking from the mail</text>
 <rect x="1384.0" y="566" width="61" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1414.5" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Booking</text>
 </g>
 <g id="stage-documents">
 <rect x="1582.0" y="506" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1596.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">03</text>
+<text x="1596.0" y="532" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">03</text>
 <text x="1620.0" y="532" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Documents</text>
-<rect x="1716.0" y="517" width="58" height="19" rx="9.5" fill="#FDF3E3"/>
-<text x="1745.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">1 agent</text>
+<rect x="1716.0" y="517" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1745.0" y="530.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1596.0" y="553" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks each field on the B/L</text>
 <rect x="1596.0" y="566" width="42" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1617.0" y="580" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Docs</text>
 </g>
 <g id="stage-in-transit">
 <rect x="1158.0" y="606" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1172.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">04</text>
+<text x="1172.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">04</text>
 <text x="1196.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">In transit</text>
-<rect x="1286.0" y="617" width="64" height="19" rx="9.5" fill="#FDF3E3"/>
-<text x="1318.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">2 agents</text>
+<rect x="1286.0" y="617" width="64" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1318.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">2 agents</text>
 <text x="1172.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Updates the ETA, flags rollovers</text>
 <rect x="1172.0" y="666" width="80" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1212.0" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Milestones</text>
@@ -201,20 +210,20 @@
 </g>
 <g id="stage-arrival">
 <rect x="1370.0" y="606" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1384.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">05</text>
+<text x="1384.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">05</text>
 <text x="1408.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Arrival</text>
-<rect x="1504.0" y="617" width="58" height="19" rx="9.5" fill="#FDF3E3"/>
-<text x="1533.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">1 agent</text>
+<rect x="1504.0" y="617" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1533.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1384.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prepares the entry, never files</text>
 <rect x="1384.0" y="666" width="61" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1414.5" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Customs</text>
 </g>
 <g id="stage-billing">
 <rect x="1582.0" y="606" width="204.0" height="92" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<text x="1596.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="0.6">06</text>
+<text x="1596.0" y="632" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">06</text>
 <text x="1620.0" y="632" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Billing</text>
-<rect x="1716.0" y="617" width="58" height="19" rx="9.5" fill="#FDF3E3"/>
-<text x="1745.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">1 agent</text>
+<rect x="1716.0" y="617" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1745.0" y="630.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
 <text x="1596.0" y="653" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks the bill against the rate</text>
 <rect x="1596.0" y="666" width="61" height="20" rx="5" fill="#F3F3F3"/>
 <text x="1626.5" y="680" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Invoice</text>
@@ -233,16 +242,16 @@
 <path d="M1472.0 748 L1472.0 755" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <path d="M1467.5 754 L1472.0 760 L1476.5 754" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <g id="gate-and-record">
-<rect x="1144" y="762" width="314.0" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.55" stroke-width="1.5"/>
-<text x="1158" y="787" font-family="Geist" font-size="13.5" font-weight="700" fill="#0A0A0A">You approve</text>
-<text x="1252" y="787" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">every draft, every change</text>
+<rect x="1144" y="762" width="314.0" height="40" rx="10" fill="#0A0A0A"/>
+<text x="1158" y="787" font-family="Geist" font-size="13.5" font-weight="700" fill="#FFFFFF">You approve</text>
+<text x="1252" y="787" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">every draft, every change</text>
 <path d="M1462.0 782 L1477.0 782" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
 <path d="M1476.0 777.5 L1482.0 782 L1476.0 786.5" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
-<rect x="1486.0" y="762" width="314.0" height="40" rx="10" fill="#0A0A0A"/>
-<text x="1500.0" y="787" font-family="Geist" font-size="13.5" font-weight="600" fill="#FAFAFA">TMS link</text>
-<rect x="1570.0" y="772" width="58" height="19" rx="9.5" fill="#2A2A2A"/>
-<text x="1599.0" y="785.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#D6D6D6" text-anchor="middle">1 agent</text>
-<text x="1638.0" y="787" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">writes it onto the booking</text>
+<rect x="1486.0" y="762" width="314.0" height="40" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1500.0" y="787" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">TMS link</text>
+<rect x="1570.0" y="772" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1599.0" y="785.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1638.0" y="787" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">writes it onto the booking</text>
 </g>
 <g id="worked-together">
 <text x="1144" y="830" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">ONE MAIL, TOGETHER</text>

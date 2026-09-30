@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Slide 04 - The Why. Where the EUR 4bn sits, and the seam neither category crosses."""
+"""Slide 04 - The Why. Where the EUR 6bn sits (320,000 desks x EUR 34k x 58%), and the seam neither category crosses."""
 from kit import *
 s = Slide()
-s.header("03 · THE WHY", "€4bn a year of desk work. Nobody does all of it.",
+s.header("03 · THE WHY", "€6bn a year of desk work. Nobody does all of it.",
          "Risk tools alert. Execution tools act. Neither decides.")
 
 Y, HGT = 318, 560
@@ -10,10 +10,10 @@ RULE, BIG, CAP, SRC = Y + 424, Y + 484, Y + 510, Y + 530   # shared bottom grid
 
 # ---- the market, counted
 LX, LW = M, 540
-s.g("where-the-4bn-sits")
+s.g("where-the-6bn-sits")
 s.card(LX, Y, LW, HGT)
 x = LX + 32
-s.label(x, Y + 48, "WHERE THE €4BN SITS", INK, 13)
+s.label(x, Y + 48, "WHERE THE €6BN SITS", INK, 13)
 def step(y, big, lab):
     s.T(x, y, big, 44, 600, ls=-1.2); s.T(x, y + 28, lab, 15, 400, MUT)
 def op(y, sym, lab, chip=None):
@@ -24,12 +24,12 @@ def op(y, sym, lab, chip=None):
 step(Y + 118, "1.6M", "people in European freight forwarding")
 op(Y + 190, "÷ 5", "1 in 5 on an operating desk", "assumed")
 step(Y + 262, "320,000", "operating desks")
-op(Y + 334, "× €13,600", "admin cost per desk, per year")
+op(Y + 334, "× €19,700", "cost per desk, per year", "assumed")
 s.rule(RULE, 0.1, x, LW - 64)
-s.T(x, BIG, "€4.36bn", 56, 600, ls=-1.6)
-s.T(x, CAP + 2, "a year in wages, spent on re-typing", 16, 500)
+s.T(x, BIG, "€6.30bn", 56, 600, ls=-1.6)
+s.T(x, CAP + 2, "a year in wages, spent on coordination", 16, 500)
 s.T(x, SRC + 6, "UK: 66,187 staff across 6,737 firms, scaled to 163,000 EU firms", 12, 400, MUT)
-s.T(x, SRC + 22, "IBISWorld · SalaryExpert · €34k salary × 40% admin", 12, 400, MUT)
+s.T(x, SRC + 22, "IBISWorld · SalaryExpert · Asana · €34k salary × 58%", 12, 400, MUT)
 s.end()
 
 # ---- three columns: risk platforms, the seam, execution AI

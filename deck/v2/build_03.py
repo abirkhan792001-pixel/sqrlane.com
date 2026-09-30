@@ -71,8 +71,8 @@ for i, (sysn, lab, ref, dt, typo) in enumerate(rows):
 s.end()
 s.T(RX + 14, R0 + 6 * RS + 16, "Same booking. Six field names, six date formats, one typo.", 13, 500, MUT)
 s.rule(PY + 372, 0.08, X1 + 32, PW - 64)
-stat(X1 + 32, "40%", "of the day on admin", "upper estimate", "logistics industry surveys")
-stat(X1 + 440, "€13,600", "per desk, per year", "€34k average salary × 40%", "SalaryExpert 2025 · DE and NL")
+stat(X1 + 32, "58%", "of the day on coordination", "chasing, searching, switching", "Asana Anatomy of Work 2022")
+stat(X1 + 440, "€19,700", "per desk, per year", "€34k average salary × 58%", "SalaryExpert 2025 · DE and NL")
 s.end()
 
 # ---- 02 nobody watches the lane

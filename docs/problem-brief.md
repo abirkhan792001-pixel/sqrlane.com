@@ -60,7 +60,7 @@ puts it back.
 
 | Figure | What it says | Source |
 |---|---|---|
-| **60% of the working day** | Goes to coordination: chasing status, searching for information, switching apps. Only 40% goes to the skilled work. | Asana, *Anatomy of Work Index* 2022 |
+| **58% of the working day** | Goes to coordination: chasing status, searching for information, switching apps. 33% goes to skilled work, under 10% to strategy. 10,624 knowledge workers in seven countries, Germany included - not forwarders specifically. (The 2021 index said 60%; an earlier draft quoted that number under the 2022 label, and a deck slide then used its 40% remainder as "admin", which is the wrong way round.) | Asana, *Anatomy of Work Index* 2022 |
 | **~10 apps, ~25 switches a day** | And about 4 hours a week just re-orienting after each switch. Roughly 9% of the working year. | Asana, same |
 | **Under 40%** | Of freight forwarders use a forwarding management system at all. Only 23% have digitised three quarters of their processes. Survey of 71 forwarders and logistics providers, November 2024. | Magaya, *State of Digitization in Freight Forwarding 2025* |
 | **~30 parties, 200+ interactions** | For one refrigerated shipment from East Africa to Europe. | Maersk shipment trace, 2014 |
