@@ -13,7 +13,7 @@ s.g("one-file")
 s.card(M, TY, W - 2 * M, TH)
 x0 = M + 32
 STAGES = ["Enquiry", "Quote", "Book", "Docs", "In transit", "Customs", "Delivery", "Invoice"]
-CX = [400 + i * 124 for i in range(8)]
+CX = [380 + i * 108 for i in range(8)]
 s.T(x0, TY + 42, "ONE FILE, END TO END", 13, 600, MUT, ls=1.4)
 s.T(CX[0] - 64, TY + 43, "Shanghai to Munich · 45 days", 15, 500, MUT)
 # The clock, in three phases. Handoffs per phase are summed from the grid below;
@@ -40,21 +40,22 @@ HY = TY + 176
 s.T(x0, HY, "WHO THEY TALK TO", 13, 600, AMB, ls=1.4)
 for c, st in zip(CX, STAGES):
     s.T(c, HY, st, 13, 600, INK, anchor="middle")
-RX = 1392
-s.T(RX, HY, "REACHED ON", 13, 600, AMB, ls=1.4)
-s.T(W - M - 32, HY, "not every one", 12, 400, MUT, anchor="end")
+RX = 1216
+RX2 = RX + 262
+s.T(RX, HY, "WHAT THEY EXCHANGE", 13, 600, AMB, ls=1.4)
+s.T(RX2, HY, "REACHED ON", 13, 600, AMB, ls=1.4)
 parties = [
-    ("Customer", [1, 1, 1, 1, 1, 0, 1, 1], ["Outlook", "Gmail", "Slack", "WhatsApp"]),
-    ("Shipping line", [0, 1, 1, 1, 1, 0, 0, 1], ["portal", "EDI", "INTTRA", "Outlook"]),
-    ("Origin agent", [0, 0, 1, 1, 0, 0, 0, 0], ["Outlook", "WeChat", "WhatsApp"]),
-    ("Port terminal", [0, 0, 0, 1, 1, 1, 0, 0], ["Portbase", "DAKOSY", "portal"]),
-    ("Haulier", [0, 1, 0, 0, 0, 0, 1, 1], ["phone", "WhatsApp", "SMS", "TIMOCOM"]),
-    ("Customs broker", [0, 0, 0, 1, 0, 1, 1, 0], ["Outlook", "ATLAS", "portal"]),
-    ("Consignee", [0, 0, 0, 0, 1, 0, 1, 1], ["Outlook", "Teams", "phone"]),
+    ("Customer", [1, 1, 1, 1, 1, 0, 1, 1], ["Outlook", "Gmail", "Slack", "WhatsApp"], "enquiry, PO, delivery date"),
+    ("Shipping line", [0, 1, 1, 1, 1, 0, 0, 1], ["portal", "EDI", "INTTRA", "Outlook"], "rate, booking, B/L draft"),
+    ("Origin agent", [0, 0, 1, 1, 0, 0, 0, 0], ["Outlook", "WeChat", "WhatsApp"], "pickup, packing list"),
+    ("Port terminal", [0, 0, 0, 1, 1, 1, 0, 0], ["Portbase", "DAKOSY", "portal"], "gate-in, VGM, release"),
+    ("Haulier", [0, 1, 0, 0, 0, 0, 1, 1], ["phone", "WhatsApp", "SMS", "TIMOCOM"], "pickup slot, proof of delivery"),
+    ("Customs broker", [0, 0, 0, 1, 0, 1, 1, 0], ["Outlook", "ATLAS", "portal"], "entry, duties"),
+    ("Consignee", [0, 0, 0, 0, 1, 0, 1, 1], ["Outlook", "Teams", "phone"], "arrival notice, delivery slot"),
 ]
 assert sum(sum(p[1]) for p in parties) == 26
 s.g("handoffs")
-for r, (name, marks, chans) in enumerate(parties):
+for r, (name, marks, chans, what) in enumerate(parties):
     ry = HY + 32 + r * 25
     s.T(x0, ry, name, 14, 500)
     for c, m in zip(CX, marks):
@@ -62,11 +63,28 @@ for r, (name, marks, chans) in enumerate(parties):
             s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="6.5" fill="{AMB}"/>')
         else:
             s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="2" fill="{INK}" fill-opacity="0.2"/>')
-    s.T(RX, ry, str(len(chans)), 14, 600, AMB)
-    s.T(RX + 24, ry, "  ·  ".join(chans), 14, 400, INK)
+    s.T(RX, ry, what, 14, 400, INK)
+    s.T(RX2, ry, " · ".join(chans), 13, 400, MUT)
+OPEN_R, OPEN_C = 1, 3
+s.raw(f'<circle cx="{CX[OPEN_C]}" cy="{HY + 32 + OPEN_R * 25 - 5}" r="12" fill="none" stroke="{AMB}" stroke-width="1.5"/>')
 s.end()
 s.rule(TY + TH - 48, 0.08, x0, W - 2 * M - 64)
-s.T(x0, TY + TH - 18, "26 handoffs, 7 parties, 15 channels. Every dot is a mail, a portal login or a call.", 15, 400, MUT)
+# one dot, opened up: the B/L draft from the shipping line
+SY = TY + TH - 18
+s.g("one-dot-opened")
+s.T(x0, SY, "ONE DOT, OPENED", 12, 600, AMB, ls=1.2)
+steps = ["B/L draft arrives by mail", "checked against the booking", "corrected with the carrier",
+         "re-typed into the TMS", "forwarded to the customer"]
+sx = x0 + 160
+for k, st in enumerate(steps):
+    w = round(len(st) * 6.9 + 24)
+    s.R(sx, SY - 17, w, 24, AMB if k == 3 else TRACK, 12, ' fill-opacity="0.14"' if k == 3 else "")
+    s.T(sx + w / 2, SY - 1, st, 13, 500, AMB if k == 3 else INK, anchor="middle")
+    sx += w
+    if k < len(steps) - 1:
+        s.T(sx + 11, SY - 1, "→", 13, 400, MUT, anchor="middle"); sx += 22
+s.T(W - M - 32, SY, "26 handoffs · 7 parties · 15 channels", 13, 500, MUT, anchor="end")
+s.end()
 s.end()
 
 # ---- bottom: what the TMS does, what a clean file earns
