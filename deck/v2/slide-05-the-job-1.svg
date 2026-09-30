@@ -10,22 +10,30 @@
 <g id="one-file">
 <rect x="96" y="306" width="1728" height="400" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="128" y="348" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" letter-spacing="1.4">ONE FILE, END TO END</text>
-<text x="1792" y="350" font-family="Geist" font-size="22" font-weight="600" fill="#0A0A0A" text-anchor="end" letter-spacing="-0.4">45 days</text>
-<text x="1700" y="349" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B" text-anchor="end">Shanghai to Munich</text>
+<text x="336" y="349" font-family="Geist" font-size="15" font-weight="500" fill="#6B6B6B">Shanghai to Munich · 45 days</text>
 <text x="128" y="392" font-family="Geist" font-size="15" font-weight="500" fill="#0A0A0A">The clock</text>
 <g id="clock">
 <rect x="336" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
+<text x="356.7" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">1</text>
 <rect x="381.4" y="374" width="65.4" height="26" rx="6" fill="#EBEBEB"/>
 <text x="414.1" y="392" font-family="Geist" font-size="13" font-weight="600" fill="#6B6B6B" text-anchor="middle">3d</text>
+<text x="414.1" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">3</text>
 <rect x="450.8" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
+<text x="471.5" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">3</text>
 <rect x="496.3" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
+<text x="517.0" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">5</text>
 <rect x="541.7" y="374" width="697.7" height="26" rx="6" fill="#EBEBEB"/>
 <text x="890.5" y="392" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="middle">32d</text>
+<text x="890.5" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">4</text>
 <rect x="1243.3" y="374" width="41.4" height="26" rx="6" fill="#EBEBEB"/>
+<text x="1264.0" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">2</text>
 <rect x="1288.8" y="374" width="19.6" height="26" rx="6" fill="#EBEBEB"/>
+<text x="1298.6" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">4</text>
 <rect x="1312.4" y="374" width="19.6" height="26" rx="6" fill="#EBEBEB"/>
-<text x="336" y="420" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B">opens</text>
-<text x="1332" y="420" font-family="Geist" font-size="12" font-weight="400" fill="#6B6B6B" text-anchor="end">closes</text>
+<text x="1322.2" y="422" font-family="Geist" font-size="14" font-weight="600" fill="#96580A" text-anchor="middle">4</text>
+<text x="128" y="422" font-family="Geist" font-size="15" font-weight="500" fill="#0A0A0A">Handoffs</text>
+<text x="1792" y="392" font-family="Geist" font-size="15" font-weight="600" fill="#96580A" text-anchor="end">22 of 26 handoffs</text>
+<text x="1792" y="414" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B" text-anchor="end">fall outside the 32 days at sea</text>
 </g>
 <rect x="128" y="434" width="1664" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
 <text x="128" y="462" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">WHO THEY TALK TO</text>
@@ -49,18 +57,8 @@
 <circle cx="1020" cy="489" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1144" cy="489" r="6.5" fill="#96580A"/>
 <circle cx="1268" cy="489" r="6.5" fill="#96580A"/>
-<rect x="1392" y="477" width="82" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1403" cy="488" r="2.5" fill="#96580A"/>
-<text x="1411" y="492" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Outlook</text>
-<rect x="1480.4" y="477" width="68" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1491.4" cy="488" r="2.5" fill="#96580A"/>
-<text x="1499.4" y="492" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Gmail</text>
-<rect x="1554.4" y="477" width="68" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1565.4" cy="488" r="2.5" fill="#96580A"/>
-<text x="1573.4" y="492" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Slack</text>
-<rect x="1628.4" y="477" width="90" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1639.4" cy="488" r="2.5" fill="#96580A"/>
-<text x="1647.4" y="492" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">WhatsApp</text>
+<text x="1392" y="494" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
+<text x="1416" y="494" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  Gmail  ·  Slack  ·  WhatsApp</text>
 <text x="128" y="519" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Shipping line</text>
 <circle cx="400" cy="514" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="524" cy="514" r="6.5" fill="#96580A"/>
@@ -70,18 +68,8 @@
 <circle cx="1020" cy="514" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1144" cy="514" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1268" cy="514" r="6.5" fill="#96580A"/>
-<rect x="1392" y="502" width="75" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1403" cy="513" r="2.5" fill="#96580A"/>
-<text x="1411" y="517" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">portal</text>
-<rect x="1473.2" y="502" width="54" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1484.2" cy="513" r="2.5" fill="#96580A"/>
-<text x="1492.2" y="517" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">EDI</text>
-<rect x="1532.8" y="502" width="75" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1543.8" cy="513" r="2.5" fill="#96580A"/>
-<text x="1551.8" y="517" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">INTTRA</text>
-<rect x="1614.0" y="502" width="82" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1625.0" cy="513" r="2.5" fill="#96580A"/>
-<text x="1633.0" y="517" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Outlook</text>
+<text x="1392" y="519" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
+<text x="1416" y="519" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">portal  ·  EDI  ·  INTTRA  ·  Outlook</text>
 <text x="128" y="544" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Origin agent</text>
 <circle cx="400" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="524" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
@@ -91,15 +79,8 @@
 <circle cx="1020" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1144" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1268" cy="539" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<rect x="1392" y="527" width="82" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1403" cy="538" r="2.5" fill="#96580A"/>
-<text x="1411" y="542" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Outlook</text>
-<rect x="1480.4" y="527" width="75" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1491.4" cy="538" r="2.5" fill="#96580A"/>
-<text x="1499.4" y="542" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">WeChat</text>
-<rect x="1561.6000000000001" y="527" width="90" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1572.6000000000001" cy="538" r="2.5" fill="#96580A"/>
-<text x="1580.6000000000001" y="542" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">WhatsApp</text>
+<text x="1392" y="544" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="544" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  WeChat  ·  WhatsApp</text>
 <text x="128" y="569" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Port terminal</text>
 <circle cx="400" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="524" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
@@ -109,15 +90,8 @@
 <circle cx="1020" cy="564" r="6.5" fill="#96580A"/>
 <circle cx="1144" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1268" cy="564" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<rect x="1392" y="552" width="90" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1403" cy="563" r="2.5" fill="#96580A"/>
-<text x="1411" y="567" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Portbase</text>
-<rect x="1487.6" y="552" width="75" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1498.6" cy="563" r="2.5" fill="#96580A"/>
-<text x="1506.6" y="567" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">DAKOSY</text>
-<rect x="1568.8" y="552" width="75" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1579.8" cy="563" r="2.5" fill="#96580A"/>
-<text x="1587.8" y="567" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">portal</text>
+<text x="1392" y="569" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="569" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Portbase  ·  DAKOSY  ·  portal</text>
 <text x="128" y="594" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Haulier</text>
 <circle cx="400" cy="589" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="524" cy="589" r="6.5" fill="#96580A"/>
@@ -127,18 +101,8 @@
 <circle cx="1020" cy="589" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1144" cy="589" r="6.5" fill="#96580A"/>
 <circle cx="1268" cy="589" r="6.5" fill="#96580A"/>
-<rect x="1392" y="577" width="68" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1403" cy="588" r="2.5" fill="#96580A"/>
-<text x="1411" y="592" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">phone</text>
-<rect x="1466.0" y="577" width="90" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1477.0" cy="588" r="2.5" fill="#96580A"/>
-<text x="1485.0" y="592" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">WhatsApp</text>
-<rect x="1561.6" y="577" width="54" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1572.6" cy="588" r="2.5" fill="#96580A"/>
-<text x="1580.6" y="592" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">SMS</text>
-<rect x="1621.1999999999998" y="577" width="82" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1632.1999999999998" cy="588" r="2.5" fill="#96580A"/>
-<text x="1640.1999999999998" y="592" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">TIMOCOM</text>
+<text x="1392" y="594" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">4</text>
+<text x="1416" y="594" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">phone  ·  WhatsApp  ·  SMS  ·  TIMOCOM</text>
 <text x="128" y="619" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Customs broker</text>
 <circle cx="400" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="524" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
@@ -148,15 +112,8 @@
 <circle cx="1020" cy="614" r="6.5" fill="#96580A"/>
 <circle cx="1144" cy="614" r="6.5" fill="#96580A"/>
 <circle cx="1268" cy="614" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
-<rect x="1392" y="602" width="82" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1403" cy="613" r="2.5" fill="#96580A"/>
-<text x="1411" y="617" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Outlook</text>
-<rect x="1480.4" y="602" width="68" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1491.4" cy="613" r="2.5" fill="#96580A"/>
-<text x="1499.4" y="617" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">ATLAS</text>
-<rect x="1554.4" y="602" width="75" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1565.4" cy="613" r="2.5" fill="#96580A"/>
-<text x="1573.4" y="617" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">portal</text>
+<text x="1392" y="619" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="619" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  ATLAS  ·  portal</text>
 <text x="128" y="644" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A">Consignee</text>
 <circle cx="400" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="524" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
@@ -166,15 +123,8 @@
 <circle cx="1020" cy="639" r="2" fill="#0A0A0A" fill-opacity="0.2"/>
 <circle cx="1144" cy="639" r="6.5" fill="#96580A"/>
 <circle cx="1268" cy="639" r="6.5" fill="#96580A"/>
-<rect x="1392" y="627" width="82" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1403" cy="638" r="2.5" fill="#96580A"/>
-<text x="1411" y="642" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Outlook</text>
-<rect x="1480.4" y="627" width="68" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1491.4" cy="638" r="2.5" fill="#96580A"/>
-<text x="1499.4" y="642" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">Teams</text>
-<rect x="1554.4" y="627" width="68" height="22" rx="6" fill="#96580A" fill-opacity="0.12"/>
-<circle cx="1565.4" cy="638" r="2.5" fill="#96580A"/>
-<text x="1573.4" y="642" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">phone</text>
+<text x="1392" y="644" font-family="Geist" font-size="14" font-weight="600" fill="#96580A">3</text>
+<text x="1416" y="644" font-family="Geist" font-size="14" font-weight="400" fill="#0A0A0A">Outlook  ·  Teams  ·  phone</text>
 </g>
 <rect x="128" y="658" width="1664" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
 <text x="128" y="688" font-family="Geist" font-size="15" font-weight="400" fill="#6B6B6B">26 handoffs, 7 parties, 15 channels. Every dot is a mail, a portal login or a call.</text>

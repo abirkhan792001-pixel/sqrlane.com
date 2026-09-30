@@ -15,23 +15,25 @@ x0 = M + 32
 STAGES = ["Enquiry", "Quote", "Book", "Docs", "In transit", "Customs", "Delivery", "Invoice"]
 CX = [400 + i * 124 for i in range(8)]
 s.T(x0, TY + 42, "ONE FILE, END TO END", 13, 600, MUT, ls=1.4)
-s.T(W - M - 32, TY + 44, "45 days", 22, 600, anchor="end", ls=-0.4)
-s.T(W - M - 124, TY + 43, "Shanghai to Munich", 15, 400, MUT, anchor="end")
+s.T(CX[0] - 64, TY + 43, "Shanghai to Munich · 45 days", 15, 500, MUT)
 s.T(x0, TY + 86, "The clock", 15, 500)
 days = [1.9, 3, 1.9, 1.9, 32, 1.9, 0.9, 0.9]
 BX0, BX1, GAPB = CX[0] - 64, CX[-1] + 64, 4
 unit = (BX1 - BX0 - GAPB * (len(days) - 1)) / sum(days)
 bx = BX0
 s.g("clock")
-for d in days:
+PER_STAGE = [1, 3, 3, 5, 4, 2, 4, 4]   # handoffs per stage, summed from the grid below
+for d, n in zip(days, PER_STAGE):
     w = d * unit
     big = d == 32
     s.R(round(bx, 1), TY + 68, round(w, 1), 26, TRACK, 6)
     if d in (3, 32):
         s.T(round(bx + w / 2, 1), TY + 86, f"{d:g}d", 13, 600, INK if big else MUT, anchor="middle")
+    s.T(round(bx + w / 2, 1), TY + 116, str(n), 14, 600, AMB, anchor="middle")
     bx += w + GAPB
-s.T(BX0, TY + 114, "opens", 12, 400, MUT)
-s.T(BX1, TY + 114, "closes", 12, 400, MUT, anchor="end")
+s.T(x0, TY + 116, "Handoffs", 15, 500)
+s.T(W - M - 32, TY + 86, "22 of 26 handoffs", 15, 600, AMB, anchor="end")
+s.T(W - M - 32, TY + 108, "fall outside the 32 days at sea", 13, 400, MUT, anchor="end")
 s.end()
 s.rule(TY + 128, 0.08, x0, W - 2 * M - 64)
 
@@ -61,13 +63,8 @@ for r, (name, marks, chans) in enumerate(parties):
             s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="6.5" fill="{AMB}"/>')
         else:
             s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="2" fill="{INK}" fill-opacity="0.2"/>')
-    cx = RX
-    for ch in chans:
-        w = len(ch) * 7.2 + 32
-        s.R(cx, ry - 17, round(w), 22, AMB, 6, ' fill-opacity="0.12"')
-        s.raw(f'<circle cx="{cx + 11}" cy="{ry - 6}" r="2.5" fill="{AMB}"/>')
-        s.T(cx + 19, ry - 2, ch, 12.5, 600, AMB)
-        cx += w + 6
+    s.T(RX, ry, str(len(chans)), 14, 600, AMB)
+    s.T(RX + 24, ry, "  ·  ".join(chans), 14, 400, INK)
 s.end()
 s.rule(TY + TH - 48, 0.08, x0, W - 2 * M - 64)
 s.T(x0, TY + TH - 18, "26 handoffs, 7 parties, 15 channels. Every dot is a mail, a portal login or a call.", 15, 400, MUT)
