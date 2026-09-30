@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect id="background" x="0" y="0" width="1920" height="1080" rx="0" fill="#F4F4EC"/>
+<g id="header">
+<rect x="96" y="104" width="10" height="10" rx="2" fill="#96580A"/>
+<text x="120" y="114" font-family="Geist Mono" font-size="15" font-weight="500" fill="#6E6E66" letter-spacing="3">01 · INTRODUCTION</text>
+<text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">A freight forwarder’s product is a date.</text>
+<text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6E6E66">No ships, no trucks, no planes. One promise: this box, there, by then.</text>
+</g>
+<g id="the-promise">
+<text x="96" y="354" font-family="Geist Mono" font-size="16" font-weight="600" fill="#0A0A0A" letter-spacing="0.6">SHP-001</text>
+<text x="188" y="354" font-family="Geist" font-size="17" font-weight="400" fill="#6E6E66">Automotive parts · Shanghai → Munich</text>
+<text x="1628" y="354" font-family="Geist" font-size="17" font-weight="500" fill="#96580A" text-anchor="end">4 days of margin</text>
+<text x="1824" y="356" font-family="Geist" font-size="40" font-weight="600" fill="#0A0A0A" text-anchor="end" letter-spacing="-1">14 Oct</text>
+<path id="lane" d="M96 420 H1824" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+<g id="stop-shanghai">
+<circle cx="300" cy="420" r="8" fill="#0A0A0A" stroke="#0A0A0A" stroke-width="2.5"/>
+<text x="316" y="406" font-family="Geist Mono" font-size="13" font-weight="500" fill="#0A0A0A" letter-spacing="1.6">SHANGHAI</text>
+<path d="M300 430 V490" stroke="#96580A" stroke-width="1.5" stroke-dasharray="3 4" fill="none"/>
+</g>
+<g id="stop-suez">
+<circle cx="740" cy="420" r="8" fill="#F4F4EC" stroke="#0A0A0A" stroke-width="2.5"/>
+<text x="756" y="406" font-family="Geist Mono" font-size="13" font-weight="500" fill="#0A0A0A" letter-spacing="1.6">SUEZ</text>
+<path d="M740 430 V490" stroke="#96580A" stroke-width="1.5" stroke-dasharray="3 4" fill="none"/>
+</g>
+<g id="stop-hamburg">
+<circle cx="1180" cy="420" r="8" fill="#F4F4EC" stroke="#0A0A0A" stroke-width="2.5"/>
+<text x="1196" y="406" font-family="Geist Mono" font-size="13" font-weight="500" fill="#0A0A0A" letter-spacing="1.6">HAMBURG</text>
+<path d="M1180 430 V490" stroke="#96580A" stroke-width="1.5" stroke-dasharray="3 4" fill="none"/>
+</g>
+<g id="stop-munich">
+<circle cx="1620" cy="420" r="8" fill="#F4F4EC" stroke="#0A0A0A" stroke-width="2.5"/>
+<text x="1636" y="406" font-family="Geist Mono" font-size="13" font-weight="500" fill="#0A0A0A" letter-spacing="1.6">MUNICH</text>
+<path d="M1620 430 V490" stroke="#96580A" stroke-width="1.5" stroke-dasharray="3 4" fill="none"/>
+</g>
+</g>
+<g id="threat-price">
+<rect x="96" y="490" width="408" height="290" rx="14" fill="#FBFBF7" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="124" y="532" font-family="Geist Mono" font-size="12" font-weight="500" fill="#6E6E66" letter-spacing="2">AT BOOKING · PRICE</text>
+<text x="122" y="604" font-family="Geist" font-size="60" font-weight="600" fill="#0A0A0A" letter-spacing="-1.8">2.4×</text>
+<text x="124" y="640" font-family="Geist" font-size="17" font-weight="400" fill="#0A0A0A">swing in what the same 40ft box costs</text>
+<rect x="124" y="670" width="110" height="18" rx="4" fill="#CFCFC4"/>
+<text x="246" y="684" font-family="Geist Mono" font-size="14" font-weight="500" fill="#6E6E66">$1,913</text>
+<rect x="124" y="700" width="260" height="18" rx="4" fill="#96580A"/>
+<text x="396" y="714" font-family="Geist Mono" font-size="14" font-weight="600" fill="#96580A">$4,526</text>
+<rect x="124" y="736" width="352" height="1" rx="0" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="124" y="762" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6E6E66" letter-spacing="0.3">Drewry · $1,913 to $4,526 per 40ft</text>
+</g>
+<g id="threat-chokepoints">
+<rect x="536" y="490" width="408" height="290" rx="14" fill="#FBFBF7" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="564" y="532" font-family="Geist Mono" font-size="12" font-weight="500" fill="#6E6E66" letter-spacing="2">ON THE WATER · CHOKEPOINTS</text>
+<text x="562" y="604" font-family="Geist" font-size="60" font-weight="600" fill="#0A0A0A" letter-spacing="-1.8">3 of 14</text>
+<text x="564" y="640" font-family="Geist" font-size="17" font-weight="400" fill="#0A0A0A">trade lanes with no way around</text>
+<circle cx="572" cy="692" r="8" fill="#96580A"/>
+<circle cx="597" cy="692" r="8" fill="#96580A"/>
+<circle cx="622" cy="692" r="8" fill="#96580A"/>
+<circle cx="647" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="672" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="697" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="722" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="747" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="772" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="797" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="822" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="847" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="872" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<circle cx="897" cy="692" r="7.25" fill="none" stroke="#0A0A0A" stroke-opacity="0.28" stroke-width="1.5"/>
+<text x="564" y="730" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">If one closes, there is no second route.</text>
+<rect x="564" y="736" width="352" height="1" rx="0" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="564" y="762" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6E6E66" letter-spacing="0.3">BCG · 2026</text>
+</g>
+<g id="threat-policy">
+<rect x="976" y="490" width="408" height="290" rx="14" fill="#FBFBF7" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1004" y="532" font-family="Geist Mono" font-size="12" font-weight="500" fill="#6E6E66" letter-spacing="2">AT THE BORDER · POLICY</text>
+<text x="1002" y="604" font-family="Geist" font-size="60" font-weight="600" fill="#0A0A0A" letter-spacing="-1.8">+128%</text>
+<text x="1004" y="640" font-family="Geist" font-size="17" font-weight="400" fill="#0A0A0A">more regulatory changes to track</text>
+<text x="1004" y="684" font-family="Geist" font-size="13" font-weight="400" fill="#6E6E66">regulatory</text>
+<rect x="1104" y="670" width="200" height="18" rx="4" fill="#96580A"/>
+<text x="1314" y="684" font-family="Geist Mono" font-size="14" font-weight="600" fill="#96580A">+128%</text>
+<text x="1004" y="714" font-family="Geist" font-size="13" font-weight="400" fill="#6E6E66">geopolitical</text>
+<rect x="1104" y="700" width="192" height="18" rx="4" fill="#CFCFC4"/>
+<text x="1306" y="714" font-family="Geist Mono" font-size="14" font-weight="600" fill="#6E6E66">+123%</text>
+<rect x="1004" y="736" width="352" height="1" rx="0" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="1004" y="762" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6E6E66" letter-spacing="0.3">Resilinc EventWatchAI · 2024 vs 2023</text>
+</g>
+<g id="threat-climate">
+<rect x="1416" y="490" width="408" height="290" rx="14" fill="#FBFBF7" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1444" y="532" font-family="Geist Mono" font-size="12" font-weight="500" fill="#6E6E66" letter-spacing="2">INLAND · CLIMATE</text>
+<text x="1442" y="604" font-family="Geist" font-size="60" font-weight="600" fill="#0A0A0A" letter-spacing="-1.8">146 years</text>
+<text x="1444" y="640" font-family="Geist" font-size="17" font-weight="400" fill="#0A0A0A">since the Rhine ran this low</text>
+<rect x="1444" y="680" width="352" height="10" rx="5" fill="#E6E6DC"/>
+<rect x="1636" y="680" width="160" height="10" rx="5" fill="#CFCFC4"/>
+<rect x="1460" y="672" width="3" height="26" rx="1.5" fill="#96580A"/>
+<text x="1468" y="718" font-family="Geist" font-size="13" font-weight="500" fill="#96580A">now · record low</text>
+<text x="1796" y="718" font-family="Geist" font-size="13" font-weight="400" fill="#6E6E66" text-anchor="end">normal</text>
+<rect x="1444" y="736" width="352" height="1" rx="0" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="1444" y="762" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6E6E66" letter-spacing="0.3">gCaptain · ING · Aug 2026</text>
+</g>
+<g id="the-desk">
+<rect x="96" y="822" width="10" height="10" rx="2" fill="#0A0A0A"/>
+<text x="120" y="832" font-family="Geist Mono" font-size="13" font-weight="500" fill="#6E6E66" letter-spacing="2.4">AND THE PERSON WHO OWNS THE DATE</text>
+<rect x="96" y="848" width="1000" height="52" rx="10" fill="#E6E6DC"/>
+<rect x="96" y="848" width="400" height="52" rx="10" fill="#0A0A0A"/>
+<text x="116" y="881" font-family="Geist" font-size="17" font-weight="600" fill="#F4F4EC">40% repetitive admin</text>
+<text x="516" y="881" font-family="Geist" font-size="17" font-weight="400" fill="#6E6E66">everything else</text>
+<text x="96" y="932" font-family="Geist" font-size="15" font-weight="400" fill="#6E6E66">Quotes, data entry, documents, invoices, customs. Watching the lane has no slot on this bar.</text>
+<text x="1096" y="932" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6E6E66" text-anchor="end">logistics industry surveys · upper estimate</text>
+<text x="1180" y="866" font-family="Geist" font-size="34" font-weight="600" fill="#0A0A0A" letter-spacing="-0.8">The one person who could protect</text>
+<text x="1180" y="910" font-family="Geist" font-size="34" font-weight="600" fill="#0A0A0A" letter-spacing="-0.8">the date is doing data entry.</text>
+</g>
+<g id="footer">
+<rect x="96" y="978" width="1728" height="1" rx="0" fill="#0A0A0A" fill-opacity="0.12"/>
+<rect x="96" y="1004" width="22" height="22" rx="6" fill="#0A0A0A"/>
+<path d="M101.5 1020h11 M101.5 1015h7.5 M101.5 1010h4" stroke="#F4F4EC" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="130" y="1021" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">sqrlane</text>
+<text x="200" y="1021" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">Automates the desk. Acts before the route breaks.</text>
+<text x="1824" y="1021" font-family="Geist Mono" font-size="12.5" font-weight="500" fill="#6E6E66" text-anchor="end" letter-spacing="2">SLIDE 02</text>
+</g>
+</svg>
