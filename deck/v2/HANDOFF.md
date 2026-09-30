@@ -46,7 +46,7 @@ in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
   reference: tinted body, the question bubble, a Milestones agent card (LIVE), the draft
   card "Drafted a reply to Pieter Claes, Kempen Electronics." with the real IN-106 reply,
   "Draft, not sent" and Approve, and the input with the paperclip and "Ask SQRlane".
-  Three suggested questions sit as chips beside the replies.
+  Three suggested questions sit as chips inside the Ask box, above the input line. The dashboard keeps the product's bright blue (owner's choice); the right panel uses the deck's muted blue.
 - **Risk layer band** fades out to the right (a white gradient over its right half), on
   the owner's instruction.
 - **The "Demo run · synthetic inbox" label was removed on the owner's instruction.** The

@@ -144,51 +144,50 @@ CY0 = OY + OH + 14; CHh = BOT - 20 - CY0
 CHAT_BG = "#F6F8FB"
 s.g("chat-window")
 s.R(MX, CY0, MW, CHh, CHAT_BG, 16, f' stroke="{INK}" stroke-opacity="0.10"')
-cy = CY0 + 14
+cy = CY0 + 12
 q = "Where is MEDU-1774390?"
 qw = round(len(q) * 7.6 + 32)
 s.R(MX + MW - 16 - qw, cy, qw, 34, INK, 17)
 s.T(MX + MW - 16 - qw / 2, cy + 22, q, 13.5, 500, CARD, anchor="middle")
-cy += 42
+cy += 40
 BWb = 480
-soft_card(MX + 16, cy, BWb, 58, 14, op=0.10)
-agent_mark(MX + 36, cy + 20)
-s.T(MX + 52, cy + 25, "Milestones agent", 12.5, 600, BLUE)
-s.T(MX + 16 + BWb - 16, cy + 25, "LIVE", 10, 700, GREEN, anchor="end", ls=0.8)
-s.T(MX + 32, cy + 46, "SHP-004, Shenzhen to Antwerp, is on plan.", 13, 400, INK)
-cy += 66
-DHh = 106
+soft_card(MX + 16, cy, BWb, 52, 14, op=0.10)
+agent_mark(MX + 36, cy + 18)
+s.T(MX + 52, cy + 23, "Milestones agent", 12.5, 600, BLUE)
+s.T(MX + 16 + BWb - 16, cy + 23, "LIVE", 10, 700, GREEN, anchor="end", ls=0.8)
+s.T(MX + 32, cy + 42, "SHP-004, Shenzhen to Antwerp, is on plan.", 13, 400, INK)
+cy += 58
+DHh = 96
 soft_card(MX + 16, cy, BWb, DHh, 14, op=0.10)
-s.T(MX + 32, cy + 24, "Drafted a reply to Pieter Claes, Kempen Electronics.", 12.5, 500, INK)
-s.rule(cy + 36, 0.08, MX + 32, BWb - 32)
-mark("Outlook", MX + 32, cy + 45, 15)
-s.T(MX + 54, cy + 57, "RE: Where is MEDU-1774390?", 12.5, 600)
-s.T(MX + 32, cy + 76, "MEDU-1774390 (electronics) is on the water on", 11.5, 400, MUT)
-s.T(MX + 32, cy + 92, "Asia → Suez → Antwerp, discharging at Antwerp.", 11.5, 400, MUT)
-s.T(MX + 16 + BWb - 16, cy + 57, "Draft, not sent", 11, 600, AMBR, anchor="end")
-s.R(MX + 16 + BWb - 92, cy + DHh - 36, 76, 26, INK, 8)
-s.T(MX + 16 + BWb - 54, cy + DHh - 18, "Approve", 12, 600, CARD, anchor="middle")
-# suggested questions, beside the replies - each one answered by ask.ask() today
-SX_ = MX + 16 + BWb + 14; SW_ = MX + MW - 16 - SX_
-sy_ = CY0 + 66
-s.T(SX_, sy_, "SUGGESTED", 10, 700, GREY, ls=1.2)
-sy_ += 10
+s.T(MX + 32, cy + 22, "Drafted a reply to Pieter Claes, Kempen Electronics.", 12.5, 500, INK)
+s.rule(cy + 32, 0.08, MX + 32, BWb - 32)
+mark("Outlook", MX + 32, cy + 40, 15)
+s.T(MX + 54, cy + 52, "RE: Where is MEDU-1774390?", 12.5, 600)
+s.T(MX + 32, cy + 69, "MEDU-1774390 (electronics) is on the water on", 11.5, 400, MUT)
+s.T(MX + 32, cy + 85, "Asia → Suez → Antwerp, discharging at Antwerp.", 11.5, 400, MUT)
+s.T(MX + 16 + BWb - 16, cy + 52, "Draft, not sent", 11, 600, AMBR, anchor="end")
+s.R(MX + 16 + BWb - 92, cy + DHh - 34, 76, 26, INK, 8)
+s.T(MX + 16 + BWb - 54, cy + DHh - 16, "Approve", 12, 600, CARD, anchor="middle")
+# the Ask box: suggested questions as chips inside it, then the input line.
+# Each suggestion is one ask.ask() answers today.
+IH = 84; IY = CY0 + CHh - IH - 10
+soft_card(MX + 12, IY, MW - 24, IH, 20, op=0.12)
+sx = MX + 26
 for sq in ("What is waiting for my approval?", "Price 2 x 40HC Shanghai to Rotterdam", "Which invoices are disputed?"):
-    s.R(SX_, sy_, SW_, 28, CARD, 14, f' stroke="{INK}" stroke-opacity="0.12"')
-    s.T(SX_ + 12, sy_ + 18.5, sq, 11, 500, "#4A4A4A")
-    sy_ += 34
-# the input
-IY = CY0 + CHh - 60
-soft_card(MX + 12, IY, MW - 24, 48, 24, op=0.12)
-s.R(MX + 20, IY + 8, 32, 32, GREY_BG, 16)
-s.raw(f'<path d="M{MX+41} {IY+19} l-7.5 7.5 a3 3 0 0 0 4.2 4.2 l8 -8 a5 5 0 0 0 -7 -7 l-8 8 a7 7 0 0 0 9.9 9.9 l6 -6" '
-      f'transform="translate(-2 -2) scale(0.78) translate({(MX+36)*0.282:.1f} {(IY+24)*0.282:.1f})" stroke="#4A4A4A" stroke-width="2" fill="none" stroke-linecap="round"/>')
-s.R(MX + 60, IY + 8, 126, 32, BLUE_BG, 16)
-agent_mark(MX + 78, IY + 24)
-s.T(MX + 94, IY + 29, "Ask SQRlane", 12.5, 600, BLUE)
-s.T(MX + 200, IY + 29, "Ask the desk anything", 13, 400, GREY)
-s.raw(f'<circle cx="{MX + MW - 36}" cy="{IY + 24}" r="16" fill="{INK}"/>')
-s.raw(f'<path d="M{MX+MW-36} {IY+31} v-13 M{MX+MW-41.5} {IY+23} l5.5 -5.5 l5.5 5.5" stroke="{CARD}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+    w = round(len(sq) * 6.0 + 22)
+    s.R(sx, IY + 10, w, 24, GREY_BG, 12)
+    s.T(sx + w / 2, IY + 26, sq, 11, 500, "#4A4A4A", anchor="middle")
+    sx += w + 6
+ly = IY + 42
+s.R(MX + 22, ly + 2, 30, 30, GREY_BG, 15)
+s.raw(f'<path d="M{MX+42} {ly+12} l-7.5 7.5 a3 3 0 0 0 4.2 4.2 l8 -8 a5 5 0 0 0 -7 -7 l-8 8 a7 7 0 0 0 9.9 9.9 l6 -6" '
+      f'transform="translate(-2 -2) scale(0.74) translate({(MX+37)*0.35:.1f} {(ly+17)*0.35:.1f})" stroke="#4A4A4A" stroke-width="2" fill="none" stroke-linecap="round"/>')
+s.R(MX + 60, ly + 2, 124, 30, BLUE_BG, 15)
+agent_mark(MX + 78, ly + 17)
+s.T(MX + 94, ly + 22, "Ask SQRlane", 12.5, 600, BLUE)
+s.T(MX + 198, ly + 22, "Ask the desk anything", 13, 400, GREY)
+s.raw(f'<circle cx="{MX + MW - 38}" cy="{ly + 17}" r="15" fill="{INK}"/>')
+s.raw(f'<path d="M{MX+MW-38} {ly+23.5} v-12.5 M{MX+MW-43} {ly+16} l5 -5 l5 5" stroke="{CARD}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
 s.end()
 s.end()
 
