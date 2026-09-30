@@ -205,7 +205,8 @@ def arrow(y1, y2, x=None):
     s.line(x, y1, x, y2 - 5, INK, 0.3, 1.5)
     s.raw(f'<path d="M{x-4.5} {y2-6} L{x} {y2} L{x+4.5} {y2-6}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
 
-def count_chip(x, y, text, fill=BLUE_BG, ink=BLUE, anchor="start"):
+DECK_BLUE, DECK_BLUE_BG = "#3D72A8", "#EAF1F8"      # slide 06's blue: this panel is the deck, not the product
+def count_chip(x, y, text, fill=DECK_BLUE_BG, ink=DECK_BLUE, anchor="start"):
     """The agent count on every step: '1 agent', '2 agents'."""
     w = round(len(text) * 6 + 16)
     x0 = x - w if anchor == "end" else x

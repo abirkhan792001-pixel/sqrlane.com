@@ -55,7 +55,7 @@ in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
   the right panel, and "Queued, not written" on the agent card.
 - **Right, "How the work is structured":** the second version's panel, restored at the
   owner's request, with the risk layer in light grey and an agent-count chip on every
-  step. Colour has one job each: **blue = an agent** (every count chip, as in the Ask
+  step. Colour has one job each: **blue = an agent** (in this panel the deck's muted blue #3D72A8 from slide 06; the bright #006BFF stays inside the dashboard, which is the product) (every count chip, as in the Ask
   box), **amber = the Playbook's check** (band, ticks, "sends it back"), **black = the one
   thing a person does: approve** ("You approve" is the only black block). Inbox,
   Assistant and the TMS link are white cards; step numbers are grey.
