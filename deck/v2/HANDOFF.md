@@ -88,13 +88,7 @@ in the same "Draft ready" + Approve pair.
 
 Fifth pass: the cost impact row has the same gap and arrow as the others and a green
 gradient fading right; a green dot marks the 60 live sources, a grey dot "Coming soon".
-**Confidence, building** sits top right, beside the headline, rebuilt from the old deck's
-grid but only from the Hamburg scenario's own detection trail: one row per trail source
-(NDR Hamburg 0, ver.di release +22 min, NOS Nieuws +4h 20m, international wires +23 h),
-lit from its real offset, and a bar row counting the sources carrying the story (1, 2, 2,
-3, 3, 3, 4 - a count, not a model score). "SQRlane acts here" under 0, "the wires land
-here" under 23h, labelled "Hamburg demo scenario · mechanism, not a score". SQRlane has no
-confidence score, so none is drawn.
+A "Confidence, building" grid (from the Hamburg trail) was tried top right and removed on the owner's instruction.
 
 "Draft, not sent" now reads "Draft ready" on slides 07 and 08, on the owner's instruction;
 the Approve button still carries the gate, and nothing is ever sent.

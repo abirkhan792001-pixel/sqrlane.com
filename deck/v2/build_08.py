@@ -346,39 +346,5 @@ s.end()
 s.end()
 
 s.T(M, 946, "The earlier the call, the more options you have and the less it costs.", 28, 600, ls=-0.6)
-# ---- confidence, building: the Hamburg demo scenario's detection trail (scenarios.json),
-# one row per source at its real offset; the bars count the sources carrying the story.
-# Not a model score: a count, and labelled as the mechanism.
-KX, KY, KW, KH = 1296, 86, W - M - 1296, 190
-s.g("confidence-building")
-s.card(KX, KY, KW, KH, 12)
-kx = KX + 18
-s.T(kx, KY + 26, "CONFIDENCE, BUILDING", 11, 700, AMB, ls=1.2)
-s.T(KX + KW - 18, KY + 26, "Hamburg demo scenario · mechanism, not a score", 10.5, 400, GREY, anchor="end")
-COLS = ["0", "22m", "1h", "4h", "8h", "16h", "23h"]
-MIN = [0, 22, 60, 260, 480, 960, 1380]   # 4h column = NOS at +4h 20m
-SRCS = [("NDR Hamburg", 0), ("ver.di release", 22), ("NOS Nieuws", 260), ("International wires", 1380)]
-GX = kx + 124; CW_ = (KX + KW - 18 - GX - 6 * 4) / 7
-HEAT_ON, HEAT_NEW, HEAT_OFF = "#EFD3A6", AMB, "#F0F0F0"
-for r, (name, at) in enumerate(SRCS):
-    ry = KY + 38 + r * 17
-    s.T(kx, ry + 11, name, 11, 500, "#4A4A4A")
-    first = next(c for c, m in enumerate(MIN) if m >= at)
-    for c in range(7):
-        fill = HEAT_OFF if c < first else (HEAT_NEW if c == first else HEAT_ON)
-        s.R(GX + c * (CW_ + 4), ry, CW_, 13, fill, 3)
-# sources carrying it, per column; the time axis under it
-BASE, BH = KY + 148, 26
-s.T(kx, BASE - 4, "sources carrying it", 11, 500, "#4A4A4A")
-for c, m in enumerate(MIN):
-    n = sum(1 for _, at in SRCS if at <= m)
-    h = BH * n / 4
-    s.R(GX + c * (CW_ + 4), BASE - h, CW_, h, BLUE if c == 0 else "#D6D6D6", 3)
-    s.T(GX + c * (CW_ + 4) + CW_ / 2, BASE - h - 3, str(n), 9.5, 700, BLUE if c == 0 else GREY, anchor="middle")
-    s.T(GX + c * (CW_ + 4) + CW_ / 2, BASE + 15, COLS[c], 9.5, 500, GREY, anchor="middle")
-s.T(GX, BASE + 31, "SQRlane acts here", 10, 700, BLUE)
-s.T(GX + 7 * (CW_ + 4) - 4, BASE + 31, "the wires land here", 10, 700, INK, anchor="end")
-s.end()
-
 s.footer(8)
 s.write("slide-08-the-how-2.svg")
