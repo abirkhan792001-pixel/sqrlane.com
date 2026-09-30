@@ -26,6 +26,7 @@ R(M, 104, 10, 10, AMB, 2)
 T(M+24, 114, "01 · INTRODUCTION", 15, 500, MUT, ls=3, mono=True)
 T(M-3, 196, "A freight forwarder’s product is a date.", 66, 600, ls=-2)
 T(M, 246, "No ships. No trucks. One promise: this box, there, by then.", 24, 400, MUT)
+rule(282, 0.12)
 E()
 
 # the promise: one booking across the lane

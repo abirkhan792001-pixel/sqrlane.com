@@ -5,137 +5,138 @@
 <text x="120" y="114" font-family="Geist Mono" font-size="15" font-weight="500" fill="#6B6B6B" letter-spacing="2.4">02 · THE WHAT</text>
 <text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">Two problems. Each makes the other worse.</text>
 <text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6B6B6B">Every hour spent re-typing is an hour nobody watches the lane.</text>
+<rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
 </g>
 <g id="problem-retyping">
-<rect x="96" y="300" width="848" height="552" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<rect x="128" y="332" width="30" height="30" rx="7" fill="#0A0A0A"/>
-<text x="143" y="352" font-family="Geist Mono" font-size="14" font-weight="600" fill="#FAFAFA" text-anchor="middle">01</text>
-<text x="174" y="357" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">The desk re-types the same facts.</text>
-<text x="128" y="396" font-family="Geist" font-size="17" font-weight="400" fill="#6B6B6B">Reference, container, ETA. Typed into six systems.</text>
+<rect x="96" y="318" width="848" height="540" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<rect x="128" y="350" width="30" height="30" rx="7" fill="#0A0A0A"/>
+<text x="143" y="370" font-family="Geist Mono" font-size="14" font-weight="600" fill="#FAFAFA" text-anchor="middle">01</text>
+<text x="174" y="375" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">The desk re-types the same facts.</text>
+<text x="128" y="414" font-family="Geist" font-size="17" font-weight="400" fill="#6B6B6B">Reference, container, ETA. Typed into six systems.</text>
 <g id="system-inbox">
-<rect x="128" y="428" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="244.0" y="460" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Inbox</text>
-<rect x="138.0" y="476" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="164.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="198.0" y="476" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="244.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="298.0" y="476" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="324.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="128" y="446" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="244.0" y="478" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Inbox</text>
+<rect x="138.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="164.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
+<rect x="198.0" y="494" width="92" height="22" rx="5" fill="#EBEBEB"/>
+<text x="244.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
+<rect x="298.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="324.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
 </g>
 <g id="system-tms">
-<rect x="404" y="428" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="520.0" y="460" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">TMS</text>
-<rect x="414.0" y="476" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="440.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="474.0" y="476" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="520.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="574.0" y="476" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="600.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="404" y="446" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="520.0" y="478" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">TMS</text>
+<rect x="414.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="440.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
+<rect x="474.0" y="494" width="92" height="22" rx="5" fill="#EBEBEB"/>
+<text x="520.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
+<rect x="574.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="600.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
 </g>
 <g id="system-carrier-portal">
-<rect x="680" y="428" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="796.0" y="460" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Carrier portal</text>
-<rect x="690.0" y="476" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="716.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="750.0" y="476" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="796.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="850.0" y="476" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="876.0" y="491" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="680" y="446" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="796.0" y="478" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Carrier portal</text>
+<rect x="690.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="716.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
+<rect x="750.0" y="494" width="92" height="22" rx="5" fill="#EBEBEB"/>
+<text x="796.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
+<rect x="850.0" y="494" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="876.0" y="509" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
 </g>
 <g id="system-customer">
-<rect x="128" y="548" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="244.0" y="580" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customer</text>
-<rect x="138.0" y="596" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="164.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="198.0" y="596" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="244.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="298.0" y="596" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="324.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="128" y="566" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="244.0" y="598" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customer</text>
+<rect x="138.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="164.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
+<rect x="198.0" y="614" width="92" height="22" rx="5" fill="#EBEBEB"/>
+<text x="244.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
+<rect x="298.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="324.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
 </g>
 <g id="system-invoice">
-<rect x="404" y="548" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="520.0" y="580" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Invoice</text>
-<rect x="414.0" y="596" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="440.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="474.0" y="596" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="520.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="574.0" y="596" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="600.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="404" y="566" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="520.0" y="598" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Invoice</text>
+<rect x="414.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="440.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
+<rect x="474.0" y="614" width="92" height="22" rx="5" fill="#EBEBEB"/>
+<text x="520.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
+<rect x="574.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="600.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
 </g>
 <g id="system-customs">
-<rect x="680" y="548" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
-<text x="796.0" y="580" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customs</text>
-<rect x="690.0" y="596" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="716.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
-<rect x="750.0" y="596" width="92" height="22" rx="5" fill="#EBEBEB"/>
-<text x="796.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
-<rect x="850.0" y="596" width="52" height="22" rx="5" fill="#EBEBEB"/>
-<text x="876.0" y="611" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
+<rect x="680" y="566" width="232" height="84" rx="10" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.14"/>
+<text x="796.0" y="598" font-family="Geist" font-size="15" font-weight="600" fill="#0A0A0A" text-anchor="middle">Customs</text>
+<rect x="690.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="716.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ref</text>
+<rect x="750.0" y="614" width="92" height="22" rx="5" fill="#EBEBEB"/>
+<text x="796.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">container</text>
+<rect x="850.0" y="614" width="52" height="22" rx="5" fill="#EBEBEB"/>
+<text x="876.0" y="629" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" text-anchor="middle">ETA</text>
 </g>
 <g id="handoffs">
-<path d="M360 470.0 L404 470.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M636 470.0 L680 470.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M360 590.0 L404 590.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M636 590.0 L680 590.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
-<path d="M796.0 512 L796.0 548" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M360 488.0 L404 488.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M636 488.0 L680 488.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M360 608.0 L404 608.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M636 608.0 L680 608.0" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
+<path d="M796.0 530 L796.0 566" stroke="#96580A" stroke-opacity="0.8" stroke-width="1.5" fill="none"/>
 </g>
-<rect x="128" y="672" width="784" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
-<text x="128" y="736" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">40%</text>
-<text x="128" y="768" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">of the day on admin</text>
-<text x="128" y="792" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">upper estimate</text>
-<text x="128" y="818" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">logistics industry surveys</text>
-<text x="536" y="736" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">€13,600</text>
-<text x="536" y="768" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">per desk, per year</text>
-<text x="536" y="792" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">€34k average salary × 40%</text>
-<text x="536" y="818" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">SalaryExpert 2025 · DE and NL</text>
+<rect x="128" y="690" width="784" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="128" y="754" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">40%</text>
+<text x="128" y="786" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">of the day on admin</text>
+<text x="128" y="810" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">upper estimate</text>
+<text x="128" y="836" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">logistics industry surveys</text>
+<text x="536" y="754" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">€13,600</text>
+<text x="536" y="786" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">per desk, per year</text>
+<text x="536" y="810" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">€34k average salary × 40%</text>
+<text x="536" y="836" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">SalaryExpert 2025 · DE and NL</text>
 </g>
 <g id="problem-unwatched">
-<rect x="976" y="300" width="848" height="552" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
-<rect x="1008" y="332" width="30" height="30" rx="7" fill="#0A0A0A"/>
-<text x="1023" y="352" font-family="Geist Mono" font-size="14" font-weight="600" fill="#FAFAFA" text-anchor="middle">02</text>
-<text x="1054" y="357" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Nobody watches the lane.</text>
-<text x="1008" y="396" font-family="Geist" font-size="17" font-weight="400" fill="#6B6B6B">The world moves every lane. Nothing reads it against your bookings.</text>
+<rect x="976" y="318" width="848" height="540" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<rect x="1008" y="350" width="30" height="30" rx="7" fill="#0A0A0A"/>
+<text x="1023" y="370" font-family="Geist Mono" font-size="14" font-weight="600" fill="#FAFAFA" text-anchor="middle">02</text>
+<text x="1054" y="375" font-family="Geist" font-size="30" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Nobody watches the lane.</text>
+<text x="1008" y="414" font-family="Geist" font-size="17" font-weight="400" fill="#6B6B6B">The world moves every lane. Nothing reads it against your bookings.</text>
 <g id="what-moves-a-lane">
-<rect x="1008" y="428" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1080.0" y="453" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Tariffs</text>
-<rect x="1168" y="428" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1240.0" y="453" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Sanctions</text>
-<rect x="1328" y="428" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1400.0" y="453" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">War</text>
-<rect x="1488" y="428" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1560.0" y="453" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Strikes</text>
-<rect x="1648" y="428" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1720.0" y="453" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Congestion</text>
-<rect x="1008" y="480" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1080.0" y="505" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Low water</text>
-<path d="M1080.0 520 L1080.0 548" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
-<rect x="1168" y="480" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1240.0" y="505" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Storms</text>
-<path d="M1240.0 520 L1240.0 548" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
-<rect x="1328" y="480" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1400.0" y="505" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Floods</text>
-<path d="M1400.0 520 L1400.0 548" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
-<rect x="1488" y="480" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1560.0" y="505" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Earthquakes</text>
-<path d="M1560.0 520 L1560.0 548" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
-<rect x="1648" y="480" width="144" height="40" rx="8" fill="#EBEBEB"/>
-<text x="1720.0" y="505" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Closures</text>
-<path d="M1720.0 520 L1720.0 548" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
+<rect x="1008" y="446" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1080.0" y="471" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Tariffs</text>
+<rect x="1168" y="446" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1240.0" y="471" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Sanctions</text>
+<rect x="1328" y="446" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1400.0" y="471" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">War</text>
+<rect x="1488" y="446" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1560.0" y="471" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Strikes</text>
+<rect x="1648" y="446" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1720.0" y="471" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Congestion</text>
+<rect x="1008" y="498" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1080.0" y="523" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Low water</text>
+<path d="M1080.0 538 L1080.0 566" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
+<rect x="1168" y="498" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1240.0" y="523" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Storms</text>
+<path d="M1240.0 538 L1240.0 566" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
+<rect x="1328" y="498" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1400.0" y="523" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Floods</text>
+<path d="M1400.0 538 L1400.0 566" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
+<rect x="1488" y="498" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1560.0" y="523" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Earthquakes</text>
+<path d="M1560.0 538 L1560.0 566" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
+<rect x="1648" y="498" width="144" height="40" rx="8" fill="#EBEBEB"/>
+<text x="1720.0" y="523" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="middle">Closures</text>
+<path d="M1720.0 538 L1720.0 566" stroke="#0A0A0A" stroke-opacity="0.22" stroke-width="1.2" fill="none"/>
 </g>
 <g id="no-system-here">
-<rect x="1008" y="548" width="784" height="84" rx="12" fill="#96580A" fill-opacity="0.06" stroke="#96580A" stroke-opacity="0.7" stroke-dasharray="6 6"/>
-<text x="1400.0" y="584" font-family="Geist Mono" font-size="13" font-weight="600" fill="#96580A" text-anchor="middle" letter-spacing="2">NO SYSTEM HERE</text>
-<text x="1400.0" y="610" font-family="Geist" font-size="16" font-weight="400" fill="#6B6B6B" text-anchor="middle">Nothing reads these per booking.</text>
+<rect x="1008" y="566" width="784" height="84" rx="12" fill="#96580A" fill-opacity="0.06" stroke="#96580A" stroke-opacity="0.7" stroke-dasharray="6 6"/>
+<text x="1400.0" y="602" font-family="Geist Mono" font-size="13" font-weight="600" fill="#96580A" text-anchor="middle" letter-spacing="2">NO SYSTEM HERE</text>
+<text x="1400.0" y="628" font-family="Geist" font-size="16" font-weight="400" fill="#6B6B6B" text-anchor="middle">Nothing reads these per booking.</text>
 </g>
-<rect x="1008" y="672" width="784" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
-<text x="1008" y="736" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">26,225</text>
-<text x="1008" y="768" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">disruption alerts in 2025</text>
-<text x="1008" y="792" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">up from 22,522 in 2024</text>
-<text x="1008" y="818" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">Resilinc EventWatchAI</text>
-<text x="1416" y="736" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">€120M</text>
-<text x="1416" y="768" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">a month on the Rhine</text>
-<text x="1416" y="792" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">if every box pays a €1,000 low-water surcharge</text>
-<text x="1416" y="818" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">2.3M TEU a year ÷ 12 ÷ 1.6 ≈ 120k boxes</text>
+<rect x="1008" y="690" width="784" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="1008" y="754" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">26,225</text>
+<text x="1008" y="786" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">disruption alerts in 2025</text>
+<text x="1008" y="810" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">up from 22,522 in 2024</text>
+<text x="1008" y="836" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">Resilinc EventWatchAI</text>
+<text x="1416" y="754" font-family="Geist" font-size="50" font-weight="600" fill="#0A0A0A" letter-spacing="-1.4">€120M</text>
+<text x="1416" y="786" font-family="Geist" font-size="16" font-weight="500" fill="#0A0A0A">a month on the Rhine</text>
+<text x="1416" y="810" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">if every box pays a €1,000 low-water surcharge</text>
+<text x="1416" y="836" font-family="Geist Mono" font-size="11.5" font-weight="500" fill="#6B6B6B" letter-spacing="0.3">2.3M TEU a year ÷ 12 ÷ 1.6 ≈ 120k boxes</text>
 </g>
 <g id="closing">
 <text x="96" y="928" font-family="Geist" font-size="34" font-weight="600" fill="#0A0A0A" letter-spacing="-0.8">Both jobs land on one desk. Neither has a system.</text>

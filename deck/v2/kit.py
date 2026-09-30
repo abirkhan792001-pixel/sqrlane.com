@@ -4,6 +4,7 @@ import pathlib
 INK, MUT, AMB = "#0A0A0A", "#6B6B6B", "#96580A"
 BG, CARD, TRACK, MID = "#FAFAFA", "#FFFFFF", "#EBEBEB", "#D4D4D4"
 M, W, H = 96, 1920, 1080
+HEADER_RULE = 282   # hairline under the header, mirrors the footer rule at 978
 TAGLINE = "Automates the desk. Acts before the route breaks."
 
 class Slide:
@@ -34,6 +35,7 @@ class Slide:
         self.label(M, 114, eyebrow, AMB, 15)
         self.T(M - 3, 196, headline, 66, 600, ls=-2)
         self.T(M, 246, sub, 24, 400, MUT)
+        self.rule(HEADER_RULE)
         self.end()
     def footer(self, n):
         self.g("footer")

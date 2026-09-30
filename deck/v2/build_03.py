@@ -5,7 +5,7 @@ s = Slide()
 s.header("02 · THE WHAT", "Two problems. Each makes the other worse.",
          "Every hour spent re-typing is an hour nobody watches the lane.")
 
-PW, PY, PH = 848, 300, 552
+PW, PY, PH = 848, 318, 540
 def panel(x, n, title, sub, idn):
     s.g(idn)
     s.card(x, PY, PW, PH)

@@ -5,6 +5,7 @@
 <text x="120" y="114" font-family="Geist Mono" font-size="15" font-weight="500" fill="#6B6B6B" letter-spacing="3">01 · INTRODUCTION</text>
 <text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">A freight forwarder’s product is a date.</text>
 <text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6B6B6B">No ships. No trucks. One promise: this box, there, by then.</text>
+<rect x="96" y="282" width="1728" height="1" rx="0" fill="#0A0A0A" fill-opacity="0.12"/>
 </g>
 <g id="the-promise">
 <text x="96" y="354" font-family="Geist Mono" font-size="16" font-weight="600" fill="#0A0A0A" letter-spacing="0.6">SHP-001</text>
