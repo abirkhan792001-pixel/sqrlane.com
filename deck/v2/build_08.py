@@ -232,7 +232,8 @@ y = TOP + 56
 s.g("watch")
 s.R(hx, y, hw, 94, BG, 12, f' stroke="{INK}" stroke-opacity="0.10"')
 s.T(hx + 14, y + 22, "WATCH", 10.5, 700, MUT, ls=1.2)
-s.T(hx + 70, y + 22, "60 sources, read together on every run", 11.5, 400, MUT)
+s.raw(f'<circle cx="{hx + 76}" cy="{y + 18}" r="4" fill="{GREEN}"/>')
+s.T(hx + 86, y + 22, "60 sources, live, read together on every run", 11.5, 400, MUT)
 fx = hx + 14
 for fam, n in (("News", 41), ("Rivers", 7), ("Weather & sea", 4), ("Hazards", 5), ("Government", 2), ("Markets", 1)):
     lab = fam.replace("&", "&amp;")
@@ -241,7 +242,8 @@ for fam, n in (("News", 41), ("Rivers", 7), ("Weather & sea", 4), ("Hazards", 5)
     s.T(fx + 10, y + 49, lab, 11, 500, "#3A3A3A")
     s.T(fx + w - 9, y + 49, str(n), 11, 700, BLUE, anchor="end")
     fx += w + 6
-s.T(hx + 14, y + 79, "Coming live soon", 11, 600, GREY)
+s.raw(f'<circle cx="{hx + 18}" cy="{y + 75}" r="4" fill="#C4C4C4"/>')
+s.T(hx + 28, y + 79, "Coming soon", 11, 600, GREY)
 fx = hx + 122
 for k, nxt in enumerate(("AIS vessel positions", "Freight indices", "Prediction markets", "Port calls", "")):
     op = (0.85, 0.6, 0.38, 0.2, 0.08)[k]
@@ -277,13 +279,16 @@ def outcomes(yy):
 row("Risk", "1 agent", "reads every source, flags what touches a booking", "risk-agent")
 arrow(y, y + 11); y += 13
 row("Routing", "1 agent", "weighs slack against delay, prices every option", "routing-agent", right=outcomes)
+arrow(y, y + 11); y += 13
 s.g("cost-impact")
-s.R(hx, y + 4, hw, ROWH, GREEN_BG, 10)
-s.T(hx + 14, y + 28, "Cost impact", 13.5, 600, GREEN)
-count_chip(NX, y + 13.5, "−€46,500", CARD, GREEN)
-s.T(NX + 92, y + 27.5, "€141,100 if nothing is done, €94,600 with these calls", 11.5, 400, GREEN)
+s.raw('<defs><linearGradient id="cost-fade" x1="0" y1="0" x2="1" y2="0">'
+      f'<stop offset="0" stop-color="{GREEN_BG}"/><stop offset="1" stop-color="{CARD}"/></linearGradient></defs>')
+s.R(hx, y, hw, ROWH, "url(#cost-fade)", 10, f' stroke="{GREEN}" stroke-opacity="0.18"')
+s.T(hx + 14, y + 24, "Cost impact", 13.5, 600, GREEN)
+count_chip(NX, y + 9.5, "−€46,500", CARD, GREEN)
+s.T(NX + 92, y + 23.5, "€141,100 if nothing is done, €94,600 with these calls", 11.5, 400, GREEN)
 s.end()
-y += ROWH + 4
+y += ROWH
 arrow(y, y + 11); y += 13
 row("Comms", "1 agent", "drafts the carrier and customer mail", "comms-agent")
 arrow(y, y + 11); y += 13
@@ -341,5 +346,39 @@ s.end()
 s.end()
 
 s.T(M, 946, "The earlier the call, the more options you have and the less it costs.", 28, 600, ls=-0.6)
+# ---- confidence, building: the Hamburg demo scenario's detection trail (scenarios.json),
+# one row per source at its real offset; the bars count the sources carrying the story.
+# Not a model score: a count, and labelled as the mechanism.
+KX, KY, KW, KH = 1296, 86, W - M - 1296, 190
+s.g("confidence-building")
+s.card(KX, KY, KW, KH, 12)
+kx = KX + 18
+s.T(kx, KY + 26, "CONFIDENCE, BUILDING", 11, 700, AMB, ls=1.2)
+s.T(KX + KW - 18, KY + 26, "Hamburg demo scenario · mechanism, not a score", 10.5, 400, GREY, anchor="end")
+COLS = ["0", "22m", "1h", "4h", "8h", "16h", "23h"]
+MIN = [0, 22, 60, 260, 480, 960, 1380]   # 4h column = NOS at +4h 20m
+SRCS = [("NDR Hamburg", 0), ("ver.di release", 22), ("NOS Nieuws", 260), ("International wires", 1380)]
+GX = kx + 124; CW_ = (KX + KW - 18 - GX - 6 * 4) / 7
+HEAT_ON, HEAT_NEW, HEAT_OFF = "#EFD3A6", AMB, "#F0F0F0"
+for r, (name, at) in enumerate(SRCS):
+    ry = KY + 38 + r * 17
+    s.T(kx, ry + 11, name, 11, 500, "#4A4A4A")
+    first = next(c for c, m in enumerate(MIN) if m >= at)
+    for c in range(7):
+        fill = HEAT_OFF if c < first else (HEAT_NEW if c == first else HEAT_ON)
+        s.R(GX + c * (CW_ + 4), ry, CW_, 13, fill, 3)
+# sources carrying it, per column; the time axis under it
+BASE, BH = KY + 148, 26
+s.T(kx, BASE - 4, "sources carrying it", 11, 500, "#4A4A4A")
+for c, m in enumerate(MIN):
+    n = sum(1 for _, at in SRCS if at <= m)
+    h = BH * n / 4
+    s.R(GX + c * (CW_ + 4), BASE - h, CW_, h, BLUE if c == 0 else "#D6D6D6", 3)
+    s.T(GX + c * (CW_ + 4) + CW_ / 2, BASE - h - 3, str(n), 9.5, 700, BLUE if c == 0 else GREY, anchor="middle")
+    s.T(GX + c * (CW_ + 4) + CW_ / 2, BASE + 15, COLS[c], 9.5, 500, GREY, anchor="middle")
+s.T(GX, BASE + 31, "SQRlane acts here", 10, 700, BLUE)
+s.T(GX + 7 * (CW_ + 4) - 4, BASE + 31, "the wires land here", 10, 700, INK, anchor="end")
+s.end()
+
 s.footer(8)
 s.write("slide-08-the-how-2.svg")
