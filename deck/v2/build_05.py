@@ -3,6 +3,35 @@
 TMS holds and does not, and what a clean file earns."""
 from kit import *
 GREEN = "#0F7B3F"
+import json, pathlib, re
+# Official marks, byte-for-byte from Iconify's npm sets (logos + simple-icons: CC0,
+# vscode-icons: MIT). Vendors with no published mark stay as name badges: never redraw one.
+MARKS = json.loads((pathlib.Path(__file__).with_name("channel_marks.json")).read_text())
+_n = [0]
+def mark(name, x, y, size=18):
+    m = MARKS[name]; sc = size / max(m["w"], m["h"])
+    _n[0] += 1; body = re.sub(r'(id="|url\(#|href="#)([^")]+)', lambda g: g.group(1) + f"m{_n[0]}-" + g.group(2), m["body"])
+    dx = x + (size - m["w"] * sc) / 2; dy = y + (size - m["h"] * sc) / 2
+    s.raw(f'<g id="mark-{name.lower()}" transform="translate({dx:.1f} {dy:.1f}) scale({sc:.4f})">{body}</g>')
+    return size
+def glyph(kind, x, y, size=18):
+    c = MUT; k = size / 18
+    p = {"phone": f'<path d="M{x+5*k} {y+2*k} h{8*k} a{1.5*k} {1.5*k} 0 0 1 {1.5*k} {1.5*k} v{11*k} a{1.5*k} {1.5*k} 0 0 1 -{1.5*k} {1.5*k} h-{8*k} a{1.5*k} {1.5*k} 0 0 1 -{1.5*k} -{1.5*k} v-{11*k} a{1.5*k} {1.5*k} 0 0 1 {1.5*k} -{1.5*k} Z M{x+8*k} {y+14*k} h{2*k}" stroke="{c}" stroke-width="1.5" fill="none" stroke-linecap="round"/>',
+         "sms": f'<path d="M{x+2*k} {y+4*k} h{14*k} v{9*k} h-{8*k} l-{3.5*k} {3*k} v-{3*k} h-{2.5*k} Z" stroke="{c}" stroke-width="1.5" fill="none" stroke-linejoin="round"/>',
+         "portal": f'<rect x="{x+1.5*k}" y="{y+3*k}" width="{15*k}" height="{12*k}" rx="{1.5*k}" stroke="{c}" stroke-width="1.5" fill="none"/><path d="M{x+1.5*k} {y+6.5*k} h{15*k}" stroke="{c}" stroke-width="1.5"/>',
+         "EDI": f'<path d="M{x+3*k} {y+6*k} h{11*k} m-{3*k} -{3*k} l{3*k} {3*k} l-{3*k} {3*k} M{x+15*k} {y+12*k} h-{11*k} m{3*k} -{3*k} l-{3*k} {3*k} l{3*k} {3*k}" stroke="{c}" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'}[kind]
+    s.raw(f'<g id="glyph-{kind.lower()}">{p}</g>')
+    return size
+def badge(name, x, y):
+    w = round(len(name) * 7 + 14)
+    s.R(x, y, w, 20, TRACK, 3)
+    s.T(x + w / 2, y + 14, name, 11.5, 600, INK, anchor="middle")
+    return w
+def channel(name, x, y):
+    if name in MARKS: return mark(name, x, y)
+    if name in ("phone", "sms", "portal", "EDI"): return glyph(name, x, y)
+    return badge(name, x, y - 1)
+
 s = Slide()
 s.header("04 · THE JOB, 1 OF 2", "45 days, 7 parties, €127 of margin.",
          "The TMS stores the booking. It does not decide or move anything.")
@@ -49,7 +78,7 @@ parties = [
     ("Shipping line", [0, 1, 1, 1, 1, 0, 0, 1], ["portal", "EDI", "INTTRA", "Outlook"], "rate, booking, B/L draft"),
     ("Origin agent", [0, 0, 1, 1, 0, 0, 0, 0], ["Outlook", "WeChat", "WhatsApp"], "pickup, packing list"),
     ("Port terminal", [0, 0, 0, 1, 1, 1, 0, 0], ["Portbase", "DAKOSY", "portal"], "gate-in, VGM, release"),
-    ("Haulier", [0, 1, 0, 0, 0, 0, 1, 1], ["phone", "WhatsApp", "SMS", "TIMOCOM"], "pickup slot, proof of delivery"),
+    ("Haulier", [0, 1, 0, 0, 0, 0, 1, 1], ["phone", "WhatsApp", "sms", "TIMOCOM"], "pickup slot, proof of delivery"),
     ("Customs broker", [0, 0, 0, 1, 0, 1, 1, 0], ["Outlook", "ATLAS", "portal"], "entry, duties"),
     ("Consignee", [0, 0, 0, 0, 1, 0, 1, 1], ["Outlook", "Teams", "phone"], "arrival notice, delivery slot"),
 ]
@@ -64,7 +93,9 @@ for r, (name, marks, chans, what) in enumerate(parties):
         else:
             s.raw(f'<circle cx="{c}" cy="{ry - 5}" r="2" fill="{INK}" fill-opacity="0.2"/>')
     s.T(RX, ry, what, 14, 400, INK)
-    s.T(RX2, ry, " · ".join(chans), 13, 400, MUT)
+    cxp = RX2
+    for ch in chans:
+        cxp += channel(ch, cxp, ry - 14) + 12
 OPEN_R, OPEN_C = 1, 3
 s.raw(f'<circle cx="{CX[OPEN_C]}" cy="{HY + 32 + OPEN_R * 25 - 5}" r="12" fill="none" stroke="{AMB}" stroke-width="1.5"/>')
 s.end()
@@ -78,7 +109,7 @@ steps = ["B/L draft arrives by mail", "checked against the booking", "corrected 
 sx = x0 + 160
 for k, st in enumerate(steps):
     w = round(len(st) * 6.9 + 24)
-    s.R(sx, SY - 17, w, 24, AMB if k == 3 else TRACK, 12, ' fill-opacity="0.14"' if k == 3 else "")
+    s.R(sx, SY - 17, w, 24, AMB if k == 3 else TRACK, 4, ' fill-opacity="0.14"' if k == 3 else "")
     s.T(sx + w / 2, SY - 1, st, 13, 500, AMB if k == 3 else INK, anchor="middle")
     sx += w
     if k < len(steps) - 1:
