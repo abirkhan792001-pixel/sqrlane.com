@@ -35,17 +35,18 @@ in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 
 ## Slide 07, current version (fourth rebuild, 2026-09-30)
 
-- **Left, the Today view (fifth pass):** sidebar with counts (Inbox 13, Approvals 24 in
-  blue, Shipments 7, Agents 16); a **bell with a red badge** at the top right of the app
-  bar, and the toast it raised: Outlook mark, "New mail · Maison Cardelle SAS / Arrival
-  notice: MEDU-2209471", picked up by Customs (IN-111). The stat cards were replaced by
-  **"This morning"**, one line through the run: 13 mails in (8 end to end, 5 held) › 100
-  agent messages › 8 Playbook fixes › 24 waiting for you (10 drafts, 14 TMS changes) ›
-  0 sent or written, all from `workflow.run(use_llm=False)` stats. Under it, a
-  **separate chat window** (own header "Ask SQRlane", LIVE, tinted body): the question,
-  the Milestones agent's answer, its real drafted reply to IN-106 ("Draft, not sent",
-  Approve), three suggested questions and the input. The chat and the mail feed are no
-  longer side by side, on the owner's instruction.
+- **Left, the Today view (sixth pass):** sidebar with counts; a bell with a red badge in
+  the app bar; beside the "Today" title, **two pop-ups** joined by an arrow: the Outlook
+  mail (IN-111, Maison Cardelle, arrival notice MEDU-2209471) and "Customs agent ·
+  working… Preparing the entry for France." (its finished output is "Entry prepared for
+  France. Not filed."). **"This morning"** in one line with a coloured tag under each
+  figure: 13 mails in (8 end to end, green) › 100 agent messages (on record, blue) › 8
+  Playbook fixes (checked, amber) › 24 waiting for you (you decide, blue) › 0 sent or
+  written (until you approve, green). Then the **chat window** laid out like the owner's
+  reference: tinted body, the question bubble, a Milestones agent card (LIVE), the draft
+  card "Drafted a reply to Pieter Claes, Kempen Electronics." with the real IN-106 reply,
+  "Draft, not sent" and Approve, and the input with the paperclip and "Ask SQRlane".
+  Suggested questions were dropped for room.
 - **Risk layer band** fades out to the right (a white gradient over its right half), on
   the owner's instruction.
 - **The "Demo run · synthetic inbox" label was removed on the owner's instruction.** The

@@ -91,86 +91,95 @@ s.T(bx + 6, byy - 3.8, "1", 8.5, 700, CARD, anchor="middle")
 s.end()
 
 s.g("page-header")
-s.T(MX, TOP + 82, "Today", 26, 600, ls=-0.6)
-s.T(MX, TOP + 105, "The desk worked the morning inbox.", 13, 400, MUT)
+s.T(MX, TOP + 90, "Today", 26, 600, ls=-0.6)
 s.end()
 
-# ---- the toast the bell raised: IN-111 lands, the Customs agent already has it
-TW_, TX_ = 372, MX + MW - 372
-s.g("mail-toast")
-soft_card(TX_, TOP + 54, TW_, 60, 14)
-s.R(TX_ + 12, TOP + 64, 40, 40, GREY_BG, 10)
-mark("Outlook", TX_ + 18, TOP + 70, 28)
-s.T(TX_ + 64, TOP + 78, "New mail · Maison Cardelle SAS", 11, 500, GREY)
-s.T(TX_ + 64, TOP + 98, "Arrival notice: MEDU-2209471", 13, 600)
-agent_mark(TX_ + TW_ - 88, TOP + 84, 5)
-s.T(TX_ + TW_ - 78, TOP + 88, "Customs", 11.5, 600, BLUE)
+# ---- two pop-ups from the bell: IN-111 lands, and the Customs agent picks it up
+PT, PH_ = TOP + 54, 56
+P2W = 290; P2X = MX + MW - P2W
+P1W = 300; P1X = P2X - 26 - P1W
+s.g("popup-mail")
+soft_card(P1X, PT, P1W, PH_, 14)
+s.R(P1X + 10, PT + 9, 38, 38, GREY_BG, 10)
+mark("Outlook", P1X + 15, PT + 14, 28)
+s.raw(f'<circle cx="{P1X + 46}" cy="{PT + 10}" r="8" fill="{RED}" stroke="{CARD}" stroke-width="2"/>')
+s.T(P1X + 46, PT + 14, "1", 10, 700, CARD, anchor="middle")
+s.T(P1X + 60, PT + 23, "New mail · Maison Cardelle SAS", 11, 500, GREY)
+s.T(P1X + 60, PT + 42, "Arrival notice: MEDU-2209471", 12.5, 600)
+s.end()
+ax = P1X + P1W + 5
+s.line(ax, PT + PH_ / 2, ax + 12, PT + PH_ / 2, INK, 0.3, 1.5)
+s.raw(f'<path d="M{ax+11} {PT+PH_/2-4} L{ax+16} {PT+PH_/2} L{ax+11} {PT+PH_/2+4}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
+s.g("popup-agent")
+soft_card(P2X, PT, P2W, PH_, 14)
+agent_mark(P2X + 22, PT + 19, 6)
+s.T(P2X + 38, PT + 23, "Customs agent", 12.5, 600, BLUE)
+s.T(P2X + P2W - 14, PT + 23, "working…", 11, 500, GREY, anchor="end")
+s.T(P2X + 14, PT + 44, "Preparing the entry for France.", 12, 400, INK)
 s.end()
 
-# ---- the morning in one line: every figure counted from workflow.run()
-OY, OH = TOP + 126, 112
-STEPS = [("13", "mails in", "8 end to end · 5 held"),
-         ("100", "agent messages", "every handoff on record"),
-         ("8", "Playbook fixes", "sent back, then fixed"),
-         ("24", "waiting for you", "10 drafts · 14 TMS changes"),
-         ("0", "sent or written", "until you approve")]
+# ---- the morning in one line, each figure with its tag (workflow.run() stats)
+OY, OH = TOP + 124, 114
+STEPS = [("13", "mails in", "8 end to end", GREEN_BG, GREEN),
+         ("100", "agent messages", "on record", BLUE_BG, BLUE),
+         ("8", "Playbook fixes", "checked", AMBR_BG, AMBR),
+         ("24", "waiting for you", "you decide", BLUE_BG, BLUE),
+         ("0", "sent or written", "until you approve", GREEN_BG, GREEN)]
 s.g("the-morning")
 s.card(MX, OY, MW, OH, 12)
-s.T(MX + 18, OY + 26, "This morning", 13, 600)
-s.T(MX + MW - 18, OY + 26, "13 mails, start to finish", 12, 400, GREY, anchor="end")
+s.T(MX + 18, OY + 25, "This morning", 13, 600)
+s.T(MX + MW - 18, OY + 25, "13 mails, start to finish", 12, 400, GREY, anchor="end")
 sw_ = (MW - 36) / 5
-for k, (n, lab, sub) in enumerate(STEPS):
+for k, (n, lab, tag, tf, ti) in enumerate(STEPS):
     x = MX + 18 + k * sw_
-    s.T(x, OY + 64, n, 30, 600, GREEN if n == "0" else INK, ls=-1)
-    s.T(x, OY + 83, lab, 12, 600, "#3A3A3A")
-    s.T(x, OY + 99, sub, 10.5, 400, GREY)
+    s.T(x, OY + 60, n, 30, 600, ls=-1)
+    s.T(x, OY + 79, lab, 12, 500, "#4A4A4A")
+    pill(x, OY + 87, tag, tf, ti, anchor="start", size=10, h=18)
     if k < 4:
-        s.T(x + sw_ - 16, OY + 62, "›", 20, 400, "#C8C8C8")
+        s.T(x + sw_ - 14, OY + 60, "›", 18, 400, "#C8C8C8")
 s.end()
 
-# ---- the chat window: its own header, its own tint, bubbles
+# ---- the chat window: you ask, the owning agent answers, its draft waits for you
 CY0 = OY + OH + 14; CHh = BOT - 20 - CY0
 CHAT_BG = "#F6F8FB"
 s.g("chat-window")
-s.R(MX, CY0, MW, CHh, CHAT_BG, 14, f' stroke="{INK}" stroke-opacity="0.12"')
-s.R(MX, CY0, MW, 40, CARD, 14); s.R(MX, CY0 + 26, MW, 14, CARD)
-s.rule(CY0 + 40, 0.10, MX, MW)
-agent_mark(MX + 22, CY0 + 20)
-s.T(MX + 38, CY0 + 25, "Ask SQRlane", 13.5, 600)
-s.T(MX + 126, CY0 + 25, "the agent who owns it answers", 12, 400, GREY)
-s.raw(f'<circle cx="{MX + MW - 76}" cy="{CY0 + 20}" r="3.5" fill="{GREEN}"/>')
-s.T(MX + MW - 68, CY0 + 24.5, "LIVE", 10.5, 700, GREEN, ls=0.8)
-cy = CY0 + 50
+s.R(MX, CY0, MW, CHh, CHAT_BG, 16, f' stroke="{INK}" stroke-opacity="0.10"')
+cy = CY0 + 14
 q = "Where is MEDU-1774390?"
 qw = round(len(q) * 7.6 + 32)
 s.R(MX + MW - 16 - qw, cy, qw, 34, INK, 17)
 s.T(MX + MW - 16 - qw / 2, cy + 22, q, 13.5, 500, CARD, anchor="middle")
 cy += 42
-BWb = 470
-s.R(MX + 16, cy, BWb, 42, CARD, 14, f' stroke="{INK}" stroke-opacity="0.10"')
-s.T(MX + 30, cy + 26, "Milestones agent", 12, 600, BLUE)
-s.T(MX + 138, cy + 26, "SHP-004, Shenzhen to Antwerp, is on plan.", 13, 400, INK)
-cy += 48
-DHh = 72
-s.R(MX + 16, cy, BWb, DHh, CARD, 14, f' stroke="{INK}" stroke-opacity="0.10"')
-mark("Outlook", MX + 30, cy + 12, 16)
-s.T(MX + 54, cy + 25, "Reply to Pieter Claes: RE: Where is MEDU-1774390?", 12.5, 600)
-s.T(MX + 30, cy + 44, "Dear Pieter Claes, MEDU-1774390 (electronics) is on the water …", 12, 400, MUT)
-s.T(MX + 30, cy + 62, "Draft, not sent", 11, 600, AMBR)
-s.R(MX + 16 + BWb - 92, cy + DHh - 34, 78, 26, INK, 8)
-s.T(MX + 16 + BWb - 53, cy + DHh - 16, "Approve", 12, 600, CARD, anchor="middle")
-# the input, with suggestions above it
-IY = CY0 + CHh - 52
-sx = MX + 16
-for sq in ("What is waiting for my approval?", "Price 2 x 40HC Shanghai to Rotterdam", "Which invoices are disputed?"):
-    w = round(len(sq) * 6.1 + 22)
-    s.R(sx, IY - 34, w, 26, CARD, 13, f' stroke="{INK}" stroke-opacity="0.12"')
-    s.T(sx + w / 2, IY - 17, sq, 11.5, 500, "#4A4A4A", anchor="middle")
-    sx += w + 8
-s.R(MX + 12, IY, MW - 24, 42, CARD, 21, f' stroke="{INK}" stroke-opacity="0.14"')
-s.T(MX + 32, IY + 26, "Ask the desk anything", 13, 400, GREY)
-s.raw(f'<circle cx="{MX + MW - 33}" cy="{IY + 21}" r="14" fill="{INK}"/>')
-s.raw(f'<path d="M{MX+MW-33} {IY+27} v-12 M{MX+MW-38} {IY+20} l5 -5 l5 5" stroke="{CARD}" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+BWb = 480
+soft_card(MX + 16, cy, BWb, 58, 14, op=0.10)
+agent_mark(MX + 36, cy + 20)
+s.T(MX + 52, cy + 25, "Milestones agent", 12.5, 600, BLUE)
+s.T(MX + 16 + BWb - 16, cy + 25, "LIVE", 10, 700, GREEN, anchor="end", ls=0.8)
+s.T(MX + 32, cy + 46, "SHP-004, Shenzhen to Antwerp, is on plan.", 13, 400, INK)
+cy += 66
+DHh = 106
+soft_card(MX + 16, cy, BWb, DHh, 14, op=0.10)
+s.T(MX + 32, cy + 24, "Drafted a reply to Pieter Claes, Kempen Electronics.", 12.5, 500, INK)
+s.rule(cy + 36, 0.08, MX + 32, BWb - 32)
+mark("Outlook", MX + 32, cy + 45, 15)
+s.T(MX + 54, cy + 57, "RE: Where is MEDU-1774390?", 12.5, 600)
+s.T(MX + 32, cy + 76, "MEDU-1774390 (electronics) is on the water on", 11.5, 400, MUT)
+s.T(MX + 32, cy + 92, "Asia → Suez → Antwerp, discharging at Antwerp.", 11.5, 400, MUT)
+s.T(MX + 16 + BWb - 16, cy + 57, "Draft, not sent", 11, 600, AMBR, anchor="end")
+s.R(MX + 16 + BWb - 92, cy + DHh - 36, 76, 26, INK, 8)
+s.T(MX + 16 + BWb - 54, cy + DHh - 18, "Approve", 12, 600, CARD, anchor="middle")
+# the input
+IY = CY0 + CHh - 60
+soft_card(MX + 12, IY, MW - 24, 48, 24, op=0.12)
+s.R(MX + 20, IY + 8, 32, 32, GREY_BG, 16)
+s.raw(f'<path d="M{MX+41} {IY+19} l-7.5 7.5 a3 3 0 0 0 4.2 4.2 l8 -8 a5 5 0 0 0 -7 -7 l-8 8 a7 7 0 0 0 9.9 9.9 l6 -6" '
+      f'transform="translate(-2 -2) scale(0.78) translate({(MX+36)*0.282:.1f} {(IY+24)*0.282:.1f})" stroke="#4A4A4A" stroke-width="2" fill="none" stroke-linecap="round"/>')
+s.R(MX + 60, IY + 8, 126, 32, BLUE_BG, 16)
+agent_mark(MX + 78, IY + 24)
+s.T(MX + 94, IY + 29, "Ask SQRlane", 12.5, 600, BLUE)
+s.T(MX + 200, IY + 29, "Ask the desk anything", 13, 400, GREY)
+s.raw(f'<circle cx="{MX + MW - 36}" cy="{IY + 24}" r="16" fill="{INK}"/>')
+s.raw(f'<path d="M{MX+MW-36} {IY+31} v-13 M{MX+MW-41.5} {IY+23} l5.5 -5.5 l5.5 5.5" stroke="{CARD}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
 s.end()
 s.end()
 
