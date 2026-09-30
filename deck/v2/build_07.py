@@ -168,6 +168,15 @@ s.T(MX + 32, cy + 92, "Asia → Suez → Antwerp, discharging at Antwerp.", 11.5
 s.T(MX + 16 + BWb - 16, cy + 57, "Draft, not sent", 11, 600, AMBR, anchor="end")
 s.R(MX + 16 + BWb - 92, cy + DHh - 36, 76, 26, INK, 8)
 s.T(MX + 16 + BWb - 54, cy + DHh - 18, "Approve", 12, 600, CARD, anchor="middle")
+# suggested questions, beside the replies - each one answered by ask.ask() today
+SX_ = MX + 16 + BWb + 14; SW_ = MX + MW - 16 - SX_
+sy_ = CY0 + 66
+s.T(SX_, sy_, "SUGGESTED", 10, 700, GREY, ls=1.2)
+sy_ += 10
+for sq in ("What is waiting for my approval?", "Price 2 x 40HC Shanghai to Rotterdam", "Which invoices are disputed?"):
+    s.R(SX_, sy_, SW_, 28, CARD, 14, f' stroke="{INK}" stroke-opacity="0.12"')
+    s.T(SX_ + 12, sy_ + 18.5, sq, 11, 500, "#4A4A4A")
+    sy_ += 34
 # the input
 IY = CY0 + CHh - 60
 soft_card(MX + 12, IY, MW - 24, 48, 24, op=0.12)

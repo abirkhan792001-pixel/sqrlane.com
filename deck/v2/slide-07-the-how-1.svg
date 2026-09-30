@@ -131,6 +131,13 @@
 <text x="788" y="737" font-family="Geist" font-size="11" font-weight="600" fill="#96580A" text-anchor="end">Draft, not sent</text>
 <rect x="712" y="750" width="76" height="26" rx="8" fill="#0A0A0A"/>
 <text x="750" y="768" font-family="Geist" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Approve</text>
+<text x="818" y="624" font-family="Geist" font-size="10" font-weight="700" fill="#9A9A9A" letter-spacing="1.2">SUGGESTED</text>
+<rect x="818" y="634" width="230" height="28" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="830" y="652.5" font-family="Geist" font-size="11" font-weight="500" fill="#4A4A4A">What is waiting for my approval?</text>
+<rect x="818" y="668" width="230" height="28" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="830" y="686.5" font-family="Geist" font-size="11" font-weight="500" fill="#4A4A4A">Price 2 x 40HC Shanghai to Rotterdam</text>
+<rect x="818" y="702" width="230" height="28" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="830" y="720.5" font-family="Geist" font-size="11" font-weight="500" fill="#4A4A4A">Which invoices are disputed?</text>
 <rect x="320" y="813" width="732" height="48" rx="24" fill="#0A0A0A" fill-opacity="0.04"/>
 <rect x="320" y="810" width="732" height="48" rx="24" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <rect x="328" y="818" width="32" height="32" rx="16" fill="#F3F3F3"/>
