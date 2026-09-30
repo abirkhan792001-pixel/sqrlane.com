@@ -7,7 +7,8 @@ SAGE = "#DBDBCD"
 M, W = 96, 1920
 out = []
 def T(x, y, s, size, weight=400, fill=INK, anchor="start", ls=0, mono=False, idn=None):
-    fam = "Geist Mono" if mono else "Geist"
+    fam = "Geist"
+    if mono: ls = round(ls * 0.6, 2)
     a = f' text-anchor="{anchor}"' if anchor != "start" else ""
     l = f' letter-spacing="{ls}"' if ls else ""
     i = f' id="{idn}"' if idn else ""

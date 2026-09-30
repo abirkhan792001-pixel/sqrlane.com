@@ -13,7 +13,8 @@ class Slide:
                   f'<rect id="background" x="0" y="0" width="{W}" height="{H}" fill="{BG}"/>']
     def raw(self, s): self.o.append(s)
     def T(self, x, y, s, size, weight=400, fill=INK, anchor="start", ls=0, mono=False):
-        fam = "Geist Mono" if mono else "Geist"
+        fam = "Geist"                       # one typeface across the deck
+        if mono: ls = round(ls * 0.6, 2)    # former mono labels: tighter tracking in Geist
         a = f' text-anchor="{anchor}"' if anchor != "start" else ""
         l = f' letter-spacing="{ls}"' if ls else ""
         self.o.append(f'<text x="{x}" y="{y}" font-family="{fam}" font-size="{size}" font-weight="{weight}" fill="{fill}"{a}{l}>{s}</text>')

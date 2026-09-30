@@ -36,7 +36,7 @@ for r, names in enumerate(rows):
         for k, f in enumerate(["ref", "container", "ETA"]):
             fw = [52, 92, 52][k]; fx = bx + (BW - 212) / 2 + [0, 60, 160][k]
             s.R(fx, by + 48, fw, 22, TRACK, 5)
-            s.T(fx + fw / 2, by + 63, f, 11.5, 500, MUT, anchor="middle", mono=True)
+            s.T(fx + fw / 2, by + 63, f, 12.5, 500, MUT, anchor="middle")
         s.end()
 s.g("handoffs")
 for a, b in [("Inbox", "TMS"), ("TMS", "Carrier portal"), ("Customer", "Invoice"), ("Invoice", "Customs")]:
@@ -54,20 +54,32 @@ s.end()
 X2 = M + PW + 32
 panel(X2, "02", "Nobody watches the lane.", "The world moves every lane. Nothing reads it against your bookings.", "problem-unwatched")
 risks = [["Tariffs", "Sanctions", "War", "Strikes", "Congestion"], ["Low water", "Storms", "Floods", "Earthquakes", "Closures"]]
-CWd, CHt, CG = 144, 40, 16
+ghost = ["Piracy", "Fuel", "Inspections", "Capacity", "Blank sailings"]
+CWd, CHt, CG = 144, 38, 16
+R0 = PY + 170                      # first solid row
+s.raw('<defs><linearGradient id="fade-up" x1="0" y1="0" x2="0" y2="1">'
+      f'<stop offset="0" stop-color="{CARD}" stop-opacity="1"/>'
+      f'<stop offset="1" stop-color="{CARD}" stop-opacity="0"/></linearGradient></defs>')
+s.g("more-beyond")
+for c, nm in enumerate(ghost):
+    bx = X2 + 32 + c * (CWd + CG)
+    s.R(bx, R0 - 48, CWd, CHt, TRACK, 8, ' fill-opacity="0.7"')
+    s.T(bx + CWd / 2, R0 - 24, nm, 14, 500, MUT, anchor="middle")
+s.R(X2 + 24, R0 - 52, PW - 48, 46, "url(#fade-up)")
+s.end()
 s.g("what-moves-a-lane")
 for r, names in enumerate(risks):
     for c, nm in enumerate(names):
-        bx, by = X2 + 32 + c * (CWd + CG), PY + 128 + r * 52
+        bx, by = X2 + 32 + c * (CWd + CG), R0 + r * 48
         s.R(bx, by, CWd, CHt, TRACK, 8)
-        s.T(bx + CWd / 2, by + 25, nm, 14, 500, INK, anchor="middle")
+        s.T(bx + CWd / 2, by + 24, nm, 14, 500, INK, anchor="middle")
         if r == 1:
-            s.line(bx + CWd / 2, by + CHt, bx + CWd / 2, PY + 248, INK, 0.22, 1.2)
+            s.line(bx + CWd / 2, by + CHt, bx + CWd / 2, R0 + 104, INK, 0.22, 1.2)
 s.end()
 s.g("no-system-here")
-s.R(X2 + 32, PY + 248, PW - 64, 84, AMB, 12, f' fill-opacity="0.06" stroke="{AMB}" stroke-opacity="0.7" stroke-dasharray="6 6"')
-s.T(X2 + PW / 2, PY + 284, "NO SYSTEM HERE", 13, 600, AMB, anchor="middle", ls=2, mono=True)
-s.T(X2 + PW / 2, PY + 310, "Nothing reads these per booking.", 16, 400, MUT, anchor="middle")
+s.R(X2 + 32, R0 + 104, PW - 64, 64, AMB, 12, f' fill-opacity="0.06" stroke="{AMB}" stroke-opacity="0.7" stroke-dasharray="6 6"')
+s.T(X2 + PW / 2, R0 + 131, "NO SYSTEM HERE", 13, 600, AMB, anchor="middle", ls=2, mono=True)
+s.T(X2 + PW / 2, R0 + 155, "Nothing reads these per booking.", 16, 400, MUT, anchor="middle")
 s.end()
 s.rule(PY + 372, 0.08, X2 + 32, PW - 64)
 stat(X2 + 32, "26,225", "disruption alerts in 2025", "up from 22,522 in 2024", "Resilinc EventWatchAI")
