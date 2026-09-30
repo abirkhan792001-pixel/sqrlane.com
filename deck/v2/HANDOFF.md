@@ -35,15 +35,19 @@ in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 
 ## Slide 07, current version (fourth rebuild, 2026-09-30)
 
-- **Left, the Today view (now a conversation, after the Zauber reference):** four stat
-  cards (13 / 8 / 5 / 24) on top. Under them, left: a chat thread. You ask "Where is
-  MEDU-1774390?"; the Milestones agent answers (`ask.ask()` routes it there: SHP-004 is
-  on plan); then "Drafted a reply to Pieter Claes, Kempen Electronics." with the draft
-  card "RE: Where is MEDU-1774390?" - the Milestones agent's real reply to IN-106, the
-  same question from the customer, marked "Draft, not sent" with an Approve button (never
-  Send: nothing in this build sends). The Ask input sits at the foot of the thread.
-  Right: the Outlook notification for IN-111 and the Customs agent's real output, then
-  three suggested questions, each answered by `ask.ask()` today.
+- **Left, the Today view (fifth pass):** sidebar with counts (Inbox 13, Approvals 24 in
+  blue, Shipments 7, Agents 16); a **bell with a red badge** at the top right of the app
+  bar, and the toast it raised: Outlook mark, "New mail · Maison Cardelle SAS / Arrival
+  notice: MEDU-2209471", picked up by Customs (IN-111). The stat cards were replaced by
+  **"This morning"**, one line through the run: 13 mails in (8 end to end, 5 held) › 100
+  agent messages › 8 Playbook fixes › 24 waiting for you (10 drafts, 14 TMS changes) ›
+  0 sent or written, all from `workflow.run(use_llm=False)` stats. Under it, a
+  **separate chat window** (own header "Ask SQRlane", LIVE, tinted body): the question,
+  the Milestones agent's answer, its real drafted reply to IN-106 ("Draft, not sent",
+  Approve), three suggested questions and the input. The chat and the mail feed are no
+  longer side by side, on the owner's instruction.
+- **Risk layer band** fades out to the right (a white gradient over its right half), on
+  the owner's instruction.
 - **The "Demo run · synthetic inbox" label was removed on the owner's instruction.** The
   figures are still counts from one run on the synthetic inbox, so say that out loud when
   presenting. The remaining disclosures: "14 live · Planner scripted · TMS link demo" in
