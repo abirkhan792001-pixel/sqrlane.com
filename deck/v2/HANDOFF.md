@@ -46,10 +46,11 @@ agents work each step.
   suggested questions, each checked to be answered by `ask.ask()` today; four stat
   cards (13 / 8 / 5 / 24) with coloured pills; one "What came in" row (Quote 1, Book 4,
   Documents 2, In transit 3, Arrival 2, Billing 1). All from `workflow.run(use_llm=False)`.
-- **Right, "16 agents, step by step":** one row per step with its agents and a dot per
-  agent plus the count: Risk layer 4 (light grey), Front door 2, Quote 2, Book 1,
-  Documents 1, In transit 2, Arrival 1, Billing 1, Every step (Playbook) 1, You approve,
-  Into the TMS (TMS link · demo) 1. Total 16. Tags: 14 live, Planner scripted, TMS link demo.
+- **Right, "How the work is structured"** (the owner's pick of the second version's
+  panel, restored): Risk layer in light grey (4 agents, slide 08) → Inbox and Assistant
+  → the desk's six stages → Playbook → You approve → TMS link → IN-108's real path.
+  Every step carries an amber agent-count chip ("1 agent", "2 agents"), as the owner
+  asked. Counts: 4 + 1 + 1 + (2+1+1+2+1+1) + 1 + 1 = 16.
 - Closing line: "Ask the desk anything. Every step recorded, and approved by you."
 
 ## The 40% does not hold (checked 2026-09-30)

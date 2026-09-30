@@ -129,59 +129,133 @@ for k, (job, n) in enumerate(JOBS):
 s.end()
 s.end()
 
-# ================================================================ the agents, step by step
+# ================================================================ how the work is structured
 HX = FX + FW + 24; HW = W - M - HX
 hx, hw = HX + 24, HW - 48
-s.g("agents-step-by-step")
+s.g("how-the-work-is-structured")
 s.card(HX, TOP, HW, BOT - TOP)
-s.T(hx, TOP + 38, "16 AGENTS, STEP BY STEP", 13, 600, AMB, ls=1.4)
-s.T(HX + HW - 24, TOP + 38, "agents per step", 12.5, 500, GREY, anchor="end")
+s.T(hx, TOP + 36, "HOW THE WORK IS STRUCTURED", 13, 600, AMB, ls=1.4)
+s.T(HX + HW - 24, TOP + 36, "14 live · Planner scripted · TMS link demo", 12, 500, GREY, anchor="end")
 
-ROWS = [("", "Risk layer", [("Risk", 0), ("Routing", 0), ("Comms", 0), ("Planner", "scripted")], 4, "risk"),
-        ("", "Front door", [("Inbox", 0), ("Assistant", 0)], 2, "desk"),
-        ("01", "Quote", [("Rate", 0), ("RFQ", 0)], 2, "desk"),
-        ("02", "Book", [("Booking", 0)], 1, "desk"),
-        ("03", "Documents", [("Docs", 0)], 1, "desk"),
-        ("04", "In transit", [("Milestones", 0), ("Exception", 0)], 2, "desk"),
-        ("05", "Arrival", [("Customs", 0)], 1, "desk"),
-        ("06", "Billing", [("Invoice", 0)], 1, "desk"),
-        ("", "Every step", [("Playbook", 0)], 1, "check"),
-        ("", "You approve", [], 0, "you"),
-        ("", "Into the TMS", [("TMS link", "demo")], 1, "desk")]
-RY0, RHt, RG = TOP + 58, 38, 4
-DOT = {"risk": GREY, "desk": BLUE, "check": AMBR}
-for k, (num, step, agents, n, kind) in enumerate(ROWS):
-    y = RY0 + k * (RHt + RG)
-    s.g("step-" + step.lower().replace(" ", "-"))
-    if kind == "risk":
-        s.R(hx, y, hw, RHt, GREY_BG, 8)
-    elif kind == "check":
-        s.R(hx, y, hw, RHt, AMBR_BG, 8)
-    elif kind == "you":
-        s.R(hx, y, hw, RHt, CARD, 8, f' stroke="{INK}" stroke-opacity="0.5" stroke-width="1.4"')
-    else:
-        s.R(hx, y, hw, RHt, CARD, 8, f' stroke="{INK}" stroke-opacity="0.10"')
-    ink = GREY if kind == "risk" else INK
-    if num: s.T(hx + 14, y + 24, num, 11, 700, AMB, ls=0.6)
-    s.T(hx + 42, y + 24, step, 14, 600 if kind != "risk" else 500, ink)
-    cx = hx + 170
-    for a, tag in agents:
-        label = a + (" · " + tag if tag else "")
-        w = round(len(label) * 6.5 + 18)
-        s.R(cx, y + 8, w, 22, GREY_BG if kind != "risk" else CARD, 6)
-        s.T(cx + w / 2, y + 23, label, 11.5, 500, GREY if kind == "risk" else "#3A3A3A", anchor="middle")
-        cx += w + 6
-    if kind == "you":
-        s.T(hx + 170, y + 24, "every draft, every change. Nothing leaves before that.", 12, 400, MUT)
-    else:
-        s.T(hx + hw - 14, y + 25, str(n), 17, 600, ink, anchor="end")
-        for d in range(n):
-            s.raw(f'<circle cx="{hx + hw - 40 - d * 13}" cy="{y + RHt / 2}" r="4.5" fill="{DOT[kind]}"/>')
+def arrow(y1, y2, x=None):
+    x = x or hx + hw / 2
+    s.line(x, y1, x, y2 - 5, INK, 0.3, 1.5)
+    s.raw(f'<path d="M{x-4.5} {y2-6} L{x} {y2} L{x+4.5} {y2-6}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
+
+def count_chip(x, y, text, fill=AMBR_BG, ink=AMBR, anchor="start"):
+    """The agent count on every step: '1 agent', '2 agents'."""
+    w = round(len(text) * 6 + 16)
+    x0 = x - w if anchor == "end" else x
+    s.R(x0, y, w, 19, fill, 9.5)
+    s.T(x0 + w / 2, y + 13.5, text, 10.5, 600, ink, anchor="middle")
+    return w
+
+def agents(n): return f"{n} agent" + ("s" if n > 1 else "")
+
+y = TOP + 56
+# the risk layer: light grey, detailed on slide 08
+s.g("risk-layer")
+s.R(hx, y, hw, 40, GREY_BG, 10, f' stroke="{INK}" stroke-opacity="0.10" stroke-dasharray="4 3"')
+s.T(hx + 14, y + 25, "Risk layer", 13.5, 600, "#7A7A7A")
+cw = count_chip(hx + 96, y + 10, agents(4), CARD, "#7A7A7A")
+s.T(hx + 96 + cw + 12, y + 25, "watches 60 sources, decides reroute or hold", 11.5, 400, "#8A8A8A")
+s.T(hx + hw - 14, y + 25, "slide 08", 11.5, 600, "#8A8A8A", anchor="end")
+s.end()
+y += 40; arrow(y, y + 12); y += 14
+
+# the two front doors
+s.g("front-doors")
+IW = hw - 248
+s.R(hx, y, IW, 40, INK, 10)
+s.T(hx + 14, y + 25, "Inbox", 13.5, 600, BG)
+cw = count_chip(hx + 62, y + 10, agents(1), "#2A2A2A", "#D6D6D6")
+s.T(hx + 62 + cw + 12, y + 25, "reads every mail, routes it to its owner", 11.5, 400, "#D6D6D6")
+ax0 = hx + IW + 8
+s.R(ax0, y, 240, 40, INK, 10)
+s.T(ax0 + 14, y + 25, "Assistant", 13.5, 600, BG)
+cw = count_chip(ax0 + 88, y + 10, agents(1), "#2A2A2A", "#D6D6D6")
+s.T(ax0 + 88 + cw + 10, y + 25, "your questions", 11.5, 400, "#D6D6D6")
+s.end()
+y += 40; arrow(y, y + 12); y += 14
+
+# the desk: six stages, in the order a shipment lives, each with its agent count
+STAGES = [("01", "Quote", ["Rate", "RFQ"], "Prices it, drafts the quote"),
+          ("02", "Book", ["Booking"], "Opens the booking from the mail"),
+          ("03", "Documents", ["Docs"], "Checks each field on the B/L"),
+          ("04", "In transit", ["Milestones", "Exception"], "Updates the ETA, flags rollovers"),
+          ("05", "Arrival", ["Customs"], "Prepares the entry, never files"),
+          ("06", "Billing", ["Invoice"], "Checks the bill against the rate")]
+s.g("the-desk")
+DH = 234
+s.R(hx, y, hw, DH, BG, 12, f' stroke="{INK}" stroke-opacity="0.10"')
+s.T(hx + 14, y + 22, "THE DESK", 10.5, 700, MUT, ls=1.2)
+s.T(hx + 84, y + 22, "8 agents, in the order a shipment lives", 11.5, 400, MUT)
+cw3 = (hw - 28 - 16) / 3; chh = 92
+for k, (num, name, who, job) in enumerate(STAGES):
+    r, c = divmod(k, 3)
+    x = hx + 14 + c * (cw3 + 8); yy = y + 36 + r * (chh + 8)
+    s.g("stage-" + name.lower().replace(" ", "-"))
+    s.R(x, yy, cw3, chh, CARD, 10, f' stroke="{INK}" stroke-opacity="0.12"')
+    s.T(x + 14, yy + 26, num, 11, 700, AMB, ls=0.6)
+    s.T(x + 38, yy + 26, name, 14.5, 600, ls=-0.2)
+    count_chip(x + cw3 - 12, yy + 11, agents(len(who)), anchor="end")
+    s.T(x + 14, yy + 47, job, 11.5, 400, MUT)
+    bx = x + 14
+    for a in who:
+        w = round(len(a) * 6.4 + 16)
+        s.R(bx, yy + 60, w, 20, GREY_BG, 5)
+        s.T(bx + w / 2, yy + 74, a, 11, 500, "#3A3A3A", anchor="middle")
+        bx += w + 5
     s.end()
-ty = RY0 + len(ROWS) * (RHt + RG) + 6
-s.rule(ty, 0.12, hx, hw)
-s.T(hx, ty + 28, "14 live · Planner scripted · TMS link demo", 12, 400, GREY)
-s.T(hx + hw - 14, ty + 29, "16 agents", 17, 600, anchor="end")
+s.end()
+y += DH
+for c in range(3):                       # every stage hands its output to the Playbook
+    x = hx + 14 + c * (cw3 + 8) + cw3 / 2
+    s.line(x, y, x, y + 8, AMB, 0.6, 1.5)
+y += 8
+s.g("playbook")
+s.R(hx, y, hw, 36, AMBR_BG, 10)
+s.T(hx + 14, y + 23, "Playbook", 13.5, 600, AMB)
+cw = count_chip(hx + 86, y + 9, agents(1), CARD, AMB)
+s.T(hx + 86 + cw + 12, y + 23, "checks every output against the customer's rules", 11.5, 400, AMB)
+s.end()
+y += 36; arrow(y, y + 12); y += 14
+
+# the gate, then the record
+s.g("gate-and-record")
+GW = (hw - 28) / 2
+s.R(hx, y, GW, 40, CARD, 10, f' stroke="{INK}" stroke-opacity="0.55" stroke-width="1.5"')
+s.T(hx + 14, y + 25, "You approve", 13.5, 700)
+s.T(hx + 108, y + 25, "every draft, every change", 11.5, 400, MUT)
+ax1 = hx + GW + 4
+s.line(ax1, y + 20, ax1 + 15, y + 20, INK, 0.3, 1.5)
+s.raw(f'<path d="M{ax1+14} {y+15.5} L{ax1+20} {y+20} L{ax1+14} {y+24.5}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
+tx = hx + GW + 28
+s.R(tx, y, GW, 40, INK, 10)
+s.T(tx + 14, y + 25, "TMS link", 13.5, 600, BG)
+cw = count_chip(tx + 84, y + 10, agents(1), "#2A2A2A", "#D6D6D6")
+s.T(tx + 84 + cw + 10, y + 25, "writes it onto the booking", 11.5, 400, "#D6D6D6")
+s.end()
+y += 40
+
+# one mail, worked together - the run's own path for IN-108
+s.g("worked-together")
+y += 28
+s.T(hx, y, "ONE MAIL, TOGETHER", 10.5, 700, MUT, ls=1.2)
+s.T(hx + 150, y, "IN-108, a vaccine booking", 11.5, 400, MUT)
+y += 12
+cx = hx
+steps = [("Inbox", None), ("Booking", None), ("Docs", None), ("Rate", None),
+         ("Playbook sends it back", "amb"), ("Booking rebooks", None), ("You approve", "ink")]
+for k, (name, kind) in enumerate(steps):
+    w = round(len(name) * 6.2 + 16)
+    fill, ink = {"amb": (AMB, CARD), "ink": (INK, CARD)}.get(kind, (GREY_BG, "#3A3A3A"))
+    s.R(cx, y, w, 22, fill, 5)
+    s.T(cx + w / 2, y + 15, name, 11, 600 if kind else 500, ink, anchor="middle")
+    cx += w
+    if k < len(steps) - 1:
+        s.T(cx + 4, y + 15, "›", 12, 500, MUT); cx += 14
+s.end()
 s.end()
 
 s.T(M, 946, "Ask the desk anything. Every step recorded, and approved by you.", 28, 600, ls=-0.6)
