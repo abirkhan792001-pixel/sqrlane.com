@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Slide 06 - The Job 2/2. One picture: where the lane breaks, who pays, and how
-fast the margin goes. Map geometry is the product's own (data/geo.json + the
-dashboard's COAST); the cost split is the one slide 05's original deck made."""
+"""Slide 06 - The Job 2/2. Lanes break often, and most of the cost lands on the
+forwarder. Map geometry is the product's own (data/geo.json + the dashboard's
+COAST). Sources are kept below for the appendix; they are not drawn here."""
 from kit import *
 import json, re
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -12,153 +12,145 @@ def proj(lat, lon):
     return ((lon - FR["lon0"]) / (FR["lon1"] - FR["lon0"]) * FR["width"],
             (FR["lat1"] - lat) / (FR["lat1"] - FR["lat0"]) * FR["height"])
 
+# For the appendix slide - every figure on this slide, traced.
+SOURCES = [
+    "Sea-Intelligence, Global Liner Performance, Aug 2026: 49.9% on time; 2018 to 2019 average 74%",
+    "ING Think and Freightos: the Red Sea detour absorbs 6 to 9% of global fleet capacity",
+    "Drewry World Container Index: $1,913 to $4,526 per 40ft",
+    "Rolled cargo moves to the next sailing, usually a week later (Shapiro, Vizion)",
+    "Hapag-Lloyd Germany import tariff, 40ft: EUR 115 a day after 3 free days, EUR 180 later",
+    "Kuehne+Nagel Sea Logistics FY25: EUR 127 margin per clean box (slide 05)",
+    "ING and gCaptain, Aug 2026: low-water surcharges on the Rhine",
+]
+
 s = Slide()
-def ref(n):
-    """A source marker: small grey superscript, keyed to the list at the foot."""
-    return f'<tspan font-size="11" font-weight="600" fill="{MUT}" dy="-7">{n}</tspan>'
 s.header("05 · THE JOB, 2 OF 2", "Half of all sailings arrive late.",
          "And when a box is late, most of the cost lands on the forwarder.")
+SLATE = "#8A8A84"          # customer-pays pins: quiet, so the forwarder's amber leads
 
-# ---- how often: a compact badge beside the headline
+# ---- how often
 s.g("how-often")
 BXR, BY0, C, G = W - M, 118, 9, 2
 gx = BXR - 10 * (C + G) + G
 for i in range(100):
     r, c = divmod(i, 10)
     s.R(gx + c * (C + G), BY0 + r * (C + G), C, C, AMB if i < 50 else MID, 1.5)
-s.T(gx - 20, BY0 + 30, "50 of 100 late" + ref(1), 26, 600, AMB, anchor="end", ls=-0.5)
+s.T(gx - 20, BY0 + 30, "50 of 100 late", 26, 600, AMB, anchor="end", ls=-0.5)
 s.T(gx - 20, BY0 + 56, "49.9% on time in August 2026", 14, 400, MUT, anchor="end")
 s.T(gx - 20, BY0 + 78, "74% on time before the pandemic", 14, 400, MUT, anchor="end")
 s.end()
 
-YOU, CUST = "FORWARDER PAYS", "CUSTOMER PAYS"
-def tag(x, y, who, short=False):
-    label = who.split()[0] if short else who
-    w = (84 if who == YOU else 76) if short else (112 if who == YOU else 106)
-    you = who == YOU
-    s.R(x - w, y, w, 20, AMB if you else TRACK, 4, ' fill-opacity="0.16"' if you else "")
-    s.T(x - w / 2, y + 14, label, 11, 700, AMB if you else MUT, anchor="middle", ls=0.8)
+Y1, H1 = 306, 300
+Y2, H2 = Y1 + H1 + 20, 262
+LW = 1000
+RX, RW = M + LW + 24, W - M - (M + LW + 24)
 
-# ---- the lane, and who pays where it breaks
-Y1, H1 = 306, 470
-MX, MW = M, 1044
+# ---- the lane, lean: a pin and two words per problem
 s.g("the-lane")
-s.card(MX, Y1, MW, H1)
-s.T(MX + 28, Y1 + 38, "ONE TRIP, SIX PLACES IT GOES WRONG, AND WHO PAYS", 13, 600, AMB, ls=1.4)
-AX, AY, AW, AH = MX + 1, Y1 + 54, MW - 2, H1 - 55
-LON0, LON1, LAT0, LAT1 = -16.0, 126.0, 0.0, 58.5
-x0, y0 = proj(LAT1, LON0); x1, y1 = proj(LAT0, LON1)
-SC = min(AW / (x1 - x0), AH / (y1 - y0))
-OX = AX + AW - (x1 - x0) * SC - 8; OY = AY
+s.card(M, Y1, LW, H1)
+s.T(M + 28, Y1 + 38, "ONE TRIP, SIX PLACES IT GOES WRONG", 13, 600, AMB, ls=1.4)
+lx = M + LW - 28
+s.raw(f'<circle cx="{lx - 238}" cy="{Y1 + 33}" r="5" fill="{AMB}"/>'); s.T(lx - 228, Y1 + 38, "forwarder pays", 13, 500, INK)
+s.raw(f'<circle cx="{lx - 104}" cy="{Y1 + 33}" r="5" fill="{SLATE}"/>'); s.T(lx - 94, Y1 + 38, "customer pays", 13, 500, MUT)
+AX, AY, AW, AH = M + 1, Y1 + 54, LW - 2, H1 - 55
+LAT0, LAT1, LONC = 26.8, 56.6, 17.0
+_, ya = proj(LAT1, 0); _, yb = proj(LAT0, 0)
+SC = AH / (yb - ya)
+xc, _ = proj(0, LONC)
+x0, y0 = xc - AW / 2 / SC, ya
 def mp(lat, lon):
-    x, y = proj(lat, lon); return OX + (x - x0) * SC, OY + (y - y0) * SC
+    x, y = proj(lat, lon); return AX + (x - x0) * SC, AY + (y - y0) * SC
 s.raw(f'<defs><clipPath id="map-clip"><rect x="{AX}" y="{AY}" width="{AW}" height="{AH}" rx="12"/></clipPath></defs>')
 s.raw('<g clip-path="url(#map-clip)">')
 s.R(AX, AY, AW, AH, "#F2F4F5")
-s.raw(f'<g id="coast" transform="translate({OX - x0*SC:.1f} {OY - y0*SC:.1f}) scale({SC:.4f})">'
+s.raw(f'<g id="coast" transform="translate({AX - x0*SC:.1f} {AY - y0*SC:.1f}) scale({SC:.4f})">'
       f'<path d="{COAST}" fill="#E4E4E1" stroke="#D2D2CE" stroke-width="{0.8/SC:.3f}"/></g>')
 s.g("lane")
-for name in ("asia_to_malacca", "malacca_to_babelmandeb", "redsea_to_suez", "suez_to_gibraltar", "suez_to_fos", "gibraltar_to_northsea"):
+for name in ("redsea_to_suez", "suez_to_gibraltar", "suez_to_fos", "gibraltar_to_northsea"):
     pts = [mp(la, lo) for la, lo in GEO["corridors"][name]]
     d = " ".join(f"{'M' if i == 0 else 'L'}{x:.1f} {y:.1f}" for i, (x, y) in enumerate(pts))
-    s.raw(f'<path d="{d}" fill="none" stroke="{INK}" stroke-opacity="0.45" stroke-width="1.6" stroke-dasharray="1 4" stroke-linecap="round"/>')
+    s.raw(f'<path d="{d}" fill="none" stroke="{INK}" stroke-opacity="0.4" stroke-width="1.6" stroke-dasharray="1 4" stroke-linecap="round"/>')
 s.end()
-sh = GEO["places"]["Shanghai"]; sx, sy = mp(sh["lat"], sh["lon"])
-s.raw(f'<circle cx="{sx:.1f}" cy="{sy:.1f}" r="5" fill="{INK}"/>')
-s.T(round(sx - 10, 1), round(sy - 12, 1), "Shanghai", 13, 600, anchor="end")
-
-# callouts: place, what breaks, what it costs, who pays (the original deck's split)
-CW, CH = 262, 58
-calls = [
-    ("HAM", "Hamburg", "strike", "box waits: €115 a day" + ref(5), YOU, (AX + 360, AY + 18)),
-    ("RTM", "Rotterdam", "too busy", "bumped to a later ship: +7 days" + ref(4), YOU, (AX + 360, AY + 94)),
-    ("ANR", "Antwerp", "rerouted", "customs paperwork starts again", YOU, (AX + 360, AY + 170)),
-    ("RHINE", "Rhine", "river too low", "extra charge on every box" + ref(7), CUST, (AX + 636, AY + 18)),
-    ("FOS", "Fos", "strike", "hours spent chasing updates", YOU, (AX + 636, AY + 94)),
-    ("SUEZ", "Suez", "conflict nearby", "fewer ships, prices up to 2.4×" + ref("2,3"), CUST, (AX + 636, AY + 250)),
-]
-pts = {pid: mp(GEO["places"][pid]["lat"], GEO["places"][pid]["lon"]) for pid, *_ in calls}
-s.g("leaders")                       # all leaders first, so every card sits on top
-for pid, name, what, cost, who, (cx, cy) in calls:
-    px, py = pts[pid]
-    s.raw(f'<path d="M{px:.1f} {py:.1f} L{cx:.1f} {cy + CH/2:.1f}" stroke="{AMB if who == YOU else MUT}" stroke-width="1.2" stroke-opacity="0.7" fill="none"/>')
-s.end()
-for pid, name, what, cost, who, (cx, cy) in calls:
-    px, py = pts[pid]
-    s.g("break-" + name.lower())
-    s.R(cx, cy, CW, CH, CARD, 8, f' stroke="{INK}" stroke-opacity="0.12"')
-    s.T(cx + 12, cy + 23, name, 14, 600)
-    s.T(cx + 20 + len(name) * 8.4, cy + 23, what, 12.5, 400, MUT)
-    s.T(cx + 12, cy + 44, cost, 13, 500, AMB if who == YOU else INK)
-    tag(cx + CW - 10, cy + 8, who, short=True)
-    s.raw(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="5.5" fill="{AMB if who == YOU else MUT}" stroke="{CARD}" stroke-width="1.5"/>')
+sx, sy = mp(GEO["places"]["SUEZ"]["lat"], GEO["places"]["SUEZ"]["lon"])
+PINS = [("RTM", "Rotterdam", "too busy", True, -14, -20, "end"),
+        ("ANR", "Antwerp", "rerouted", True, -14, 24, "end"),
+        ("HAM", "Hamburg", "strike", True, 12, -6, "start"),
+        ("RHINE", "Rhine", "river too low", False, 12, 18, "start"),
+        ("FOS", "Fos", "strike", True, 12, 16, "start"),
+        ("SUEZ", "Suez", "conflict nearby", False, -12, -6, "end")]
+for pid, name, what, fwd, dx, dy, anc in PINS:
+    p = GEO["places"][pid]; x, y = mp(p["lat"], p["lon"])
+    s.g("pin-" + name.lower())
+    s.raw(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6.5" fill="{AMB if fwd else SLATE}" stroke="#F2F4F5" stroke-width="2"/>')
+    s.T(round(x + dx, 1), round(y + dy, 1), name, 14, 600, anchor=anc)
+    s.T(round(x + dx, 1), round(y + dy + 17, 1), what, 13, 500, AMB if fwd else MUT, anchor=anc)
     s.end()
 s.raw('</g>')
 s.end()
 
-# ---- the margin falls, one box, day by day
-FX, FW = MX + MW + 24, W - M - (MX + MW + 24)
-s.g("the-margin-falls")
-s.card(FX, Y1, FW, H1)
-s.T(FX + 28, Y1 + 38, "WHAT THE FORWARDER KEEPS ON ONE BOX", 13, 600, AMB, ls=1.4)
-s.T(FX + 28, Y1 + 64, "€127 when all goes well, then €115 for every day it waits." + ref("6,5"), 15, 400, MUT)
+# ---- what eats it: the four numbers that matter, in plain words
+s.g("what-eats-it")
+s.card(RX, Y1, RW, H1)
+s.T(RX + 28, Y1 + 38, "WHAT A LATE BOX COSTS", 13, 600, MUT, ls=1.4)
+eats = [("€115", "a day while the box waits at the port", "against €127 earned on the whole box"),
+        ("+7 days", "when a box is bumped to the next ship", "the next weekly sailing"),
+        ("2.4×", "swing in the price of one container", "$1,913 to $4,526 per 40ft"),
+        ("6 to 9%", "of the world’s ship capacity lost", "to the Red Sea detour")]
+for k, (v, lab, sub) in enumerate(eats):
+    iy = Y1 + 88 + k * 56
+    if k: s.rule(iy - 32, 0.07, RX + 28, RW - 56)
+    s.T(RX + 28, iy, v, 26, 600, AMB, ls=-0.6)
+    s.T(RX + 176, iy - 6, lab, 15, 500)
+    s.T(RX + 176, iy + 13, sub, 13, 400, MUT)
+s.end()
+
+# ---- who owns which cost
+s.g("who-owns-which-cost")
+s.card(M, Y2, LW, H2)
+s.T(M + 28, Y2 + 38, "WHO PAYS FOR IT", 13, 600, MUT, ls=1.4)
+cols = [("THE FORWARDER", ["Storage while the box waits", "Re-booking and paperwork", "Customs in a new country", "Every hour spent chasing it"], True),
+        ("THE CUSTOMER", ["The carrier’s surcharge", "The higher freight price", "The later arrival date"], False)]
+for i, (head, its, fwd) in enumerate(cols):
+    cx = M + 28 + i * 300
+    s.T(cx, Y2 + 74, head, 12, 700, AMB if fwd else MUT, ls=1.2)
+    for k, it in enumerate(its):
+        iy = Y2 + 104 + k * 28
+        if fwd: s.raw(f'<circle cx="{cx + 4}" cy="{iy - 5}" r="4" fill="{AMB}"/>')
+        else: s.raw(f'<circle cx="{cx + 4}" cy="{iy - 5}" r="3.5" fill="none" stroke="{SLATE}" stroke-width="1.4"/>')
+        s.T(cx + 18, iy, it, 16, 500 if fwd else 400, INK if fwd else MUT)
+s.line(M + 640, Y2 + 60, M + 640, Y2 + H2 - 28, INK, 0.1, 1)
+s.T(M + 668, Y2 + 104, "The contract decides", 21, 600, ls=-0.3)
+s.T(M + 668, Y2 + 132, "who pays.", 21, 600, ls=-0.3)
+s.T(M + 668, Y2 + 168, "The forwarder argues it", 15, 400, MUT)
+s.T(M + 668, Y2 + 190, "later, unpaid.", 15, 400, MUT)
+s.end()
+
+# ---- what the forwarder keeps on one box
+s.g("what-the-forwarder-keeps")
+s.card(RX, Y2, RW, H2)
+s.T(RX + 28, Y2 + 38, "WHAT THE FORWARDER KEEPS ON ONE BOX", 13, 600, AMB, ls=1.4)
+POS = "#3D72A8"      # polarity pair validated with the dataviz skill (all checks pass)
 days = [127 - 115 * d for d in range(6)]
-# Polarity chart (dataviz skill): two validated hues, POS #3D72A8 / NEG amber,
-# both pass lightness, chroma, CVD and contrast on the card surface. Values wear
-# text tokens, not the bar colour, and only the story's three bars are labelled.
-POS = "#3D72A8"
-CX0, CX1, ZERO = FX + 44, FX + FW - 36, Y1 + 176
-K = 0.46                                   # px per euro
-step = (CX1 - CX0) / 6
-BWID = 32
-s.line(FX + 28, ZERO, FX + FW - 28, ZERO, INK, 0.35, 1.2)
-s.T(FX + FW - 28, ZERO - 8, "€0", 12, 600, MUT, anchor="end")
-def col(x, v):
-    """Column from the baseline: square at zero, 4px rounded at the data end."""
-    h = abs(v) * K; r = 4; w = BWID
-    if v > 0:
-        d = f"M{x} {ZERO} V{ZERO-h+r} Q{x} {ZERO-h} {x+r} {ZERO-h} H{x+w-r} Q{x+w} {ZERO-h} {x+w} {ZERO-h+r} V{ZERO} Z"
-    else:
-        d = f"M{x} {ZERO} V{ZERO+h-r} Q{x} {ZERO+h} {x+r} {ZERO+h} H{x+w-r} Q{x+w} {ZERO+h} {x+w} {ZERO+h-r} V{ZERO} Z"
-    s.raw(f'<path d="{d}" fill="{POS if v > 0 else AMB}"/>')
-    return h
+ZERO, K, BW_ = Y2 + 104, 0.20, 30
+c0, c1 = RX + 36, RX + RW - 28
+step = (c1 - c0) / 6
+s.line(RX + 28, ZERO, RX + RW - 28, ZERO, INK, 0.3, 1.2)
+s.T(RX + RW - 28, ZERO - 8, "€0", 12, 600, MUT, anchor="end")
+s.T(RX + RW - 28, ZERO - 30, "a loss from day two", 15, 600, anchor="end")
 for d, v in enumerate(days):
-    bx = round(CX0 + d * step + (step - BWID) / 2, 1)
-    h = col(bx, v)
-    if d in (0, 1, 2, 5):
+    bx = round(c0 + d * step + (step - BW_) / 2, 1); h = abs(v) * K; r = 4
+    if v > 0:
+        dpath = f"M{bx} {ZERO} V{ZERO-h+r} Q{bx} {ZERO-h} {bx+r} {ZERO-h} H{bx+BW_-r} Q{bx+BW_} {ZERO-h} {bx+BW_} {ZERO-h+r} V{ZERO} Z"
+    else:
+        dpath = f"M{bx} {ZERO} V{ZERO+h-r} Q{bx} {ZERO+h} {bx+r} {ZERO+h} H{bx+BW_-r} Q{bx+BW_} {ZERO+h} {bx+BW_} {ZERO+h-r} V{ZERO} Z"
+    s.raw(f'<path d="{dpath}" fill="{POS if v > 0 else AMB}"/>')
+    if d in (0, 2, 5):
         lab = f"+€{v}" if v > 0 else f"−€{abs(v)}"
-        ly = ZERO - h - 10 if v > 0 else ZERO + h + 20
-        s.T(round(bx + BWID / 2, 1), round(ly, 1), lab, 15, 600, INK, anchor="middle")
-    s.T(round(bx + BWID / 2, 1), Y1 + H1 - 20, "on time" if d == 0 else f"{d} day" + ("" if d == 1 else "s") + " late", 12.5, 600 if d == 0 else 500, MUT, anchor="middle")
-s.T(FX + FW - 28, ZERO - 34, "a loss from day two", 15, 600, INK, anchor="end")
-
+        ly = ZERO - h - 8 if v > 0 else ZERO + h + 18
+        s.T(round(bx + BW_ / 2, 1), round(ly, 1), lab, 14, 600, anchor="middle")
+    s.T(round(bx + BW_ / 2, 1), Y2 + H2 - 14, "on time" if d == 0 else f"day {d}", 12.5, 600 if d == 0 else 500, MUT, anchor="middle")
 s.end()
 
-# ---- who pays, and the close
-s.g("who-pays")
-LY = Y1 + H1 + 36
-tag(M + 112, LY - 15, YOU)
-s.T(M + 124, LY, "storage, re-booking, customs paperwork, chasing: 4 of the 6", 15, 500)
-tag(M + 820, LY - 15, CUST)
-s.T(M + 832, LY, "surcharges and higher prices", 15, 400, MUT)
-s.T(W - M, LY, "Typical contract split. Contracts vary.", 13, 400, MUT, anchor="end")
-s.end()
-# Every figure on the slide, traceable: the numbers match the superscripts.
-SOURCES = [
-    "1  Sea-Intelligence, Global Liner Performance, Aug 2026 (49.9% on time); 2018 to 2019 average 74%",
-    "2  ING Think and Freightos: the Red Sea detour absorbs 6 to 9% of global fleet capacity",
-    "3  Drewry World Container Index: $1,913 to $4,526 per 40ft",
-    "4  Rolled cargo moves to the next sailing, usually a week later (Shapiro, Vizion)",
-    "5  Hapag-Lloyd Germany import tariff, 40ft: €115 a day after 3 free days, €180 later",
-    "6  Kuehne+Nagel Sea Logistics FY25: €127 margin per clean box (see slide 05)",
-    "7  ING and gCaptain, Aug 2026: low-water surcharges on the Rhine",
-]
-s.g("sources")
-s.T(M, LY + 36, "SOURCES", 11, 700, MUT, ls=1.2)
-for k, src in enumerate(SOURCES):
-    col, row = divmod(k, 4)
-    s.T(M + 80 + col * 860, LY + 36 + row * 17, src, 11.5, 400, MUT)
-s.end()
-s.T(M, 956, "It is not an edge case. It is the whole job.", 30, 600, ls=-0.7)
+s.T(M, 944, "It is not an edge case. It is the whole job.", 32, 600, ls=-0.7)
 s.footer(6)
 s.write("slide-06-the-job-2.svg")
