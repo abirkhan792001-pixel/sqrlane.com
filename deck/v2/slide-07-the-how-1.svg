@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect id="background" x="0" y="0" width="1920" height="1080" fill="#FAFAFA"/>
+<g id="header">
+<rect x="96" y="104" width="10" height="10" rx="2" fill="#96580A"/>
+<text x="120" y="114" font-family="Geist" font-size="15" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">06 · THE HOW, 1 OF 2</text>
+<text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">SQRlane does the desk work itself.</text>
+<text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6B6B6B">The mail is read once. Agents fill every system, check each other, and wait for you.</text>
+<rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+</g>
+<g id="one-mail-read-once">
+<rect x="96" y="306" width="1110" height="400" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="124" y="344" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">ONE MAIL, READ ONCE</text>
+<text x="1178" y="344" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B" text-anchor="end">same booking as slide 03</text>
+<g id="source-mail">
+<rect x="124" y="430" width="212" height="170" rx="12" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.18"/>
+<text x="142" y="460" font-family="Geist" font-size="12" font-weight="600" fill="#6B6B6B" letter-spacing="1.4">CARRIER MAIL</text>
+<text x="142" y="488" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">Booking confirmed</text>
+<text x="142" y="522" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Booking</text>
+<text x="318" y="522" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="end">HLCU-2261188</text>
+<text x="142" y="548" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">ETA</text>
+<text x="318" y="548" font-family="Geist" font-size="13" font-weight="600" fill="#0A0A0A" text-anchor="end">10 Oct</text>
+<rect x="142" y="564" width="176" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+<text x="142" y="586" font-family="Geist" font-size="12.5" font-weight="600" fill="#96580A">read once</text>
+</g>
+<path d="M336 515.0 L372 515.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<rect x="372" y="493.0" width="44" height="44" rx="11" fill="#0A0A0A"/>
+<path d="M383 524.0h22 M383 515.0h14 M383 506.0h8" stroke="#FAFAFA" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+<text x="394" y="559.0" font-family="Geist" font-size="11" font-weight="600" fill="#6B6B6B" text-anchor="middle" letter-spacing="1.2">AGENTS</text>
+<path d="M416 515.0 L446 515.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<path d="M446 394.0 L446 614.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<g id="written-once">
+<path d="M446 394.0 L476 394.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<g id="row-tms">
+<rect x="476" y="376" width="702" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="490" y="399.0" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">TMS</text>
+<text x="626" y="399.0" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">Booking agent</text>
+<path d="M766 394.0 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="786" y="399.0" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">fields filled from the mail</text>
+<rect x="1052" y="384" width="114" height="20" rx="4" fill="#96580A" fill-opacity="0.12"/>
+<text x="1109" y="398" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">waits for you</text>
+</g>
+<path d="M446 438.0 L476 438.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<g id="row-carrier-portal">
+<rect x="476" y="420" width="702" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="490" y="443.0" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Carrier portal</text>
+<text x="626" y="443.0" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">Booking agent</text>
+<path d="M766 438.0 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="786" y="443.0" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">amendment drafted</text>
+<rect x="1052" y="428" width="114" height="20" rx="4" fill="#96580A" fill-opacity="0.12"/>
+<text x="1109" y="442" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">waits for you</text>
+</g>
+<path d="M446 482.0 L476 482.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<g id="row-customer-mail">
+<rect x="476" y="464" width="702" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="490" y="487.0" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Customer mail</text>
+<text x="626" y="487.0" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">Milestones agent</text>
+<path d="M766 482.0 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="786" y="487.0" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">update drafted</text>
+<rect x="1052" y="472" width="114" height="20" rx="4" fill="#96580A" fill-opacity="0.12"/>
+<text x="1109" y="486" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">waits for you</text>
+</g>
+<path d="M446 526.0 L476 526.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<g id="row-customs">
+<rect x="476" y="508" width="702" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="490" y="531.0" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Customs</text>
+<text x="626" y="531.0" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">Customs agent</text>
+<path d="M766 526.0 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="786" y="531.0" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">entry prepared, not filed</text>
+<rect x="1052" y="516" width="114" height="20" rx="4" fill="#96580A" fill-opacity="0.12"/>
+<text x="1109" y="530" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">waits for you</text>
+</g>
+<path d="M446 570.0 L476 570.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<g id="row-invoice">
+<rect x="476" y="552" width="702" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="490" y="575.0" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Invoice</text>
+<text x="626" y="575.0" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">Invoice agent</text>
+<path d="M766 570.0 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="786" y="575.0" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">checked against the agreed rate</text>
+<rect x="1052" y="560" width="114" height="20" rx="4" fill="#96580A" fill-opacity="0.12"/>
+<text x="1109" y="574" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">waits for you</text>
+</g>
+<path d="M446 614.0 L476 614.0" stroke="#0A0A0A" stroke-opacity="0.4" stroke-width="1.5" fill="none"/>
+<g id="row-tracking-sheet">
+<rect x="476" y="596" width="702" height="36" rx="8" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="490" y="619.0" font-family="Geist" font-size="14" font-weight="600" fill="#0A0A0A">Tracking sheet</text>
+<text x="626" y="619.0" font-family="Geist" font-size="13" font-weight="400" fill="#6B6B6B">Milestones agent</text>
+<path d="M766 614.0 l4 4 l8 -9" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="786" y="619.0" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">ETA set to 10 Oct</text>
+<rect x="1052" y="604" width="114" height="20" rx="4" fill="#96580A" fill-opacity="0.12"/>
+<text x="1109" y="618" font-family="Geist" font-size="11.5" font-weight="600" fill="#96580A" text-anchor="middle">waits for you</text>
+</g>
+</g>
+<text x="476" y="684" font-family="Geist" font-size="14" font-weight="500" fill="#6B6B6B">Same booking. Read once, no re-typing, no typo.</text>
+</g>
+<g id="sixteen-agents">
+<rect x="1230" y="306" width="594" height="400" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1258" y="344" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">16 AGENTS, ONE DESK</text>
+<text x="1796" y="344" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" text-anchor="end">14 live · 1 scripted · 1 demo</text>
+<text x="1258" y="390" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Inbox &amp; rules</text>
+<rect x="1404" y="371" width="63" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1416" y="390" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Inbox</text>
+<rect x="1475" y="371" width="86" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1487" y="390" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Playbook</text>
+<text x="1258" y="430" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Quotes</text>
+<rect x="1404" y="411" width="55" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1416" y="430" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Rate</text>
+<rect x="1467" y="411" width="47" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1479" y="430" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">RFQ</text>
+<text x="1258" y="470" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Bookings</text>
+<rect x="1404" y="451" width="79" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1416" y="470" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Booking</text>
+<rect x="1491" y="451" width="55" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1503" y="470" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Docs</text>
+<text x="1258" y="510" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Shipments</text>
+<rect x="1404" y="491" width="102" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1416" y="510" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Milestones</text>
+<rect x="1514" y="491" width="94" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1526" y="510" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Exception</text>
+<rect x="1616" y="491" width="94" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1628" y="510" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Assistant</text>
+<text x="1258" y="550" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Billing &amp; customs</text>
+<rect x="1404" y="531" width="79" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1416" y="550" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Invoice</text>
+<rect x="1491" y="531" width="79" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1503" y="550" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Customs</text>
+<text x="1258" y="590" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Risk</text>
+<rect x="1404" y="571" width="55" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1416" y="590" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Risk</text>
+<rect x="1467" y="571" width="79" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1479" y="590" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Routing</text>
+<rect x="1554" y="571" width="63" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1566" y="590" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Comms</text>
+<rect x="1625" y="571" width="147" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1637" y="590" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Planner</text>
+<text x="1699.6" y="589" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="0.8">SCRIPTED</text>
+<text x="1258" y="630" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B">Record</text>
+<rect x="1404" y="611" width="126" height="28" rx="6" fill="#EBEBEB"/>
+<text x="1416" y="630" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">TMS link</text>
+<text x="1486.4" y="629" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="0.8">DEMO</text>
+<text x="1258" y="662" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Live: reasons on every run. Scripted: replays set data.</text>
+<text x="1258" y="682" font-family="Geist" font-size="12.5" font-weight="400" fill="#6B6B6B">Demo: the TMS link, with no TMS on the far end yet.</text>
+</g>
+<g id="tile-1">
+<rect x="96.0" y="730" width="560.0" height="136" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="124.0" y="774" font-family="Geist" font-size="21" font-weight="600" fill="#0A0A0A" letter-spacing="-0.3">Checked before it goes out</text>
+<text x="124.0" y="808" font-family="Geist" font-size="14.5" font-weight="400" fill="#6B6B6B">The Playbook agent checks every output against</text>
+<text x="124.0" y="830" font-family="Geist" font-size="14.5" font-weight="400" fill="#6B6B6B">the customer’s own rules, and sends back what breaks them.</text>
+</g>
+<g id="tile-2">
+<rect x="680.0" y="730" width="560.0" height="136" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="708.0" y="774" font-family="Geist" font-size="21" font-weight="600" fill="#0A0A0A" letter-spacing="-0.3">Correct it once. The desk learns.</text>
+<text x="708.0" y="808" font-family="Geist" font-size="14.5" font-weight="400" fill="#6B6B6B">One correction becomes a rule, replays the inbox</text>
+<text x="708.0" y="830" font-family="Geist" font-size="14.5" font-weight="400" fill="#6B6B6B">and fixes every mail like it. Nothing earlier is undone.</text>
+</g>
+<g id="tile-3">
+<rect x="1264.0" y="730" width="560.0" height="136" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1292.0" y="774" font-family="Geist" font-size="21" font-weight="600" fill="#0A0A0A" letter-spacing="-0.3">Nothing leaves without you</text>
+<text x="1292.0" y="808" font-family="Geist" font-size="14.5" font-weight="400" fill="#6B6B6B">Every draft and every TMS change waits for your</text>
+<text x="1292.0" y="830" font-family="Geist" font-size="14.5" font-weight="400" fill="#6B6B6B">approval. Nothing is sent or written on its own.</text>
+</g>
+<text x="96" y="946" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.6">Every system on one screen. Every step recorded. You approve each change.</text>
+<text x="1824" y="944" font-family="Geist" font-size="20" font-weight="600" fill="#96580A" text-anchor="end">Built for the 40%.</text>
+<g id="footer">
+<rect x="96" y="978" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+<rect x="96" y="1004" width="22" height="22" rx="6" fill="#0A0A0A"/>
+<path d="M101.5 1020h11 M101.5 1015h7.5 M101.5 1010h4" stroke="#FAFAFA" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="130" y="1021" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">sqrlane</text>
+<text x="200" y="1021" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">Automates the desk. Acts before the route breaks.</text>
+<text x="1824" y="1021" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="end" letter-spacing="1.2">SLIDE 07</text>
+</g>
+</svg>
