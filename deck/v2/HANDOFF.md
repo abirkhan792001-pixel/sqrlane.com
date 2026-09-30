@@ -33,27 +33,24 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
 in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
 
-## Slide 07, rebuilt twice (2026-09-30)
+## Slide 07, current version (third rebuild, 2026-09-30)
 
-The first rebuild (dashboard with inbox rows and approvals, plus IN/OUT integration rows
-with Today/Next brackets) was sent back as too much content. On the owner's instruction:
-a very clean dashboard overview with infographics, no integrations, and the focus on how
-the 16 agents work together and how the work is structured. Current version:
+Owner's feedback on the second version: keep the window bar and Today header of the first
+rebuild; the dashboard was still overdone, so minimal, less text, only the dashboard's
+own colours (blue #006BFF, green #0F7B3F, amber #96580A, greys); add a ChatGPT-style
+search box with suggestions; the risk band very light grey; and show plainly how many
+agents work each step.
 
-- **Left, the Overview:** sidebar, four stat cards (13 mails worked, 8 of 13 handled end
-  to end, 5 held for a person, 24 awaiting approval = 10 drafts and 14 TMS changes) and
-  two infographics: "How the 13 mails ended" (one square per mail, ids 101-113, blue
-  handled / amber held) and "What came in" (13 mails by the job they start: Quote 1,
-  Book 4, Documents 2, In transit 3, Arrival 2, Billing 1). All counted from
-  `src/workflow.run(use_llm=False)`; the window bar says "Demo run · synthetic inbox".
-  Chart pair validated with the dataviz script (#3D72A8, #96580A).
-- **Right, how the work is structured:** Risk layer band (4 agents, slide 08) → Inbox
-  and Assistant → the desk as six stages in shipment order (Quote: Rate, RFQ · Book:
-  Booking · Documents: Docs · In transit: Milestones, Exception · Arrival: Customs ·
-  Billing: Invoice) → Playbook → You approve → TMS link (demo) → "one mail, together":
-  IN-108's real path. Tags in the panel header: 14 live, Planner scripted, TMS link demo.
-- The closing line is now "Every step recorded, checked against the customer's rules,
-  and approved by you." **"Built for the 40%" was removed** (see below).
+- **Left:** window bar ("SQRlane · Desk", "Demo run · synthetic inbox"), sidebar, Today
+  header with "Work the inbox", an **Ask SQRlane** box (src/ask.py is live) with three
+  suggested questions, each checked to be answered by `ask.ask()` today; four stat
+  cards (13 / 8 / 5 / 24) with coloured pills; one "What came in" row (Quote 1, Book 4,
+  Documents 2, In transit 3, Arrival 2, Billing 1). All from `workflow.run(use_llm=False)`.
+- **Right, "16 agents, step by step":** one row per step with its agents and a dot per
+  agent plus the count: Risk layer 4 (light grey), Front door 2, Quote 2, Book 1,
+  Documents 1, In transit 2, Arrival 1, Billing 1, Every step (Playbook) 1, You approve,
+  Into the TMS (TMS link · demo) 1. Total 16. Tags: 14 live, Planner scripted, TMS link demo.
+- Closing line: "Ask the desk anything. Every step recorded, and approved by you."
 
 ## The 40% does not hold (checked 2026-09-30)
 
