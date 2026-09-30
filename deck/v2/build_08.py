@@ -122,7 +122,7 @@ s.line(ax, PT + PH_ / 2, ax + 12, PT + PH_ / 2, INK, 0.3, 1.5)
 s.raw(f'<path d="M{ax+11} {PT+PH_/2-4} L{ax+16} {PT+PH_/2} L{ax+11} {PT+PH_/2+4}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
 s.g("popup-agent")
 soft_card(P2X, PT, P2W, PH_, 14)
-s.R(P2X, PT, P2W, PH_, "none", 14, f' stroke="{BLUE}" stroke-width="1.2"')
+s.R(P2X, PT, P2W, PH_, "none", 14, f' stroke="{BLUE}" stroke-width="0.8" stroke-opacity="0.45"')
 agent_mark(P2X + 22, PT + 19, 6)
 s.T(P2X + 38, PT + 23, "Risk agent", 12.5, 600, BLUE)
 s.T(P2X + P2W - 14, PT + 23, "working…", 11, 500, GREY, anchor="end")
@@ -143,17 +143,15 @@ s.T(MX + 18, OY + 25, "This run", 13, 600)
 s.T(MX + MW - 18, OY + 25, "Hamburg strike · demo scenario", 12, 400, GREY, anchor="end")
 sw_ = (MW - 36) / 5
 for k, (n, lab, tag, tf, ti) in enumerate(STEPS):
-    x = MX + 18 + k * sw_ + (6 if n.startswith("€") else 0)
-    if n.startswith("€"):
-        s.R(x - 6, OY + 34, sw_ - 12, OH - 42, GREEN_BG, 10, f' stroke="{GREEN}" stroke-width="1.2"')
-    s.T(x, OY + 60, n, 27 if len(n) > 3 else 30, 600, GREEN if n.startswith("€") else INK, ls=-1)
+    x = MX + 18 + k * sw_
+    s.T(x, OY + 60, n, 26 if len(n) > 3 else 30, 600, ls=-1)
     s.T(x, OY + 79, lab, 12, 500, "#4A4A4A")
     if tag:
-        pill(x, OY + 87, tag, CARD if n.startswith("€") else tf, ti, anchor="start", size=10, h=18)
+        pill(x, OY + 87, tag, tf, ti, anchor="start", size=10, h=18)
     else:                                              # the three decisions, split
         w1 = pill(x, OY + 87, "2 reroute", BLUE_BG, BLUE, anchor="start", size=10, h=18)
         pill(x + w1 + 5, OY + 87, "1 hold", AMBR_BG, AMBR, anchor="start", size=10, h=18)
-    if k < 4 and not STEPS[k + 1][0].startswith("€") and not n.startswith("€"):
+    if k < 4:
         s.T(x + sw_ - 14, OY + 60, "›", 18, 400, "#C8C8C8")
 s.end()
 
@@ -278,16 +276,14 @@ def outcomes(yy):
 
 row("Risk", "1 agent", "reads every source, flags what touches a booking", "risk-agent")
 arrow(y, y + 11); y += 13
-def cost_impact(yy):
-    bx0, bw0 = NX, 240
-    s.T(hx + 14, yy + 52, "Cost impact", 11, 600, GREY)
-    for k, (lab, v, col) in enumerate((("doing nothing", 141100, AMBR), ("these calls", 94600, BLUE))):
-        by = yy + 44 + k * 16
-        s.R(bx0, by, bw0 * v / 141100, 8, col, 4)
-        s.T(bx0 + bw0 * v / 141100 + 8, by + 8, f"€{v:,} · {lab}", 10.5, 500, MUT)
-    s.T(hx + hw - 14, yy + 62, "€46,500 avoided", 13, 700, GREEN, anchor="end")
-row("Routing", "1 agent", "weighs slack against delay, prices every option", "routing-agent",
-    right=lambda yy: (outcomes(yy), cost_impact(yy)), h=80)
+row("Routing", "1 agent", "weighs slack against delay, prices every option", "routing-agent", right=outcomes)
+s.g("cost-impact")
+s.R(hx, y + 4, hw, ROWH, GREEN_BG, 10)
+s.T(hx + 14, y + 28, "Cost impact", 13.5, 600, GREEN)
+count_chip(NX, y + 13.5, "−€46,500", CARD, GREEN)
+s.T(NX + 92, y + 27.5, "€141,100 if nothing is done, €94,600 with these calls", 11.5, 400, GREEN)
+s.end()
+y += ROWH + 4
 arrow(y, y + 11); y += 13
 row("Comms", "1 agent", "drafts the carrier and customer mail", "comms-agent")
 arrow(y, y + 11); y += 13

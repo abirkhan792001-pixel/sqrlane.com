@@ -80,11 +80,11 @@ AIS vessel positions, freight indices, prediction markets, port calls - as dashe
 fading out; then Risk, Routing, Comms, Planner (scripted) on one uniform grid; the desk
 faded; You approve → TMS link; the detection trail (demo scenario).
 
-Third pass (owner's notes): the €46,500 cell leads - its own light green box with a thin
-green line, the figure in green; the working Risk agent pop-up has a thin blue line; both
-drafts end in the same "Draft ready" + Approve pair, aligned; the Routing row on the right
-carries the **cost impact** as two bars (€141,100 doing nothing, €94,600 these calls,
-€46,500 avoided), because the Routing agent prices every option.
+Fourth pass (owner's notes): no highlight box on the €46,500 in the dashboard; the working
+Risk agent keeps a thin, light blue outline (0.8px, 45%); the cost impact is one row on the
+agents' grid, under Routing, in light green: "Cost impact · −€46,500 · €141,100 if nothing
+is done, €94,600 with these calls" (the two-bar version took too much room). Both drafts end
+in the same "Draft ready" + Approve pair.
 
 "Draft, not sent" now reads "Draft ready" on slides 07 and 08, on the owner's instruction;
 the Approve button still carries the gate, and nothing is ever sent.
