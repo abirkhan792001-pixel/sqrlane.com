@@ -137,6 +137,20 @@ a customer's written SOP into checkable rules; the checks stay code); Docs Qwen2
 pick is new); Booking, Rate and TMS link code only (prices and records must be exact).
 **The whitepaper's agent table still lists the smaller picks** - align it if these stay.
 
+**Current version: three layers** (2026-10-01, the owner's pick of four proposed layouts;
+the network ring before it is in git at the previous commits). Top, YOUR TOOLS in six
+grouped cards, each directly above the agents that use it: Mail (Outlook, Gmail) over
+Inbox; Documents (PDF, Word, Excel, image) over Booking and Docs; Sheets & files (Google
+Sheets, OneDrive, Google Drive) over Rate and Playbook; Chat (Teams, Slack, WhatsApp,
+WeChat) over Comms; AI assistants (Claude, ChatGPT, Cursor - Codex removed on the owner's
+note) over Assistant; Sources (NDR, DW, NASA, +57) over Risk. Middle, eight agents in work
+order with their model chips, every one dropping onto one blue bus ("SQRlane · 16 agents on
+one bus · every handoff between them recorded"; the other seven named at the right).
+Bottom, YOUR TMS: the TMS link (code only) on the bus, with CargoWise, SAP, Oracle and
+Descartes on one line through it. Every logo the same size (r=22 circle, 28px mark). The
+IN-108 card was removed on the owner's note. Write "&amp;" in any label: a bare "&"
+blanked this slide once more.
+
 Not shown, on purpose: SharePoint and BBC (their marks were withdrawn from simple-icons,
 so there is no official file to inline) and the rate-management vendors in the Zauber
 reference (no official marks, and SQRlane prices from a rate sheet, not an RMS). New
