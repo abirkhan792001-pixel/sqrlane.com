@@ -1,6 +1,6 @@
 """Shared kit for the v2 deck (slides after the cover). Figma-editable SVG:
 inline attributes, no <style>, named groups, fonts by name only."""
-import pathlib
+import pathlib, re
 INK, MUT, AMB = "#0A0A0A", "#6B6B6B", "#96580A"
 BG, CARD, TRACK, MID = "#FAFAFA", "#FFFFFF", "#EBEBEB", "#D4D4D4"
 M, W, H = 96, 1920, 1080
@@ -47,6 +47,31 @@ class Slide:
         self.T(M + 104, 1021, TAGLINE, 14, 400, MUT)
         self.T(W - M, 1021, f"SLIDE {n:02d}", 12.5, 500, MUT, anchor="end", ls=2, mono=True)
         self.end()
+    def export(self, group, name, box, pad=2):
+        """One named layer as its own SVG, cropped to the box it was built in, so a
+        panel can go into Figma on its own and never drift from the slide it came from.
+        The layer is moved to the origin on its own <g>, so it stays one named layer."""
+        doc = "\n".join(self.o)
+        i = doc.index(f'<g id="{group}">')
+        depth = 0
+        for m in re.finditer(r'<g[\s>]|</g>', doc[i:]):
+            depth += 1 if m.group().startswith("<g") else -1
+            if depth == 0:
+                frag = doc[i:i + m.end()]
+                break
+        ids = set(re.findall(r' id="([^"]+)"', frag))
+        refs = set(re.findall(r'url\(#([^)]+)\)', frag))
+        assert refs <= ids, f"{group} uses defs from outside it: {refs - ids}"
+        x, y, w, h = box
+        frag = frag.replace(f'<g id="{group}">',
+                            f'<g id="{group}" transform="translate({pad - x} {pad - y})">', 1)
+        out = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 2 * pad}" height="{h + 2 * pad}" '
+               f'viewBox="0 0 {w + 2 * pad} {h + 2 * pad}">\n{frag}\n</svg>')
+        assert "\u2014" not in out, "em dash in slide copy"
+        p = pathlib.Path(__file__).with_name(name)
+        p.write_text(out, encoding="utf-8")
+        print("wrote", p)
+
     def write(self, name):
         self.o.append('</svg>')
         p = pathlib.Path(__file__).with_name(name)

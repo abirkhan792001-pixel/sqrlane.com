@@ -324,3 +324,5 @@ s.end()
 s.T(M, 946, "Ask the desk anything. Every step recorded, and approved by you.", 28, 600, ls=-0.6)
 s.footer(7)
 s.write("slide-07-the-how-1.svg")
+# the right panel on its own, for Figma: same markup as the slide's, cropped to its card
+s.export("how-the-work-is-structured", "slide-07-how-the-work-is-structured.svg", (HX, TOP, HW, BOT - TOP))

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="708" height="588" viewBox="0 0 708 588">
+<g id="how-the-work-is-structured" transform="translate(-1118 -304)">
+<rect x="1120" y="306" width="704" height="584" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1144" y="342" font-family="Geist" font-size="13" font-weight="600" fill="#96580A" letter-spacing="1.4">HOW THE WORK IS STRUCTURED</text>
+<text x="1800" y="342" font-family="Geist" font-size="12" font-weight="500" fill="#9A9A9A" text-anchor="end">14 live · Planner scripted · TMS link demo</text>
+<g id="risk-layer">
+<rect x="1144" y="362" width="656" height="46" rx="10" fill="#F3F3F3" stroke="#0A0A0A" stroke-opacity="0.10" stroke-dasharray="4 3"/>
+<text x="1158" y="390.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#7A7A7A">Risk layer</text>
+<rect x="1240" y="375.5" width="64" height="19" rx="9.5" fill="#FFFFFF"/>
+<text x="1272.0" y="389.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#7A7A7A" text-anchor="middle">4 agents</text>
+<text x="1316" y="389.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#8A8A8A">watches 60 sources, decides reroute or hold</text>
+<text x="1786" y="389.5" font-family="Geist" font-size="11.5" font-weight="600" fill="#8A8A8A" text-anchor="end">slide 08</text>
+<defs><linearGradient id="risk-fade" x1="0" y1="0" x2="1" y2="0"><stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0"/><stop offset="0.95" stop-color="#FFFFFF" stop-opacity="1"/></linearGradient></defs>
+<rect x="1142" y="360" width="660" height="50" fill="url(#risk-fade)"/>
+</g>
+<path d="M1472.0 408 L1472.0 419" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 418 L1472.0 424 L1476.5 418" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<g id="front-doors">
+<rect x="1144" y="426" width="414.0" height="46" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1158" y="454.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Inbox</text>
+<rect x="1206" y="439.5" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1235.0" y="453.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1276" y="453.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">reads every mail, routes it to its owner</text>
+<rect x="1582.0" y="426" width="218.0" height="46" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1596.0" y="446" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">Assistant</text>
+<rect x="1730.0" y="433" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1759.0" y="446.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1596.0" y="463" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">takes your questions</text>
+</g>
+<path d="M1472.0 472 L1472.0 483" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 482 L1472.0 488 L1476.5 482" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<g id="the-desk">
+<rect x="1144" y="490" width="656" height="248" rx="12" fill="#FAFAFA" stroke="#0A0A0A" stroke-opacity="0.10"/>
+<text x="1158" y="512" font-family="Geist" font-size="10.5" font-weight="700" fill="#6B6B6B" letter-spacing="1.2">THE DESK</text>
+<text x="1228" y="512" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">8 agents, in the order a shipment lives</text>
+<g id="stage-quote">
+<rect x="1158.0" y="526" width="204.0" height="95" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1172.0" y="554" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">01</text>
+<text x="1196.0" y="554" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Quote</text>
+<rect x="1286.0" y="539" width="64" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1318.0" y="552.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">2 agents</text>
+<text x="1172.0" y="578" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prices it, drafts the quote</text>
+<rect x="1172.0" y="592" width="42" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1193.0" y="606" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Rate</text>
+<rect x="1219.0" y="592" width="35" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1236.5" y="606" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">RFQ</text>
+</g>
+<g id="stage-book">
+<rect x="1370.0" y="526" width="204.0" height="95" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1384.0" y="554" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">02</text>
+<text x="1408.0" y="554" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Book</text>
+<rect x="1504.0" y="539" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1533.0" y="552.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1384.0" y="578" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Opens the booking from the mail</text>
+<rect x="1384.0" y="592" width="61" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1414.5" y="606" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Booking</text>
+</g>
+<g id="stage-documents">
+<rect x="1582.0" y="526" width="204.0" height="95" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1596.0" y="554" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">03</text>
+<text x="1620.0" y="554" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Documents</text>
+<rect x="1716.0" y="539" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1745.0" y="552.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1596.0" y="578" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks each field on the B/L</text>
+<rect x="1596.0" y="592" width="42" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1617.0" y="606" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Docs</text>
+</g>
+<g id="stage-in-transit">
+<rect x="1158.0" y="629" width="204.0" height="95" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1172.0" y="657" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">04</text>
+<text x="1196.0" y="657" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">In transit</text>
+<rect x="1286.0" y="642" width="64" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1318.0" y="655.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">2 agents</text>
+<text x="1172.0" y="681" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Updates the ETA, flags rollovers</text>
+<rect x="1172.0" y="695" width="80" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1212.0" y="709" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Milestones</text>
+<rect x="1257.0" y="695" width="74" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1294.0" y="709" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Exception</text>
+</g>
+<g id="stage-arrival">
+<rect x="1370.0" y="629" width="204.0" height="95" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1384.0" y="657" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">05</text>
+<text x="1408.0" y="657" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Arrival</text>
+<rect x="1504.0" y="642" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1533.0" y="655.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1384.0" y="681" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Prepares the entry, never files</text>
+<rect x="1384.0" y="695" width="61" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1414.5" y="709" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Customs</text>
+</g>
+<g id="stage-billing">
+<rect x="1582.0" y="629" width="204.0" height="95" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="1596.0" y="657" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="0.6">06</text>
+<text x="1620.0" y="657" font-family="Geist" font-size="14.5" font-weight="600" fill="#0A0A0A" letter-spacing="-0.2">Billing</text>
+<rect x="1716.0" y="642" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1745.0" y="655.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1596.0" y="681" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">Checks the bill against the rate</text>
+<rect x="1596.0" y="695" width="61" height="20" rx="5" fill="#F3F3F3"/>
+<text x="1626.5" y="709" font-family="Geist" font-size="11" font-weight="500" fill="#3A3A3A" text-anchor="middle">Invoice</text>
+</g>
+</g>
+<path d="M1260.0 738 L1260.0 756" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+<path d="M1472.0 738 L1472.0 756" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+<path d="M1684.0 738 L1684.0 756" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+<g id="playbook">
+<rect x="1144" y="756" width="656" height="46" rx="10" fill="#FDF3E3"/>
+<text x="1158" y="784.0" font-family="Geist" font-size="13.5" font-weight="600" fill="#96580A">Playbook</text>
+<rect x="1230" y="769.5" width="58" height="19" rx="9.5" fill="#FFFFFF"/>
+<text x="1259.0" y="783.0" font-family="Geist" font-size="10.5" font-weight="600" fill="#96580A" text-anchor="middle">1 agent</text>
+<text x="1300" y="783.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#96580A">checks every output against the customer's rules</text>
+</g>
+<path d="M1472.0 802 L1472.0 813" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1467.5 812 L1472.0 818 L1476.5 812" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<g id="gate-and-record">
+<rect x="1144" y="820" width="414.0" height="46" rx="10" fill="#0A0A0A"/>
+<text x="1158" y="848.0" font-family="Geist" font-size="13.5" font-weight="700" fill="#FFFFFF">You approve</text>
+<text x="1252" y="847.5" font-family="Geist" font-size="11.5" font-weight="400" fill="#D6D6D6">every draft, every change</text>
+<path d="M1561.0 843.0 L1576.0 843.0" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<path d="M1574.0 838.5 L1580.0 843.0 L1574.0 847.5" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+<rect x="1582.0" y="820" width="218.0" height="46" rx="10" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.16"/>
+<text x="1596.0" y="840" font-family="Geist" font-size="13.5" font-weight="600" fill="#0A0A0A">TMS link</text>
+<rect x="1730.0" y="827" width="58" height="19" rx="9.5" fill="#E8F1FF"/>
+<text x="1759.0" y="840.5" font-family="Geist" font-size="10.5" font-weight="600" fill="#006BFF" text-anchor="middle">1 agent</text>
+<text x="1596.0" y="857" font-family="Geist" font-size="11.5" font-weight="400" fill="#6B6B6B">writes it onto the booking</text>
+</g>
+</g>
+</svg>
