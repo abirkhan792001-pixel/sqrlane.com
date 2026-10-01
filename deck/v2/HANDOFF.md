@@ -137,6 +137,11 @@ a customer's written SOP into checkable rules; the checks stay code); Docs Qwen2
 pick is new); Booking, Rate and TMS link code only (prices and records must be exact).
 **The whitepaper's agent table still lists the smaller picks** - align it if these stay.
 
+**Colour pass** (owner: "the deck is brown, this slide was very blue"): blue now marks only
+an agent (the dot-ring icons); lines, arrows and the bus are ink grey; agent boxes have the
+plain card border; layer labels are brown small caps; the decision path (bus → You approve
+→ TMS link → the TMS row) and the "+ any TMS" chip are amber #96580A / #F6EEE3.
+
 **Three layers, second pass** (owner's go on the recommended set): arrowheads show work
 flowing down from each tool group to its agents and from the bus to the TMS; a black **You
 approve** pill sits on that last line; the model chips came off this slide (the whitepaper

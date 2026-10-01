@@ -7,7 +7,7 @@
 <text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6B6B6B">Each agent works where its job already lives. They all talk on one bus.</text>
 <rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
 </g>
-<text x="96" y="324" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="1.4">YOUR TOOLS</text>
+<text x="96" y="324" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="1.4">YOUR TOOLS</text>
 <g id="your-tools">
 <rect x="102.0" y="334" width="204.0" height="132" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <text x="204.0" y="364" font-family="Geist" font-size="13.5" font-weight="600" fill="#4A4A4A" text-anchor="middle">Mail</text>
@@ -67,26 +67,26 @@
 <text x="1716.0" y="452" font-family="Geist" font-size="11.5" font-weight="500" fill="#9A9A9A" text-anchor="middle">+ 57 more</text>
 </g>
 <g id="drops">
-<path d="M204.0 466 L204.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M199.0 516 L204.0 523 L209.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
-<path d="M420.0 466 L420.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M415.0 516 L420.0 523 L425.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
-<path d="M636.0 466 L636.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M631.0 516 L636.0 523 L641.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
-<path d="M852.0 466 L852.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M847.0 516 L852.0 523 L857.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
-<path d="M1068.0 466 L1068.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M1063.0 516 L1068.0 523 L1073.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
-<path d="M1284.0 466 L1284.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M1279.0 516 L1284.0 523 L1289.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
-<path d="M1500.0 466 L1500.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M1495.0 516 L1500.0 523 L1505.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
-<path d="M1716.0 466 L1716.0 522" stroke="#006BFF" stroke-opacity="0.4" stroke-width="1.4" fill="none"/>
-<path d="M1711.0 516 L1716.0 523 L1721.0 516 Z" fill="#006BFF" fill-opacity="0.75"/>
+<path d="M204.0 466 L204.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M199.0 516 L204.0 523 L209.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
+<path d="M420.0 466 L420.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M415.0 516 L420.0 523 L425.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
+<path d="M636.0 466 L636.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M631.0 516 L636.0 523 L641.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
+<path d="M852.0 466 L852.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M847.0 516 L852.0 523 L857.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
+<path d="M1068.0 466 L1068.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1063.0 516 L1068.0 523 L1073.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
+<path d="M1284.0 466 L1284.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1279.0 516 L1284.0 523 L1289.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
+<path d="M1500.0 466 L1500.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1495.0 516 L1500.0 523 L1505.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
+<path d="M1716.0 466 L1716.0 522" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1711.0 516 L1716.0 523 L1721.0 516 Z" fill="#0A0A0A" fill-opacity="0.35"/>
 </g>
 <g id="agents">
 <rect x="106.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="106.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="106.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="212.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="209.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="204.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -97,7 +97,7 @@
 <circle cx="209.7" cy="550.3" r="2.2" fill="#006BFF" fill-opacity="0.91"/>
 <text x="204.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Inbox</text>
 <rect x="322.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="322.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="322.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="428.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="425.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="420.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -108,7 +108,7 @@
 <circle cx="425.7" cy="550.3" r="2.2" fill="#006BFF" fill-opacity="0.91"/>
 <text x="420.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Booking</text>
 <rect x="538.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="538.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="538.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="644.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="641.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="636.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -119,7 +119,7 @@
 <circle cx="641.7" cy="550.3" r="2.2" fill="#006BFF" fill-opacity="0.91"/>
 <text x="636.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Docs</text>
 <rect x="754.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="754.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="754.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="860.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="857.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="852.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -130,7 +130,7 @@
 <circle cx="857.7" cy="550.3" r="2.2" fill="#006BFF" fill-opacity="0.91"/>
 <text x="852.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Rate</text>
 <rect x="970.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="970.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="970.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="1076.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="1073.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="1068.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -141,7 +141,7 @@
 <circle cx="1073.7" cy="550.3" r="2.2" fill="#006BFF" fill-opacity="0.91"/>
 <text x="1068.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Playbook</text>
 <rect x="1186.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="1186.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="1186.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="1292.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="1289.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="1284.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -152,7 +152,7 @@
 <circle cx="1289.7" cy="550.3" r="2.2" fill="#006BFF" fill-opacity="0.91"/>
 <text x="1284.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Comms</text>
 <rect x="1402.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="1402.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="1402.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="1508.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="1505.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="1500.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -163,7 +163,7 @@
 <circle cx="1505.7" cy="550.3" r="2.2" fill="#006BFF" fill-opacity="0.91"/>
 <text x="1500.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Assistant</text>
 <rect x="1618.0" y="527" width="196.0" height="92" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="1618.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="1618.0" y="524" width="196.0" height="92" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <circle cx="1724.0" cy="556.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="1721.7" cy="561.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="1716.0" cy="564.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -175,36 +175,36 @@
 <text x="1716.0" y="592" font-family="Geist" font-size="17" font-weight="600" fill="#0A0A0A" text-anchor="middle">Risk</text>
 </g>
 <g id="bus">
-<path d="M204.0 616 L204.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M420.0 616 L420.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M636.0 616 L636.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M852.0 616 L852.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M1068.0 616 L1068.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M1284.0 616 L1284.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M1500.0 616 L1500.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M1716.0 616 L1716.0 652" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
-<path d="M204.0 652 L1716.0 652" stroke="#006BFF" stroke-opacity="0.6" stroke-width="2" fill="none"/>
-<circle cx="204.0" cy="652" r="4" fill="#006BFF"/>
-<circle cx="420.0" cy="652" r="4" fill="#006BFF"/>
-<circle cx="636.0" cy="652" r="4" fill="#006BFF"/>
-<circle cx="852.0" cy="652" r="4" fill="#006BFF"/>
-<circle cx="1068.0" cy="652" r="4" fill="#006BFF"/>
-<circle cx="1284.0" cy="652" r="4" fill="#006BFF"/>
-<circle cx="1500.0" cy="652" r="4" fill="#006BFF"/>
-<circle cx="1716.0" cy="652" r="4" fill="#006BFF"/>
-<text x="198.0" y="678" font-family="Geist" font-size="12" font-weight="600" fill="#006BFF">SQRlane · 16 agents on one bus · every handoff between them recorded</text>
+<path d="M204.0 616 L204.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M420.0 616 L420.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M636.0 616 L636.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M852.0 616 L852.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1068.0 616 L1068.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1284.0 616 L1284.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1500.0 616 L1500.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M1716.0 616 L1716.0 652" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="1.4" fill="none"/>
+<path d="M204.0 652 L1716.0 652" stroke="#0A0A0A" stroke-opacity="0.45" stroke-width="2" fill="none"/>
+<circle cx="204.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<circle cx="420.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<circle cx="636.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<circle cx="852.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<circle cx="1068.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<circle cx="1284.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<circle cx="1500.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<circle cx="1716.0" cy="652" r="4" fill="#0A0A0A" fill-opacity="0.55"/>
+<text x="198.0" y="678" font-family="Geist" font-size="12" font-weight="600" fill="#0A0A0A">SQRlane · 16 agents on one bus · every handoff between them recorded</text>
 <text x="1722.0" y="678" font-family="Geist" font-size="11.5" font-weight="400" fill="#9A9A9A" text-anchor="end">also on the bus: Routing, Planner, RFQ, Milestones, Exception, Invoice, Customs</text>
 </g>
 <g id="your-approval">
-<path d="M960.0 652 L960.0 742" stroke="#006BFF" stroke-opacity="0.6" stroke-width="2" fill="none"/>
-<path d="M955.0 736 L960.0 743 L965.0 736 Z" fill="#006BFF" fill-opacity="0.9"/>
+<path d="M960.0 652 L960.0 742" stroke="#96580A" stroke-opacity="0.9" stroke-width="2.2" fill="none"/>
+<path d="M955.0 736 L960.0 743 L965.0 736 Z" fill="#96580A" fill-opacity="1"/>
 <rect x="894.0" y="678" width="132" height="28" rx="14" fill="#0A0A0A"/>
 <text x="960.0" y="696.5" font-family="Geist" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">You approve</text>
 </g>
-<text x="96" y="776" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="1.4">ANY TMS,</text>
-<text x="96" y="791" font-family="Geist" font-size="11" font-weight="700" fill="#9A9A9A" letter-spacing="1.4">BY EXPORT OR API</text>
+<text x="96" y="776" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="1.4">ANY TMS,</text>
+<text x="96" y="791" font-family="Geist" font-size="11" font-weight="700" fill="#96580A" letter-spacing="1.4">BY EXPORT OR API</text>
 <g id="any-tms">
-<path d="M440.0 776.0 L1480.0 776.0" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.4" fill="none"/>
+<path d="M440.0 776.0 L1480.0 776.0" stroke="#96580A" stroke-opacity="0.45" stroke-width="1.6" fill="none"/>
 <rect x="348.0" y="750.0" width="184" height="52" rx="26.0" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <image id="mark-cargowise" x="382.0" y="761.1" width="116.0" height="29.8" href="data:image/png;base64,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"/>
 <rect x="552.0" y="750.0" width="184" height="52" rx="26.0" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
@@ -214,7 +214,7 @@
 <rect x="1388.0" y="750.0" width="184" height="52" rx="26.0" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
 <image id="mark-descartes" x="1416.0" y="767.0" width="128.0" height="17.9" href="data:image/png;base64,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"/>
 <rect x="820.0" y="747" width="280" height="64" rx="14" fill="#0A0A0A" fill-opacity="0.04"/>
-<rect x="820.0" y="744" width="280" height="64" rx="14" fill="#FFFFFF" stroke="#006BFF" stroke-opacity="0.35" stroke-width="1.2"/>
+<rect x="820.0" y="744" width="280" height="64" rx="14" fill="#FFFFFF" stroke="#96580A" stroke-opacity="0.6" stroke-width="1.4"/>
 <circle cx="922.0" cy="776.0" r="2.2" fill="#006BFF" fill-opacity="0.35"/>
 <circle cx="919.7" cy="781.7" r="2.2" fill="#006BFF" fill-opacity="0.43"/>
 <circle cx="914.0" cy="784.0" r="2.2" fill="#006BFF" fill-opacity="0.51"/>
@@ -237,8 +237,8 @@
 <text x="1012.0" y="848.5" font-family="Geist" font-size="12" font-weight="600" fill="#4A4A4A" text-anchor="middle">TIMOCOM</text>
 <rect x="1056.0" y="830" width="99" height="28" rx="14" fill="#F3F3F3"/>
 <text x="1105.5" y="848.5" font-family="Geist" font-size="12" font-weight="600" fill="#4A4A4A" text-anchor="middle">Transporeon</text>
-<rect x="1171.0" y="830" width="231" height="28" rx="14" fill="#E8F1FF" stroke="#006BFF" stroke-opacity="0.4" stroke-dasharray="4 3"/>
-<text x="1286.5" y="848.5" font-family="Geist" font-size="12" font-weight="600" fill="#006BFF" text-anchor="middle">+ any TMS with an export or API</text>
+<rect x="1171.0" y="830" width="231" height="28" rx="14" fill="#F6EEE3" stroke="#96580A" stroke-opacity="0.5" stroke-dasharray="4 3"/>
+<text x="1286.5" y="848.5" font-family="Geist" font-size="12" font-weight="600" fill="#96580A" text-anchor="middle">+ any TMS with an export or API</text>
 </g>
 <g id="disclosure">
 <text x="96" y="956" font-family="Geist" font-size="12.5" font-weight="400" fill="#9A9A9A">Logos are examples, not the full list. Live today: the 60 public sources and MCP. Your TMS is read from an export or its API; approved changes go back the same way. Native connectors come next.</text>
