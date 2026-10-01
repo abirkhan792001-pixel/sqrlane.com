@@ -78,7 +78,7 @@ NODES = [
     ("Playbook",  340, 104, ["Word", "OneDrive", "GoogleDrive"]),
     ("TMS link",   20, 140, [("cw",), ("tms", "SAP"), ("tms", "Oracle"), ("tms", "Descartes")]),
     ("Comms",      60, 108, ["Teams", "Slack", "WhatsApp", "WeChat"]),
-    ("Assistant", 100, 96, ["Claude", "ChatGPT", "Codex", "Cursor"]),
+    ("Assistant", 100, 96, ["Claude", "ChatGPT", "Cursor"]),
     ("Risk",      140, 108, ["NDR", "DW", "NASA", ("more", "+57")]),
 ]
 # The open-weight model each agent is built to run, EU-hosted - the strong end of the
@@ -144,23 +144,8 @@ for a, b, n, msg, col in THREAD:
     ang = math.atan2(ey - fy, ex - fx)
     s.raw(f'<path d="M{ex + 7*math.cos(ang):.1f} {ey + 7*math.sin(ang):.1f} L{ex + 6*math.cos(ang+2.5):.1f} {ey + 6*math.sin(ang+2.5):.1f} L{ex + 6*math.cos(ang-2.5):.1f} {ey + 6*math.sin(ang-2.5):.1f} Z" fill="{col}"/>')
     labels.append((at(c, LABEL_T[n]), n, msg, col))
-for (lx, ly), n, msg, col in labels:
-    s.raw(f'<circle cx="{lx:.1f}" cy="{ly:.1f}" r="11" fill="{col}" stroke="{CARD}" stroke-width="2.5"/>')
-    s.T(lx, ly + 4, n, 11.5, 700, CARD, anchor="middle")
 s.end()
-# the card: what the agents said, in their own words (workflow.run, IN-108)
-TX0, TY0, TW0, TH0 = 1296, 92, W - M - 1296, 178
-s.g("thread-card")
-s.card(TX0, TY0, TW0, TH0, 12)
-s.T(TX0 + 18, TY0 + 26, "ONE MAIL, IN-108", 11, 700, AMB, ls=1.2)
-s.T(TX0 + TW0 - 18, TY0 + 26, "a vaccine booking · the agents' own messages", 10.5, 400, GREY, anchor="end")
-for k, (a, b, n, msg, col) in enumerate(THREAD):
-    yy = TY0 + 50 + k * 25
-    s.raw(f'<circle cx="{TX0 + 28}" cy="{yy - 4}" r="9" fill="{col}"/>')
-    s.T(TX0 + 28, yy, n, 10.5, 700, CARD, anchor="middle")
-    s.T(TX0 + 46, yy, f"{a} → {b if n != '5' else 'TMS link'}", 11, 600, GREY)
-    s.T(TX0 + 186, yy, msg, 11.5, 600 if col == AMB_L else 500, col if col == AMB_L else INK)
-s.end()
+
 
 # ---- the centre: SQRlane
 s.g("sqrlane")
