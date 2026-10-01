@@ -111,6 +111,11 @@ Slack, WhatsApp, WeChat), Assistant (Claude, Cursor, VS Code, via MCP), Risk (ND
 NASA, +57). One grey line at the foot: live today are the 60 sources and MCP; TMS and
 mail are read from exports and files; native links come next.
 
+Owner's notes (2026-10-01): logos bigger (bubbles 56px, marks 30px, orbits widened) and
+the dashed spokes to the centre removed. Open question put to the owner: the blue links
+read as random; options proposed are in the session reply (work-order ring, one real
+thread highlighted with its messages).
+
 Not shown, on purpose: SharePoint and BBC (their marks were withdrawn from simple-icons,
 so there is no official file to inline) and the rate-management vendors in the Zauber
 reference (no official marks, and SQRlane prices from a rate sheet, not an RMS). New

@@ -4,8 +4,7 @@ an orbit around each agent, and the agents joined as one network.
 
 Eight agent nodes on an ellipse around SQRlane. Each carries an outward-facing arc of the
 tools its job lives in (official marks only, inlined byte-for-byte; a mark that cannot be
-had is left out, never redrawn). Faint spokes run from every agent to the centre: the one
-message bus. Blue links are real handoffs on that bus (workflow.py / orchestrator):
+had is left out, never redrawn). Blue links are real handoffs on that bus (workflow.py / orchestrator):
 Inbox passes mail to Docs, Rate and the Playbook; Docs feeds the booking in the TMS; Rate's
 quote goes to the Playbook; the Playbook checks Comms' mail; Risk hands its decision to
 the TMS record and to Comms; the Assistant asks the TMS link and Risk.
@@ -28,7 +27,7 @@ TM = json.loads((HERE / "tms_marks.json").read_text())
 
 CX, CY, RX, RY = 960, 622, 650, 204
 N_R = 42          # agent node radius
-B_R = 22          # logo bubble radius
+B_R = 28          # logo bubble radius
 
 def uid():
     uid.n += 1
@@ -70,14 +69,14 @@ def agent_mark(cx, cy, r=6, col=BLUE):
 # (name, angle in degrees on the ellipse, orbit radius, tools). A tool is a channel mark
 # name, ("tms", vendor, pill width), ("cw",) for the CargoWise icon, or ("more", text).
 NODES = [
-    ("Inbox",     180, 80, ["Outlook", "Gmail"]),
-    ("Docs",      225, 84, ["PDF", "Word", "Excel", "Image", "XML"]),
-    ("Playbook",  270, 80, ["Word", "OneDrive", "GoogleDrive"]),
-    ("Rate",      315, 80, ["Excel", "GoogleSheets"]),
-    ("TMS link",    0, 96, [("cw",), ("tms", "SAP", 40), ("tms", "Oracle", 70), ("tms", "Descartes", 84)]),
-    ("Comms",      45, 84, ["Teams", "Slack", "WhatsApp", "WeChat"]),
-    ("Assistant",  90, 80, ["Claude", "Cursor", "VSCode"]),
-    ("Risk",      135, 84, ["NDR", "DW", "NASA", ("more", "+57")]),
+    ("Inbox", 180, 92, ["Outlook", "Gmail"]),
+    ("Docs", 225, 96, ["PDF", "Word", "Excel", "Image", "XML"]),
+    ("Playbook", 270, 92, ["Word", "OneDrive", "GoogleDrive"]),
+    ("Rate", 315, 92, ["Excel", "GoogleSheets"]),
+    ("TMS link", 0, 124, [("cw",), ("tms", "SAP", 40), ("tms", "Oracle", 70), ("tms", "Descartes", 84)]),
+    ("Comms", 45, 96, ["Teams", "Slack", "WhatsApp", "WeChat"]),
+    ("Assistant", 90, 92, ["Claude", "Cursor", "VSCode"]),
+    ("Risk", 135, 96, ["NDR", "DW", "NASA", ("more", "+57")]),
 ]
 POS = {}
 for name, ang, _, _ in NODES:
@@ -87,8 +86,6 @@ for name, ang, _, _ in NODES:
 # ---- the bus: a faint spoke from every agent to the centre
 s.g("bus")
 s.raw(f'<ellipse cx="{CX}" cy="{CY}" rx="{RX}" ry="{RY}" fill="none" stroke="{INK}" stroke-opacity="0.06" stroke-width="1"/>')
-for name, (x, y) in POS.items():
-    s.line(CX, CY, x, y, INK, 0.10, 1, dash="3 5")
 s.end()
 
 # ---- the network: real handoffs between agents, curved through the middle
@@ -124,7 +121,7 @@ s.end()
 # ---- each agent, with its tools in orbit
 def bubble_w(tool):
     if isinstance(tool, tuple) and tool[0] == "tms":
-        return tool[2] + 26
+        return tool[2] * 1.25 + 30
     return B_R * 2
 
 def draw_tool(tool, bx, by):
@@ -132,13 +129,13 @@ def draw_tool(tool, bx, by):
     s.R(bx - w / 2, by - h / 2 + 2, w, h, INK, h / 2, ' fill-opacity="0.05"')
     s.R(bx - w / 2, by - h / 2, w, h, CARD, h / 2, f' stroke="{INK}" stroke-opacity="0.10"')
     if isinstance(tool, str):
-        mark(tool, bx, by, 22)
+        mark(tool, bx, by, 30)
     elif tool[0] == "cw":
-        cargowise_icon(bx, by, 24)
+        cargowise_icon(bx, by, 32)
     elif tool[0] == "tms":
-        tms_word(tool[1], bx, by, tool[2])
+        tms_word(tool[1], bx, by, tool[2] * 1.25)
     else:
-        s.T(bx, by + 4.5, tool[1], 12.5, 600, MUT, anchor="middle")
+        s.T(bx, by + 5, tool[1], 14, 600, MUT, anchor="middle")
 
 for name, ang, orb, tools in NODES:
     x, y = POS[name]
@@ -146,7 +143,7 @@ for name, ang, orb, tools in NODES:
     out = math.radians(ang)
     # spread the tools along the arc: each takes the room it needs across the arc's direction
     tx, ty = -math.sin(out), math.cos(out)
-    ang_sizes = [(abs(bubble_w(tl) * tx) + abs(2 * B_R * ty) + 10) / orb for tl in tools]
+    ang_sizes = [(abs(bubble_w(tl) * tx) + abs(2 * B_R * ty) + 16) / orb for tl in tools]
     total = sum(ang_sizes)
     a0 = out - total / 2
     # the orbit line, a little longer than the tools
