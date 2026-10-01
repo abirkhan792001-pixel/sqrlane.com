@@ -26,7 +26,8 @@
         GREY = "#9A9A9A", GREY_BG = "#F3F3F3";
 
   const Q1 = "Where is MEDU-1774390?", Q2 = "Price 2 x 40HC Shanghai to Rotterdam";
-  const T = { chip: 2.3, fill2: 2.45, send2: 3.0, customsDone: 6.2, type1: 7.4, send1: 8.6 };
+  // slidIn: the pop-ups have arrived (animate.py: popup-agent at 1.8 s, plus its 0.6 s)
+  const T = { slidIn: 2.5, chip: 2.3, fill2: 2.45, send2: 3.0, customsDone: 6.2, type1: 7.4, send1: 8.6 };
   const GAP = 6;            // the still's gap between chat items (bubble 34 + 6, card 52 + 6)
   const STATUS_H = 26, RATE_H = 150;
   const RATES = [["MSC", "€4,660", "33 days", true], ["CMA CGM", "€4,800", "33 days"],
@@ -57,11 +58,12 @@
     const defs = el("defs", {});
     svg.insertBefore(defs, svg.firstChild);
 
-    // anything sliding in stays inside the app window
+    // anything sliding in stays inside the app window. Only while something slides: a clip
+    // on the whole window softens its rounded corners, and the last frame must be the still.
     const dash = $("dashboard"), db = dash.getBBox();
     const dclip = el("clipPath", { id: "dash-clip" });
     dclip.appendChild(el("rect", { x: db.x - 1, y: db.y - 1, width: db.width + 2, height: db.height + 6, rx: 14 }));
-    defs.appendChild(dclip); dash.setAttribute("clip-path", "url(#dash-clip)");
+    defs.appendChild(dclip);
 
     // a shine: grey text with an ink highlight sweeping across it. One look for every
     // "working" line in the scene.
@@ -116,10 +118,12 @@
     const top = +qG.querySelector("rect").getAttribute("y");                // first item's top
     const win = $("chat-window").querySelector("rect");
     const inputTop = +inputG.querySelector("rect").getAttribute("y");     // the Ask box's shadow rect
-    const viewBottom = inputTop - 6;
+    // what scrolls away disappears 2px above the first message, so nothing scrolled past
+    // (the rate card's foot and shadow) is left showing at the top of the still
+    const viewBottom = inputTop - 6, viewTop = top - 2;
     const vclip = el("clipPath", { id: "chat-view" });
-    vclip.appendChild(el("rect", { x: win.getAttribute("x"), y: +win.getAttribute("y") + 1,
-                                   width: win.getAttribute("width"), height: viewBottom - win.getAttribute("y") - 1 }));
+    vclip.appendChild(el("rect", { x: win.getAttribute("x"), y: viewTop,
+                                   width: win.getAttribute("width"), height: viewBottom - viewTop }));
     defs.appendChild(vclip);
     const scroller = el("g", { "clip-path": "url(#chat-view)" });
     inputG.parentNode.insertBefore(scroller, inputG);
@@ -226,7 +230,7 @@
       it.outer.appendChild(it.clipG); it.clipG.appendChild(it.g);
       scroller.appendChild(it.outer);
     }
-    S = { counts, popDots, popC, workG, workShine, workBox: workT.getBBox(), prep, doneG, resG,
+    S = { dash, counts, popDots, popC, workG, workShine, workBox: workT.getBBox(), prep, doneG, resG,
           input, inputFill, chipRect, chipText, chipFill, chipInk, sendC, sendArrow, caret,
           items: ITEMS, top, viewH: viewBottom - top };
   }
@@ -239,6 +243,8 @@
 
   window.scene = t => {
     if (!S) init();
+    if (t < T.slidIn) S.dash.setAttribute("clip-path", "url(#dash-clip)");
+    else S.dash.removeAttribute("clip-path");
     // counters: 0 to their value as "This morning" rises
     const pc = prog(t, 0.5, 1.4);
     for (const [e, v] of S.counts) e.textContent = String(Math.round(v * pc));
