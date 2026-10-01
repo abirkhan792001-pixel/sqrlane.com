@@ -232,7 +232,7 @@
     }
     S = { dash, counts, popDots, popC, workG, workShine, workBox: workT.getBBox(), prep, doneG, resG,
           input, inputFill, chipRect, chipText, chipFill, chipInk, sendC, sendArrow, caret,
-          items: ITEMS, top, viewH: viewBottom - top };
+          items: ITEMS, top, viewH: viewBottom - top, viewTop, viewBottom, scroller, scrollClip: scroller.getAttribute("clip-path") };
   }
 
   const sweep = (g, x, w, t) => {
@@ -292,10 +292,15 @@
     }
     total -= GAP;
     const scroll = Math.max(Math.max(0, total - S.viewH), q1At * prog(t, T.send1, 0.7));
+    let straddle = false;
     for (const it of S.items) {
       const k = it.k, y = S.top - scroll + it.at;
       it.outer.setAttribute("transform", `translate(0 ${(y - it.natY).toFixed(3)})`);
-      it.outer.setAttribute("visibility", k > 0.001 ? "visible" : "hidden");
+      // wholly outside the view: hidden. Half in: the view's clip is needed this frame.
+      const lo = y - 2, hi = y + (k >= 0.9999 ? it.h + 4 : (it.h + 8) * Math.max(k, 0));
+      const out = hi <= S.viewTop || lo >= S.viewBottom;
+      if (k > 0.001 && !out && (lo < S.viewTop || hi > S.viewBottom)) straddle = true;
+      it.outer.setAttribute("visibility", k > 0.001 && !out ? "visible" : "hidden");
       if (k >= 0.9999) it.clipG.removeAttribute("clip-path");
       else {
         it.clipG.setAttribute("clip-path", `url(#${it.clipId})`);
@@ -311,5 +316,7 @@
       }
       if (it.shine) sweep(it.shine[0], it.shine[1], it.shine[2], t);
     }
+    if (straddle) S.scroller.setAttribute("clip-path", S.scrollClip);
+    else S.scroller.removeAttribute("clip-path");
   };
 })();

@@ -312,7 +312,7 @@
     }
     S = { flash, pings, bellPath, bellPivot, riskPill, riskCount, riskPillFill, riskInk, approvals,
           agentDots, agentC, working, workFill, workShine, workBox: working.getBBox(), figs,
-          items: ITEMS, top, viewH: viewBottom - top, viewBottom };
+          items: ITEMS, top, viewH: viewBottom - top, viewTop, viewBottom, scroller, scrollClip: scroller.getAttribute("clip-path") };
   }
 
   const sweep = (g, x, w, u, cycles) => {
@@ -378,10 +378,15 @@
     const stop = it => it.at + it.h - (scroll + S.viewH) + 6;
     const d1 = Math.max(0, stop(drafts)), d2 = Math.max(d1, stop(record));
     scroll += d1 * prog(t, T.down1, 0.9) + (d2 - d1) * prog(t, T.down2, 0.8) - d2 * prog(t, T.up, 1.0);
+    let straddle = false;
     for (const it of S.items) {
       const k = it.k, y = S.top - scroll + it.at;
       it.outer.setAttribute("transform", `translate(0 ${(y - it.natY).toFixed(3)})`);
-      it.outer.setAttribute("visibility", k > 0.001 ? "visible" : "hidden");
+      // wholly outside the view: hidden. Half in: the view's clip is needed this frame.
+      const lo = y - 2, hi = y + (k >= 0.9999 ? it.h + 4 : (it.h + 8) * Math.max(k, 0));
+      const out = hi <= S.viewTop || lo >= S.viewBottom;
+      if (k > 0.001 && !out && (lo < S.viewTop || hi > S.viewBottom)) straddle = true;
+      it.outer.setAttribute("visibility", k > 0.001 && !out ? "visible" : "hidden");
       if (k >= 0.9999) it.clipG.removeAttribute("clip-path");
       else {
         it.clipG.setAttribute("clip-path", `url(#${it.clipId})`);
@@ -397,5 +402,7 @@
       if (it.shine) sweep(it.shine[0], it.shine[1], it.shine[2], u, SHINES * 1.6);
       if (it.rows) it.rows.forEach((r, i) => r.setAttribute("opacity", prog(t, T.down2 + 0.25 + i * 0.12, 0.3).toFixed(3)));
     }
+    if (straddle) S.scroller.setAttribute("clip-path", S.scrollClip);
+    else S.scroller.removeAttribute("clip-path");
   };
 })();
