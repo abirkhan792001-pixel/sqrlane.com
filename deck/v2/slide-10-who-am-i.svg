@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect id="background" x="0" y="0" width="1920" height="1080" fill="#FAFAFA"/>
+<g id="header">
+<rect x="96" y="104" width="10" height="10" rx="2" fill="#96580A"/>
+<text x="120" y="114" font-family="Geist" font-size="15" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">08 · WHO AM I</text>
+<text x="93" y="196" font-family="Geist" font-size="66" font-weight="600" fill="#0A0A0A" letter-spacing="-2">Seen the gap. Built the product. Mapped the buyers.</text>
+<text x="96" y="246" font-family="Geist" font-size="24" font-weight="400" fill="#6B6B6B">One founder. Every line on the right is already done.</text>
+<rect x="96" y="282" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+</g>
+<g id="founder">
+<rect x="96" y="318" width="520" height="358" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<g id="photo">
+<rect x="128" y="350" width="120" height="120" rx="10" fill="#F2F2F2" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="188.0" y="415.8" font-family="Geist" font-size="16" font-weight="500" fill="#8F8F8F" text-anchor="middle">[ Photo ]</text>
+</g>
+<g id="name">
+<rect x="268" y="364" width="210" height="48" rx="10" fill="#F2F2F2" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="373.0" y="396.6" font-family="Geist" font-size="24" font-weight="500" fill="#8F8F8F" text-anchor="middle">[ Full name ]</text>
+</g>
+<text x="268" y="446" font-family="Geist" font-size="19" font-weight="400" fill="#6B6B6B">Founder, SQRlane</text>
+<g id="linkedin-qr">
+<rect x="500" y="350" width="84" height="84" rx="10" fill="#F2F2F2" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="542.0" y="388.8" font-family="Geist" font-size="12" font-weight="500" fill="#8F8F8F" text-anchor="middle">[ LinkedIn</text>
+<text x="542.0" y="403.8" font-family="Geist" font-size="12" font-weight="500" fill="#8F8F8F" text-anchor="middle">QR ]</text>
+</g>
+<rect x="128" y="496" width="456" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
+<text x="128" y="532" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">EXPERIENCE</text>
+<text x="128" y="568" font-family="Geist" font-size="19" font-weight="400" fill="#0A0A0A">Shaped the investment thesis of a $170M VC fund.</text>
+<text x="128" y="604" font-family="Geist" font-size="19" font-weight="400" fill="#0A0A0A">Advised Fortune 500 CEOs on restructuring</text>
+<text x="128" y="630" font-family="Geist" font-size="19" font-weight="400" fill="#0A0A0A">liabilities above $100M.</text>
+</g>
+<g id="proofs">
+<rect x="640" y="318" width="1184" height="358" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<g id="proof-gap">
+<circle cx="687" cy="360" r="11" fill="#E9F3EC"/>
+<path d="M682.5 360.3l3 3 6-6.4" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="710" y="365" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" letter-spacing="1.44">SEEN THE GAP</text>
+<text x="936" y="370" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.5">Nobody owns the step between. That is my bet.</text>
+<text x="936" y="404" font-family="Geist" font-size="19" font-weight="400" fill="#6B6B6B">Risk tools stop at the alert. Execution tools start after the decision.</text>
+</g>
+<g id="proof-built">
+<rect x="676" y="437" width="1112" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
+<circle cx="687" cy="479" r="11" fill="#E9F3EC"/>
+<path d="M682.5 479.3l3 3 6-6.4" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="710" y="484" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" letter-spacing="1.44">BUILT THE PRODUCT</text>
+<text x="936" y="489" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.5">SQRlane runs today, end to end.</text>
+<text x="936" y="523" font-family="Geist" font-size="19" font-weight="400" fill="#6B6B6B">16 agents, 60 live sources, any TMS by export or API. You approve every change.</text>
+<rect x="1445" y="466" width="78" height="30" rx="7" fill="#E9F3EC"/>
+<circle cx="1460" cy="481" r="4" fill="#0F7B3F"/>
+<text x="1472" y="486" font-family="Geist" font-size="14" font-weight="500" fill="#0F7B3F">14 live</text>
+<rect x="1531" y="466" width="130" height="30" rx="7" fill="#F0F0F0"/>
+<text x="1542" y="486" font-family="Geist" font-size="14" font-weight="500" fill="#6B6B6B">Planner scripted</text>
+<rect x="1669" y="466" width="119" height="30" rx="7" fill="#F0F0F0"/>
+<text x="1680" y="486" font-family="Geist" font-size="14" font-weight="500" fill="#6B6B6B">TMS link demo</text>
+</g>
+<g id="proof-buyers">
+<rect x="676" y="557" width="1112" height="1" fill="#0A0A0A" fill-opacity="0.1"/>
+<circle cx="687" cy="599" r="11" fill="#E9F3EC"/>
+<path d="M682.5 599.3l3 3 6-6.4" stroke="#0F7B3F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="710" y="604" font-family="Geist" font-size="13" font-weight="500" fill="#0A0A0A" letter-spacing="1.44">MAPPED THE BUYERS</text>
+<text x="936" y="609" font-family="Geist" font-size="28" font-weight="600" fill="#0A0A0A" letter-spacing="-0.5">Mid-size forwarders in DACH and Benelux.</text>
+<text x="936" y="643" font-family="Geist" font-size="19" font-weight="400" fill="#6B6B6B">An ICP list of forwarders, enriched in Apollo. Events lined up for outreach.</text>
+<rect x="1698" y="586" width="90" height="30" rx="7" fill="#F6EEE3"/>
+<text x="1709" y="606" font-family="Geist" font-size="14" font-weight="500" fill="#96580A">To confirm</text>
+</g>
+</g>
+<g id="logos">
+<rect x="96" y="700" width="1728" height="156" rx="14" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>
+<text x="128" y="740" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">EDUCATION</text>
+<g id="logo-nova-sbe">
+<rect x="128" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="220.0" y="798.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">Nova SBE</text>
+</g>
+<g id="logo-cems-mim">
+<rect x="324" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="416.0" y="798.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">CEMS MIM</text>
+</g>
+<rect x="540" y="724" width="1" height="108" fill="#0A0A0A" fill-opacity="0.1"/>
+<text x="573" y="740" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">WORK</text>
+<g id="logo-alvarez-and-marsal">
+<rect x="573" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="665.0" y="798.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">Alvarez &amp; Marsal</text>
+</g>
+<g id="logo-scaile">
+<rect x="769" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="861.0" y="798.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">SCAILE</text>
+</g>
+<g id="logo-biome-vc">
+<rect x="965" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="1057.0" y="798.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">Biome VC</text>
+</g>
+<rect x="1181" y="724" width="1" height="108" fill="#0A0A0A" fill-opacity="0.1"/>
+<text x="1214" y="740" font-family="Geist" font-size="13" font-weight="500" fill="#6B6B6B" letter-spacing="1.44">INSTITUTIONS</text>
+<g id="logo-un-foundation">
+<rect x="1214" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="1306.0" y="798.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">UN Foundation</text>
+</g>
+<g id="logo-tum-manage-and-more">
+<rect x="1410" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="1502.0" y="788.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">TUM</text>
+<text x="1502.0" y="808.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">Manage and More</text>
+</g>
+<g id="logo-hack-nation">
+<rect x="1606" y="760" width="184" height="64" rx="10" fill="#F5F5F5" stroke="#0A0A0A" stroke-opacity="0.08"/>
+<text x="1698.0" y="798.0" font-family="Geist" font-size="16" font-weight="600" fill="#3A3A3A" text-anchor="middle">Hack-Nation</text>
+</g>
+</g>
+<g id="closing">
+<text x="96" y="936" font-family="Geist" font-size="34" font-weight="600" fill="#0A0A0A" letter-spacing="-0.8">I’ve helped shape a fund’s thesis. This is the company I’d back.</text>
+</g>
+<g id="footer">
+<rect x="96" y="978" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+<rect x="96" y="1004" width="22" height="22" rx="6" fill="#0A0A0A"/>
+<path d="M101.5 1020h11 M101.5 1015h7.5 M101.5 1010h4" stroke="#FAFAFA" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+<text x="130" y="1021" font-family="Geist" font-size="16" font-weight="600" fill="#0A0A0A">sqrlane</text>
+<text x="200" y="1021" font-family="Geist" font-size="14" font-weight="400" fill="#6B6B6B">Automates the desk. Acts before the route breaks.</text>
+<text x="1824" y="1021" font-family="Geist" font-size="12.5" font-weight="500" fill="#6B6B6B" text-anchor="end" letter-spacing="1.2">SLIDE 10</text>
+</g>
+</svg>

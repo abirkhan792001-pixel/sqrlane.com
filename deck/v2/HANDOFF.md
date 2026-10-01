@@ -28,7 +28,7 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 | 07 | `build_07.py` → `slide-07-the-how-1.svg` (rebuilt: the desk) | built, awaiting feedback |
 | 08 | `build_08.py` → `slide-08-the-how-2.svg` (the risk layer) | built, awaiting feedback |
 | 09 | `build_09.py` → `slide-09-integrations.svg` (integrations) | built, awaiting feedback |
-| 10 | Who am I (founder) | to do |
+| 10 | `build_10.py` → `slide-10-who-am-i.svg` (option A, the proof stack) | built, awaiting logos and the founder's details |
 | A | Appendix: sources for slide 06 (`SOURCES` list in `build_06.py`) | later, not now |
 
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
@@ -174,6 +174,35 @@ reference (no official marks, and SQRlane prices from a rate sheet, not an RMS).
 marks in `channel_marks.json`: PDF, Word, Excel, Image, XML (vscode-icons, MIT),
 OneDrive, Google Drive, Cursor, VS Code, Claude (logos, CC0), Google Sheets, DW, NASA,
 MCP (simple-icons, CC0, brand hex filled in for `currentColor`).
+
+## Slide 10, who am I (first version, 2026-10-01)
+
+Four founder layouts were previewed as an artifact (A proof stack, B the bet, C built not
+planned, D the team this round builds); the owner picked **A** and gave the logo list.
+
+- **Header:** "08 · WHO AM I", "Seen the gap. Built the product. Mapped the buyers.", "One
+  founder. Every line on the right is already done."
+- **Left, the founder card:** dashed slots for photo, full name and LinkedIn QR (layers
+  `photo`, `name`, `linkedin-qr`); "Founder, SQRlane"; the two approved experience lines.
+- **Right, three proofs, one per part of the headline:** Seen the gap ("Nobody owns the step
+  between. That is my bet."); Built the product (16 agents, 60 live sources, any TMS by
+  export or API, with the 14 live / Planner scripted / TMS link demo chips); Mapped the
+  buyers (Apollo ICP list and events, with an amber **To confirm** chip until the owner
+  confirms it is SQRlane's own work).
+- **Logo band:** Education (Nova SBE, CEMS MIM), Work (Alvarez &amp; Marsal, SCAILE, Biome
+  VC), Institutions (UN Foundation, TUM Manage and More, Hack-Nation). The owner said
+  "other institutions"; the label reads INSTITUTIONS. European Commission and IC from the
+  old list were dropped, on the owner's list.
+- **No official file for any of the eight logos was reachable** (only npm is open from the
+  sandbox; simple-icons and @iconify-json/logos carry none of them - their "Biome" is the JS
+  toolchain and "United Nations" is the UN emblem, not the UN Foundation). Each sits in its
+  own layer (`logo-nova-sbe`, `logo-cems-mim`, `logo-alvarez-and-marsal`, `logo-scaile`,
+  `logo-biome-vc`, `logo-un-foundation`, `logo-tum-manage-and-more`, `logo-hack-nation`) as
+  a grey name badge, 184 x 64. When the owner sends the official files, inline them
+  byte-for-byte into those boxes; never redraw one.
+- Closing line: "I've helped shape a fund's thesis. This is the company I'd back."
+- `build_10.py` measures every string against Geist (PIL, variable font) and stops on an
+  overrun; a "|" in a logo name is a chosen line break.
 
 ## Motion: slides 07 and 08 as videos (2026-10-01)
 
