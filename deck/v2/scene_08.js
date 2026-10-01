@@ -86,14 +86,17 @@
     flash.setAttribute("stroke-width", "1.5"); flash.removeAttribute("stroke-opacity");
     news.appendChild(flash);
     const bell = $("notifications"), bellPath = bell.querySelector("path");
-    const bellBadge = bell.querySelector("circle");
-    const pings = [];
-    for (const c of [newsBadge, bellBadge]) for (let k = 0; k < 3; k++) {
-      const p = el("circle", { cx: c.getAttribute("cx"), cy: c.getAttribute("cy"), r: 8, fill: "none", stroke: RED, "stroke-width": 1.5 });
-      c.parentNode.insertBefore(p, c);
-      pings.push([p, T.alert + 0.1 + k * 0.6]);
-    }
+    // three red pings each: from the headline's badge, and round the bell itself, sized to
+    // stay inside the app window (a ring from the bell's badge crossed the window's corner)
     const bb = bellPath.getBBox(), bellPivot = [bb.x + bb.width / 2, bb.y];
+    const pings = [];
+    for (const [cx, cy, r0, r1, before] of [[+newsBadge.getAttribute("cx"), +newsBadge.getAttribute("cy"), 8, 18, newsBadge],
+                                             [bb.x + bb.width / 2, bb.y + bb.height / 2, 7, 16, bellPath]])
+      for (let k = 0; k < 3; k++) {
+        const p = el("circle", { cx, cy, r: r0, fill: "none", stroke: RED, "stroke-width": 1.5 });
+        before.parentNode.insertBefore(p, before);
+        pings.push([p, T.alert + 0.1 + k * 0.6, r0, r1]);
+      }
     // the Risk count in the sidebar turns red while the alert is fresh
     const side = $("sidebar");
     const riskLabel = texts(side).find(e => e.textContent === "Risk");
@@ -327,10 +330,10 @@
     const pulse = t < T.alert ? 0 : 0.55 + 0.45 * Math.cos(2 * Math.PI * (t - T.alert) / 0.8);
     S.flash.setAttribute("opacity", (0.85 * pulse * a).toFixed(3));
     S.flash.setAttribute("visibility", a > 0 ? "visible" : "hidden");
-    for (const [p, t0] of S.pings) {
+    for (const [p, t0, r0, r1] of S.pings) {
       const k = clamp((t - t0) / 0.9);
       p.setAttribute("visibility", k > 0 && k < 1 ? "visible" : "hidden");
-      p.setAttribute("r", (8 + 16 * ease(k)).toFixed(2));
+      p.setAttribute("r", (r0 + (r1 - r0) * ease(k)).toFixed(2));
       p.setAttribute("stroke-opacity", (0.6 * (1 - k)).toFixed(3));
     }
     const wob = t > T.alert && t < T.alert + 1.6 ? 16 * Math.sin(2 * Math.PI * 4.5 * (t - T.alert)) * Math.exp(-2.6 * (t - T.alert)) : 0;

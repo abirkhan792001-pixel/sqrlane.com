@@ -14,7 +14,7 @@ A video whose last frame should be the static slide (all of them, today) is chec
 finished slide is rendered on its own and compared with the last frame, pixel for pixel.
 
 Needs: pip install playwright imageio-ffmpeg; Geist in ~/.fonts (see HANDOFF.md)."""
-import glob, json, pathlib, subprocess, sys, tempfile
+import glob, json, pathlib, re, subprocess, sys, tempfile
 import imageio_ffmpeg
 from PIL import Image, ImageChops
 from playwright.sync_api import sync_playwright
@@ -40,10 +40,11 @@ STEPS_07 = [
     ("stage-in-transit", 2.0, "up"), ("stage-arrival", 2.2, "up"), ("stage-billing", 2.4, "up"),
     ("playbook", 3.0, "up"), ("gate-and-record", 3.8, "up"),
 ]
-# The dashboard on slides 07 and 08 (the same frame), with a 16px margin of slide background: x 80, y 290,
-# 1032 x 616 on the 1920 x 1080 slide. Placed there in Figma, it sits exactly over the
-# static mock. Captured at 3x (3096 x 1848) so it stays sharp when shown larger.
-DESK_07 = (80, 290, 1032, 616)
+# The dashboard on slides 07 and 08 (the same frame), with a 12px margin of slide
+# background: x 84, y 294, 1024 x 608 on the 1920 x 1080 slide. Placed there in Figma, it
+# sits exactly over the static mock. Captured at 3.5x: 3584 x 2128, the largest size at this
+# aspect inside 4K UHD with both sides a multiple of 16, which every decoder handles cleanly.
+DESK_07 = (84, 294, 1024, 608)
 
 # slide 08: the dashboard's reveals are the alert; the right panel follows the story the
 # scene plays (scene_08.js): the trail as the headline lands, each agent as it works
@@ -59,10 +60,10 @@ STEPS_08 = [
 TIMELINES = {
     "07": {"file": "slide-07-the-how-1.svg", "length": 16.0, "scene": "scene_07.js", "steps": STEPS_07},
     "07-desk": {"file": "slide-07-the-how-1.svg", "out": "slide-07-the-desk.mp4", "length": 16.0,
-                "scene": "scene_07.js", "steps": STEPS_07, "clip": DESK_07, "scale": 3},
+                "scene": "scene_07.js", "steps": STEPS_07, "clip": DESK_07, "scale": 3.5},
     "08": {"file": "slide-08-the-how-2.svg", "length": 18.0, "scene": "scene_08.js", "steps": STEPS_08},
     "08-desk": {"file": "slide-08-the-how-2.svg", "out": "slide-08-the-desk.mp4", "length": 18.0,
-                "scene": "scene_08.js", "steps": STEPS_08, "clip": DESK_07, "scale": 3},
+                "scene": "scene_08.js", "steps": STEPS_08, "clip": DESK_07, "scale": 3.5},
 }
 DUR = 0.6   # each reveal
 
@@ -102,6 +103,18 @@ window.setTime = t => {
   if (window.scene) window.scene(t);
 };
 </script><script>%SCENE%</script></body></html>"""
+
+
+FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
+
+
+def h264_level(path):
+    """The level the encoder wrote into the stream's first SPS."""
+    r = subprocess.run([FFMPEG, "-hide_banner", "-i", str(path), "-c", "copy", "-bsf:v", "trace_headers",
+                        "-frames:v", "1", "-f", "null", "-"], capture_output=True, text=True)
+    m = re.search(r"level_idc\s+\d+ = (\d+)", r.stderr)
+    assert m, "could not read the H.264 level"
+    return int(m.group(1))
 
 
 def chrome():
@@ -153,11 +166,23 @@ def render(key):
         last = Image.open(f"{tmp}/f{frames - 1:04d}.png").convert("RGB")
         diff = ImageChops.difference(last, Image.open(f"{tmp}/static.png").convert("RGB")).getbbox()
         assert diff is None, f"the last frame is not the static slide: they differ in {diff}"
-        subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error",
+        w_px, h_px = last.size
+        assert w_px % 16 == 0 and h_px % 16 == 0, f"{w_px}x{h_px}: both sides must be a multiple of 16"
+        assert w_px <= 3840 and h_px <= 2160, f"{w_px}x{h_px} is larger than 4K UHD"
+        # H.264 High at level 5.1, the level browsers, QuickTime and Figma decode. Left to
+        # itself, -tune animation doubles the reference frames, which pushes a 4K frame past
+        # 5.1's buffer and x264 silently writes level 6.0 - a file many players will not play.
+        # Colour is converted and tagged as BT.709, what players assume for HD and up.
+        subprocess.run([FFMPEG, "-y", "-loglevel", "error",
                         "-framerate", str(FPS), "-i", f"{tmp}/f%04d.png",
-                        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "12",
-                        "-preset", "slow", "-tune", "animation", "-profile:v", "high", "-movflags", "+faststart", str(out)], check=True)
-    print("wrote", out, f"({frames} frames, {spec['length']}s, last frame = static slide)")
+                        "-vf", "scale=out_color_matrix=bt709:out_range=tv,format=yuv420p",
+                        "-c:v", "libx264", "-profile:v", "high", "-level:v", "5.1", "-refs", "4",
+                        "-crf", "12", "-preset", "slow", "-tune", "animation",
+                        "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+                        "-color_range", "tv", "-movflags", "+faststart", str(out)], check=True)
+    level = h264_level(out)
+    assert level <= 51, f"{out.name} is H.264 level {level / 10}, above 5.1"
+    print("wrote", out, f"({frames} frames, {spec['length']}s, {w_px}x{h_px}, H.264 level {level / 10}, last frame = static slide)")
 
 
 if __name__ == "__main__":

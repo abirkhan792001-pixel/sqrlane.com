@@ -179,7 +179,10 @@ MCP (simple-icons, CC0, brand hex filled in for `currentColor`).
 
 Figma drops SVG animation on import, so `animate.py` renders motion to MP4 for Figma
 Slides: it opens the slide's own SVG in headless Chromium, hides the listed layers and
-reveals them on a timeline (rise, drop, slide in, pop), captures 30 fps at 2x (3840x2160, 4K, so small text stays sharp in Figma and on a projector) and encodes H.264 at CRF 12
+reveals them on a timeline (rise, drop, slide in, pop), captures 30 fps at 2x (3840x2160, 4K, so small text stays sharp in Figma and on a projector) and encodes H.264 High at
+level 5.1, CRF 12, BT.709. **Level 5.1 is checked on every file**: the first renders were
+level 6.0 (-tune animation doubles the reference frames, past 5.1's buffer at 4K), which many
+players and Figma will not play; `-refs 4` keeps it inside 5.1
 (`slide-07-the-how-1.mp4` and `slide-07-the-desk.mp4` 16 s, `slide-08-the-how-2.mp4` and
 `slide-08-the-desk.mp4` 18 s,
 ending on the finished slide so they loop). The arrow drawn just before a layer arrives with it. Chat messages
@@ -218,20 +221,21 @@ and a last frame (the rate table) that was not the slide. So `scene_07.js` was r
 
 Outputs: `slide-07-the-how-1.mp4` (the whole slide, 3840x2160) and
 **`slide-07-the-desk.mp4`** (`python3 animate.py 07-desk`): the dashboard alone with a
-16 px margin of slide background - x 80, y 290, 1032 x 616 on the slide - at 3x, so
-3096x1848. Placed at that box on slide 07 in Figma it sits exactly over the static mock.
+12 px margin of slide background - x 84, y 294, 1024 x 608 on the slide - at 3.5x, so
+3584x2128: the largest size at this aspect inside 4K UHD with both sides a multiple of 16.
+Placed at that box on slide 07 in Figma it sits exactly over the static mock.
 
 **Slide 08 video, the risk layer on its own (2026-10-01, 18 s).** The owner asked for the
 window only, with slide 07's lessons, plus "the agents output or findings based on the
 event trigger", "a sense of urgency or heightened awareness when a news like that pops in",
 and "a scroll down effect and preview of what the agents have built, prepared or drafted".
 `scene_08.js` plays it, cloned from the still like slide 07's scene, and `animate.py 08-desk`
-crops the same 1032 x 616 window (`slide-08-the-desk.mp4`, 3096x1848); `animate.py 08`
+crops the same 1024 x 608 window (`slide-08-the-desk.mp4`, 3584x2128); `animate.py 08`
 renders the whole slide from the same scene, its right-panel rows arriving as each agent
 starts work.
 
-- **The alert (0.5 s):** the NDR headline drops in; its badge and the bell's ping in red
-  three times, the card's outline pulses red, the bell rings, and the sidebar's Risk count
+- **The alert (0.5 s):** the NDR headline drops in; its badge and the bell ping in red
+  three times (the bell's ring sits round the bell, inside the window), the card's outline pulses red, the bell rings, and the sidebar's Risk count
   turns red. All of it settles by 3.8 s.
 - **The finding (3.0 s):** the Risk agent's card, re-worded from the reroute card: "3 of 7
   bookings call at Hamburg. Up to 5 days late.", the seven bookings as pills, SHP-001,
