@@ -2,8 +2,7 @@
 """Slide 09 - Integrations, third version: three layers, on the owner's pick.
 
 Top, the tools a forwarder already runs, grouped by type. Middle, the agents in work order,
-each with the open-weight model it is built to run (the whitepaper's agent table), all on
-one bus. Bottom, the TMS link and the TMS systems it is built to point at. Each tool group
+all on one bus. Bottom, the TMS link and the TMS systems it is built to point at. Each tool group
 sits directly above the agents that use it, so every connection is a short vertical drop.
 
 Official marks only, inlined byte-for-byte; a mark that cannot be had is left out, never
@@ -61,66 +60,62 @@ def agent_mark(cx, cy, r=6, col=BLUE):
         s.raw(f'<circle cx="{cx + r * math.cos(a):.1f}" cy="{cy + r * math.sin(a):.1f}" r="{r * 0.27:.1f}" fill="{col}" fill-opacity="{0.35 + 0.08 * i:.2f}"/>')
 
 
-# ---- the agents, in work order, with the model each is built to run
-AGENTS = [("Inbox", "Gemma-3-27B"), ("Booking", "code only"), ("Docs", "Qwen2.5-VL-72B"),
-          ("Rate", "code only"), ("Playbook", "Qwen3-235B"), ("Comms", "Llama-3.3-70B"),
-          ("Assistant", "Gemma-3-27B"), ("Risk", "Qwen3-235B")]
-# ---- the tools, grouped by type, each over the agents that use it (first slot, span)
-GROUPS = [("Mail", ["Outlook", "Gmail"], 0, 1),
-          ("Documents", ["PDF", "Word", "Excel", "Image"], 1, 2),
-          ("Sheets &amp; files", ["GoogleSheets", "OneDrive", "GoogleDrive"], 3, 2),
-          ("Chat", ["Teams", "Slack", "WhatsApp", "WeChat"], 5, 1),
-          ("AI assistants", ["Claude", "ChatGPT", "Cursor"], 6, 1),
-          ("Sources", ["NDR", "DW", "NASA", ("more", "+57")], 7, 1)]
+# ---- the agents, in work order
+AGENTS = ["Inbox", "Booking", "Docs", "Rate", "Playbook", "Comms", "Assistant", "Risk"]
+# ---- the tools, grouped by type, each over the agents that use it (first slot, span, more)
+GROUPS = [("Mail", ["Outlook", "Gmail"], 0, 1, "+ more"),
+          ("Documents", ["PDF", "Word", "Excel", "Image"], 1, 2, "+ more"),
+          ("Sheets &amp; files", ["GoogleSheets", "OneDrive", "GoogleDrive"], 3, 2, "+ more"),
+          ("Chat", ["Teams", "Slack", "WhatsApp", "WeChat"], 5, 1, "+ more"),
+          ("AI assistants", ["Claude", "ChatGPT", "Cursor"], 6, 1, "+ any MCP client"),
+          ("Sources", ["NDR", "DW", "NASA"], 7, 1, "+ 57 more")]
 SLOT = (W - 2 * M) / len(AGENTS)
 def sx(i): return M + i * SLOT + SLOT / 2          # centre of agent slot i
 
-def layer_label(y, text):
-    s.T(M, y, text, 11, 700, GREY, ls=1.4)
+def layer_label(x, y, lines):
+    for k, ln in enumerate(lines):
+        s.T(x, y + k * 15, ln, 11, 700, GREY, ls=1.4)
+
+def arrow_down(x, y, col=BLUE, op=0.75):
+    s.raw(f'<path d="M{x-5} {y-7} L{x} {y} L{x+5} {y-7} Z" fill="{col}" fill-opacity="{op}"/>')
 
 # ============================================================ top: your tools
-GY, GH = 334, 128
-layer_label(GY - 10, "YOUR TOOLS")
+GY, GH = 334, 132
+layer_label(M, GY - 10, ["YOUR TOOLS"])
 s.g("your-tools")
-for name, tools, first, span in GROUPS:
+for name, tools, first, span, more in GROUPS:
     x0 = M + first * SLOT + 6; w = span * SLOT - 12
     s.R(x0, GY, w, GH, CARD, 14, f' stroke="{INK}" stroke-opacity="0.12"')
     s.T(x0 + w / 2, GY + 30, name, 13.5, 600, "#4A4A4A", anchor="middle")
-    n = len(tools); BR = 22; gap = 6          # one size for every logo; fits four in a card
+    n = len(tools); BR = 22; gap = 6          # one size for every logo
     tot = n * BR * 2 + (n - 1) * gap
     bx = x0 + w / 2 - tot / 2 + BR
     for tl in tools:
-        s.raw(f'<circle cx="{bx:.1f}" cy="{GY + 80}" r="{BR}" fill="{BG}" stroke="{INK}" stroke-opacity="0.08"/>')
-        if isinstance(tl, str):
-            mark(tl, bx, GY + 80, 28)
-        else:
-            s.T(bx, GY + 85, tl[1], 14, 600, MUT, anchor="middle")
+        s.raw(f'<circle cx="{bx:.1f}" cy="{GY + 74}" r="{BR}" fill="{BG}" stroke="{INK}" stroke-opacity="0.08"/>')
+        mark(tl, bx, GY + 74, 28)
         bx += BR * 2 + gap
+    s.T(x0 + w / 2, GY + 118, more, 11.5, 500, GREY, anchor="middle")
 s.end()
 
 # ============================================================ middle: the agents
-AY, AH = 532, 120
-s.g("drops")                                    # each group to the agents under it
-for name, tools, first, span in GROUPS:
+AY, AH = 524, 92
+s.g("drops")                                    # work flows down from each group to its agents
+for name, tools, first, span, more in GROUPS:
     for i in range(first, first + span):
-        s.line(sx(i), GY + GH, sx(i), AY, BLUE, 0.35, 1.4)
-        s.raw(f'<circle cx="{sx(i):.1f}" cy="{AY - 1}" r="3" fill="{BLUE}" fill-opacity="0.6"/>')
+        s.line(sx(i), GY + GH, sx(i), AY - 2, BLUE, 0.4, 1.4)
+        arrow_down(sx(i), AY - 1)
 s.end()
 s.g("agents")
-for i, (name, mdl) in enumerate(AGENTS):
+for i, name in enumerate(AGENTS):
     w = SLOT - 20; x0 = sx(i) - w / 2
     s.R(x0, AY + 3, w, AH, INK, 14, ' fill-opacity="0.04"')
     s.R(x0, AY, w, AH, CARD, 14, f' stroke="{BLUE}" stroke-opacity="0.35" stroke-width="1.2"')
-    agent_mark(sx(i), AY + 30, 8)
-    s.T(sx(i), AY + 66, name, 17, 600, anchor="middle")
-    code = mdl == "code only"
-    mw = round(len(mdl) * 6.2 + 20)
-    s.R(sx(i) - mw / 2, AY + 82, mw, 22, GREY_BG if code else BLUE_BG, 11)
-    s.T(sx(i), AY + 97, mdl, 11, 600, GREY if code else BLUE, anchor="middle")
+    agent_mark(sx(i), AY + 32, 8)
+    s.T(sx(i), AY + 68, name, 17, 600, anchor="middle")
 s.end()
 
 # the bus: every agent on one line
-BUS = AY + AH + 44
+BUS = AY + AH + 36
 s.g("bus")
 for i in range(len(AGENTS)):
     s.line(sx(i), AY + AH, sx(i), BUS, BLUE, 0.35, 1.4)
@@ -132,35 +127,59 @@ s.T(sx(len(AGENTS) - 1) + 6, BUS + 26, "also on the bus: Routing, Planner, RFQ, 
     11.5, 400, GREY, anchor="end")
 s.end()
 
-# ============================================================ bottom: your TMS
-TY = BUS + 60
-layer_label(TY + 43, "YOUR TMS")
-s.g("your-tms")
-s.line(W / 2, BUS, W / 2, TY, BLUE, 0.6, 2)
-TW_, TH_ = 300, 76
-PW_, PH_ = 196, 56
-pills = [("cw", W / 2 - 560), ("SAP", W / 2 - 340), ("Oracle", W / 2 + 340), ("Descartes", W / 2 + 560)]
+# ============================================================ bottom: any TMS, behind your approval
+TY = BUS + 92
+s.g("your-approval")
+s.line(W / 2, BUS, W / 2, TY - 2, BLUE, 0.6, 2)
+arrow_down(W / 2, TY - 1, BLUE, 0.9)
+aw = 132; ay = BUS + 26
+s.R(W / 2 - aw / 2, ay, aw, 28, INK, 14)
+s.T(W / 2, ay + 18.5, "You approve", 12.5, 700, CARD, anchor="middle")
+s.end()
+
+layer_label(M, TY + 32, ["ANY TMS,", "BY EXPORT OR API"])
+s.g("any-tms")
+TW_, TH_ = 280, 64
+PW_, PH_ = 184, 52
+pills = [("cw", W / 2 - 520), ("SAP", W / 2 - 316), ("Oracle", W / 2 + 316), ("Descartes", W / 2 + 520)]
 y = TY + TH_ / 2
-s.line(pills[0][1], y, pills[-1][1], y, BLUE, 0.35, 1.4)      # one line through all, drawn first
+s.line(pills[0][1], y, pills[-1][1], y, BLUE, 0.35, 1.4)
 for name, cx in pills:
     s.R(cx - PW_ / 2, y - PH_ / 2, PW_, PH_, CARD, PH_ / 2, f' stroke="{INK}" stroke-opacity="0.12"')
     if name == "cw":
-        tms_word("CargoWise", cx, y, 120)
+        tms_word("CargoWise", cx, y, 116)
     else:
-        tms_word(name, cx, y, {"SAP": 60, "Oracle": 112, "Descartes": 132}[name])
+        tms_word(name, cx, y, {"SAP": 56, "Oracle": 108, "Descartes": 128}[name])
 s.R(W / 2 - TW_ / 2, TY + 3, TW_, TH_, INK, 14, ' fill-opacity="0.04"')
 s.R(W / 2 - TW_ / 2, TY, TW_, TH_, CARD, 14, f' stroke="{BLUE}" stroke-opacity="0.35" stroke-width="1.2"')
-agent_mark(W / 2 - 92, TY + 35, 7)
-s.T(W / 2 - 74, TY + 31, "TMS link", 16, 600)
-s.R(W / 2 - 74, TY + 41, 82, 20, GREY_BG, 10)
-s.T(W / 2 - 33, TY + 55, "code only", 11, 600, GREY, anchor="middle")
+agent_mark(W / 2 - 46, TY + TH_ / 2, 8)
+s.T(W / 2 - 28, TY + TH_ / 2 + 6, "TMS link", 17, 600)
+# second row: systems without an official mark, as plain names, and the open door
+ry = TY + TH_ + 22
+items = [("Riege Scope", "n"), ("AEB", "n"), ("DAKOSY", "n"), ("Portbase", "n"),
+         ("Freight exchanges", "l"), ("TIMOCOM", "n"), ("Transporeon", "n"),
+         ("+ any TMS with an export or API", "o")]
+def iw(txt, kind): return round(len(txt) * 6.6 + (0 if kind == "l" else 26))
+tot = sum(iw(a, k) for a, k in items) + 8 * (len(items) - 1) + 24
+x = W / 2 - tot / 2
+for txt, kind in items:
+    w = iw(txt, kind)
+    if kind == "l":
+        x += 16
+        s.T(x, ry + 19, txt, 11.5, 600, GREY)
+    elif kind == "o":
+        x += 8
+        s.R(x, ry, w, 28, BLUE_BG, 14, f' stroke="{BLUE}" stroke-opacity="0.4" stroke-dasharray="4 3"')
+        s.T(x + w / 2, ry + 18.5, txt, 12, 600, BLUE, anchor="middle")
+    else:
+        s.R(x, ry, w, 28, GREY_BG, 14)
+        s.T(x + w / 2, ry + 18.5, txt, 12, 600, "#4A4A4A", anchor="middle")
+    x += w + 8
 s.end()
 
 s.g("disclosure")
-s.T(M, 946, "Logos show where each agent works. Live today: the 60 public sources and MCP. "
-    "TMS and mail are read from exports and files; native links come next.", 12.5, 400, GREY)
-s.T(M, 966, "Model chips: the open-weight model each agent is built to run, hosted in the EU. Code-only agents compute "
-    "exact answers (prices, records) and run no model. The prototype calls a US-hosted provider today.", 12.5, 400, GREY)
+s.T(M, 956, "Logos are examples, not the full list. Live today: the 60 public sources and MCP. Your TMS is read from an "
+    "export or its API; approved changes go back the same way. Native connectors come next.", 12.5, 400, GREY)
 s.end()
 
 s.footer(9)

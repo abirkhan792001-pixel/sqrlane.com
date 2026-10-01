@@ -137,6 +137,18 @@ a customer's written SOP into checkable rules; the checks stay code); Docs Qwen2
 pick is new); Booking, Rate and TMS link code only (prices and records must be exact).
 **The whitepaper's agent table still lists the smaller picks** - align it if these stay.
 
+**Three layers, second pass** (owner's go on the recommended set): arrowheads show work
+flowing down from each tool group to its agents and from the bus to the TMS; a black **You
+approve** pill sits on that last line; the model chips came off this slide (the whitepaper
+holds them); each tool card ends in "+ more" ("+ any MCP client" for AI assistants, "+ 57
+more" for Sources); the bottom layer is "ANY TMS, BY EXPORT OR API" - the TMS link with
+CargoWise, SAP, Oracle and Descartes, then plain name chips (no official marks) for Riege
+Scope, AEB, DAKOSY, Portbase, "Freight exchanges" TIMOCOM and Transporeon, and a dashed
+"+ any TMS with an export or API". One footnote: logos are examples; live today the 60
+sources and MCP; the TMS is read from an export or its API and approved changes go back
+the same way; native connectors next. Never write "custom integrations built for your
+stack" - no such onboarding exists.
+
 **Current version: three layers** (2026-10-01, the owner's pick of four proposed layouts;
 the network ring before it is in git at the previous commits). Top, YOUR TOOLS in six
 grouped cards, each directly above the agents that use it: Mail (Outlook, Gmail) over
