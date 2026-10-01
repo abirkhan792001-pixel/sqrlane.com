@@ -40,27 +40,29 @@ STEPS_07 = [
     ("stage-in-transit", 2.0, "up"), ("stage-arrival", 2.2, "up"), ("stage-billing", 2.4, "up"),
     ("playbook", 3.0, "up"), ("gate-and-record", 3.8, "up"),
 ]
-# The dashboard on slide 07, with a 16px margin of slide background: x 80, y 290,
+# The dashboard on slides 07 and 08 (the same frame), with a 16px margin of slide background: x 80, y 290,
 # 1032 x 616 on the 1920 x 1080 slide. Placed there in Figma, it sits exactly over the
 # static mock. Captured at 3x (3096 x 1848) so it stays sharp when shown larger.
 DESK_07 = (80, 290, 1032, 616)
+
+# slide 08: the dashboard's reveals are the alert; the right panel follows the story the
+# scene plays (scene_08.js): the trail as the headline lands, each agent as it works
+STEPS_08 = [
+    ("notifications", 0.5, "pop"), ("popup-news", 0.5, "down"),
+    ("detection-trail", 0.9, "up"), ("watch", 1.0, "up"),
+    ("popup-agent", 1.3, "left"), ("this-run", 1.6, "up"),
+    ("risk-agent", 2.2, "up"), ("routing-agent", 3.9, "up"), ("comms-agent", 5.3, "up"),
+    ("cost-impact", 7.4, "up"), ("planner-agent", 7.9, "up"), ("the-desk", 8.3, "up"),
+    ("gate-and-record", 8.7, "up"),
+]
 
 TIMELINES = {
     "07": {"file": "slide-07-the-how-1.svg", "length": 16.0, "scene": "scene_07.js", "steps": STEPS_07},
     "07-desk": {"file": "slide-07-the-how-1.svg", "out": "slide-07-the-desk.mp4", "length": 16.0,
                 "scene": "scene_07.js", "steps": STEPS_07, "clip": DESK_07, "scale": 3},
-    "08": {"file": "slide-08-the-how-2.svg", "length": 8.0, "steps": [
-        ("watch", 0.3, "up"),
-        ("notifications", 0.7, "pop"), ("popup-news", 0.8, "down"),
-        ("risk-agent", 1.1, "up"),
-        ("popup-agent", 1.6, "left"), ("routing-agent", 1.7, "up"),
-        ("this-run", 2.3, "up"), ("cost-impact", 2.4, "up"),
-        ("decision-reroute", 3.0, "up"), ("comms-agent", 3.1, "up"),
-        ("planner-agent", 3.5, "up"),
-        ("decision-mail", 3.8, "up"), ("the-desk", 4.0, "up"),
-        ("decision-hold", 4.6, "up"), ("gate-and-record", 4.7, "up"),
-        ("detection-trail", 5.3, "up"),
-    ]},
+    "08": {"file": "slide-08-the-how-2.svg", "length": 18.0, "scene": "scene_08.js", "steps": STEPS_08},
+    "08-desk": {"file": "slide-08-the-how-2.svg", "out": "slide-08-the-desk.mp4", "length": 18.0,
+                "scene": "scene_08.js", "steps": STEPS_08, "clip": DESK_07, "scale": 3},
 }
 DUR = 0.6   # each reveal
 
@@ -71,6 +73,8 @@ body > svg{display:block;width:1920px;height:1080px}
 .anim{transform-box:fill-box;transform-origin:center}
 </style></head><body>%SVG%<script>
 const STEPS = %STEPS%, DUR = %DUR%;
+window.LAST_T = %LAST%;          // the last frame's time: a scene can land exactly on the still
+window.MARKS = %MARKS%;          // channel_marks.json, for a scene that needs an official mark
 const ease = x => 1 - Math.pow(1 - x, 3);
 const els = [];
 for (const [id, t0, fx] of STEPS) {
@@ -114,6 +118,8 @@ def render(key):
     html = (PAGE.replace("%SVG%", svg).replace("%STEPS%", json.dumps(spec["steps"]))
                 .replace("%DUR%", str(DUR))
                 .replace("%FONT%", (FONTS / "Geist-Variable.woff2").as_uri())
+                .replace("%LAST%", repr((round(spec["length"] * FPS) - 1) / FPS))
+                .replace("%MARKS%", (HERE / "channel_marks.json").read_text(encoding="utf-8"))
                 .replace("%SCENE%", (HERE / spec["scene"]).read_text(encoding="utf-8") if "scene" in spec else ""))
     out = HERE / spec.get("out", spec["file"].replace(".svg", ".mp4"))
     frames = round(spec["length"] * FPS)

@@ -180,12 +180,13 @@ MCP (simple-icons, CC0, brand hex filled in for `currentColor`).
 Figma drops SVG animation on import, so `animate.py` renders motion to MP4 for Figma
 Slides: it opens the slide's own SVG in headless Chromium, hides the listed layers and
 reveals them on a timeline (rise, drop, slide in, pop), captures 30 fps at 2x (3840x2160, 4K, so small text stays sharp in Figma and on a projector) and encodes H.264 at CRF 12
-(`slide-07-the-how-1.mp4` 16 s, `slide-07-the-desk.mp4` 16 s, `slide-08-the-how-2.mp4` 8 s,
+(`slide-07-the-how-1.mp4` and `slide-07-the-desk.mp4` 16 s, `slide-08-the-how-2.mp4` and
+`slide-08-the-desk.mp4` 18 s,
 ending on the finished slide so they loop). The arrow drawn just before a layer arrives with it. Chat messages
 and decision cards are their own named layers now (`chat-question`, `chat-answer`,
 `chat-draft`, `chat-input`, `decision-reroute`, `decision-mail`, `decision-hold`); the
 static slides are pixel-identical. **After any change to slide 07 or 08, re-run
-`python3 animate.py 07 07-desk 08`** (pip: playwright, imageio-ffmpeg, pillow). In Figma, upload the MP4
+`python3 animate.py 07 07-desk 08 08-desk`** (pip: playwright, imageio-ffmpeg, pillow). In Figma, upload the MP4
 onto the slide with autoplay and loop; it plays in presentation mode, not in grid view.
 
 **Slide 07 video, third version (16 s), and the desk on its own (2026-10-01).** The owner
@@ -219,6 +220,37 @@ Outputs: `slide-07-the-how-1.mp4` (the whole slide, 3840x2160) and
 **`slide-07-the-desk.mp4`** (`python3 animate.py 07-desk`): the dashboard alone with a
 16 px margin of slide background - x 80, y 290, 1032 x 616 on the slide - at 3x, so
 3096x1848. Placed at that box on slide 07 in Figma it sits exactly over the static mock.
+
+**Slide 08 video, the risk layer on its own (2026-10-01, 18 s).** The owner asked for the
+window only, with slide 07's lessons, plus "the agents output or findings based on the
+event trigger", "a sense of urgency or heightened awareness when a news like that pops in",
+and "a scroll down effect and preview of what the agents have built, prepared or drafted".
+`scene_08.js` plays it, cloned from the still like slide 07's scene, and `animate.py 08-desk`
+crops the same 1032 x 616 window (`slide-08-the-desk.mp4`, 3096x1848); `animate.py 08`
+renders the whole slide from the same scene, its right-panel rows arriving as each agent
+starts work.
+
+- **The alert (0.5 s):** the NDR headline drops in; its badge and the bell's ping in red
+  three times, the card's outline pulses red, the bell rings, and the sidebar's Risk count
+  turns red. All of it settles by 3.8 s.
+- **The finding (3.0 s):** the Risk agent's card, re-worded from the reroute card: "3 of 7
+  bookings call at Hamburg. Up to 5 days late.", the seven bookings as pills, SHP-001,
+  SHP-002 and SHP-005 in red, "4 stay on plan", a red "high" pill, and "23 h before the
+  international wires" (the demo scenario's trail). Then Routing weighs slack, the reroute,
+  Comms drafts, the mail, Routing finds no better route for SHP-002, the hold. "This run"
+  and the Approvals count tick up as the agents produce them (18 = 6 drafts + 12 changes).
+- **The preview (10 s):** the thread scrolls down past the cost line to PREPARED FOR YOU:
+  the carrier amendment to Hapag-Lloyd (the run's draft), a Slack heads-up for the ops
+  channel, and the TMS link's record for SHP-001 (the run's five field changes and the two
+  drafts on the communication log, old values struck through, "Queued, not written" +
+  Approve); then it scrolls home and rests on the still.
+- **The Slack heads-up is the one thing the build does not draft.** Its words are the
+  run's (2 reroutes, 1 hold, 6 drafts and 12 TMS changes), it carries the same Draft
+  ready + Approve gate, and it is there because slide 09 names chat as where the Comms
+  agent's work goes next. Say so if asked. Mail stays on the Outlook mark the slide uses.
+- The Risk agent's ring and shine are timed to rest exactly on the still at the last
+  frame (`window.LAST_T`, which `animate.py` now passes, with `window.MARKS` from
+  `channel_marks.json` for the Slack mark).
 
 **Slide 07 right panel, one rhythm** (owner: fill the white space, uniform and aligned):
 every row 46 px, every arrow gap 18 px, stage cards 95 px, so the panel fills to its foot
