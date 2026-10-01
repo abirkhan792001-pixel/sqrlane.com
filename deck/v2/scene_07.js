@@ -15,7 +15,7 @@
 
   // ------------------------------------------------------------- the conversation
   const Q1 = "Where is MEDU-1774390?", Q2 = "Price 2 x 40HC Shanghai to Rotterdam";
-  const T = { type1: 2.6, send1: 3.7, chip: 9.3, send2: 10.0 };
+  const T = { type1: 2.6, send1: 3.7, chip: 9.3, send2: 10.0, customsDone: 5.0 };
   const ITEMS = [
     { t0: 3.7, html: bubble(Q1) },
     { t0: 4.0, t1: 4.9, html: status("Assistant", "Routing it to the Milestones agent") },
@@ -92,10 +92,20 @@
     const dots = [...pop.querySelectorAll("circle")].filter(c => +c.getAttribute("r") < 2.5);
     const rcx = dots.reduce((a, c) => a + +c.getAttribute("cx"), 0) / dots.length;
     const rcy = dots.reduce((a, c) => a + +c.getAttribute("cy"), 0) / dots.length;
-    // "working…" shines: a gradient swept across it
-    const work = byText(pop, "working");
-    const wb = work.getBBox();
+    // the card works first, then shows its result: build the working state over the
+    // finished one (the static slide is the finished state)
     const NS = "http://www.w3.org/2000/svg";
+    const doneG = document.getElementById("customs-done"), resG = document.getElementById("customs-result");
+    const resT = resG.querySelector("text");
+    const db0 = doneG.getBBox();
+    const work = document.createElementNS(NS, "text");
+    work.setAttribute("x", db0.x + db0.width - 2); work.setAttribute("y", +resT.getAttribute("y") - 21);
+    work.setAttribute("text-anchor", "end"); work.setAttribute("font-family", "Geist");
+    work.setAttribute("font-size", "11"); work.setAttribute("font-weight", "500"); work.textContent = "working…";
+    pop.appendChild(work);
+    const prep = resT.cloneNode(); prep.textContent = "Preparing the entry for France.";
+    pop.appendChild(prep);
+    const wb = work.getBBox();
     const defs = document.createElementNS(NS, "defs");
     defs.innerHTML = `<linearGradient id="shine-g" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="0" y2="0">
       <stop offset="0" stop-color="#A3A3A3"/><stop offset="0.5" stop-color="${BLUE}"/><stop offset="1" stop-color="#A3A3A3"/></linearGradient>`;
@@ -127,7 +137,7 @@
       wrap.appendChild(inner); col.appendChild(wrap);
       return { ...it, wrap, inner, h: inner.getBoundingClientRect().height };
     });
-    S = { counts, dots, rcx, rcy, work, wb, input, chipRect, chipFill: chipRect.getAttribute("fill"), col, items, viewH: h };
+    S = { counts, dots, rcx, rcy, work, wb, doneG, resG, prep, input, chipRect, chipFill: chipRect.getAttribute("fill"), col, items, viewH: h };
   }
 
   function shineHtml(el, t) {
@@ -144,7 +154,15 @@
     for (const [el, v] of S.counts) el.textContent = String(Math.round(v * pc));
     // the agent ring turns, the "working…" shines
     const ang = (t * 300) % 360;
-    for (const d of S.dots) d.setAttribute("transform", `rotate(${ang} ${S.rcx} ${S.rcy})`);
+    // the Customs agent: working, then done with its result
+    const pout = prog(t, T.customsDone, 0.2), pd = prog(t, T.customsDone + 0.2, 0.35);
+    const cang = t < T.customsDone ? ang : (T.customsDone * 300) % 360 * (1 - pd);
+    for (const d of S.dots) d.setAttribute("transform", `rotate(${cang} ${S.rcx} ${S.rcy})`);
+    S.work.style.opacity = 1 - pout; S.prep.style.opacity = 1 - pout;
+    S.doneG.style.opacity = pd; S.resG.style.opacity = pd;
+    S.doneG.style.transformBox = "fill-box"; S.doneG.style.transformOrigin = "center";
+    S.doneG.style.transform = `scale(${0.7 + 0.3 * pd})`;
+    S.resG.style.transform = `translateY(${(1 - pd) * 4}px)`;
     const sweep = S.wb.x - S.wb.width + ((t * 0.7) % 1) * S.wb.width * 3;
     const g = document.getElementById("shine-g");
     g.setAttribute("x1", sweep - 30); g.setAttribute("x2", sweep + 30);

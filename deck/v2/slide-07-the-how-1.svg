@@ -71,8 +71,13 @@
 <circle cx="796.0" cy="373.0" r="1.6" fill="#006BFF" fill-opacity="0.83"/>
 <circle cx="800.2" cy="374.8" r="1.6" fill="#006BFF" fill-opacity="0.91"/>
 <text x="812" y="383" font-family="Geist" font-size="12.5" font-weight="600" fill="#006BFF">Customs agent</text>
-<text x="1050" y="383" font-family="Geist" font-size="11" font-weight="500" fill="#9A9A9A" text-anchor="end">working…</text>
-<text x="788" y="404" font-family="Geist" font-size="12" font-weight="400" fill="#0A0A0A">Preparing the entry for France.</text>
+<g id="customs-done">
+<rect x="1009" y="372" width="43" height="20" rx="10.0" fill="#E7F5EC"/>
+<text x="1030.5" y="385.78" font-family="Geist" font-size="10.5" font-weight="600" fill="#0F7B3F" text-anchor="middle">done</text>
+</g>
+<g id="customs-result">
+<text x="788" y="404" font-family="Geist" font-size="12" font-weight="400" fill="#0A0A0A">Entry for France prepared · not filed</text>
+</g>
 </g>
 <g id="the-morning">
 <rect x="308" y="430" width="756" height="114" rx="12" fill="#FFFFFF" stroke="#0A0A0A" stroke-opacity="0.12"/>

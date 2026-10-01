@@ -200,6 +200,12 @@ preview (To, Cc, subject, body, Draft ready, Approve); then the suggestion chip 
 CMA CGM €4,800, Maersk €4,940, MSC alternate €5,080; synthetic rate sheet). All from
 `ask.ask()` and the IN-106 draft; no dates. The window scrolls as it fills.
 
+**Customs pop-up ends on its output** (owner's note): the static slide shows the finished
+state - a green "done" tag and "Entry for France prepared · not filed" (the Customs agent's
+real result for IN-111); in the video the card first shows "working…" (shining) and
+"Preparing the entry for France." with the ring spinning, and at 5 s the ring settles, the
+working line fades out and the result fades in.
+
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 
 Where it came from: the old web deck says "60% goes to coordination, only 40% goes to the

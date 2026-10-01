@@ -114,8 +114,10 @@ s.g("popup-agent")
 soft_card(P2X, PT, P2W, PH_, 14)
 agent_mark(P2X + 22, PT + 19, 6)
 s.T(P2X + 38, PT + 23, "Customs agent", 12.5, 600, BLUE)
-s.T(P2X + P2W - 14, PT + 23, "working…", 11, 500, GREY, anchor="end")
-s.T(P2X + 14, PT + 44, "Preparing the entry for France.", 12, 400, INK)
+# the finished state: the Customs agent's real output for IN-111 (prepared, not filed).
+# The video plays "working…" first (scene_07.js), then lands here.
+s.g("customs-done"); pill(P2X + P2W - 12, PT + 12, "done", GREEN_BG, GREEN); s.end()
+s.g("customs-result"); s.T(P2X + 14, PT + 44, "Entry for France prepared · not filed", 12, 400, INK); s.end()
 s.end()
 
 # ---- the morning in one line, each figure with its tag (workflow.run() stats)
