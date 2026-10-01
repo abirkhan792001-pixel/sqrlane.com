@@ -206,6 +206,12 @@ real result for IN-111); in the video the card first shows "working…" (shining
 "Preparing the entry for France." with the ring spinning, and at 5 s the ring settles, the
 working line fades out and the result fades in.
 
+**Slide 07 right panel, one rhythm** (owner: fill the white space, uniform and aligned):
+every row 46 px, every arrow gap 18 px, stage cards 95 px, so the panel fills to its foot
+(an assert in `build_07.py` stops the build if it overruns). Assistant and TMS link start
+on the desk's third column, Inbox and You approve end at the same edge; the two narrow
+boxes carry their description on a second line.
+
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 
 Where it came from: the old web deck says "60% goes to coordination, only 40% goes to the

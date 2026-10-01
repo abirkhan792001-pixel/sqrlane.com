@@ -225,34 +225,42 @@ def count_chip(x, y, text, fill=BLUE_BG, ink=BLUE, anchor="start"):
 def agents(n): return f"{n} agent" + ("s" if n > 1 else "")
 
 y = TOP + 56
+# one rhythm for the whole panel: every row RH tall, every arrow gap AG, stage cards CHH,
+# chosen so the panel fills to its foot. Right-hand boxes start on the desk's third column.
+RH, AG, CHH = 46, 18, 95
+cw3 = (hw - 28 - 16) / 3
+X3 = hx + 14 + 2 * (cw3 + 8)              # left edge of the desk's third column
+LW = X3 - 24 - hx                          # left box width, both split rows
+RW = hx + hw - X3                          # right box width, both split rows
+ty = lambda yy: yy + RH / 2 + 5            # text baseline in a row
+cy_ = lambda yy: yy + RH / 2 - 9.5         # chip top in a row
+
 # the risk layer: light grey, detailed on slide 08
 s.g("risk-layer")
-s.R(hx, y, hw, 40, GREY_BG, 10, f' stroke="{INK}" stroke-opacity="0.10" stroke-dasharray="4 3"')
-s.T(hx + 14, y + 25, "Risk layer", 13.5, 600, "#7A7A7A")
-cw = count_chip(hx + 96, y + 10, agents(4), CARD, "#7A7A7A")
-s.T(hx + 96 + cw + 12, y + 25, "watches 60 sources, decides reroute or hold", 11.5, 400, "#8A8A8A")
-s.T(hx + hw - 14, y + 25, "slide 08", 11.5, 600, "#8A8A8A", anchor="end")
+s.R(hx, y, hw, RH, GREY_BG, 10, f' stroke="{INK}" stroke-opacity="0.10" stroke-dasharray="4 3"')
+s.T(hx + 14, ty(y), "Risk layer", 13.5, 600, "#7A7A7A")
+cw = count_chip(hx + 96, cy_(y), agents(4), CARD, "#7A7A7A")
+s.T(hx + 96 + cw + 12, ty(y) - 0.5, "watches 60 sources, decides reroute or hold", 11.5, 400, "#8A8A8A")
+s.T(hx + hw - 14, ty(y) - 0.5, "slide 08", 11.5, 600, "#8A8A8A", anchor="end")
 s.raw('<defs><linearGradient id="risk-fade" x1="0" y1="0" x2="1" y2="0">'
       f'<stop offset="0.35" stop-color="{CARD}" stop-opacity="0"/><stop offset="0.95" stop-color="{CARD}" stop-opacity="1"/>'
       '</linearGradient></defs>')
-s.R(hx - 2, y - 2, hw + 4, 44, "url(#risk-fade)")
+s.R(hx - 2, y - 2, hw + 4, RH + 4, "url(#risk-fade)")
 s.end()
-y += 40; arrow(y, y + 12); y += 14
+y += RH; arrow(y, y + AG - 2); y += AG
 
 # the two front doors
 s.g("front-doors")
-IW = hw - 248
-s.R(hx, y, IW, 40, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
-s.T(hx + 14, y + 25, "Inbox", 13.5, 600, INK)
-cw = count_chip(hx + 62, y + 10, agents(1))
-s.T(hx + 62 + cw + 12, y + 25, "reads every mail, routes it to its owner", 11.5, 400, MUT)
-ax0 = hx + IW + 8
-s.R(ax0, y, 240, 40, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
-s.T(ax0 + 14, y + 25, "Assistant", 13.5, 600, INK)
-cw = count_chip(ax0 + 88, y + 10, agents(1))
-s.T(ax0 + 88 + cw + 10, y + 25, "your questions", 11.5, 400, MUT)
+s.R(hx, y, LW, RH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
+s.T(hx + 14, ty(y), "Inbox", 13.5, 600, INK)
+cw = count_chip(hx + 62, cy_(y), agents(1))
+s.T(hx + 62 + cw + 12, ty(y) - 0.5, "reads every mail, routes it to its owner", 11.5, 400, MUT)
+s.R(X3, y, RW, RH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
+s.T(X3 + 14, y + 20, "Assistant", 13.5, 600, INK)          # narrow box: two lines
+count_chip(X3 + RW - 12, y + 7, agents(1), anchor="end")
+s.T(X3 + 14, y + 37, "takes your questions", 11.5, 400, MUT)
 s.end()
-y += 40; arrow(y, y + 12); y += 14
+y += RH; arrow(y, y + AG - 2); y += AG
 
 # the desk: six stages, in the order a shipment lives, each with its agent count
 STAGES = [("01", "Quote", ["Rate", "RFQ"], "Prices it, drafts the quote"),
@@ -262,57 +270,55 @@ STAGES = [("01", "Quote", ["Rate", "RFQ"], "Prices it, drafts the quote"),
           ("05", "Arrival", ["Customs"], "Prepares the entry, never files"),
           ("06", "Billing", ["Invoice"], "Checks the bill against the rate")]
 s.g("the-desk")
-DH = 234
+DH = 36 + 2 * CHH + 8 + 14
 s.R(hx, y, hw, DH, BG, 12, f' stroke="{INK}" stroke-opacity="0.10"')
 s.T(hx + 14, y + 22, "THE DESK", 10.5, 700, MUT, ls=1.2)
 s.T(hx + 84, y + 22, "8 agents, in the order a shipment lives", 11.5, 400, MUT)
-cw3 = (hw - 28 - 16) / 3; chh = 92
 for k, (num, name, who, job) in enumerate(STAGES):
     r, c = divmod(k, 3)
-    x = hx + 14 + c * (cw3 + 8); yy = y + 36 + r * (chh + 8)
+    x = hx + 14 + c * (cw3 + 8); yy = y + 36 + r * (CHH + 8)
     s.g("stage-" + name.lower().replace(" ", "-"))
-    s.R(x, yy, cw3, chh, CARD, 10, f' stroke="{INK}" stroke-opacity="0.12"')
-    s.T(x + 14, yy + 26, num, 11, 700, GREY, ls=0.6)
-    s.T(x + 38, yy + 26, name, 14.5, 600, ls=-0.2)
-    count_chip(x + cw3 - 12, yy + 11, agents(len(who)), anchor="end")
-    s.T(x + 14, yy + 47, job, 11.5, 400, MUT)
+    s.R(x, yy, cw3, CHH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.12"')
+    s.T(x + 14, yy + 28, num, 11, 700, GREY, ls=0.6)
+    s.T(x + 38, yy + 28, name, 14.5, 600, ls=-0.2)
+    count_chip(x + cw3 - 12, yy + 13, agents(len(who)), anchor="end")
+    s.T(x + 14, yy + 52, job, 11.5, 400, MUT)
     bx = x + 14
     for a in who:
         w = round(len(a) * 6.4 + 16)
-        s.R(bx, yy + 60, w, 20, GREY_BG, 5)
-        s.T(bx + w / 2, yy + 74, a, 11, 500, "#3A3A3A", anchor="middle")
+        s.R(bx, yy + 66, w, 20, GREY_BG, 5)
+        s.T(bx + w / 2, yy + 80, a, 11, 500, "#3A3A3A", anchor="middle")
         bx += w + 5
     s.end()
 s.end()
 y += DH
 for c in range(3):                       # every stage hands its output to the Playbook
     x = hx + 14 + c * (cw3 + 8) + cw3 / 2
-    s.line(x, y, x, y + 8, AMB, 0.6, 1.5)
-y += 8
+    s.line(x, y, x, y + AG, AMB, 0.6, 1.5)
+y += AG
 s.g("playbook")
-s.R(hx, y, hw, 36, AMBR_BG, 10)
-s.T(hx + 14, y + 23, "Playbook", 13.5, 600, AMB)
-cw = count_chip(hx + 86, y + 9, agents(1), CARD, AMB)
-s.T(hx + 86 + cw + 12, y + 23, "checks every output against the customer's rules", 11.5, 400, AMB)
+s.R(hx, y, hw, RH, AMBR_BG, 10)
+s.T(hx + 14, ty(y), "Playbook", 13.5, 600, AMB)
+cw = count_chip(hx + 86, cy_(y), agents(1), CARD, AMB)
+s.T(hx + 86 + cw + 12, ty(y) - 0.5, "checks every output against the customer's rules", 11.5, 400, AMB)
 s.end()
-y += 36; arrow(y, y + 12); y += 14
+y += RH; arrow(y, y + AG - 2); y += AG
 
-# the gate, then the record
+# the gate, then the record - on the same split as the front doors
 s.g("gate-and-record")
-GW = (hw - 28) / 2
-s.R(hx, y, GW, 40, INK, 10)
-s.T(hx + 14, y + 25, "You approve", 13.5, 700, CARD)
-s.T(hx + 108, y + 25, "every draft, every change", 11.5, 400, "#D6D6D6")
-ax1 = hx + GW + 4
-s.line(ax1, y + 20, ax1 + 15, y + 20, INK, 0.3, 1.5)
-s.raw(f'<path d="M{ax1+14} {y+15.5} L{ax1+20} {y+20} L{ax1+14} {y+24.5}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
-tx = hx + GW + 28
-s.R(tx, y, GW, 40, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
-s.T(tx + 14, y + 25, "TMS link", 13.5, 600, INK)
-cw = count_chip(tx + 84, y + 10, agents(1))
-s.T(tx + 84 + cw + 10, y + 25, "writes it onto the booking", 11.5, 400, MUT)
+s.R(hx, y, LW, RH, INK, 10)
+s.T(hx + 14, ty(y), "You approve", 13.5, 700, CARD)
+s.T(hx + 108, ty(y) - 0.5, "every draft, every change", 11.5, 400, "#D6D6D6")
+ax1 = hx + LW + 3
+s.line(ax1, y + RH / 2, ax1 + 15, y + RH / 2, INK, 0.3, 1.5)
+s.raw(f'<path d="M{ax1+13} {y+RH/2-4.5} L{ax1+19} {y+RH/2} L{ax1+13} {y+RH/2+4.5}" stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>')
+s.R(X3, y, RW, RH, CARD, 10, f' stroke="{INK}" stroke-opacity="0.16"')
+s.T(X3 + 14, y + 20, "TMS link", 13.5, 600, INK)
+count_chip(X3 + RW - 12, y + 7, agents(1), anchor="end")
+s.T(X3 + 14, y + 37, "writes it onto the booking", 11.5, 400, MUT)
 s.end()
-y += 40
+y += RH
+assert y <= BOT - 20, y                    # the panel's foot
 s.end()
 
 s.T(M, 946, "Ask the desk anything. Every step recorded, and approved by you.", 28, 600, ls=-0.6)
