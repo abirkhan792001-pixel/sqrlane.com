@@ -1,41 +1,40 @@
 #!/usr/bin/env python3
 """Slide 10 - Who am I. Option A, "the proof stack", on the owner's pick (2026-10-01).
 
-Top left, the founder: photo, name, role, LinkedIn QR and the two experience lines the
-owner approved. Top right, three rows that prove the headline one part each. Under both,
-the logo band: education, work and institutions, as the owner listed them.
+Left, the founder: photo, name, role, the two approved experience lines and a LinkedIn
+link. Right, three one-line proofs, one per part of the headline (the owner asked for them
+brief), and under them the logo band in the owner's three groups.
 
-No official file for any of the eight logos could be had from this sandbox (only npm is
-reachable, and no open icon set carries them), so each sits in its own named layer
-(logo-*) as a grey name badge, the deck's fallback for a missing mark. Drop the official
-file into that layer in Figma, or send it and it is inlined byte-for-byte. Never redrawn.
+Logos are the owner's own files (deck/v2/logos/), cropped to the mark and, where they came
+on white, made transparent - nothing redrawn. A logo whose file has not arrived is a dashed
+box in its own named layer (logo-*), sized for the owner to drop the file in.
 
-Name, photo and QR are dashed slots: a placeholder that reads like real copy is how an
+Name and photo stay dashed slots: a placeholder that reads like real copy is how an
 invented founder reaches a room.
 
 SVG text does not wrap, so every string is measured against Geist and the build stops if
 one overruns its box."""
 from kit import *
-import pathlib
-from PIL import ImageFont
+import base64, math, pathlib
+from PIL import Image, ImageFont
 
 GREEN, GREEN_BG = "#0F7B3F", "#E9F3EC"
-AMB_BG, CHIP_BG = "#F6EEE3", "#F0F0F0"
 SLOT_BG, SLOT_INK = "#F2F2F2", "#8F8F8F"
+HERE = pathlib.Path(__file__).parent
+LINKEDIN = "https://www.linkedin.com/in/khan-abir/"
 
 FONT = pathlib.Path.home() / ".fonts" / "Geist-Variable.ttf"
 if not FONT.exists():
-    FONT = pathlib.Path(__file__).resolve().parents[2] / "static" / "fonts" / "Geist-Variable.ttf"
+    FONT = HERE.parents[1] / "static" / "fonts" / "Geist-Variable.ttf"
 _cache = {}
 def width(text, size, weight=400, ls=0):
     """Rendered width of a string in Geist, letter-spacing included."""
-    key = (size, weight)
-    if key not in _cache:
+    if (size, weight) not in _cache:
         f = ImageFont.truetype(str(FONT), size)
         f.set_variation_by_axes([weight])
-        _cache[key] = f
+        _cache[size, weight] = f
     t = text.replace("&amp;", "&")
-    return _cache[key].getlength(t) + ls * max(len(t) - 1, 0)
+    return _cache[size, weight].getlength(t) + ls * max(len(t) - 1, 0)
 
 def fit(text, size, weight, box, ls=0):
     w = width(text, size, weight, ls)
@@ -51,13 +50,8 @@ def wrap(text, size, weight, box):
     lines.append(cur)
     return lines
 
-s = Slide()
-HEAD = "Seen the gap. Built the product. Mapped the buyers."
-fit(HEAD, 66, 600, W - 2 * M, ls=-2)
-s.header("08 · WHO AM I", HEAD, "One founder. Every line on the right is already done.")
-
 def slot(x, y, w, h, lines, size, idn):
-    """A dashed placeholder the founder fills in. Visibly unfinished on purpose."""
+    """A dashed placeholder. Visibly unfinished on purpose."""
     s.g(idn)
     s.R(x, y, w, h, SLOT_BG, 10, f' stroke="{INK}" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="6 5"')
     lh = size * 1.25
@@ -67,116 +61,129 @@ def slot(x, y, w, h, lines, size, idn):
         s.T(x + w / 2, round(y0 + i * lh, 1), ln, size, 500, SLOT_INK, anchor="middle")
     s.end()
 
-def chip(x, y, text, kind):
-    """A status tag, left edge at x, top at y, 30 tall. Returns its width."""
-    fg, bg = {"live": (GREEN, GREEN_BG), "grey": (MUT, CHIP_BG), "amber": (AMB, AMB_BG)}[kind]
-    dot = 16 if kind == "live" else 0
-    w = round(width(text, 14, 500) + 22 + dot)
-    s.R(x, y, w, 30, bg, 7)
-    if dot: s.raw(f'<circle cx="{x + 15}" cy="{y + 15}" r="4" fill="{GREEN}"/>')
-    s.T(x + 11 + dot, y + 20, text, 14, 500, fg)
-    return w
-
 def tick(cx, cy):
     s.raw(f'<circle cx="{cx}" cy="{cy}" r="11" fill="{GREEN_BG}"/>')
     s.raw(f'<path d="M{cx - 4.5} {cy + 0.3}l3 3 6-6.4" stroke="{GREEN}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
 
-TOP, CARD_H = 318, 358
+s = Slide()
+HEAD = "Seen the gap. Built the product. Mapped the buyers."
+fit(HEAD, 66, 600, W - 2 * M, ls=-2)
+s.header("08 · WHO AM I", HEAD, "One founder. Every proof below is already done.")
+
+TOP, BOTTOM = 318, 880
 
 # ---------------------------------------------------------------- the founder
 FX, FW, PAD = M, 520, 32
+IN_W = FW - 2 * PAD
 s.g("founder")
-s.card(FX, TOP, FW, CARD_H)
-slot(FX + PAD, TOP + PAD, 120, 120, ["[ Photo ]"], 16, "photo")
-NX = FX + PAD + 120 + 20
-slot(NX, TOP + PAD + 14, 210, 48, ["[ Full name ]"], 24, "name")
-s.T(NX, TOP + PAD + 96, "Founder, SQRlane", 19, 400, MUT)
-slot(FX + FW - PAD - 84, TOP + PAD, 84, 84, ["[ LinkedIn", "QR ]"], 12, "linkedin-qr")
-assert NX + 210 + 12 <= FX + FW - PAD - 84, "name slot runs into the QR"
+s.card(FX, TOP, FW, BOTTOM - TOP)
+PH = 200
+slot(FX + PAD, TOP + PAD, PH, PH, ["[ Photo ]"], 17, "photo")
+NX = FX + PAD + PH + 20
+slot(NX, TOP + PAD + 6, IN_W - PH - 20, 48, ["[ Full name ]"], 24, "name")
+s.T(NX, TOP + PAD + 88, "Founder, SQRlane", 19, 400, MUT)
 
-HR = TOP + PAD + 120 + 26
-s.rule(HR, 0.1, FX + PAD, FW - 2 * PAD)
+HR = TOP + PAD + PH + 28
+s.rule(HR, 0.1, FX + PAD, IN_W)
 s.T(FX + PAD, HR + 36, "EXPERIENCE", 13, 500, MUT, ls=2.4, mono=True)
 EXPERIENCE = ["Shaped the investment thesis of a $170M VC fund.",
               "Advised Fortune 500 CEOs on restructuring liabilities above $100M."]
-y = HR + 72
+y = HR + 74
 for item in EXPERIENCE:
-    for ln in wrap(item, 19, 400, FW - 2 * PAD):
+    for ln in wrap(item, 19, 400, IN_W):
         s.T(FX + PAD, y, ln, 19, 400)
-        y += 26
-    y += 10
-assert y - 10 - 26 + 8 <= TOP + CARD_H - 20, f"experience runs past the card foot ({y})"
+        y += 27
+    y += 14
+EXP_END = y - 14 - 27 + 8
+
+# the link sits on the card's foot, under a hairline, like a contact line
+FOOT = BOTTOM - PAD - 46
+assert EXP_END + 20 <= FOOT, f"experience runs into the link ({EXP_END})"
+s.rule(FOOT, 0.1, FX + PAD, IN_W)
+s.g("linkedin")
+s.raw(f'<a href="{LINKEDIN}" target="_blank">')
+LBASE = BOTTOM - PAD - 6
+# LinkedIn's official mark, byte-for-byte from @iconify-json/logos (linkedin-icon, CC0)
+s.raw(f'<g transform="translate({FX + PAD} {LBASE - 17}) scale({20 / 256:.5f})">'
+      '<path fill="#0a66c2" d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4c-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.91 39.91 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186zM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009s9.851-22.014 22.008-22.016c12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97zM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453"/></g>')
+LTXT = "linkedin.com/in/khan-abir"
+lw = fit(LTXT, 18, 500, IN_W - 32)
+s.T(FX + PAD + 32, LBASE, LTXT, 18, 500)
+s.R(FX + PAD + 32, LBASE + 4, round(lw), 1, INK, extra=' fill-opacity="0.35"')   # reads as a link
+s.raw('</a>')
+s.end()
 s.end()
 
-# ---------------------------------------------------------------- the proofs
+# ---------------------------------------------------------------- the proofs, one line each
 PX = FX + FW + 24
 PW = W - M - PX
-ROW = CARD_H / 3
-LAB_W = 260
-CX0, CX1 = PX + 36 + LAB_W, PX + PW - 36            # content column
-PROOFS = [
-    ("proof-gap", "SEEN THE GAP", "Nobody owns the step between. That is my bet.",
-     "Risk tools stop at the alert. Execution tools start after the decision.", []),
-    ("proof-built", "BUILT THE PRODUCT", "SQRlane runs today, end to end.",
-     "16 agents, 60 live sources, any TMS by export or API. You approve every change.",
-     [("14 live", "live"), ("Planner scripted", "grey"), ("TMS link demo", "grey")]),
-    ("proof-buyers", "MAPPED THE BUYERS", "Mid-size forwarders in DACH and Benelux.",
-     "An ICP list of forwarders, enriched in Apollo. Events lined up for outreach.",
-     [("To confirm", "amber")]),
-]
+ROW, PPAD = 58, 12
+LAB_W = 250
+CX0, CX1 = PX + 36 + LAB_W, PX + PW - 36
+PROOFS = [("proof-gap", "SEEN THE GAP", "Nobody owns the step between. That is my bet."),
+          ("proof-built", "BUILT THE PRODUCT", "Runs today: 14 live agents, 60 live sources."),
+          ("proof-buyers", "MAPPED THE BUYERS", "Forwarder ICP list in Apollo. Events lined up for outreach.")]
+PH_CARD = len(PROOFS) * ROW + 2 * PPAD
 s.g("proofs")
-s.card(PX, TOP, PW, CARD_H)
-for i, (idn, lab, claim, ev, chips) in enumerate(PROOFS):
-    top = TOP + i * ROW
+s.card(PX, TOP, PW, PH_CARD)
+for i, (idn, lab, line) in enumerate(PROOFS):
+    top = TOP + PPAD + i * ROW
     s.g(idn)
-    if i: s.rule(round(top), 0.1, PX + 36, PW - 72)
-    tick(PX + 36 + 11, round(top + 42))
+    if i: s.rule(top, 0.1, PX + 36, PW - 72)
+    tick(PX + 36 + 11, top + 29)
     fit(lab, 13, 500, LAB_W - 40, ls=1.44)
-    s.T(PX + 36 + 34, round(top + 47), lab, 13, 500, INK, ls=2.4, mono=True)
-    base = round(top + 52)
-    cw = fit(claim, 28, 600, CX1 - CX0, ls=-0.5)
-    s.T(CX0, base, claim, 28, 600, ls=-0.5)
-    fit(ev, 19, 400, CX1 - CX0)
-    s.T(CX0, base + 34, ev, 19, 400, MUT)
-    # status chips sit right-aligned on the claim's line
-    widths = [round(width(t, 14, 500) + 22 + (16 if k == "live" else 0)) for t, k in chips]
-    x = CX1 - sum(widths) - 8 * max(len(widths) - 1, 0)
-    assert not chips or x >= CX0 + cw + 24, f"{idn}: chips run into the claim"
-    for (t, k), w in zip(chips, widths):
-        chip(x, base - 23, t, k)
-        x += w + 8
+    s.T(PX + 36 + 34, top + 34, lab, 13, 500, INK, ls=2.4, mono=True)
+    fit(line, 24, 600, CX1 - CX0, ls=-0.4)
+    s.T(CX0, top + 37, line, 24, 600, ls=-0.4)
     s.end()
 s.end()
 
-# ---------------------------------------------------------------- the logo band
-BAND_Y, BAND_H = TOP + CARD_H + 24, 156
-GROUPS = [("EDUCATION", ["Nova SBE", "CEMS MIM"]),
-          ("WORK", ["Alvarez &amp; Marsal", "SCAILE", "Biome VC"]),
-          ("INSTITUTIONS", ["UN Foundation", "TUM|Manage and More", "Hack-Nation"])]
-CELL_W, CELL_H, GAP, SIDE = 184, 64, 12, 32
+# ---------------------------------------------------------------- the logos
+BY = TOP + PH_CARD + 24
+BH = BOTTOM - BY
+GROUPS = [("EDUCATION", ["nova-sbe", "cems-mim"]),
+          ("WORK", ["alvarez-and-marsal", "scaile", "biome-vc"]),
+          ("INSTITUTIONS", ["un-foundation", "manage-and-more", "hack-nation"])]
+NAMES = {"nova-sbe": "Nova SBE", "cems-mim": "CEMS MIM", "alvarez-and-marsal": "Alvarez &amp; Marsal",
+         "scaile": "SCAILE", "biome-vc": "Biome VC", "un-foundation": "UN Foundation",
+         "manage-and-more": "TUM Manage and More", "hack-nation": "Hack-Nation"}
+SIDE, BPAD = 28, 32
+COL_W = math.floor((PW - 2 * BPAD - 2 * (2 * SIDE + 1)) / 3)
+SLOT_H, SLOT_GAP = 76, 12
+LOGO_MAX_W = COL_W - 20
+# Optical height per mark, set by eye on the render: a lockup with small type under it
+# needs more height than a one-line wordmark to carry the same weight.
+LOGO_H = {"nova-sbe": 62, "cems-mim": 44, "alvarez-and-marsal": 70, "scaile": 34}
+SY0 = BY + 64
+assert SY0 + 3 * SLOT_H + 2 * SLOT_GAP <= BOTTOM - 20, "logo slots run past the band"
+
+def logo(key, x, y):
+    """The owner's file at its optical height (LOGO_H), left-aligned in its slot."""
+    p = HERE / "logos" / f"{key}.png"
+    s.g(f"logo-{key}")
+    if p.exists():
+        im = Image.open(p)
+        a = im.width / im.height
+        h = min(LOGO_H.get(key, 56), LOGO_MAX_W / a)
+        w = h * a
+        href = "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode()
+        s.raw(f'<image x="{x}" y="{y + (SLOT_H - h) / 2:.1f}" width="{w:.1f}" height="{h:.1f}" href="{href}"/>')
+    else:
+        slot(x, y + 8, 220, SLOT_H - 16, [f"[ {NAMES[key]} ]"], 15, f"logo-{key}-slot")
+    s.end()
+
 s.g("logos")
-s.card(M, BAND_Y, W - 2 * M, BAND_H)
-x = M + 32
-for gi, (lab, names) in enumerate(GROUPS):
+s.card(PX, BY, PW, BH)
+x = PX + BPAD
+for gi, (lab, keys) in enumerate(GROUPS):
     if gi:
-        s.R(x + SIDE, BAND_Y + 24, 1, BAND_H - 48, INK, extra=' fill-opacity="0.1"')
+        s.R(x + SIDE, BY + 28, 1, BH - 56, INK, extra=' fill-opacity="0.1"')
         x += 2 * SIDE + 1
-    s.T(x, BAND_Y + 40, lab, 13, 500, MUT, ls=2.4, mono=True)
-    for name in names:
-        slug = "logo-" + name.lower().replace("&amp;", "and").replace("|", " ").replace(" ", "-")
-        s.g(slug)
-        s.R(x, BAND_Y + 60, CELL_W, CELL_H, "#F5F5F5", 10, f' stroke="{INK}" stroke-opacity="0.08"')
-        # "|" is a chosen line break, so a name splits where it reads, not where it runs out
-        lines = name.split("|") if "|" in name else [name] if width(name, 16, 600) <= CELL_W - 24 else wrap(name, 16, 600, CELL_W - 24)
-        lh = 20
-        y0 = BAND_Y + 60 + CELL_H / 2 - lh * (len(lines) - 1) / 2 + 6
-        for j, ln in enumerate(lines):
-            fit(ln, 16, 600, CELL_W - 24)
-            s.T(x + CELL_W / 2, round(y0 + j * lh, 1), ln, 16, 600, "#3A3A3A", anchor="middle")
-        s.end()
-        x += CELL_W + GAP
-    x -= GAP
-assert x <= W - M - 32, f"logo band overruns by {x - (W - M - 32)}px"
+    s.T(x, BY + 42, lab, 13, 500, MUT, ls=2.4, mono=True)
+    for j, key in enumerate(keys):
+        logo(key, x, SY0 + j * (SLOT_H + SLOT_GAP))
+    x += COL_W
+assert x <= PX + PW - BPAD, f"logo columns overrun by {x - (PX + PW - BPAD)}px"
 s.end()
 
 # ---------------------------------------------------------------- the line they repeat
