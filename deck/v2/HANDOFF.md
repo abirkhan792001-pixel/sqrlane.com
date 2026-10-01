@@ -191,12 +191,19 @@ planned, D the team this round builds); the owner picked **A**, then gave notes 
   https://www.linkedin.com/in/khan-abir/ (Figma may drop the link on import; re-add it on
   the text). No QR code.
 - **Top right, three linked tiles** (the owner found tick rows boring), joined by chevron
-  circles, each a label, a picture and one bold line:
+  circles, each a label, a picture, a hairline, one bold line and one grey line:
   Seen the gap - a three-step bar, ALERT (risk tools) / DECIDE (nobody, amber) / ACT
-  (execution), "Nobody owns the step between. That is my bet."; Built the product - "14 live
-  agents", "60 live sources" as large numerals, "Runs today, end to end." (14 live, so no
-  tag is needed); Mapped the buyers - a chain, Forwarder ICP list → Enriched in Apollo →
-  Events lined up, "Next: outreach." The Apollo list is confirmed as SQRlane's own work.
+  (execution), "That is my bet." / "Nobody owns the step between."; Built the product -
+  "14 live agents", "60 live sources" as large numerals, "Runs today, end to end." / "Every
+  change waits for you."; Mapped the buyers - three equal steps, Forwarder ICP list →
+  Enriched in Apollo → Events lined up, "Next: outreach." / "The groundwork is done." The
+  Apollo list is confirmed as SQRlane's own work.
+- **One grid for the top row** (owner: "make sure alignments are uniform"): all four cards
+  use 32 px padding; the tile labels' squares start at the photo's top; every picture is
+  centred on one line (`HC`) and the joins sit on it; one hairline (`FOOT_RULE`) runs at
+  the same height through all four cards; the bold lines and the LinkedIn link share a
+  baseline (`BOLD_BASE`); the grey lines sit level with the photo's foot (`LAST_BASE`).
+  Change a line in one place and every card follows.
 - **Logo band, one horizontal row** (owner: "instead of vertical, keep it horizontal"):
   Education (Nova SBE, CEMS MIM), Work (Alvarez &amp; Marsal, SCAILE, Biome VC),
   Institutions (UN Foundation, Manage and More, Hack-Nation). Logos sit at their natural

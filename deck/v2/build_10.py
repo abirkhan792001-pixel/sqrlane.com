@@ -72,7 +72,7 @@ BAND_H = 150
 ROW_B = BOTTOM - BAND_H - 24          # foot of the top row
 
 # ---------------------------------------------------------------- the founder
-FX, FW, PAD = M, 760, 32
+FX, FW, PAD = M, 748, 32
 s.g("founder")
 s.card(FX, TOP, FW, ROW_B - TOP)
 PW_, PH_ = 260, 324                   # 4:5 portrait, the owner's photo
@@ -86,22 +86,35 @@ DX = px + PW_ + 32                    # the details column
 DW = FX + FW - PAD - DX
 s.T(DX, py + 40, "Abir Khan", 44, 600, ls=-1.2)
 s.T(DX, py + 76, "Founder, SQRlane", 20, 400, MUT)
-s.rule(py + 104, 0.1, DX, DW)
-s.T(DX, py + 138, "EXPERIENCE", 13, 500, MUT, ls=2.4, mono=True)
+s.rule(py + 96, 0.1, DX, DW)
+s.T(DX, py + 128, "EXPERIENCE", 13, 500, MUT, ls=2.4, mono=True)
 EXPERIENCE = ["Shaped the investment thesis of a VC fund.",
               "Advised Fortune 500 CEOs on restructuring liabilities above $100M."]
-y = py + 174
+y = py + 162
 for item in EXPERIENCE:
     for ln in wrap(item, 19, 400, DW):
         s.T(DX, y, ln, 19, 400)
         y += 27
-    y += 12
-EXP_END = y - 12 - 27 + 8
+    y += 10
+EXP_END = y - 10 - 27 + 8
 
-# the link sits on the column's foot, under a hairline, like a contact line
-LBASE = ROW_B - PAD - 4
-assert EXP_END + 34 <= LBASE - 30, f"experience runs into the link ({EXP_END})"
-s.rule(LBASE - 34, 0.1, DX, DW)
+# ---------------------------------------------------------------- one grid for the whole top row
+# Every card in the row shares these lines, so nothing in it floats:
+#   LABEL_BASE  tile labels; their square's top is the photo's top
+#   HC          the centre line of every tile's picture, and of the joins between tiles
+#   FOOT_RULE   one hairline at the same height in all four cards
+#   BOLD_BASE   the tiles' bold line, and the LinkedIn link
+#   LAST_BASE   the tiles' grey line, level with the photo's foot
+LABEL_BASE = TOP + PAD + 10
+LAST_BASE = py + PH_ - 2
+BOLD_BASE = LAST_BASE - 26
+FOOT_RULE = BOLD_BASE - 34
+HC = (LABEL_BASE + FOOT_RULE) // 2
+
+# the founder's link sits under the shared hairline, on the bold line's baseline
+assert EXP_END + 20 <= FOOT_RULE, f"experience runs into the hairline ({EXP_END})"
+s.rule(FOOT_RULE, 0.1, DX, DW)
+LBASE = BOLD_BASE
 s.g("linkedin")
 s.raw(f'<a href="{LINKEDIN}" target="_blank">')
 # LinkedIn's official mark, byte-for-byte from @iconify-json/logos (linkedin-icon, CC0)
@@ -120,76 +133,71 @@ TX0 = FX + FW + 24
 TGAP = 24
 TW = (W - M - TX0 - 2 * TGAP) / 3
 TH = ROW_B - TOP
-TP = 28
-HERO_Y = TOP + 110                    # top of each tile's picture
-CAP_Y = ROW_B - TP - 36               # first baseline of each tile's punchline
+TP = PAD                              # the same padding as the founder card
+CW = TW - 2 * TP                      # content width inside a tile
 
-def tile_head(x, text):
-    s.card(round(x, 1), TOP, round(TW, 1), TH)
-    fit(text, 13, 500, TW - 2 * TP - 24, ls=1.44)
-    s.label(round(x + TP, 1), TOP + TP + 18, text, INK, 13)
-
-def punch(x, text):
-    lines = wrap(text, 21, 600, TW - 2 * TP)
-    assert len(lines) <= 2, f"punchline longer than two lines: {text!r}"
-    for i, ln in enumerate(lines):
-        s.T(round(x + TP, 1), CAP_Y + i * 28, ln, 21, 600, ls=-0.3)
+def tile(x, label, bold, grey):
+    """Card, label, hairline and the two closing lines, all on the shared grid."""
+    x = round(x, 1)
+    s.card(x, TOP, round(TW, 1), TH)
+    fit(label, 13, 500, CW - 24, ls=1.44)
+    s.label(x + TP, LABEL_BASE, label, INK, 13)
+    s.rule(FOOT_RULE, 0.1, x + TP, round(CW, 1))
+    fit(bold, 21, 600, CW, ls=-0.3)
+    s.T(x + TP, BOLD_BASE, bold, 21, 600, ls=-0.3)
+    fit(grey, 16, 400, CW)
+    s.T(x + TP, LAST_BASE, grey, 16, 400, MUT)
+    return x + TP
 
 # 1 - the gap: who owns each step between an alert and an action
-x = TX0
 s.g("proof-gap")
-tile_head(x, "SEEN THE GAP")
+cx = tile(TX0, "SEEN THE GAP", "That is my bet.", "Nobody owns the step between.")
 STEPS = [("ALERT", "Risk tools", INK), ("DECIDE", "Nobody", AMB), ("ACT", "Execution", INK)]
-sw = (TW - 2 * TP - 2 * 8) / 3
+SG = 6
+sw = (CW - 2 * SG) / 3
 for i, (step, owner, col) in enumerate(STEPS):
-    sx_ = round(x + TP + i * (sw + 8), 1)
-    s.R(sx_, HERO_Y + 40, round(sw, 1), 10, col, 5)
-    fit(step, 13, 600, sw, ls=2 * 0.6)
-    fit(owner, 15, 600 if col == AMB else 400, sw - 4)
-    s.T(sx_, HERO_Y + 78, step, 13, 600, col, ls=2, mono=True)
-    s.T(sx_, HERO_Y + 102, owner, 15, 600 if col == AMB else 400, col if col == AMB else MUT)
-punch(x, "Nobody owns the step between. That is my bet.")
+    sx_ = round(cx + i * (sw + SG), 1)
+    s.R(sx_, HC - 36, round(sw, 1), 12, col, 6)
+    fit(step, 13, 600, sw, ls=1.2)
+    fit(owner, 15, 600 if col == AMB else 400, sw - 2)
+    s.T(sx_, HC + 4, step, 13, 600, col, ls=2, mono=True)
+    s.T(sx_, HC + 28, owner, 15, 600 if col == AMB else 400, col if col == AMB else MUT)
 s.end()
 
 # 2 - the product: two counts from the build, not from a market
-x = TX0 + TW + TGAP
 s.g("proof-built")
-tile_head(x, "BUILT THE PRODUCT")
+cx = tile(TX0 + TW + TGAP, "BUILT THE PRODUCT", "Runs today, end to end.", "Every change waits for you.")
 for i, (n, what) in enumerate([("14", "live agents"), ("60", "live sources")]):
-    nx = round(x + TP + i * (TW - 2 * TP) / 2, 1)
-    s.T(nx, HERO_Y + 74, n, 76, 600, ls=-3)
-    s.T(nx, HERO_Y + 102, what, 16, 400, MUT)
-punch(x, "Runs today, end to end.")
+    nx = round(cx + i * CW / 2, 1)
+    s.T(nx, HC + 12, n, 72, 600, ls=-3)
+    s.T(nx, HC + 40, what, 16, 400, MUT)
 s.end()
 
-# 3 - the buyers: the groundwork, in the order it was done
-x = TX0 + 2 * (TW + TGAP)
+# 3 - the buyers: the groundwork, in the order it was done, as equal steps
 s.g("proof-buyers")
-tile_head(x, "MAPPED THE BUYERS")
+cx = tile(TX0 + 2 * (TW + TGAP), "MAPPED THE BUYERS", "Next: outreach.", "The groundwork is done.")
 CHAIN = ["Forwarder ICP list", "Enriched in Apollo", "Events lined up"]
-cy = HERO_Y - 4
-bx = round(x + TP, 1)
+PILL, PGAP = 30, 14
+cy = HC - (len(CHAIN) * PILL + (len(CHAIN) - 1) * PGAP) // 2
+assert cy >= LABEL_BASE + 20 and cy + 3 * PILL + 2 * PGAP <= FOOT_RULE - 20, "chain leaves its zone"
 for i, step in enumerate(CHAIN):
     last = i == len(CHAIN) - 1
-    cw = round(width(step, 15, 500) + 28)
-    assert cw <= TW - 2 * TP, f"chain step too wide: {step}"
-    s.R(bx, cy, cw, 32, INK if last else CARD, 8, "" if last else f' stroke="{INK}" stroke-opacity="0.18"')
-    s.T(bx + 14, cy + 21, step, 15, 500, BG if last else INK)
-    if not last:
-        s.line(bx + 16, cy + 34, bx + 16, cy + 44, INK, 0.35, 1.5)
-        s.raw(f'<path d="M{bx + 12} {cy + 40} l4 4 l4 -4" stroke="{INK}" stroke-opacity="0.35" stroke-width="1.5" fill="none"/>')
-    cy += 46
-assert cy - 14 <= CAP_Y - 30, "chain runs into the punchline"
-punch(x, "Next: outreach.")
+    fit(step, 15, 500, CW - 28)
+    s.R(cx, cy, round(CW, 1), PILL, INK if last else CARD, 8, "" if last else f' stroke="{INK}" stroke-opacity="0.18"')
+    s.T(cx + 14, cy + 20, step, 15, 500, BG if last else INK)
+    if not last:                       # an arrow down the gap, under the text's first letter
+        ax = cx + 18
+        s.line(ax, cy + PILL + 2, ax, cy + PILL + PGAP - 3, INK, 0.5, 1.5)
+        s.raw(f'<path d="M{ax - 3.5} {cy + PILL + PGAP - 6.5} l3.5 3.5 l3.5 -3.5" stroke="{INK}" stroke-opacity="0.5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+    cy += PILL + PGAP
 s.end()
 
-# the joins between tiles: seen, then built, then mapped
+# the joins between tiles sit on the pictures' centre line
 s.g("proof-joins")
 for i in (1, 2):
     gx = TX0 + i * TW + (i - 0.5) * TGAP
-    gy = TOP + TH / 2
-    s.raw(f'<circle cx="{gx:.1f}" cy="{gy}" r="15" fill="{CARD}" stroke="{INK}" stroke-opacity="0.18"/>')
-    s.raw(f'<path d="M{gx - 2.5:.1f} {gy - 5} l5 5 l-5 5" stroke="{INK}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+    s.raw(f'<circle cx="{gx:.1f}" cy="{HC}" r="15" fill="{CARD}" stroke="{INK}" stroke-opacity="0.18"/>')
+    s.raw(f'<path d="M{gx - 2.5:.1f} {HC - 5} l5 5 l-5 5" stroke="{INK}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
 s.end()
 
 # ---------------------------------------------------------------- the logos, one horizontal band
