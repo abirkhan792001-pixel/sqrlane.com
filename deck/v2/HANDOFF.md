@@ -179,7 +179,7 @@ MCP (simple-icons, CC0, brand hex filled in for `currentColor`).
 
 Figma drops SVG animation on import, so `animate.py` renders motion to MP4 for Figma
 Slides: it opens the slide's own SVG in headless Chromium, hides the listed layers and
-reveals them on a timeline (rise, drop, slide in, pop), captures 30 fps and encodes H.264
+reveals them on a timeline (rise, drop, slide in, pop), captures 30 fps at 2x (3840x2160, 4K, so small text stays sharp in Figma and on a projector) and encodes H.264 at CRF 12
 (`slide-07-the-how-1.mp4`, `slide-08-the-how-2.mp4`, 8 s each, ending on the finished
 slide so they loop). The arrow drawn just before a layer arrives with it. Chat messages
 and decision cards are their own named layers now (`chat-question`, `chat-answer`,

@@ -16,6 +16,8 @@ from playwright.sync_api import sync_playwright
 
 HERE = pathlib.Path(__file__).parent
 FPS, W, H = 30, 1920, 1080
+SCALE = 2          # capture at 2x: the video is 3840x2160 (4K), so 11px text stays sharp
+                   # when Figma or a projector scales it
 
 # (layer id, start in seconds, effect). Layers not listed are on screen from the start.
 # Effects: up (rise and fade in), down (drop in from above), left (a short slide from the
@@ -104,7 +106,7 @@ def render(key):
         page_file = pathlib.Path(tmp) / "slide.html"
         page_file.write_text(html, encoding="utf-8")
         b = pw.chromium.launch(executable_path=chrome(), args=["--no-sandbox"])
-        pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=1)
+        pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=SCALE)
         pg.goto(page_file.as_uri())
         pg.wait_for_timeout(300)                     # fonts settle
         for f in range(frames):
@@ -113,8 +115,8 @@ def render(key):
         b.close()
         subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error",
                         "-framerate", str(FPS), "-i", f"{tmp}/f%04d.png",
-                        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18",
-                        "-preset", "slow", "-movflags", "+faststart", str(out)], check=True)
+                        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "12",
+                        "-preset", "slow", "-tune", "animation", "-profile:v", "high", "-movflags", "+faststart", str(out)], check=True)
     print("wrote", out, f"({frames} frames, {spec['length']}s)")
 
 
