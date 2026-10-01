@@ -25,9 +25,9 @@ HERE = pathlib.Path(__file__).parent
 CH = json.loads((HERE / "channel_marks.json").read_text())   # Iconify, CC0/MIT
 TM = json.loads((HERE / "tms_marks.json").read_text())
 
-CX, CY, RX, RY = 960, 616, 650, 194
+CX, CY, RX, RY = 960, 606, 650, 186
 N_R = 54          # agent node radius
-B_R = 28          # logo bubble radius
+B_R = 31          # logo bubble radius
 
 def uid():
     uid.n += 1
@@ -67,49 +67,99 @@ def agent_mark(cx, cy, r=6, col=BLUE):
         s.raw(f'<circle cx="{cx + r * math.cos(a):.1f}" cy="{cy + r * math.sin(a):.1f}" r="{r * 0.27:.1f}" fill="{col}" fill-opacity="{0.35 + 0.08 * i:.2f}"/>')
 
 # (name, angle in degrees on the ellipse, orbit radius, tools). A tool is a channel mark
-# name, ("tms", vendor, pill width), ("cw",) for the CargoWise icon, or ("more", text).
+# name, ("tms", vendor) for a TMS wordmark, ("cw",) for the CargoWise icon, or ("more", text).
+# Work order, clockwise from the left: a mail comes in, is booked, its documents read, the
+# lane priced, the result checked, written to the TMS; then the risk side.
 NODES = [
-    ("Inbox", 180, 104, ["Outlook", "Gmail"]),
-    ("Docs", 225, 108, ["PDF", "Word", "Excel", "Image", "XML"]),
-    ("Playbook", 270, 96, ["Word", "OneDrive", "GoogleDrive"]),
-    ("Rate", 315, 104, ["Excel", "GoogleSheets"]),
-    ("TMS link", 0, 136, [("cw",), ("tms", "SAP", 40), ("tms", "Oracle", 70), ("tms", "Descartes", 84)]),
-    ("Comms", 45, 108, ["Teams", "Slack", "WhatsApp", "WeChat"]),
-    ("Assistant", 90, 96, ["Claude", "Cursor", "VSCode"]),
-    ("Risk", 135, 108, ["NDR", "DW", "NASA", ("more", "+57")]),
+    ("Inbox",     180, 108, ["Outlook", "Gmail"]),
+    ("Booking",   220,  96, []),
+    ("Docs",      260, 96, ["PDF", "Word", "Excel", "Image"]),
+    ("Rate",      300, 100, ["Excel", "GoogleSheets"]),
+    ("Playbook",  340, 104, ["Word", "OneDrive", "GoogleDrive"]),
+    ("TMS link",   20, 140, [("cw",), ("tms", "SAP"), ("tms", "Oracle"), ("tms", "Descartes")]),
+    ("Comms",      60, 108, ["Teams", "Slack", "WhatsApp", "WeChat"]),
+    ("Assistant", 100, 96, ["Claude", "ChatGPT", "Codex", "Cursor"]),
+    ("Risk",      140, 108, ["NDR", "DW", "NASA", ("more", "+57")]),
 ]
-# Recommended open-weight model per agent - static/whitepaper.html, "Sixteen agents, and
-# which of them need a model". Agents that compute rather than generate run no model.
-MODEL = {"Inbox": "Qwen3.5-9B", "Docs": "code only", "Playbook": "code only",
-         "Rate": "code only", "TMS link": "code only", "Comms": "Llama-3.3-70B",
-         "Assistant": "Qwen3.5-9B", "Risk": "Qwen3.5-9B"}
+# The open-weight model each agent is built to run, EU-hosted - the strong end of the
+# options static/whitepaper.html already gives per job. Where the answer must be exact
+# (a price, a rule check, a write to the record) it is computed, never generated.
+MODEL = {"Inbox": "Gemma-3-27B", "Booking": "code only", "Docs": "Qwen2.5-VL-72B",
+         "Rate": "code only", "Playbook": "Qwen3-235B", "TMS link": "code only",
+         "Comms": "Llama-3.3-70B", "Assistant": "Gemma-3-27B", "Risk": "Qwen3-235B"}
 BLUE_BG2, GREY_BG2 = "#E8F1FF", "#F3F3F3"
-POS = {}
-for name, ang, _, _ in NODES:
-    a = math.radians(ang)
-    POS[name] = (CX + RX * math.cos(a), CY + RY * math.sin(a))
+AMB_L = "#96580A"
+POS, OUT = {}, {}
+_ts = [math.pi + 2 * math.pi * i / 3600 for i in range(3601)]
+_pts = [(CX + RX * math.cos(u), CY + RY * math.sin(u)) for u in _ts]
+_cum = [0.0]
+for i in range(1, len(_pts)):
+    _cum.append(_cum[-1] + math.dist(_pts[i - 1], _pts[i]))
+for k, (name, _, _, _) in enumerate(NODES):
+    target = _cum[-1] * k / len(NODES)
+    i = next(j for j, c in enumerate(_cum) if c >= target)
+    u = _ts[i]
+    POS[name] = _pts[i]
+    OUT[name] = math.atan2(RX * math.sin(u), RY * math.cos(u))   # the outward normal
 
-# ---- the bus: a faint spoke from every agent to the centre
 s.g("bus")
 s.raw(f'<ellipse cx="{CX}" cy="{CY}" rx="{RX}" ry="{RY}" fill="none" stroke="{INK}" stroke-opacity="0.06" stroke-width="1"/>')
 s.end()
 
-# ---- the network: real handoffs between agents, curved through the middle
-LINKS = [("Inbox", "Docs"), ("Inbox", "Rate"), ("Inbox", "Playbook"), ("Docs", "TMS link"),
-         ("Rate", "Playbook"), ("Playbook", "Comms"), ("Risk", "TMS link"), ("Risk", "Comms"),
-         ("Assistant", "TMS link"), ("Assistant", "Risk")]
-s.g("network")
-for a, b in LINKS:
+def curve(a, b, k_near=0.30, k_far=0.50):
     (x1, y1), (x2, y2) = POS[a], POS[b]
     mx, my = (x1 + x2) / 2, (y1 + y2) / 2
-    near = math.dist((x1, y1), (x2, y2)) < 600                 # neighbours: a gentle bend
-    k = 0.18 if near else 0.55
-    qx, qy = mx + (CX - mx) * k, my + (CY - my) * k           # bend toward the bus
-    s.raw(f'<path d="M{x1:.1f} {y1:.1f} Q{qx:.1f} {qy:.1f} {x2:.1f} {y2:.1f}" stroke="{BLUE}" stroke-opacity="0.28" stroke-width="1.4" fill="none"/>')
-    for t, op in ((0.32, 0.9), (0.62, 0.45)):                  # messages in flight
-        px = (1 - t) ** 2 * x1 + 2 * (1 - t) * t * qx + t ** 2 * x2
-        py = (1 - t) ** 2 * y1 + 2 * (1 - t) * t * qy + t ** 2 * y2
-        s.raw(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="3.2" fill="{BLUE}" fill-opacity="{op}"/>')
+    k = k_near if math.dist((x1, y1), (x2, y2)) < 520 else k_far
+    return x1, y1, mx + (CX - mx) * k, my + (CY - my) * k, x2, y2
+
+def at(c, t):
+    x1, y1, qx, qy, x2, y2 = c
+    return ((1 - t) ** 2 * x1 + 2 * (1 - t) * t * qx + t ** 2 * x2,
+            (1 - t) ** 2 * y1 + 2 * (1 - t) * t * qy + t ** 2 * y2)
+
+# ---- every other real handoff, faint
+OTHER = [("Inbox", "Rate"), ("Docs", "TMS link"), ("Playbook", "Comms"), ("Risk", "TMS link"),
+         ("Risk", "Comms"), ("Assistant", "TMS link"), ("Assistant", "Risk")]
+s.g("network")
+for a, b in OTHER:
+    x1, y1, qx, qy, x2, y2 = curve(a, b)
+    s.raw(f'<path d="M{x1:.1f} {y1:.1f} Q{qx:.1f} {qy:.1f} {x2:.1f} {y2:.1f}" stroke="{INK}" stroke-opacity="0.10" stroke-width="1.2" fill="none"/>')
+s.end()
+
+# ---- one real thread, IN-108, the vaccine booking: the bus's own messages, in order
+THREAD = [("Inbox", "Booking", "1", "Booking request · Nordmed Pharma", BLUE),
+          ("Docs", "Booking", "2", "7 fields read", BLUE),
+          ("Rate", "Booking", "3", "Best: ONE · €3,880", BLUE),
+          ("Playbook", "Booking", "4", "ONE not approved · use Maersk or Hapag-Lloyd", AMB_L),
+          ("Playbook", "TMS link", "5", "Rebooked Hapag-Lloyd · queued for you", BLUE)]
+LABEL_T = {"1": 0.5, "2": 0.5, "3": 0.55, "4": 0.5, "5": 0.5}
+LABEL_DY = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0}
+s.g("thread-in-108")
+labels = []
+for a, b, n, msg, col in THREAD:
+    c = curve(a, b)
+    x1, y1, qx, qy, x2, y2 = c
+    s.raw(f'<path d="M{x1:.1f} {y1:.1f} Q{qx:.1f} {qy:.1f} {x2:.1f} {y2:.1f}" stroke="{col}" stroke-opacity="0.75" stroke-width="2" fill="none"/>')
+    ex, ey = at(c, 0.9); fx, fy = at(c, 0.86)               # arrowhead, pointing at b
+    ang = math.atan2(ey - fy, ex - fx)
+    s.raw(f'<path d="M{ex + 7*math.cos(ang):.1f} {ey + 7*math.sin(ang):.1f} L{ex + 6*math.cos(ang+2.5):.1f} {ey + 6*math.sin(ang+2.5):.1f} L{ex + 6*math.cos(ang-2.5):.1f} {ey + 6*math.sin(ang-2.5):.1f} Z" fill="{col}"/>')
+    labels.append((at(c, LABEL_T[n]), n, msg, col))
+for (lx, ly), n, msg, col in labels:
+    s.raw(f'<circle cx="{lx:.1f}" cy="{ly:.1f}" r="11" fill="{col}" stroke="{CARD}" stroke-width="2.5"/>')
+    s.T(lx, ly + 4, n, 11.5, 700, CARD, anchor="middle")
+s.end()
+# the card: what the agents said, in their own words (workflow.run, IN-108)
+TX0, TY0, TW0, TH0 = 1296, 92, W - M - 1296, 178
+s.g("thread-card")
+s.card(TX0, TY0, TW0, TH0, 12)
+s.T(TX0 + 18, TY0 + 26, "ONE MAIL, IN-108", 11, 700, AMB, ls=1.2)
+s.T(TX0 + TW0 - 18, TY0 + 26, "a vaccine booking · the agents' own messages", 10.5, 400, GREY, anchor="end")
+for k, (a, b, n, msg, col) in enumerate(THREAD):
+    yy = TY0 + 50 + k * 25
+    s.raw(f'<circle cx="{TX0 + 28}" cy="{yy - 4}" r="9" fill="{col}"/>')
+    s.T(TX0 + 28, yy, n, 10.5, 700, CARD, anchor="middle")
+    s.T(TX0 + 46, yy, f"{a} → {b if n != '5' else 'TMS link'}", 11, 600, GREY)
+    s.T(TX0 + 186, yy, msg, 11.5, 600 if col == AMB_L else 500, col if col == AMB_L else INK)
 s.end()
 
 # ---- the centre: SQRlane
@@ -127,7 +177,7 @@ s.end()
 # ---- each agent, with its tools in orbit
 def bubble_w(tool):
     if isinstance(tool, tuple) and tool[0] == "tms":
-        return tool[2] * 1.25 + 30
+        return 128
     return B_R * 2
 
 def draw_tool(tool, bx, by):
@@ -135,18 +185,18 @@ def draw_tool(tool, bx, by):
     s.R(bx - w / 2, by - h / 2 + 2, w, h, INK, h / 2, ' fill-opacity="0.05"')
     s.R(bx - w / 2, by - h / 2, w, h, CARD, h / 2, f' stroke="{INK}" stroke-opacity="0.10"')
     if isinstance(tool, str):
-        mark(tool, bx, by, 30)
+        mark(tool, bx, by, 34)
     elif tool[0] == "cw":
-        cargowise_icon(bx, by, 32)
+        cargowise_icon(bx, by, 36)
     elif tool[0] == "tms":
-        tms_word(tool[1], bx, by, tool[2] * 1.25)
+        tms_word(tool[1], bx, by, {'SAP': 52, 'Oracle': 92, 'Descartes': 100}[tool[1]])
     else:
         s.T(bx, by + 5, tool[1], 14, 600, MUT, anchor="middle")
 
 for name, ang, orb, tools in NODES:
     x, y = POS[name]
     s.g(f"agent-{name.lower().replace(' ', '-')}")
-    out = math.radians(ang)
+    out = OUT[name]
     # spread the tools along the arc: each takes the room it needs across the arc's direction
     tx, ty = -math.sin(out), math.cos(out)
     ang_sizes = [(abs(bubble_w(tl) * tx) + abs(2 * B_R * ty) + 16) / orb for tl in tools]
@@ -182,8 +232,8 @@ s.g("disclosure")
 s.T(M, 946, "Logos show where each agent works. Live today: the 60 public sources and MCP. "
     "TMS and mail are read from exports and files; native links come next.",
     12.5, 400, GREY)
-s.T(M, 966, "Model chips: the open-weight model each agent is built to run, hosted in the EU. "
-    "Agents marked code run no model. The prototype calls a US-hosted provider today.", 12.5, 400, GREY)
+s.T(M, 966, "Model chips: the open-weight model each agent is built to run, hosted in the EU. Code-only agents compute "
+    "exact answers (prices, records) and run no model. The prototype calls a US-hosted provider today.", 12.5, 400, GREY)
 s.end()
 
 s.footer(9)

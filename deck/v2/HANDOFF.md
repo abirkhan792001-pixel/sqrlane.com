@@ -116,12 +116,26 @@ the dashed spokes to the centre removed. Open question put to the owner: the blu
 read as random; options proposed are in the session reply (work-order ring, one real
 thread highlighted with its messages).
 
-Model chips (2026-10-01, on the owner's request): inside each agent node, the open-weight
-model it is built to run, EU-hosted, taken from the whitepaper's per-agent table - Inbox,
-Risk and Assistant Qwen3.5-9B, Comms Llama-3.3-70B; Docs, Rate, Playbook and TMS link
-"code only". Routing (Qwen3-235B-A22B) is not one of the eight nodes. A second footnote
-says the prototype calls a US-hosted provider today (the whitepaper's load-bearing line).
-Nodes grew to r=54 so the chip fits under the name.
+Third version (2026-10-01, owner's go on "work order + IN-108"): nine agents spaced evenly
+along the ring (by arc length, not angle) in work order, clockwise from the left: Inbox,
+Booking (new, no tools), Docs, Rate, Playbook, TMS link, Comms, Assistant, Risk. Other real
+handoffs are faint grey; the **IN-108 thread** is drawn bold with numbered steps on the
+edges, and its messages sit in a card top right ("One mail, IN-108"): 1 Inbox→Booking
+"Booking request · Nordmed Pharma", 2 Docs→Booking "7 fields read", 3 Rate→Booking "Best:
+ONE · €3,880", 4 Playbook→Booking (amber) "ONE not approved · use Maersk or Hapag-Lloyd",
+5 Playbook→TMS link "Rebooked Hapag-Lloyd · queued for you". Logos uniform and larger
+(circles r=31, marks 34px; all TMS wordmark pills 128px wide). The Assistant's ring now
+holds Claude, ChatGPT (openai-icon) and Codex (both from @iconify-json/logos) and Cursor;
+VS Code and XML dropped for room.
+
+**Models, re-picked "strong" on the owner's request** - the strong end of the options
+the whitepaper already gives, plus a vision model where the job needs one: Inbox and
+Assistant Gemma-3-27B (whitepaper: "Qwen3.5-9B or Gemma-3-27B"); Risk Qwen3-235B
+(multilingual prose, few calls per run); Comms Llama-3.3-70B; Playbook Qwen3-235B (turns
+a customer's written SOP into checkable rules; the checks stay code); Docs Qwen2.5-VL-72B
+(scanned PDFs and photos need vision - the whitepaper says so but names no model, so this
+pick is new); Booking, Rate and TMS link code only (prices and records must be exact).
+**The whitepaper's agent table still lists the smaller picks** - align it if these stay.
 
 Not shown, on purpose: SharePoint and BBC (their marks were withdrawn from simple-icons,
 so there is no official file to inline) and the rate-management vendors in the Zauber
