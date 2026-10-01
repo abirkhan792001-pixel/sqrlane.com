@@ -180,31 +180,45 @@ MCP (simple-icons, CC0, brand hex filled in for `currentColor`).
 Figma drops SVG animation on import, so `animate.py` renders motion to MP4 for Figma
 Slides: it opens the slide's own SVG in headless Chromium, hides the listed layers and
 reveals them on a timeline (rise, drop, slide in, pop), captures 30 fps at 2x (3840x2160, 4K, so small text stays sharp in Figma and on a projector) and encodes H.264 at CRF 12
-(`slide-07-the-how-1.mp4`, `slide-08-the-how-2.mp4`, 8 s each, ending on the finished
-slide so they loop). The arrow drawn just before a layer arrives with it. Chat messages
+(`slide-07-the-how-1.mp4` 16 s, `slide-07-the-desk.mp4` 16 s, `slide-08-the-how-2.mp4` 8 s,
+ending on the finished slide so they loop). The arrow drawn just before a layer arrives with it. Chat messages
 and decision cards are their own named layers now (`chat-question`, `chat-answer`,
 `chat-draft`, `chat-input`, `decision-reroute`, `decision-mail`, `decision-hold`); the
 static slides are pixel-identical. **After any change to slide 07 or 08, re-run
-`python3 animate.py 07 08`** (pip: playwright, imageio-ffmpeg). In Figma, upload the MP4
+`python3 animate.py 07 07-desk 08`** (pip: playwright, imageio-ffmpeg, pillow). In Figma, upload the MP4
 onto the slide with autoplay and loop; it plays in presentation mode, not in grid view.
 
-**Slide 07 video, second version (15 s):** the "One mail, together" strip was removed from
-slide 07 (static and video), on the owner's note. `scene_07.js` adds what a reveal cannot:
-the "This morning" figures count up from 0; both pop-ups slide in from the right, clipped to
-the app window; the Customs agent's dot-ring spins and "working…" shines. The chat plays as
-a conversation overlaid on the chat window: Q1 "Where is MEDU-1774390?" is typed and sent;
-status lines (Assistant routing it, Milestones reading SHP-004 from the TMS, Routing checking
-the route) shine and give way; the answer; "Drafting a reply to Pieter Claes…"; a mail
-preview (To, Cc, subject, body, Draft ready, Approve); then the suggestion chip "Price 2 x
-40HC Shanghai to Rotterdam" is pressed and the Rate agent's table arrives (MSC €4,660 best,
-CMA CGM €4,800, Maersk €4,940, MSC alternate €5,080; synthetic rate sheet). All from
-`ask.ask()` and the IN-106 draft; no dates. The window scrolls as it fills.
+**Slide 07 video, third version (16 s), and the desk on its own (2026-10-01).** The owner
+asked for "only this part" - the dashboard - as a video, with "the font style, size, and
+shape uniform across all". The second version drew its chat in HTML: cards 552 px wide
+against the still's 480, a mail preview laid out differently from the still's draft card,
+and a last frame (the rate table) that was not the slide. So `scene_07.js` was rewritten:
 
-**Customs pop-up ends on its output** (owner's note): the static slide shows the finished
-state - a green "done" tag and "Entry for France prepared · not filed" (the Customs agent's
-real result for IN-111); in the video the card first shows "working…" (shining) and
-"Preparing the entry for France." with the ring spinning, and at 5 s the ring settles, the
-working line fades out and the result fades in.
+- **Nothing in it is drawn in a style of its own.** Every new line is a clone of an element
+  `build_07.py` drew - the question bubble, the agent card and its ring, name, LIVE tag and
+  body, the draft's rule, lines and "Draft ready" - re-worded, so font, size, weight,
+  radius, border, shadow and card width are the slide's. The rate card is the Milestones
+  card made 150 px tall; status lines are that card's ring and name on a bare line, so
+  they sit on the cards' own x. The Customs "working" state is a grey pill in the "done"
+  pill's shape. One shine (grey text, an ink highlight) for every "working" line.
+- **The conversation runs rate question first.** The chip "Price 2 x 40HC Shanghai to
+  Rotterdam" is pressed and sent; Assistant routes it, the Rate agent prices 8 options,
+  the rate card lands (MSC €4,660 best, CMA CGM €4,800, Maersk €4,940, MSC via the
+  alternate €5,080; synthetic rate sheet). Then "Where is MEDU-1774390?" is typed and sent;
+  the chat scrolls it to the top, as a chat does; Assistant routes it, Milestones reads
+  SHP-004 from the TMS, Routing checks it is on plan, the answer lands, "Drafting a reply
+  to Pieter Claes", the draft lands. Those three items are the still's own groups, moved,
+  so **the last frame is the static slide**. All from `ask.ask()` and the IN-106 draft; no
+  dates. The Customs pop-up works from 1.8 s and shows its result at 6.2 s.
+- **`animate.py` checks it**: it renders the finished slide on its own and fails if the
+  last frame differs by a single pixel. It loads Geist from `static/fonts/` with
+  `@font-face`, so no machine renders a video in a fallback font, and fails if it does
+  not load.
+
+Outputs: `slide-07-the-how-1.mp4` (the whole slide, 3840x2160) and
+**`slide-07-the-desk.mp4`** (`python3 animate.py 07-desk`): the dashboard alone with a
+16 px margin of slide background - x 80, y 290, 1032 x 616 on the slide - at 3x, so
+3096x1848. Placed at that box on slide 07 in Figma it sits exactly over the static mock.
 
 **Slide 07 right panel, one rhythm** (owner: fill the white space, uniform and aligned):
 every row 46 px, every arrow gap 18 px, stage cards 95 px, so the panel fills to its foot
