@@ -63,6 +63,10 @@ def agent_mark(cx, cy, r=6, col=BLUE):
 
 # ---- the agents, in work order
 AGENTS = ["Inbox", "Booking", "Docs", "Rate", "Playbook", "Comms", "Assistant", "Risk"]
+# the open-weight model each agent is built to run, EU-hosted (whitepaper agent table)
+MODEL = {"Inbox": "Gemma-3-27B", "Booking": "code only", "Docs": "Qwen2.5-VL-72B",
+         "Rate": "code only", "Playbook": "Qwen3-235B", "Comms": "Llama-3.3-70B",
+         "Assistant": "Gemma-3-27B", "Risk": "Qwen3-235B"}
 # ---- the tools, grouped by type, each over the agents that use it (first slot, span, more)
 GROUPS = [("Mail", ["Outlook", "Gmail"], 0, 1, "+ more"),
           ("Documents", ["PDF", "Word", "Excel", "Image"], 1, 2, "+ more"),
@@ -99,7 +103,7 @@ for name, tools, first, span, more in GROUPS:
 s.end()
 
 # ============================================================ middle: the agents
-AY, AH = 524, 92
+AY, AH = 524, 112
 s.g("drops")                                    # work flows down from each group to its agents
 for name, tools, first, span, more in GROUPS:
     for i in range(first, first + span):
@@ -111,12 +115,16 @@ for i, name in enumerate(AGENTS):
     w = SLOT - 20; x0 = sx(i) - w / 2
     s.R(x0, AY + 3, w, AH, INK, 14, ' fill-opacity="0.04"')
     s.R(x0, AY, w, AH, CARD, 14, f' stroke="{INK}" stroke-opacity="0.12"')
-    agent_mark(sx(i), AY + 32, 8)
-    s.T(sx(i), AY + 68, name, 17, 600, anchor="middle")
+    agent_mark(sx(i), AY + 28, 8)
+    s.T(sx(i), AY + 62, name, 17, 600, anchor="middle")
+    mdl = MODEL[name]; code = mdl == "code only"
+    mw = round(len(mdl) * 6.2 + 20)
+    s.R(sx(i) - mw / 2, AY + 76, mw, 22, GREY_BG if code else AMB_BG, 11)
+    s.T(sx(i), AY + 91, mdl, 11, 600, GREY if code else AMB, anchor="middle")
 s.end()
 
 # the bus: every agent on one line
-BUS = AY + AH + 36
+BUS = AY + AH + 30
 s.g("bus")
 for i in range(len(AGENTS)):
     s.line(sx(i), AY + AH, sx(i), BUS, INK, 0.25, 1.4)
@@ -129,7 +137,7 @@ s.T(sx(len(AGENTS) - 1) + 6, BUS + 26, "also on the bus: Routing, Planner, RFQ, 
 s.end()
 
 # ============================================================ bottom: any TMS, behind your approval
-TY = BUS + 92
+TY = BUS + 84
 s.g("your-approval")
 s.line(W / 2, BUS, W / 2, TY - 2, AMB, 0.9, 2.2)
 arrow_down(W / 2, TY - 1, AMB, 1)
@@ -179,8 +187,10 @@ for txt, kind in items:
 s.end()
 
 s.g("disclosure")
-s.T(M, 956, "Logos are examples, not the full list. Live today: the 60 public sources and MCP. Your TMS is read from an "
+s.T(M, 940, "Logos are examples, not the full list. Live today: the 60 public sources and MCP. Your TMS is read from an "
     "export or its API; approved changes go back the same way. Native connectors come next.", 12.5, 400, GREY)
+s.T(M, 960, "Model chips: the open-weight model each agent is built to run, hosted in the EU. Code-only agents compute exact "
+    "answers and run no model. The prototype calls a US-hosted provider today.", 12.5, 400, GREY)
 s.end()
 
 s.footer(9)
