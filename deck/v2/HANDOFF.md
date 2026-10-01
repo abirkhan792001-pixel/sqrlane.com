@@ -192,10 +192,12 @@ planned, D the team this round builds); the owner picked **A**, then gave notes 
   the text). No QR code.
 - **Top right, three linked tiles** (the owner found tick rows boring), joined by chevron
   circles, each a label, a picture, a hairline, one bold line and one grey line:
-  Seen the gap - a three-step bar, ALERT (risk tools) / DECIDE (nobody, amber) / ACT
-  (execution), "That is my bet." / "Nobody owns the step between."; Built the product -
-  "14 live agents", "60 live sources" as large numerals, "Runs today, end to end." / "Every
-  change waits for you."; Mapped the buyers - three equal steps, Forwarder ICP list →
+  Seen the gap - a three-step bar with square corners (owner's note), ALERT (risk tools) /
+  DECIDE (nobody, amber) / ACT (execution), "That is my bet." / "Nobody owns the step
+  between."; Built the product - two stat rows split by a hairline, "14 · Live agents · of
+  16 agents" and "60 · Live sources · in six families" (side by side the figures read as
+  one number, "14 60", which the owner caught), figures left on the content edge, "Runs
+  today, end to end." / "Every change waits for you."; Mapped the buyers - three equal steps, Forwarder ICP list →
   Enriched in Apollo → Events lined up, "Next: outreach." / "The groundwork is done." The
   Apollo list is confirmed as SQRlane's own work.
 - **One grid for the top row** (owner: "make sure alignments are uniform"): all four cards

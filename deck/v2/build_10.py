@@ -157,20 +157,29 @@ SG = 6
 sw = (CW - 2 * SG) / 3
 for i, (step, owner, col) in enumerate(STEPS):
     sx_ = round(cx + i * (sw + SG), 1)
-    s.R(sx_, HC - 36, round(sw, 1), 12, col, 6)
+    s.R(sx_, HC - 36, round(sw, 1), 12, col)   # square-cornered, on the owner's note
     fit(step, 13, 600, sw, ls=1.2)
     fit(owner, 15, 600 if col == AMB else 400, sw - 2)
     s.T(sx_, HC + 4, step, 13, 600, col, ls=2, mono=True)
     s.T(sx_, HC + 28, owner, 15, 600 if col == AMB else 400, col if col == AMB else MUT)
 s.end()
 
-# 2 - the product: two counts from the build, not from a market
+# 2 - the product: two counts from the build, as two stat rows split by a hairline, so
+# they read as two facts and never as one number. The figures start on the tile's
+# content edge, like every other line in the row.
 s.g("proof-built")
 cx = tile(TX0 + TW + TGAP, "BUILT THE PRODUCT", "Runs today, end to end.", "Every change waits for you.")
-for i, (n, what) in enumerate([("14", "live agents"), ("60", "live sources")]):
-    nx = round(cx + i * CW / 2, 1)
-    s.T(nx, HC + 12, n, 72, 600, ls=-3)
-    s.T(nx, HC + 40, what, 16, 400, MUT)
+NUM_W, NUM_GAP = 76, 16
+STATS = [("14", "Live agents", "of 16 agents"), ("60", "Live sources", "in six families")]
+for i, (n, what, sub) in enumerate(STATS):
+    base = HC - 22 if i == 0 else HC + 62          # each row 22 px clear of the hairline
+    fit(n, 58, 600, NUM_W, ls=-2)
+    s.T(cx, base, n, 58, 600, ls=-2)
+    tx = cx + NUM_W + NUM_GAP
+    fit(what, 17, 500, CW - NUM_W - NUM_GAP); fit(sub, 15, 400, CW - NUM_W - NUM_GAP)
+    s.T(tx, base - 24, what, 17, 500)
+    s.T(tx, base, sub, 15, 400, MUT)
+s.rule(HC, 0.1, cx, round(CW, 1))
 s.end()
 
 # 3 - the buyers: the groundwork, in the order it was done, as equal steps
