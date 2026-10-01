@@ -116,6 +116,13 @@ the dashed spokes to the centre removed. Open question put to the owner: the blu
 read as random; options proposed are in the session reply (work-order ring, one real
 thread highlighted with its messages).
 
+Model chips (2026-10-01, on the owner's request): inside each agent node, the open-weight
+model it is built to run, EU-hosted, taken from the whitepaper's per-agent table - Inbox,
+Risk and Assistant Qwen3.5-9B, Comms Llama-3.3-70B; Docs, Rate, Playbook and TMS link
+"code only". Routing (Qwen3-235B-A22B) is not one of the eight nodes. A second footnote
+says the prototype calls a US-hosted provider today (the whitepaper's load-bearing line).
+Nodes grew to r=54 so the chip fits under the name.
+
 Not shown, on purpose: SharePoint and BBC (their marks were withdrawn from simple-icons,
 so there is no official file to inline) and the rate-management vendors in the Zauber
 reference (no official marks, and SQRlane prices from a rate sheet, not an RMS). New

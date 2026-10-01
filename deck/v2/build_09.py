@@ -25,8 +25,8 @@ HERE = pathlib.Path(__file__).parent
 CH = json.loads((HERE / "channel_marks.json").read_text())   # Iconify, CC0/MIT
 TM = json.loads((HERE / "tms_marks.json").read_text())
 
-CX, CY, RX, RY = 960, 622, 650, 204
-N_R = 42          # agent node radius
+CX, CY, RX, RY = 960, 616, 650, 194
+N_R = 54          # agent node radius
 B_R = 28          # logo bubble radius
 
 def uid():
@@ -69,15 +69,21 @@ def agent_mark(cx, cy, r=6, col=BLUE):
 # (name, angle in degrees on the ellipse, orbit radius, tools). A tool is a channel mark
 # name, ("tms", vendor, pill width), ("cw",) for the CargoWise icon, or ("more", text).
 NODES = [
-    ("Inbox", 180, 92, ["Outlook", "Gmail"]),
-    ("Docs", 225, 96, ["PDF", "Word", "Excel", "Image", "XML"]),
-    ("Playbook", 270, 92, ["Word", "OneDrive", "GoogleDrive"]),
-    ("Rate", 315, 92, ["Excel", "GoogleSheets"]),
-    ("TMS link", 0, 124, [("cw",), ("tms", "SAP", 40), ("tms", "Oracle", 70), ("tms", "Descartes", 84)]),
-    ("Comms", 45, 96, ["Teams", "Slack", "WhatsApp", "WeChat"]),
-    ("Assistant", 90, 92, ["Claude", "Cursor", "VSCode"]),
-    ("Risk", 135, 96, ["NDR", "DW", "NASA", ("more", "+57")]),
+    ("Inbox", 180, 104, ["Outlook", "Gmail"]),
+    ("Docs", 225, 108, ["PDF", "Word", "Excel", "Image", "XML"]),
+    ("Playbook", 270, 96, ["Word", "OneDrive", "GoogleDrive"]),
+    ("Rate", 315, 104, ["Excel", "GoogleSheets"]),
+    ("TMS link", 0, 136, [("cw",), ("tms", "SAP", 40), ("tms", "Oracle", 70), ("tms", "Descartes", 84)]),
+    ("Comms", 45, 108, ["Teams", "Slack", "WhatsApp", "WeChat"]),
+    ("Assistant", 90, 96, ["Claude", "Cursor", "VSCode"]),
+    ("Risk", 135, 108, ["NDR", "DW", "NASA", ("more", "+57")]),
 ]
+# Recommended open-weight model per agent - static/whitepaper.html, "Sixteen agents, and
+# which of them need a model". Agents that compute rather than generate run no model.
+MODEL = {"Inbox": "Qwen3.5-9B", "Docs": "code only", "Playbook": "code only",
+         "Rate": "code only", "TMS link": "code only", "Comms": "Llama-3.3-70B",
+         "Assistant": "Qwen3.5-9B", "Risk": "Qwen3.5-9B"}
+BLUE_BG2, GREY_BG2 = "#E8F1FF", "#F3F3F3"
 POS = {}
 for name, ang, _, _ in NODES:
     a = math.radians(ang)
@@ -155,8 +161,15 @@ for name, ang, orb, tools in NODES:
     # the node
     s.raw(f'<circle cx="{x:.1f}" cy="{y + 3:.1f}" r="{N_R}" fill="{INK}" fill-opacity="0.05"/>')
     s.raw(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{N_R}" fill="{CARD}" stroke="{BLUE}" stroke-opacity="0.35" stroke-width="1.2"/>')
-    agent_mark(x, y - 10, 6)
-    s.T(x, y + 15, name, 13, 600, anchor="middle")
+    agent_mark(x, y - 20, 6)
+    s.T(x, y + 7, name, 13, 600, anchor="middle")
+    # the open-weight model this agent would run, EU-hosted (whitepaper's per-agent table)
+    mdl = MODEL[name]
+    px_, py_ = x, y + 29                        # inside the node, under the name
+    mw = round(len(mdl) * 5.6 + 14)
+    fill, ink = (GREY_BG2, GREY) if mdl == "code only" else (BLUE_BG2, BLUE)
+    s.R(px_ - mw / 2, py_ - 9, mw, 18, fill, 9)
+    s.T(px_, py_ + 3.5, mdl, 9.5, 600, ink, anchor="middle")
     # the tools
     a = a0
     for tl, sz in zip(tools, ang_sizes):
@@ -166,9 +179,11 @@ for name, ang, orb, tools in NODES:
     s.end()
 
 s.g("disclosure")
-s.T(M, 954, "Logos show where each agent works. Live today: the 60 public sources and MCP. "
+s.T(M, 946, "Logos show where each agent works. Live today: the 60 public sources and MCP. "
     "TMS and mail are read from exports and files; native links come next.",
     12.5, 400, GREY)
+s.T(M, 966, "Model chips: the open-weight model each agent is built to run, hosted in the EU. "
+    "Agents marked code run no model. The prototype calls a US-hosted provider today.", 12.5, 400, GREY)
 s.end()
 
 s.footer(9)
