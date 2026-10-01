@@ -577,7 +577,7 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
     <section id="models">
       <h2 class="h32">The model layer</h2>
       <p class="lede copy14">
-        Six jobs with genuinely different requirements &mdash; and eleven of the sixteen
+        Six jobs with genuinely different requirements &mdash; and most of the sixteen
         agents need no model at all. Sizing each job separately, and not calling a model
         where code gives the same answer every time, is where nearly all the cost and
         latency savings live.
@@ -641,41 +641,45 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
       <p class="copy16">
         The agents are named for the job a forwarding desk already has, in two layers: the
         risk layer, which runs when a lane moves, and the everyday desk, which runs on every
-        inbound mail. Five of the sixteen call a model. The rest are code &mdash; prices,
+        inbound mail. Five of the sixteen call a model in this build, and two more would
+        with work this build does not do yet: reading scanned documents, and turning a
+        customer&rsquo;s written instructions into rules. The rest are code &mdash; prices,
         weights, dates, rule checks and field values are computed, never generated &mdash;
         and code is both the cheapest and the most repeatable model there is.
       </p>
       <div class="scroller">
         <table>
-          <caption>Every agent, what it does, and the model it uses. Model classes from the table above; a scripted agent replays authored data and calls nothing.</caption>
+          <caption>Every agent, what it does, and the open-weight model it is built to run, EU-hosted &mdash; the stronger option first, the leaner one under it. A scripted agent replays authored data and calls nothing.</caption>
           <thead><tr><th>Agent</th><th>Its job</th><th>Model</th></tr></thead>
           <tbody>
             <tr><td colspan="3" class="grp"><b>Risk layer &middot; when a lane moves</b></td></tr>
-            <tr><td><b>Risk</b></td><td>Reads sixty sources; flags the exception on the booking a disruption threatens.</td><td class="k">Qwen3.5-9B<span class="sub">prose only &mdash; gauges, gusts, waves and quakes go to a threshold</span></td></tr>
+            <tr><td><b>Risk</b></td><td>Reads sixty sources; flags the exception on the booking a disruption threatens.</td><td class="k">Qwen3-235B-A22B<span class="sub">or Qwen3.5-9B; prose only &mdash; gauges, gusts, waves and quakes go to a threshold</span></td></tr>
             <tr><td><b>Routing</b></td><td>Reroute, hold or leave on plan, with the reasoning; writes the booking change.</td><td class="k">Qwen3-235B-A22B<span class="sub">DeepSeek-V4-Pro if the reasoning needs it</span></td></tr>
             <tr><td><b>Comms</b></td><td>Drafts the carrier and the customer mail each decision implies; sends nothing.</td><td class="k">Llama-3.3-70B<span class="sub">or Qwen3-235B-A22B</span></td></tr>
             <tr><td><b>Planner</b></td><td>Sweeps the forward book before departure: act now, tripwire armed, or stand down.</td><td class="k">None today<span class="sub">scripted</span></td></tr>
             <tr><td><b>TMS link</b></td><td>The only door to the book, and every agent&rsquo;s output queued back onto it.</td><td class="k">None<span class="sub">code; demo connector</span></td></tr>
             <tr><td colspan="3" class="grp"><b>Everyday desk &middot; on every mail</b></td></tr>
-            <tr><td><b>Inbox</b></td><td>What the mail is, whose it is, which agent owns it.</td><td class="k">Qwen3.5-9B<span class="sub">one batched call; rules as fallback</span></td></tr>
-            <tr><td><b>Playbook</b></td><td>Checks every output against the customer&rsquo;s standing rules; sends it back until it complies.</td><td class="k">None<span class="sub">structured rules, checked by code</span></td></tr>
+            <tr><td><b>Inbox</b></td><td>What the mail is, whose it is, which agent owns it.</td><td class="k">Gemma-3-27B<span class="sub">or Qwen3.5-9B; one batched call; rules as fallback</span></td></tr>
+            <tr><td><b>Playbook</b></td><td>Checks every output against the customer&rsquo;s standing rules; sends it back until it complies.</td><td class="k">Qwen3-235B-A22B<span class="sub">turns a customer&rsquo;s written instructions into rules, once per customer; every check stays code. Not in this build: rules are authored</span></td></tr>
             <tr><td><b>Rate</b></td><td>Prices a lane from the rate sheet for any agent that asks.</td><td class="k">None<span class="sub">arithmetic</span></td></tr>
             <tr><td><b>RFQ</b></td><td>Reads a rate request into fields, drafts the quote, queues the quotation.</td><td class="k">None<span class="sub">parser and template</span></td></tr>
             <tr><td><b>Booking</b></td><td>Opens or amends the booking from the mail and its documents; holds what it cannot verify.</td><td class="k">None</td></tr>
-            <tr><td><b>Docs</b></td><td>Reads the fields off the documents and checks them against the booking.</td><td class="k">None<span class="sub">text documents only &mdash; scanned PDFs would need a vision model, not in this build</span></td></tr>
+            <tr><td><b>Docs</b></td><td>Reads the fields off the documents and checks them against the booking.</td><td class="k">Qwen2.5-VL-72B<span class="sub">a vision model for scanned PDFs and photos; field checks stay code. Not in this build, which reads text documents only</span></td></tr>
             <tr><td><b>Milestones</b></td><td>Writes carrier notices onto the booking; answers where-is-my-box from the record.</td><td class="k">None</td></tr>
             <tr><td><b>Exception</b></td><td>Opens the exception on a rolled box or a mismatched document; escalates what the desk cannot absorb.</td><td class="k">None</td></tr>
             <tr><td><b>Invoice</b></td><td>Reconciles the carrier invoice against the agreed rate; drafts the dispute.</td><td class="k">None</td></tr>
             <tr><td><b>Customs</b></td><td>Prepares the entry for the discharge country; escalates a transit, never files.</td><td class="k">None</td></tr>
-            <tr><td><b>Assistant</b></td><td>Takes a person&rsquo;s question, hands it to the agent who owns it, and says so when none does.</td><td class="k">Qwen3.5-9B<span class="sub">routes and rewords; the facts are built from the run and checked; rules as fallback</span></td></tr>
+            <tr><td><b>Assistant</b></td><td>Takes a person&rsquo;s question, hands it to the agent who owns it, and says so when none does.</td><td class="k">Gemma-3-27B<span class="sub">or Qwen3.5-9B; routes and rewords; the facts are built from the run and checked; rules as fallback</span></td></tr>
           </tbody>
         </table>
       </div>
       <p class="copy16">
-        That split is the efficiency recommendation in one line: <b>a small model where the
-        answer is a label, a mid-size mixture-of-experts model where the answer is a judgement
-        someone will challenge, a strong writer where tone is the deliverable, and no model
-        at all where the answer can be computed.</b> Qwen3-235B-A22B earns the judgement slot
+        That split is the recommendation in one line: <b>a capable mid-size model where the
+        answer is a label that sends work somewhere, a large mixture-of-experts model where the
+        answer is a judgement someone will challenge or a source that must not be missed, a
+        strong writer where tone is the deliverable, a vision model where the input is a
+        picture, and no model at all where the answer must be exact</b> &mdash; a price, a
+        weight, a rule check, a write to the record. Qwen3-235B-A22B earns the judgement slot
         because only about 22 billion of its parameters work on each token, which puts a large
         model&rsquo;s reasoning at close to a small one&rsquo;s price. Every agent also records
         the reason for each message it posts &mdash; the cues that classified a mail, the
@@ -709,6 +713,14 @@ footer a{color:var(--blue); text-decoration:underline; text-underline-offset:2px
         thirteen-mail morning, measured from the prompt, and an estimated 350 out &mdash;
         roughly <b>$0.0002</b> at the screening price, and a little more as a person&rsquo;s
         corrections are added to the prompt as context.
+      </p>
+      <p class="copy16">
+        The stronger picks in the agent table change one stage of the cycle: screening runs
+        on Qwen3-235B-A22B instead of Qwen3.5-9B. Pricing every token of the cycle at that
+        model&rsquo;s rate gives an upper bound of <b>$0.0048</b> a cycle &mdash; about
+        $17 a year at ten cycles a day, $87 at fifty &mdash; still about seven times under
+        the frontier figure. Gemma-3-27B and Qwen2.5-VL-72B are not priced in the catalogue
+        extract used here; the vision model would be paid per document, not per cycle.
       </p>
       <p class="copy16">
         Sizing each stage separately is <b>about ten times cheaper</b> than reaching for a

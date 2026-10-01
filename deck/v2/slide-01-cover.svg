@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect id="background" width="1920" height="1080" fill="#DBDBCD"/>
+
+  <g id="top-bar">
+    <g id="mark">
+      <rect x="96" y="80" width="32" height="32" rx="8" fill="#0A0A0A"/>
+      <path d="M104 104h16 M104 97h11 M104 90h6" stroke="#DBDBCD" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+    </g>
+    <text id="site" x="144" y="103" font-family="Geist" font-size="20" font-weight="500" fill="#0A0A0A">sqrlane.com</text>
+    <text id="deck-label" x="1824" y="103" font-family="Geist Mono" font-size="14" font-weight="500" letter-spacing="2.4" fill="#6E6E66" text-anchor="end">INVESTMENT DECK · 2026</text>
+    <rect id="top-rule" x="96" y="144" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.14"/>
+  </g>
+
+  <g id="hero">
+    <g id="eyebrow">
+      <rect x="96" y="360" width="10" height="10" rx="2" fill="#96580A"/>
+      <text x="120" y="370" font-family="Geist Mono" font-size="16" font-weight="500" letter-spacing="3" fill="#6E6E66">AI WORKFORCE FOR FREIGHT FORWARDERS</text>
+    </g>
+    <text id="wordmark" x="88" y="590" font-family="Geist" font-size="240" font-weight="600" letter-spacing="-11" fill="#0A0A0A">sqrlane</text>
+    <text id="tagline" x="96" y="746" font-family="Geist" font-size="48" font-weight="500" letter-spacing="-1.2" fill="#0A0A0A">Automates the desk. Acts before the route breaks.</text>
+    <g id="subline">
+      <text x="96" y="798" font-family="Geist" font-size="26" font-weight="400" fill="#6E6E66">An AI workforce that does the desk work end to end, from quote to invoice,</text>
+      <text x="96" y="834" font-family="Geist" font-size="26" font-weight="400" fill="#6E6E66">and moves bookings before a disruption reaches the trade lane. You approve every change.</text>
+    </g>
+  </g>
+
+  <g id="workforce-diagram">
+
+    <g id="desk-track">
+      <text id="desk-label" x="1040" y="270" font-family="Geist Mono" font-size="12.5" font-weight="500" letter-spacing="2.4" fill="#6E6E66">THE DESK · EVERY MAIL</text>
+      <g id="mail-rate-request">
+        <rect x="1040" y="288.0" width="196" height="28" rx="14.0" fill="#0A0A0A" fill-opacity="0.04" stroke="#0A0A0A" stroke-opacity="0.14"/>
+        <circle cx="1056" cy="302" r="3" fill="#6E6E66"/>
+        <text x="1068" y="306.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Rate request</text>
+      </g>
+      <g id="mail-booking-request">
+        <rect x="1040" y="324.0" width="196" height="28" rx="14.0" fill="#0A0A0A" fill-opacity="0.04" stroke="#0A0A0A" stroke-opacity="0.14"/>
+        <circle cx="1056" cy="338" r="3" fill="#6E6E66"/>
+        <text x="1068" y="342.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Booking request</text>
+      </g>
+      <g id="mail-bill-of-lading">
+        <rect x="1040" y="360.0" width="196" height="28" rx="14.0" fill="#0A0A0A" fill-opacity="0.04" stroke="#0A0A0A" stroke-opacity="0.14"/>
+        <circle cx="1056" cy="374" r="3" fill="#6E6E66"/>
+        <text x="1068" y="378.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Bill of lading</text>
+      </g>
+      <g id="mail-carrier-invoice">
+        <rect x="1040" y="396.0" width="196" height="28" rx="14.0" fill="#0A0A0A" fill-opacity="0.04" stroke="#0A0A0A" stroke-opacity="0.14"/>
+        <circle cx="1056" cy="410" r="3" fill="#6E6E66"/>
+        <text x="1068" y="414.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#0A0A0A">Carrier invoice</text>
+      </g>
+      <g id="desk-fan-in">
+        <path d="M1236 302 C1296 302 1280 356 1340 356" stroke="#0A0A0A" stroke-opacity="0.42" stroke-width="1.5" fill="none"/>
+        <path d="M1236 338 C1296 338 1280 356 1340 356" stroke="#0A0A0A" stroke-opacity="0.42" stroke-width="1.5" fill="none"/>
+        <path d="M1236 374 C1296 374 1280 356 1340 356" stroke="#0A0A0A" stroke-opacity="0.42" stroke-width="1.5" fill="none"/>
+        <path d="M1236 410 C1296 410 1280 356 1340 356" stroke="#0A0A0A" stroke-opacity="0.42" stroke-width="1.5" fill="none"/>
+      </g>
+      <g id="desk-agents">
+        <rect x="1340" y="336" width="40" height="40" rx="10" fill="#0A0A0A"/>
+        <path d="M1350 364h20 M1350 356h13 M1350 348h7" stroke="#DBDBCD" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+        <text x="1360" y="396" font-family="Geist Mono" font-size="11" font-weight="500" letter-spacing="1.4" fill="#6E6E66" text-anchor="middle">DESK AGENTS</text>
+      </g>
+      <g id="desk-writes">
+        <path d="M1380 356 H1552" stroke="#0A0A0A" stroke-width="2" fill="none"/>
+        <path d="M1552 350 L1562 356 L1552 362 Z" fill="#0A0A0A"/>
+        <text x="1471.0" y="344" font-family="Geist Mono" font-size="11" font-weight="500" letter-spacing="1.2" fill="#6E6E66" text-anchor="middle">FILLS THE RECORD</text>
+      </g>
+    </g>
+
+    <g id="lane-track">
+      <text id="lane-label" x="1040" y="470" font-family="Geist Mono" font-size="12.5" font-weight="500" letter-spacing="2.4" fill="#6E6E66">THE LANE · EVERY SIGNAL</text>
+      <g id="signal-strike">
+        <rect x="1040" y="488.0" width="196" height="28" rx="14.0" fill="#96580A" fill-opacity="0.10" stroke="#96580A" stroke-opacity="0.45"/>
+        <circle cx="1056" cy="502" r="3" fill="#96580A"/>
+        <text x="1068" y="506.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#96580A">Strike · Hamburg</text>
+      </g>
+      <g id="signal-gauge">
+        <rect x="1040" y="524.0" width="196" height="28" rx="14.0" fill="#0A0A0A" fill-opacity="0.04" stroke="#0A0A0A" stroke-opacity="0.14"/>
+        <circle cx="1056" cy="538" r="3" fill="#6E6E66"/>
+        <text x="1068" y="542.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#6E6E66">River gauge · Kaub</text>
+      </g>
+      <g id="signal-gusts">
+        <rect x="1040" y="560.0" width="196" height="28" rx="14.0" fill="#0A0A0A" fill-opacity="0.04" stroke="#0A0A0A" stroke-opacity="0.14"/>
+        <circle cx="1056" cy="574" r="3" fill="#6E6E66"/>
+        <text x="1068" y="578.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#6E6E66">Gusts · Rotterdam</text>
+      </g>
+      <g id="signal-tariff">
+        <rect x="1040" y="596.0" width="196" height="28" rx="14.0" fill="#0A0A0A" fill-opacity="0.04" stroke="#0A0A0A" stroke-opacity="0.14"/>
+        <circle cx="1056" cy="610" r="3" fill="#6E6E66"/>
+        <text x="1068" y="614.5" font-family="Geist" font-size="13.5" font-weight="500" fill="#6E6E66">Tariff filing</text>
+      </g>
+      <g id="lane-fan-in">
+        <path d="M1236 538 C1296 538 1280 556 1340 556" stroke="#0A0A0A" stroke-opacity="0.16" stroke-width="1.5" fill="none"/>
+        <path d="M1236 574 C1296 574 1280 556 1340 556" stroke="#0A0A0A" stroke-opacity="0.16" stroke-width="1.5" fill="none"/>
+        <path d="M1236 610 C1296 610 1280 556 1340 556" stroke="#0A0A0A" stroke-opacity="0.16" stroke-width="1.5" fill="none"/>
+        <path d="M1236 502 C1296 502 1280 556 1340 556" stroke="#96580A" stroke-width="2" fill="none"/>
+      </g>
+      <g id="risk-agents">
+        <rect x="1340" y="536" width="40" height="40" rx="10" fill="#0A0A0A"/>
+        <path d="M1350 564h20 M1350 556h13 M1350 548h7" stroke="#DBDBCD" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+        <text x="1360" y="596" font-family="Geist Mono" font-size="11" font-weight="500" letter-spacing="1.4" fill="#6E6E66" text-anchor="middle">RISK AGENTS</text>
+      </g>
+      <g id="lane-writes">
+        <path d="M1380 556 H1552" stroke="#0A0A0A" stroke-width="2" fill="none"/>
+        <path d="M1552 550 L1562 556 L1552 562 Z" fill="#0A0A0A"/>
+        <text x="1471.0" y="544" font-family="Geist Mono" font-size="11" font-weight="500" letter-spacing="1.2" fill="#6E6E66" text-anchor="middle">AMENDS THE BOOKING</text>
+      </g>
+    </g>
+
+    <g id="tms-record">
+      <rect x="1564" y="236" width="260" height="470" rx="14" fill="#F4F4EC" stroke="#0A0A0A" stroke-opacity="0.16"/>
+      <text x="1588" y="268" font-family="Geist Mono" font-size="15" font-weight="600" letter-spacing="0.6" fill="#0A0A0A">SHP-001</text>
+      <text x="1800" y="268" font-family="Geist Mono" font-size="11.5" font-weight="500" letter-spacing="1.8" fill="#6E6E66" text-anchor="end">TMS RECORD</text>
+      <rect x="1588" y="284" width="212" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+      <g id="fields-from-desk">
+        <rect x="1588" y="296" width="2" height="120" rx="1" fill="#0A0A0A"/>
+        <g id="field-quote">
+          <text x="1604" y="319" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">Quote</text>
+          <text x="1800" y="319" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="end">on file</text>
+        </g>
+        <g id="field-bl">
+          <text x="1604" y="361" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">B/L fields</text>
+          <text x="1800" y="361" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="end">read</text>
+        </g>
+        <g id="field-invoice">
+          <text x="1604" y="403" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">Invoice</text>
+          <text x="1800" y="403" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="end">reconciled</text>
+        </g>
+      </g>
+      <rect x="1588" y="456" width="212" height="1" fill="#0A0A0A" fill-opacity="0.08"/>
+      <g id="fields-from-lane">
+        <rect x="1588" y="496" width="2" height="120" rx="1" fill="#0A0A0A"/>
+        <g id="field-discharge">
+          <text x="1604" y="519" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">Discharge</text>
+          <text x="1800" y="519" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="end"><tspan fill="#6E6E66" text-decoration="line-through">HAM</tspan> → RTM</text>
+        </g>
+        <g id="field-eta">
+          <text x="1604" y="561" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">ETA</text>
+          <text x="1800" y="561" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="end">+2 days</text>
+        </g>
+        <g id="field-comms">
+          <text x="1604" y="603" font-family="Geist" font-size="14" font-weight="400" fill="#6E6E66">Carrier mail</text>
+          <text x="1800" y="603" font-family="Geist" font-size="14" font-weight="500" fill="#0A0A0A" text-anchor="end">drafted</text>
+        </g>
+      </g>
+      <rect x="1588" y="636" width="212" height="1" fill="#0A0A0A" fill-opacity="0.12"/>
+      <g id="approval-gate">
+        <rect x="1588" y="652" width="212" height="32" rx="16" fill="#96580A" fill-opacity="0.12"/>
+        <circle cx="1606" cy="668" r="4" fill="#96580A"/>
+        <text x="1620" y="672" font-family="Geist Mono" font-size="11.5" font-weight="600" letter-spacing="0.6" fill="#96580A">QUEUED · AWAITING YOU</text>
+      </g>
+    </g>
+  </g>
+
+  <g id="bottom-bar">
+    <rect id="bottom-rule" x="96" y="928" width="1728" height="1" fill="#0A0A0A" fill-opacity="0.14"/>
+    <g id="founder">
+      <text x="96" y="982" font-family="Geist" font-size="22" font-weight="600" fill="#0A0A0A">Abir Khan</text>
+      <text x="96" y="1012" font-family="Geist" font-size="16" font-weight="400" fill="#6E6E66">Founder</text>
+    </g>
+    <g id="one-workforce">
+      <text x="1040" y="982" font-family="Geist Mono" font-size="13" font-weight="500" letter-spacing="2.4" fill="#6E6E66">ONE WORKFORCE</text>
+      <text x="1040" y="1012" font-family="Geist" font-size="18" font-weight="500" fill="#0A0A0A">The desk  +  the lane  →  one TMS record</text>
+    </g>
+    <g id="contact">
+      <text x="1824" y="982" font-family="Geist" font-size="18" font-weight="500" fill="#0A0A0A" text-anchor="end">khan.abirhilal@gmail.com</text>
+      <text x="1824" y="1012" font-family="Geist" font-size="16" font-weight="400" fill="#6E6E66" text-anchor="end">+91 7596947806</text>
+    </g>
+  </g>
+</svg>
