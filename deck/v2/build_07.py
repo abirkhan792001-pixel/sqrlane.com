@@ -311,25 +311,6 @@ cw = count_chip(tx + 84, y + 10, agents(1))
 s.T(tx + 84 + cw + 10, y + 25, "writes it onto the booking", 11.5, 400, MUT)
 s.end()
 y += 40
-
-# one mail, worked together - the run's own path for IN-108
-s.g("worked-together")
-y += 28
-s.T(hx, y, "ONE MAIL, TOGETHER", 10.5, 700, MUT, ls=1.2)
-s.T(hx + 150, y, "IN-108, a vaccine booking", 11.5, 400, MUT)
-y += 12
-cx = hx
-steps = [("Inbox", None), ("Booking", None), ("Docs", None), ("Rate", None),
-         ("Playbook sends it back", "amb"), ("Booking rebooks", None), ("You approve", "ink")]
-for k, (name, kind) in enumerate(steps):
-    w = round(len(name) * 6.2 + 16)
-    fill, ink = {"amb": (AMB, CARD), "ink": (INK, CARD)}.get(kind, (GREY_BG, "#3A3A3A"))
-    s.R(cx, y, w, 22, fill, 5)
-    s.T(cx + w / 2, y + 15, name, 11, 600 if kind else 500, ink, anchor="middle")
-    cx += w
-    if k < len(steps) - 1:
-        s.T(cx + 4, y + 15, "›", 12, 500, MUT); cx += 14
-s.end()
 s.end()
 
 s.T(M, 946, "Ask the desk anything. Every step recorded, and approved by you.", 28, 600, ls=-0.6)

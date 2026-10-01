@@ -18,20 +18,20 @@ HERE = pathlib.Path(__file__).parent
 FPS, W, H = 30, 1920, 1080
 
 # (layer id, start in seconds, effect). Layers not listed are on screen from the start.
-# Effects: up (rise and fade in), down (drop in from above), left (slide in from the
-# right), pop (scale up), fade.
+# Effects: up (rise and fade in), down (drop in from above), left (a short slide from the
+# right), right (a long slide in from the right edge), pop (scale up), fade. A slide may
+# add a scene script (scene_NN.js) for motion a reveal cannot do: counters, spinners,
+# a chat playing out.
 TIMELINES = {
-    "07": {"file": "slide-07-the-how-1.svg", "length": 8.0, "steps": [
+    "07": {"file": "slide-07-the-how-1.svg", "length": 15.0, "scene": "scene_07.js", "steps": [
         ("risk-layer", 0.3, "up"), ("the-morning", 0.4, "up"),
         ("front-doors", 0.8, "up"),
-        ("notifications", 0.9, "pop"), ("popup-mail", 1.0, "down"),
+        ("notifications", 0.9, "pop"), ("popup-mail", 1.0, "right"),
         ("the-desk", 1.3, "fade"),
         ("stage-quote", 1.4, "up"), ("stage-book", 1.6, "up"), ("stage-documents", 1.8, "up"),
-        ("popup-agent", 1.9, "left"),
+        ("popup-agent", 1.8, "right"),
         ("stage-in-transit", 2.0, "up"), ("stage-arrival", 2.2, "up"), ("stage-billing", 2.4, "up"),
-        ("chat-question", 2.8, "up"), ("playbook", 3.0, "up"),
-        ("chat-answer", 3.6, "up"), ("gate-and-record", 3.8, "up"),
-        ("chat-draft", 4.5, "up"), ("worked-together", 4.8, "up"),
+        ("playbook", 3.0, "up"), ("gate-and-record", 3.8, "up"),
     ]},
     "08": {"file": "slide-08-the-how-2.svg", "length": 8.0, "steps": [
         ("watch", 0.3, "up"),
@@ -50,7 +50,7 @@ DUR = 0.6   # each reveal
 
 PAGE = """<!doctype html><html><head><meta charset="utf-8"><style>
 html,body{margin:0;padding:0;background:#FAFAFA}
-svg{display:block;width:1920px;height:1080px}
+body > svg{display:block;width:1920px;height:1080px}
 .anim{transform-box:fill-box;transform-origin:center}
 </style></head><body>%SVG%<script>
 const STEPS = %STEPS%, DUR = %DUR%;
@@ -75,10 +75,12 @@ window.setTime = t => {
       fx === "up"   ? `translateY(${14 * k}px)` :
       fx === "down" ? `translateY(${-22 * k}px)` :
       fx === "left" ? `translateX(${24 * k}px)` :
+      fx === "right" ? `translateX(${180 * k}px)` :
       fx === "pop"  ? `scale(${0.6 + 0.4 * p})` : "none";
   }
+  if (window.scene) window.scene(t);
 };
-</script></body></html>"""
+</script><script>%SCENE%</script></body></html>"""
 
 
 def chrome():
@@ -94,7 +96,8 @@ def render(key):
     missing = [i for i, _, _ in spec["steps"] if f'id="{i}"' not in svg]
     assert not missing, f"layers not in the slide: {missing}"
     html = (PAGE.replace("%SVG%", svg).replace("%STEPS%", json.dumps(spec["steps"]))
-                .replace("%DUR%", str(DUR)))
+                .replace("%DUR%", str(DUR))
+                .replace("%SCENE%", (HERE / spec["scene"]).read_text(encoding="utf-8") if "scene" in spec else ""))
     out = HERE / spec["file"].replace(".svg", ".mp4")
     frames = round(spec["length"] * FPS)
     with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:

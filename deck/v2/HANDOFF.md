@@ -188,6 +188,18 @@ static slides are pixel-identical. **After any change to slide 07 or 08, re-run
 `python3 animate.py 07 08`** (pip: playwright, imageio-ffmpeg). In Figma, upload the MP4
 onto the slide with autoplay and loop; it plays in presentation mode, not in grid view.
 
+**Slide 07 video, second version (15 s):** the "One mail, together" strip was removed from
+slide 07 (static and video), on the owner's note. `scene_07.js` adds what a reveal cannot:
+the "This morning" figures count up from 0; both pop-ups slide in from the right, clipped to
+the app window; the Customs agent's dot-ring spins and "working…" shines. The chat plays as
+a conversation overlaid on the chat window: Q1 "Where is MEDU-1774390?" is typed and sent;
+status lines (Assistant routing it, Milestones reading SHP-004 from the TMS, Routing checking
+the route) shine and give way; the answer; "Drafting a reply to Pieter Claes…"; a mail
+preview (To, Cc, subject, body, Draft ready, Approve); then the suggestion chip "Price 2 x
+40HC Shanghai to Rotterdam" is pressed and the Rate agent's table arrives (MSC €4,660 best,
+CMA CGM €4,800, Maersk €4,940, MSC alternate €5,080; synthetic rate sheet). All from
+`ask.ask()` and the IN-106 draft; no dates. The window scrolls as it fills.
+
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 
 Where it came from: the old web deck says "60% goes to coordination, only 40% goes to the
