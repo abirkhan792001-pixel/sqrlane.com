@@ -18,6 +18,7 @@ import base64, pathlib
 from PIL import Image, ImageFont
 
 SLOT_BG, SLOT_INK = "#F2F2F2", "#8F8F8F"
+GREEN = "#0F7B3F"                     # the deck's live green: ticks and live dots only
 HERE = pathlib.Path(__file__).parent
 LINKEDIN = "https://www.linkedin.com/in/khan-abir/"
 
@@ -171,12 +172,17 @@ s.g("proof-built")
 cx = tile(TX0 + TW + TGAP, "BUILT THE PRODUCT", "Runs today, end to end.", "Every change waits for you.")
 NUM_W, NUM_GAP = 76, 16
 STATS = [("14", "Live agents", "of 16 agents"), ("60", "Live sources", "in six families")]
+CX1 = cx + CW
 for i, (n, what, sub) in enumerate(STATS):
     base = HC - 22 if i == 0 else HC + 62          # each row 22 px clear of the hairline
     fit(n, 58, 600, NUM_W, ls=-2)
     s.T(cx, base, n, 58, 600, ls=-2)
-    tx = cx + NUM_W + NUM_GAP
-    fit(what, 17, 500, CW - NUM_W - NUM_GAP); fit(sub, 15, 400, CW - NUM_W - NUM_GAP)
+    # a green live dot with a soft halo leads each label; label and grey line share its column
+    dx, dy = cx + NUM_W + NUM_GAP + 6, base - 30
+    s.raw(f'<circle cx="{dx}" cy="{dy}" r="9" fill="{GREEN}" fill-opacity="0.16"/>')
+    s.raw(f'<circle cx="{dx}" cy="{dy}" r="4.5" fill="{GREEN}"/>')
+    tx = dx + 16
+    fit(what, 17, 500, CX1 - tx); fit(sub, 15, 400, CX1 - tx)
     s.T(tx, base - 24, what, 17, 500)
     s.T(tx, base, sub, 15, 400, MUT)
 s.rule(HC, 0.1, cx, round(CW, 1))

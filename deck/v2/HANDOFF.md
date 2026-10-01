@@ -196,7 +196,8 @@ planned, D the team this round builds); the owner picked **A**, then gave notes 
   DECIDE (nobody, amber) / ACT (execution), "That is my bet." / "Nobody owns the step
   between."; Built the product - two stat rows split by a hairline, "14 · Live agents · of
   16 agents" and "60 · Live sources · in six families" (side by side the figures read as
-  one number, "14 60", which the owner caught), figures left on the content edge, "Runs
+  one number, "14 60", which the owner caught), figures left on the content edge, each
+  label led by a green live dot with a soft halo (#0F7B3F, the deck's live green), "Runs
   today, end to end." / "Every change waits for you."; Mapped the buyers - three equal steps, Forwarder ICP list →
   Enriched in Apollo → Events lined up, "Next: outreach." / "The groundwork is done." The
   Apollo list is confirmed as SQRlane's own work.
