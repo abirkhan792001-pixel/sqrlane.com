@@ -28,7 +28,7 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 | 07 | `build_07.py` → `slide-07-the-how-1.svg` (rebuilt: the desk) | built, awaiting feedback |
 | 08 | `build_08.py` → `slide-08-the-how-2.svg` (the risk layer) | built, awaiting feedback |
 | 09 | `build_09.py` → `slide-09-integrations.svg` (integrations) | built, awaiting feedback |
-| 10 | `build_10.py` → `slide-10-who-am-i.svg` (option A, the proof stack) | third pass built; awaiting 4 logo files |
+| 10 | `build_10.py` → `slide-10-who-am-i.svg` (option A, the proof stack) | final draft, all logos in; awaiting the owner's review |
 | A | Appendix: sources for slide 06 (`SOURCES` list in `build_06.py`) | later, not now |
 
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
@@ -205,11 +205,12 @@ planned, D the team this round builds); the owner picked **A**, then gave notes 
 - **Logos are the owner's own files** in `deck/v2/logos/`: cropped to the mark, the ones
   that came on white made transparent (colour-to-alpha against white), capped at 210 px
   tall. Nothing redrawn. SCAILE's file is small (204 x 47 px); ask for a larger one.
-- **Still missing as files:** UN Foundation, Manage and More and Hack-Nation were sent as
-  chat images twice but never reached the session's disk; Biome VC was not sent. Each is a
-  dashed box in its own layer (`logo-un-foundation`, `logo-manage-and-more`,
-  `logo-hack-nation`, `logo-biome-vc`). The owner said they added them in Figma. To build
-  them in: save as `deck/v2/logos/<key>.png`, add a height to `LOGO_H`, rebuild.
+- **All eight logos are in** (the last four arrived on the third try as attachments). UN
+  Foundation came on a light grey ground and Hack-Nation and Manage and More on white; all
+  made transparent against their own ground. **Biome came only as white on navy**, which
+  would vanish on the white band: the navy was made transparent and the white wordmark
+  recoloured to that same navy (#1B293C), the coral mark untouched, and the cut-off tagline
+  under the word cropped away. If Biome supplies an official dark-on-light file, use it.
 - Closing line: "I've helped shape a fund's thesis. This is the company I'd back."
 - `build_10.py` measures every string against Geist (PIL, variable font) and stops on an
   overrun.

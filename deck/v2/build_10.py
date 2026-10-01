@@ -202,7 +202,8 @@ NAMES = {"nova-sbe": "Nova SBE", "cems-mim": "CEMS MIM", "alvarez-and-marsal": "
          "manage-and-more": "Manage and More", "hack-nation": "Hack-Nation"}
 # Optical height per mark, set by eye on the render: a lockup with small type under it
 # needs more height than a one-line wordmark to carry the same weight.
-LOGO_H = {"nova-sbe": 60, "cems-mim": 42, "alvarez-and-marsal": 68, "scaile": 34}
+LOGO_H = {"nova-sbe": 60, "cems-mim": 42, "alvarez-and-marsal": 68, "scaile": 34,
+          "biome-vc": 38, "un-foundation": 48, "manage-and-more": 36, "hack-nation": 50}
 SLOT_W, SLOT_H, IN_GAP = 168, 52, 36
 ROW_CY = BY + 98                       # centre line of the logos
 
