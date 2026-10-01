@@ -146,18 +146,23 @@ s.g("chat-window")
 s.R(MX, CY0, MW, CHh, CHAT_BG, 16, f' stroke="{INK}" stroke-opacity="0.10"')
 cy = CY0 + 12
 q = "Where is MEDU-1774390?"
+s.g("chat-question")
 qw = round(len(q) * 7.6 + 32)
 s.R(MX + MW - 16 - qw, cy, qw, 34, INK, 17)
 s.T(MX + MW - 16 - qw / 2, cy + 22, q, 13.5, 500, CARD, anchor="middle")
+s.end()
 cy += 40
 BWb = 480
+s.g("chat-answer")
 soft_card(MX + 16, cy, BWb, 52, 14, op=0.10)
 agent_mark(MX + 36, cy + 18)
 s.T(MX + 52, cy + 23, "Milestones agent", 12.5, 600, BLUE)
 s.T(MX + 16 + BWb - 16, cy + 23, "LIVE", 10, 700, GREEN, anchor="end", ls=0.8)
 s.T(MX + 32, cy + 42, "SHP-004, Shenzhen to Antwerp, is on plan.", 13, 400, INK)
+s.end()
 cy += 58
 DHh = 96
+s.g("chat-draft")
 soft_card(MX + 16, cy, BWb, DHh, 14, op=0.10)
 s.T(MX + 32, cy + 22, "Drafted a reply to Pieter Claes, Kempen Electronics.", 12.5, 500, INK)
 s.rule(cy + 32, 0.08, MX + 32, BWb - 32)
@@ -168,6 +173,8 @@ s.T(MX + 32, cy + 85, "Asia → Suez → Antwerp, discharging at Antwerp.", 11.5
 s.T(MX + 16 + BWb - 16, cy + 52, "Draft ready", 11, 600, AMBR, anchor="end")
 s.R(MX + 16 + BWb - 92, cy + DHh - 34, 76, 26, INK, 8)
 s.T(MX + 16 + BWb - 54, cy + DHh - 16, "Approve", 12, 600, CARD, anchor="middle")
+s.end()
+s.g("chat-input")
 # the Ask box: suggested questions as chips inside it, then the input line.
 # Each suggestion is one ask.ask() answers today.
 IH = 84; IY = CY0 + CHh - IH - 10
@@ -188,6 +195,7 @@ s.T(MX + 94, ly + 22, "Ask SQRlane", 12.5, 600, BLUE)
 s.T(MX + 198, ly + 22, "Ask the desk anything", 13, 400, GREY)
 s.raw(f'<circle cx="{MX + MW - 38}" cy="{ly + 17}" r="15" fill="{INK}"/>')
 s.raw(f'<path d="M{MX+MW-38} {ly+23.5} v-12.5 M{MX+MW-43} {ly+16} l5 -5 l5 5" stroke="{CARD}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>')
+s.end()
 s.end()
 s.end()
 

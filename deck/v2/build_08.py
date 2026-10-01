@@ -162,6 +162,7 @@ s.R(MX, CY0, MW, CHh, "#F6F8FB", 16, f' stroke="{INK}" stroke-opacity="0.10"')
 cy = CY0 + 12
 BWb = MW - 32
 # SHP-001: the reroute (the booking from slides 02 and 03)
+s.g("decision-reroute")
 soft_card(MX + 16, cy, BWb, 76, 14, op=0.10)
 agent_mark(MX + 36, cy + 20)
 s.T(MX + 52, cy + 25, "Routing agent", 12.5, 600, BLUE)
@@ -169,9 +170,11 @@ s.T(MX + 150, cy + 25, "SHP-001 · Automotive parts, Shanghai → Munich", 12, 4
 pill(MX + 16 + BWb - 14, cy + 12, "reroute", BLUE_BG, BLUE)
 s.T(MX + 32, cy + 48, "Reroute via Rotterdam. Arrives 12 Oct, due 14 Oct.", 13.5, 600)
 s.T(MX + 32, cy + 66, "Hamburg: up to 5 days late against 4 days of slack. Rotterdam adds 2 days, with no active risk.", 11.5, 400, MUT)
+s.end()
 cy += 84
 # the customer mail the Comms agent drafted for it
 DHh = 84
+s.g("decision-mail")
 soft_card(MX + 16, cy, BWb, DHh, 14, op=0.10)
 agent_mark(MX + 36, cy + 20)
 s.T(MX + 52, cy + 25, "Comms agent", 12.5, 600, BLUE)
@@ -185,8 +188,10 @@ def draft_gate(top, h):
     s.T(MX + 16 + BWb - 53, by + 18, "Approve", 12, 600, CARD, anchor="middle")
     s.T(MX + 16 + BWb - 104, by + 17.5, "Draft ready", 11, 600, AMBR, anchor="end")
 draft_gate(cy, DHh)
+s.end()
 cy += DHh + 8
 # SHP-002: the hold - the call with no good option
+s.g("decision-hold")
 soft_card(MX + 16, cy, BWb, 82, 14, op=0.10)
 agent_mark(MX + 36, cy + 20)
 s.T(MX + 52, cy + 25, "Routing agent", 12.5, 600, BLUE)
@@ -196,6 +201,7 @@ s.T(MX + 32, cy + 48, "Hold the boxes instead of discharging into the strike. No
 mark("Outlook", MX + 32, cy + 58, 14)
 s.T(MX + 52, cy + 70, "Comms drafted the hold instruction to Maersk and the notice to Nordmed Pharma.", 11.5, 400, MUT)
 draft_gate(cy, 82)
+s.end()
 cy += 90
 s.T(MX + 18, cy + 10, "Cost avoided = €141,100 if nothing is done, minus €94,600 with these calls. From each synthetic booking's own terms.", 10.5, 400, GREY)
 s.end()

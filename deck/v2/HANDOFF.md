@@ -175,6 +175,19 @@ marks in `channel_marks.json`: PDF, Word, Excel, Image, XML (vscode-icons, MIT),
 OneDrive, Google Drive, Cursor, VS Code, Claude (logos, CC0), Google Sheets, DW, NASA,
 MCP (simple-icons, CC0, brand hex filled in for `currentColor`).
 
+## Motion: slides 07 and 08 as videos (2026-10-01)
+
+Figma drops SVG animation on import, so `animate.py` renders motion to MP4 for Figma
+Slides: it opens the slide's own SVG in headless Chromium, hides the listed layers and
+reveals them on a timeline (rise, drop, slide in, pop), captures 30 fps and encodes H.264
+(`slide-07-the-how-1.mp4`, `slide-08-the-how-2.mp4`, 8 s each, ending on the finished
+slide so they loop). The arrow drawn just before a layer arrives with it. Chat messages
+and decision cards are their own named layers now (`chat-question`, `chat-answer`,
+`chat-draft`, `chat-input`, `decision-reroute`, `decision-mail`, `decision-hold`); the
+static slides are pixel-identical. **After any change to slide 07 or 08, re-run
+`python3 animate.py 07 08`** (pip: playwright, imageio-ffmpeg). In Figma, upload the MP4
+onto the slide with autoplay and loop; it plays in presentation mode, not in grid view.
+
 ## The 40%: replaced by Asana's 58% (2026-09-30, on the owner's instruction)
 
 Where it came from: the old web deck says "60% goes to coordination, only 40% goes to the
