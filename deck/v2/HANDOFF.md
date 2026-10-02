@@ -31,8 +31,12 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 | 10 | Who am I (founder) | to do |
 | A | Appendix: sources for slide 06 (`SOURCES` list in `build_06.py`) | later, not now |
 
-Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
-in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
+Slide 06 version B (callout map + takeaway strip) is back in the repo as `build_06b.py` →
+`slide-06-the-job-2-b.svg` (2026-10-02): the owner is working from it. Its close is now two
+lines: "It is not an edge case. It is the whole job." and "One bottleneck, five days of
+waiting, and the forwarder loses 3.5× what the box earns." The 3.5× is derived from the
+chart on the same slide (€448 lost after five days ÷ €127 earned) and the slide says so in
+a small grey line at the right. Version A still carries the one-line close.
 
 ## Slide 07, current version (fourth rebuild, 2026-09-30)
 

@@ -21,6 +21,7 @@ SOURCES = [
     "Hapag-Lloyd Germany import tariff, 40ft: EUR 115 a day after 3 free days, EUR 180 later",
     "Kuehne+Nagel Sea Logistics FY25: EUR 127 margin per clean box (slide 05)",
     "ING and gCaptain, Aug 2026: low-water surcharges on the Rhine",
+    "Derived (version B close): five days at EUR 115 = EUR 575 against EUR 127 earned, so EUR 448 lost = 3.5x the margin",
 ]
 
 s = Slide()
