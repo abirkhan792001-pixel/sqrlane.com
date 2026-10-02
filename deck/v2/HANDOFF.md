@@ -19,7 +19,7 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 
 | # | File | Status |
 |---|---|---|
-| 01 | `slide-01-cover.svg` (hand-written, no builder) | final |
+| 01 | `build_01.py` → `slide-01-cover.svg` (rebuilt with the lane map) | built, awaiting feedback |
 | 02 | `build_02.py` → `slide-02-introduction.svg` | final |
 | 03 | `build_03.py` → `slide-03-the-what.svg` | final |
 | 04 | `build_04.py` → `slide-04-the-why.svg` | final |
@@ -33,6 +33,31 @@ Output: one **editable SVG per slide, 1920x1080**, for import into Figma.
 
 Slide 06 version B (callout map + takeaway strip) was deleted from the repo; it lives
 in git at `d4af2cc:deck/v2/slide-06-the-job-2-b.svg` if the owner asks again.
+
+## Slide 01, the cover with the lane map (2026-10-02)
+
+The owner sent their current Figma cover (warm cream `#F2EAE0`, "SQRlane", the
+"CONFIDENTIAL · FOR REVIEW PURPOSES ONLY · NOT FOR PRESENTATION" line) and asked for a map
+that fits, with the desk and risk agents rearranged to blend with it. The cover now has
+a builder, `build_01.py`, because a map needs projecting:
+
+- **The map is real geography**: Natural Earth 50m countries and 10m rivers (Rhine,
+  Elbe, Rhone), projected with the cos(latitude) correction the Rhine corridor map uses,
+  inlined as paths. Cached in `tools/.ne-cache/` (gitignored, shared with
+  `tools/build_rhine_map.py`); the first run fetches it. It sits behind the right half,
+  bleeds off the right edge and fades into the hero on the left and the desk on top.
+- **The lane is SHP-001**: dotted up the Atlantic and the Channel ("SHP-001 / FROM
+  SHANGHAI" over the Bay of Biscay), solid into Rotterdam, and the leg it would have sailed
+  on to Hamburg dashed in amber. That is the record's "HAM → RTM".
+- **The signals are pins at their places** (`data/geo.json`), each the place of an
+  authored scenario: Strike · Hamburg (amber, the active one), Gusts · Rotterdam, River
+  gauge · Kaub, Wildfire · Rhône. Each pin has a line to the Risk agents node, which stands
+  on the map. "Tariff filing" went (it has no place on this map); the caption "60 SOURCES
+  WATCHED · NEWS, RIVERS, WEATHER, HAZARDS, FILINGS, RATES" keeps filings named. Not "+56
+  more": the four pins are not four single sources.
+- **The desk keeps its four mail chips** on top: mail has no place on a map.
+- The tagline breaks into two lines and the subline into three, so the left column ends
+  before the map starts.
 
 ## Slide 07, current version (fourth rebuild, 2026-09-30)
 
