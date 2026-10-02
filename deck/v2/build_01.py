@@ -31,10 +31,12 @@ BG, INK, MUT, AMB = "#F2EAE0", "#0A0A0A", "#6E6E66", "#96580A"
 CARD, LAND, BORDER, RIVER = "#FBF8F3", "#E6DCCF", "#D6C9B8", "#C9D1D0"
 TOP_RULE, BOTTOM_RULE = 144, 928
 
-# The record's two field groups set the height of the two tracks, so the arrows
-# land on the middle field of each group.
-DESK_Y, LANE_Y = 296, 524
-NODE_X = 1362                      # both agent nodes stand on one vertical
+# One grid row per mail: each inbox row sits level with the record field it
+# fills, so the eye can read straight across. The lane's three fields keep the
+# arrow on their middle one.
+DESK_ROWS = [245, 283, 321, 359]
+DESK_Y, LANE_Y = sum(DESK_ROWS) // 4, 524
+NODE_X = 1380                      # both agent nodes stand on one vertical
 CARD_X, CARD_Y, CARD_W, CARD_H = 1564, 176, 260, 524
 
 
@@ -54,7 +56,7 @@ def fetch():
 K = 23.0                                       # px per degree of longitude
 KY = K / math.cos(math.radians(50.5))          # px per degree of latitude
 RTM = GEO["RTM"]
-AX, AY = 1176, 500                             # where Rotterdam sits on the slide
+AX, AY = 1176, 516                             # where Rotterdam sits on the slide
 
 
 def P(lon, lat):
@@ -219,15 +221,17 @@ def pill(x, y, w, label, tone="desk", h=28):
     T(x + 28, y + 4.5, label, 13.5, 500, ink)
 
 
-def node(cx, cy, caption, caption_dy=40):
+def node(cx, cy, caption, caption_dy=40, gid="node"):
+    raw(f'<g id="{gid}">')
     raw(f'<rect x="{cx - 20}" y="{cy - 20}" width="40" height="40" rx="10" fill="{INK}" filter="url(#node-shadow)"/>')
     raw(f'<path d="M{cx - 10} {cy + 8}h20 M{cx - 10} {cy}h13 M{cx - 10} {cy - 8}h7" stroke="{BG}" '
         f'stroke-width="2.6" stroke-linecap="round" fill="none"/>')
+    raw("</g>")
     T(cx, cy + caption_dy, caption, 11, 500, MUT, "middle", 1.4, True)
 
 
-def arrow(x0, x1, y, caption):
-    raw(f'<path d="M{x0} {y} H{x1 - 10}" stroke="{INK}" stroke-width="2" fill="none"/>')
+def arrow(x0, x1, y, caption, gid="arrow"):
+    raw(f'<path id="{gid}" d="M{x0} {y} H{x1 - 10}" stroke="{INK}" stroke-width="2" fill="none"/>')
     raw(f'<path d="M{x1 - 10} {y - 6} L{x1} {y} L{x1 - 10} {y + 6} Z" fill="{INK}"/>')
     T((x0 + x1 - 10) / 2, y - 12, caption, 11, 500, MUT, "middle", 1.2, True)
 
@@ -314,24 +318,67 @@ for i, line in enumerate(("An AI workforce that does the desk work end to end,",
     T(M, 730 + i * 36, line, 24, 400, MUT)
 end()
 
-# ---- the desk: every mail, filled onto the record
+# ---- the desk: every mail on SHP-001, each tagged with the agent that owns it.
+# The parties are SHP-001's own (data/shipments.json): Bavaria Drivetrain is the
+# customer, Hapag-Lloyd the carrier. The owners are the ones the desk routes these
+# kinds of mail to (src/workflow.py): a rate request to RFQ, a booking request to
+# Booking, a bill of lading to Docs, a carrier invoice to Invoice.
+MAIL = [("rate-request", "Rate request", "Bavaria Drivetrain", "RFQ", "mail"),
+        ("booking-request", "Booking request", "Bavaria Drivetrain", "BOOKING", "mail"),
+        ("bill-of-lading", "Bill of lading", "Hapag-Lloyd", "DOCS", "doc"),
+        ("carrier-invoice", "Carrier invoice", "Hapag-Lloyd", "INVOICE", "doc")]
+IX, IW, ROW_H = 1000, 268, 38
+IY = DESK_ROWS[0] - ROW_H // 2 - 34                 # window top: a 34px title bar above row 1
+
+
+def icon(kind, x, y, col):
+    """A plain pictogram of the kind of thing it is - never a mail app's mark,
+    which would read as a connected mailbox."""
+    if kind == "mail":
+        raw(f'<rect x="{x}" y="{y - 5.5}" width="15" height="11" rx="2" fill="none" stroke="{col}" stroke-width="1.4"/>'
+            f'<path d="M{x + 1} {y - 4.5} L{x + 7.5} {y + 0.5} L{x + 14} {y - 4.5}" fill="none" stroke="{col}" '
+            f'stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>')
+    else:
+        raw(f'<path d="M{x + 2} {y - 7} H{x + 9} L{x + 13} {y - 3} V{y + 7} H{x + 2} Z M{x + 9} {y - 7} V{y - 3} H{x + 13}" '
+            f'fill="none" stroke="{col}" stroke-width="1.4" stroke-linejoin="round"/>'
+            f'<path d="M{x + 4.5} {y + 1} H{x + 10.5} M{x + 4.5} {y + 4} H{x + 8.5}" stroke="{col}" stroke-width="1.2" stroke-linecap="round"/>')
+
+
 g("desk-track")
-T(1000, 210, "THE DESK · EVERY MAIL", 12.5, 500, MUT, ls=2.4, mono=True)
-MAIL = ["Rate request", "Booking request", "Bill of lading", "Carrier invoice"]
-for i, label in enumerate(MAIL):
-    y = DESK_Y - 54 + i * 36
-    raw(f'<g id="mail-{label.lower().replace(" ", "-")}">')
-    pill(1000, y, 196, label, "desk")
-    raw("</g>")
-    raw(f'<path d="M1196 {y} C{NODE_X - 110} {y} {NODE_X - 110} {DESK_Y} {NODE_X - 20} {DESK_Y}" '
+T(IX, IY - 14, "THE DESK · EVERY MAIL", 12.5, 500, MUT, ls=2.4, mono=True)
+win_h = 34 + ROW_H * len(MAIL) + 4
+raw(f'<g id="inbox">')
+raw(f'<rect id="inbox-window" x="{IX}" y="{IY}" width="{IW}" height="{win_h}" rx="12" fill="{CARD}" '
+    f'stroke="{INK}" stroke-opacity="0.10" filter="url(#card-shadow)"/>')
+icon("mail", IX + 14, IY + 17.5, INK)
+T(IX + 38, IY + 22, "Inbox", 13, 600)
+T(IX + IW - 14, IY + 22, "SHP-001", 11, 500, MUT, "end", 1.2, True)
+raw(f'<rect x="{IX}" y="{IY + 34}" width="{IW}" height="1" fill="{INK}" fill-opacity="0.08"/>')
+for i, (mid, kind, sender, owner, glyph) in enumerate(MAIL):
+    y = DESK_ROWS[i]
+    raw(f'<g id="mail-{mid}">')
+    if i:
+        raw(f'<rect x="{IX + 14}" y="{y - ROW_H / 2:g}" width="{IW - 28}" height="1" fill="{INK}" fill-opacity="0.06"/>')
+    icon(glyph, IX + 14, y, MUT)
+    T(IX + 38, y - 2, kind, 13, 600)
+    T(IX + 38, y + 12, sender, 11, 400, MUT)
+    tw = round(len(owner) * 6.6 + 16)
+    raw(f'<g id="owner-{mid}"><rect x="{IX + IW - 14 - tw}" y="{y - 9}" width="{tw}" height="18" rx="5" fill="{BG}" '
+        f'stroke="{INK}" stroke-opacity="0.10"/>')
+    T(IX + IW - 14 - tw / 2, y + 3.5, owner, 9.5, 600, INK, "middle", 0.8, True)
+    raw("</g></g>")
+raw("</g>")
+for i, (mid, *_rest) in enumerate(MAIL):
+    y = DESK_ROWS[i]
+    raw(f'<path id="desk-line-{mid}" d="M{IX + IW} {y} C{NODE_X - 70} {y} {NODE_X - 70} {DESK_Y} {NODE_X - 20} {DESK_Y}" '
         f'stroke="{INK}" stroke-opacity="0.38" stroke-width="1.5" fill="none"/>')
-node(NODE_X, DESK_Y, "DESK AGENTS")
-arrow(NODE_X + 20, CARD_X, DESK_Y, "FILLS THE RECORD")
+node(NODE_X, DESK_Y, "DESK AGENTS", gid="desk-node")
+arrow(NODE_X + 20, CARD_X, DESK_Y, "FILLS THE RECORD", gid="desk-arrow")
 end()
 
 # ---- the lane: every signal, where it happens
 g("lane-track")
-T(1000, 412, "THE LANE · EVERY SIGNAL", 12.5, 500, MUT, ls=2.4, mono=True)
+T(1000, 428, "THE LANE · EVERY SIGNAL", 12.5, 500, MUT, ls=2.4, mono=True)
 # (place id, label, pill anchor relative to the pin, tone). The pin is the
 # place; the pill names what is read there.
 SIGNALS = [
@@ -346,12 +393,15 @@ for pid, label, side, tone in SIGNALS:
     lit = tone == "active"
     raw(f'<g id="signal-{pid.lower()}">')
     # the line every signal takes to the risk agents
-    raw(f'<path d="M{px:.1f} {py:.1f} C{(px + NODE_X) / 2:.1f} {py:.1f} {NODE_X - 70} {LANE_Y} {NODE_X - 20} {LANE_Y}" '
+    raw(f'<path id="spoke-{pid.lower()}" d="M{px:.1f} {py:.1f} C{(px + NODE_X) / 2:.1f} {py:.1f} {NODE_X - 70} {LANE_Y} {NODE_X - 20} {LANE_Y}" '
         f'stroke="{AMB if lit else INK}" stroke-opacity="{1 if lit else 0.22}" stroke-width="{2 if lit else 1.5}" fill="none"/>')
     if lit:
+        raw('<g id="strike-rings">')
         for r, op in ((18, 0.10), (11, 0.18)):
             raw(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="{r}" fill="{AMB}" fill-opacity="{op}"/>')
-    raw(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="5" fill="{AMB if lit else INK}" stroke="{BG}" stroke-width="2"/>')
+        raw("</g>")
+    raw(f'<circle id="pin-{pid.lower()}" cx="{px:.1f}" cy="{py:.1f}" r="5" fill="{AMB if lit else INK}" stroke="{BG}" stroke-width="2"/>')
+    raw(f'<g id="pill-{pid.lower()}">')
     if side == "above-left":          # clear of the lane, which comes in from below-left
         ex, ey = px - 18, py - 30
         raw(f'<path d="M{ex:.1f} {ey + 6:.1f} L{px - 4:.1f} {py - 4:.1f}" stroke="{INK}" stroke-opacity="0.35" stroke-width="1"/>')
@@ -359,11 +409,12 @@ for pid, label, side, tone in SIGNALS:
     else:
         pill(px + 14 if side == "right" else px - 14 - w, py, w, label, tone)
     raw("</g>")
+    raw("</g>")
 sx, sy = P(-8.0, 45.6)            # beside the lane, over the Bay of Biscay
 T(sx + 16, sy, "SHP-001", 11, 600, INK, ls=1.2, mono=True)
 T(sx + 16, sy + 16, "FROM SHANGHAI", 11, 500, MUT, ls=1.2, mono=True)
-node(NODE_X, LANE_Y, "RISK AGENTS")
-arrow(NODE_X + 20, CARD_X, LANE_Y, "AMENDS THE BOOKING")
+node(NODE_X, LANE_Y, "RISK AGENTS", gid="risk-node")
+arrow(NODE_X + 20, CARD_X, LANE_Y, "AMENDS THE BOOKING", gid="lane-arrow")
 T(1000, 868, "60 SOURCES WATCHED · NEWS, RIVERS, WEATHER, HAZARDS, FILINGS, RATES", 11, 500, MUT, ls=1.2, mono=True)
 end()
 
@@ -375,23 +426,28 @@ fx0, fx1 = CARD_X + 24, CARD_X + CARD_W - 24
 T(fx0, CARD_Y + 34, "SHP-001", 15, 600, ls=0.6, mono=True)
 T(fx1, CARD_Y + 34, "TMS RECORD", 11.5, 500, MUT, "end", 1.8, True)
 raw(f'<rect x="{fx0}" y="{CARD_Y + 52}" width="{fx1 - fx0}" height="1" fill="{INK}" fill-opacity="0.12"/>')
-def fields(gid, cy, rows):
+def fields(gid, ys, rows):
     raw(f'<g id="{gid}">')
-    raw(f'<rect x="{fx0}" y="{cy - 64}" width="2" height="128" rx="1" fill="{INK}"/>')
-    for i, (k, v) in enumerate(rows):
-        y = cy - 47 + i * 47 + 5
-        T(fx0 + 16, y, k, 14, 400, MUT)
-        T(fx1, y, v, 14, 500, anchor="end")
+    pitch = ys[1] - ys[0]
+    raw(f'<rect x="{fx0}" y="{ys[0] - pitch / 2 + 4:g}" width="2" height="{ys[-1] - ys[0] + pitch - 8:g}" rx="1" fill="{INK}"/>')
+    for y, (fid, k, v) in zip(ys, rows):
+        T(fx0 + 16, y + 5, k, 14, 400, MUT)
+        raw(f'<g id="val-{fid}">')
+        T(fx1, y + 5, v, 14, 500, anchor="end")
+        raw("</g>")
     raw("</g>")
-fields("fields-from-desk", DESK_Y, [("Quote", "on file"), ("B/L fields", "read"), ("Invoice", "reconciled")])
-raw(f'<rect x="{fx0}" y="{(DESK_Y + LANE_Y) // 2}" width="{fx1 - fx0}" height="1" fill="{INK}" fill-opacity="0.08"/>')
-fields("fields-from-lane", LANE_Y, [("Discharge", f'<tspan fill="{MUT}" text-decoration="line-through">HAM</tspan> → RTM'),
-                                    ("ETA", "+2 days"), ("Carrier mail", "drafted")])
+fields("fields-from-desk", DESK_ROWS, [("quote", "Quote", "on file"), ("booking", "Booking", "HLCU-2261188"),
+                                       ("bl", "B/L fields", "read"), ("invoice", "Invoice", "reconciled")])
+raw(f'<rect x="{fx0}" y="{(DESK_ROWS[-1] + LANE_Y - 47) // 2}" width="{fx1 - fx0}" height="1" fill="{INK}" fill-opacity="0.08"/>')
+fields("fields-from-lane", [LANE_Y - 47, LANE_Y, LANE_Y + 47],
+       [("discharge", "Discharge", f'<tspan fill="{MUT}" text-decoration="line-through">HAM</tspan> → RTM'),
+        ("eta", "ETA", "+2 days"), ("carrier-mail", "Carrier mail", "drafted")])
 raw(f'<rect x="{fx0}" y="{LANE_Y + 84}" width="{fx1 - fx0}" height="1" fill="{INK}" fill-opacity="0.12"/>')
 gy = LANE_Y + 124
 raw(f'<g id="approval-gate"><rect x="{fx0}" y="{gy - 16}" width="{fx1 - fx0}" height="32" rx="16" fill="{AMB}" fill-opacity="0.12"/>'
-    f'<circle cx="{fx0 + 18}" cy="{gy}" r="4" fill="{AMB}"/></g>')
+    f'<circle id="gate-dot" cx="{fx0 + 18}" cy="{gy}" r="4" fill="{AMB}"/>')
 T(fx0 + 32, gy + 4, "QUEUED · AWAITING YOU", 11.5, 600, AMB, ls=0.6, mono=True)
+raw("</g>")
 end()
 
 # ---- bottom bar

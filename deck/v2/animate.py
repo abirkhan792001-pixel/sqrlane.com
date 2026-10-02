@@ -8,6 +8,8 @@ and encoded as H.264. The last frame is the finished slide, held, so the video c
 
     python3 animate.py 07      # -> slide-07-the-how-1.mp4
     python3 animate.py 08
+    python3 animate.py 01      # -> slide-01-cover.mp4 and slide-01-cover.gif (a loop)
+    python3 animate.py 01 --at 2 6 9   # check single frames as PNGs, no video
 
 Needs: pip install playwright imageio-ffmpeg; Geist in ~/.fonts (see HANDOFF.md)."""
 import glob, pathlib, subprocess, sys, tempfile
@@ -25,6 +27,9 @@ SCALE = 2          # capture at 2x: the video is 3840x2160 (4K), so 11px text st
 # add a scene script (scene_NN.js) for motion a reveal cannot do: counters, spinners,
 # a chat playing out.
 TIMELINES = {
+    # The cover is a loop, not a build: everything moves in scene_01.js, and the
+    # last frame meets the first, so it also ships as a GIF.
+    "01": {"file": "slide-01-cover.svg", "length": 14.0, "scene": "scene_01.js", "steps": [], "gif": True},
     "07": {"file": "slide-07-the-how-1.svg", "length": 15.0, "scene": "scene_07.js", "steps": [
         ("risk-layer", 0.3, "up"), ("the-morning", 0.4, "up"),
         ("front-doors", 0.8, "up"),
@@ -90,16 +95,38 @@ def chrome():
     return hits[-1] if hits else None
 
 
-def render(key):
-    spec = TIMELINES[key]
+def page_html(spec):
+    import json
     svg = (HERE / spec["file"]).read_text(encoding="utf-8")
     svg = svg[svg.index("<svg"):]
-    import json
     missing = [i for i, _, _ in spec["steps"] if f'id="{i}"' not in svg]
     assert not missing, f"layers not in the slide: {missing}"
-    html = (PAGE.replace("%SVG%", svg).replace("%STEPS%", json.dumps(spec["steps"]))
+    return (PAGE.replace("%SVG%", svg).replace("%STEPS%", json.dumps(spec["steps"]))
                 .replace("%DUR%", str(DUR))
                 .replace("%SCENE%", (HERE / spec["scene"]).read_text(encoding="utf-8") if "scene" in spec else ""))
+
+
+def stills(key, times):
+    """Single frames as PNGs beside the slide, to check a moment without a video."""
+    spec = TIMELINES[key]
+    with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
+        page_file = pathlib.Path(tmp) / "slide.html"
+        page_file.write_text(page_html(spec), encoding="utf-8")
+        b = pw.chromium.launch(executable_path=chrome(), args=["--no-sandbox"])
+        pg = b.new_page(viewport={"width": W, "height": H}, device_scale_factor=1)
+        pg.goto(page_file.as_uri())
+        pg.wait_for_timeout(300)
+        for t in times:
+            pg.evaluate(f"setTime({t})")
+            out = HERE / f"{spec['file'].replace('.svg', '')}-t{t:05.2f}.png"
+            pg.screenshot(path=str(out))
+            print("wrote", out)
+        b.close()
+
+
+def render(key):
+    spec = TIMELINES[key]
+    html = page_html(spec)
     out = HERE / spec["file"].replace(".svg", ".mp4")
     frames = round(spec["length"] * FPS)
     with tempfile.TemporaryDirectory() as tmp, sync_playwright() as pw:
@@ -117,9 +144,26 @@ def render(key):
                         "-framerate", str(FPS), "-i", f"{tmp}/f%04d.png",
                         "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "12",
                         "-preset", "slow", "-tune", "animation", "-profile:v", "high", "-movflags", "+faststart", str(out)], check=True)
+        if spec.get("gif"):
+            # 1920 wide at 25 fps (a GIF frame lasts whole hundredths of a second, so
+            # 30 fps is not representable), one palette for the whole loop so colours
+            # do not flicker between frames, and only the changed rectangle re-dithered.
+            gif = out.with_suffix(".gif")
+            subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error",
+                            "-framerate", str(FPS), "-i", f"{tmp}/f%04d.png", "-vf",
+                            "fps=25,scale=1920:-1:flags=lanczos,split[a][b];"
+                            "[a]palettegen=max_colors=192:stats_mode=full[p];"
+                            "[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle",
+                            "-loop", "0", str(gif)], check=True)
+            print("wrote", gif, f"({gif.stat().st_size / 1e6:.1f} MB)")
     print("wrote", out, f"({frames} frames, {spec['length']}s)")
 
 
 if __name__ == "__main__":
-    for k in (sys.argv[1:] or TIMELINES):
-        render(k)
+    args = sys.argv[1:]
+    if "--at" in args:
+        i = args.index("--at")
+        stills(args[0], [float(x) for x in args[i + 1:]])
+    else:
+        for k in (args or TIMELINES):
+            render(k)

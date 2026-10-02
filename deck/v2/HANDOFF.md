@@ -55,9 +55,29 @@ a builder, `build_01.py`, because a map needs projecting:
   on the map. "Tariff filing" went (it has no place on this map); the caption "60 SOURCES
   WATCHED · NEWS, RIVERS, WEATHER, HAZARDS, FILINGS, RATES" keeps filings named. Not "+56
   more": the four pins are not four single sources.
-- **The desk keeps its four mail chips** on top: mail has no place on a map.
+- **The desk is an inbox window** (second pass, owner: "more interesting, polished and
+  defining"): four mails on SHP-001, each with its sender (SHP-001's own parties in
+  `data/shipments.json`: Bavaria Drivetrain the customer, Hapag-Lloyd the carrier) and a
+  tag naming the agent that owns it, as `src/workflow.py` routes those kinds of mail: RFQ,
+  Booking, Docs, Invoice. Each row sits level with the record field it fills, and the
+  record gained "Booking · HLCU-2261188" (SHP-001's booking ref) so there are four.
+  Plain envelope and document pictograms, not a mail app's mark: a real mark reads as a
+  connected mailbox.
 - The tagline breaks into two lines and the subline into three, so the left column ends
   before the map starts.
+
+**Motion: the cover as a loop** (`scene_01.js`, `python3 animate.py 01`): a 14 s loop,
+written as `slide-01-cover.mp4` (4K) and `slide-01-cover.gif` (1920 wide, 25 fps, ~2 MB, for
+anywhere a video will not play). The mails arrive one by one, get their owner tag, travel to
+the desk agents and land on the record (placeholders "—" fill in). SHP-001 sails up the
+Channel as a heading arrow while Rotterdam, Kaub and the Rhone pulse as they are read; at
+4.7 s the Hamburg strike lights amber, reaches the risk agents, the leg to Hamburg breaks and
+the reroute is drawn while the ship is still at sea; Discharge, ETA ("as booked" → "+2
+days") and Carrier mail fill, the gate appears, the ship docks in Rotterdam, and everything
+fades back for the next loop. The script only times what the static slide already says.
+`python3 animate.py 01 --at 2 6 9` writes single frames to check a moment without a video;
+move them out of the folder, they are not committed. After any change to the cover,
+re-run `python3 animate.py 01`.
 
 ## Slide 07, current version (fourth rebuild, 2026-09-30)
 
