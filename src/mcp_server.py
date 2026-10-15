@@ -6,17 +6,23 @@ questions to the same Assistant, which hands each one to the Worker who owns it.
 
 It speaks the Model Context Protocol's Streamable HTTP transport in its simplest
 form: one JSON-RPC request per POST, one JSON answer back, no session and no
-server-sent stream. Three tools, all read-only - the same rule as the Ask box:
+server-sent stream. Four tools, all read-only - the same rule as the Ask box:
 asking changes nothing.
 
     ask_sqrlane      a question, answered by the Worker who owns it
+    request_quote    a shipper's quote request, worked by the desk like a mail:
+                     missing details asked for, a draft quote at the gate
     list_bookings    the book the agents are working on, with each one's state
     list_scenarios   the disruptions that can be put on the board
+
+request_quote is the one a forwarder's *customer* would call from their own AI
+chat. It keeps nothing: in this build the request does not reach a forwarder's
+queue, and there is no access control - both are said in every result.
 """
 
 import json
 
-from src import ask, orchestrator, risk_monitor
+from src import ask, orchestrator, quote_request, risk_monitor
 
 PROTOCOL_VERSION = "2025-06-18"
 SERVER_INFO = {"name": "sqrlane", "title": "SQRlane - AI agents for freight forwarders",
@@ -24,7 +30,9 @@ SERVER_INFO = {"name": "sqrlane", "title": "SQRlane - AI agents for freight forw
 INSTRUCTIONS = ("SQRlane's desk of freight-forwarding agents. Ask about a booking, a port, a "
                 "rate, an invoice, customs or what is waiting for approval; the Worker who owns "
                 "it answers from a run of the board. The bookings are synthetic and the TMS "
-                "link is a demo connector: nothing is sent and nothing is written.")
+                "link is a demo connector: nothing is sent and nothing is written. A shipper "
+                "can send a quote request with request_quote: the desk asks for what is "
+                "missing and drafts a quote for the forwarder to approve - not an offer.")
 
 _SCENARIO = {"type": "string", "enum": ["hamburg", "redsea", "rhine", "france"],
              "description": "Which disruption is on the board. Omit for a calm board."}
@@ -39,6 +47,25 @@ TOOLS = [
      "inputSchema": {"type": "object", "properties": {
          "question": {"type": "string", "description": "e.g. 'Where is SHP-002?'"},
          "scenario": _SCENARIO}, "required": ["question"]},
+     "annotations": {"readOnlyHint": True, "openWorldHint": False}},
+    {"name": "request_quote",
+     "title": "Request a freight quote",
+     "description": ("For a shipper: send a quote request as you would write it - a few lines, "
+                     "plus any text documents. The desk reads it the way it reads a mail, "
+                     "asks for any missing detail (lane, equipment, count) instead of guessing, "
+                     "and drafts a quote for the forwarder to approve. The draft is not an "
+                     "offer; prices come from a synthetic rate sheet. Nothing is stored, sent "
+                     "or written. PDFs, images and Excel files are not read - paste the text."),
+     "inputSchema": {"type": "object", "properties": {
+         "request": {"type": "string",
+                     "description": "e.g. 'Quote 2 x 40HC Shanghai to Basel, auto parts'"},
+         "customer": {"type": "string", "description": "The shipper's company name."},
+         "contact": {"type": "string", "description": "Name or email to address the quote to."},
+         "documents": {"type": "array", "description": "Text documents, read as attachments.",
+                       "items": {"type": "object", "properties": {
+                           "name": {"type": "string"}, "content": {"type": "string"}},
+                           "required": ["name", "content"]}}},
+         "required": ["request"]},
      "annotations": {"readOnlyHint": True, "openWorldHint": False}},
     {"name": "list_bookings",
      "title": "List the bookings on the board",
@@ -70,6 +97,11 @@ def _call(name: str, args: dict) -> dict:
         lines += [f"{m['seq']}. {m['from']} -> {m['to']}: {m['text']}"
                   for m in result["conversation"]]
         return _text("\n".join(lines))
+    if name == "request_quote":
+        result = quote_request.request_quote(
+            str(args.get("request") or ""), customer=args.get("customer"),
+            contact=args.get("contact"), documents=args.get("documents") or [])
+        return _text(quote_request.as_text(result))
     if name == "list_bookings":
         run = orchestrator.run_cycle(live=False, inject=bool(scenario), use_llm=False,
                                      scenario=scenario)

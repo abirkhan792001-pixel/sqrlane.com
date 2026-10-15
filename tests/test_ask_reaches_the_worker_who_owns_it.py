@@ -10,6 +10,9 @@ src/ask.py puts a person on the desk's bus. The claims made about it:
     plausible answer from nowhere. That includes a booking not in the book and a
     place no source watches.
   * Asking changes nothing: nothing is drafted, queued or sent.
+  * A shipper's quote request (request_quote, on /mcp) is worked like a mail: a
+    missing detail is asked for, the quote is a draft at the gate, and nothing
+    is stored.
 
 Run it:  python -m unittest discover -s tests
 """
@@ -135,6 +138,70 @@ class TheDeskIsAnMcpServer(unittest.TestCase):
             "params": {"name": "ask_sqrlane", "arguments": {"question": "Where is SHP-002?",
                                                             "scenario": "hamburg"}}}).json()
         self.assertIn("SHP-002 is held", reply["result"]["content"][0]["text"])
+
+
+class AShipperCanRequestAQuote(unittest.TestCase):
+    """request_quote: a shipper's request, worked by the desk like a mail. What is
+    missing is asked for, never filled in; the quote is a draft at the gate, not an
+    offer; and every result says nothing is stored and nobody is shut out."""
+
+    def setUp(self):
+        from src import quote_request
+        self.q = quote_request
+
+    def test_a_complete_request_gets_a_draft_that_is_not_an_offer(self):
+        result = self.q.request_quote("Can you quote 2 x 40HC Shanghai to Basel?",
+                                      customer="Acme AG", contact="jane@acme.ch")
+        self.assertEqual(result["questions"], [])
+        quote = result["draft_quote"]
+        self.assertEqual(quote["status"], "DRAFT - not sent")
+        self.assertEqual(quote["approval_status"], "awaiting_approval")
+        self.assertEqual(result["queued_quotation"]["status"], "QUEUED - not written")
+        self.assertIn("not an offer", result["text"])
+        # The price is the Rate Worker's own top option, not a number from nowhere.
+        self.assertIn("EUR 4,600", quote["body"])
+        self.assertTrue(any("Rate Worker" in line for line in result["conversation"]))
+
+    def test_what_is_missing_is_asked_for_not_guessed(self):
+        result = self.q.request_quote("Need a price to Rotterdam please")
+        self.assertEqual(result["status"], "details missing")
+        self.assertIsNone(result["draft_quote"])
+        self.assertIsNone(result["request"]["origin"])
+        self.assertEqual(result["questions"], [self.q.QUESTIONS["origin"],
+                                               self.q.QUESTIONS["equipment"]])
+
+    def test_a_text_document_is_read_and_a_pdf_is_said_to_be_unread(self):
+        result = self.q.request_quote("quote please", documents=[
+            {"name": "spec.txt", "content": "3 x 40RH frozen fish from Ningbo to Hamburg"},
+            {"name": "invoice.pdf", "content": None}])
+        self.assertEqual(result["request"]["origin"], "Ningbo")
+        self.assertEqual(result["request"]["equipment"], "40RH")
+        self.assertEqual([d["name"] for d in result["unread_documents"]], ["invoice.pdf"])
+
+    def test_every_result_says_nothing_is_stored_and_nobody_is_shut_out(self):
+        for request in ("Quote 1 x flatrack Busan to Lyon", "hello", ""):
+            text = self.q.as_text(self.q.request_quote(request))
+            self.assertIn("nothing is stored", text)
+            self.assertIn("no access control", text)
+
+    def test_it_is_on_the_mcp_server_and_read_only(self):
+        from src import mcp_server
+        reply = mcp_server.handle({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
+                                   "params": {"name": "request_quote", "arguments": {
+                                       "request": "Quote 2 x 40HC Shenzhen to Antwerp"}}})
+        text = reply["result"]["content"][0]["text"]
+        self.assertIn("DRAFT - not sent", text)
+        self.assertNotIn("isError", reply["result"])
+        tool = next(t for t in mcp_server.TOOLS if t["name"] == "request_quote")
+        self.assertTrue(tool["annotations"]["readOnlyHint"])
+
+    def test_it_never_sends_writes_or_keeps(self):
+        tree = ast.parse((SRC / "quote_request.py").read_text(encoding="utf-8"))
+        called = {getattr(n.func, "attr", getattr(n.func, "id", "")) for n in ast.walk(tree)
+                  if isinstance(n, ast.Call)}
+        for forbidden in ("gate", "emit", "push", "post_capped", "correct", "write_text",
+                          "dump", "save"):
+            self.assertNotIn(forbidden, called)
 
 
 class AFileGoesToTheWorkerItBelongsTo(unittest.TestCase):
