@@ -803,8 +803,22 @@ fails on "last period", "previous", "win rate" or "response time" in the payload
 
 **`/mcp` is the same desk as an MCP server** (`src/mcp_server.py`): Streamable HTTP in
 its simplest form - one JSON-RPC request per POST, JSON back, no session, no stream -
-with three read-only tools (`ask_sqrlane`, `list_bookings`, `list_scenarios`). Add
-`https://www.sqrlane.com/mcp` as a custom connector in Claude to ask the desk from there.
+with four read-only tools (`ask_sqrlane`, `request_quote`, `list_bookings`,
+`list_scenarios`). Add `https://www.sqrlane.com/mcp` as a custom connector in Claude to ask
+the desk from there.
+
+**`request_quote` is the shipper's way in** (`src/quote_request.py`, 2026-10-15, on the
+owner's instruction, after nemox's "book in ChatGPT and Claude" launch). A forwarder's
+customer sends a quote request from their own AI chat - text, plus text documents - and
+the desk works it exactly as an inbound mail (`workflow.work_mail`: Inbox, RFQ, Rate,
+Playbook). A missing lane or equipment comes back as a **question, never a filled-in
+value**; a complete one comes back as the RFQ Worker's draft, `DRAFT - not sent` /
+`awaiting_approval`, labelled **not an offer** (synthetic rate sheet). Every result says
+the two things this build does not do: **nothing is stored**, so the request never
+reaches a forwarder's queue, and **there is no access control**. Booking from the chat
+is deliberately absent - a chat line is priced, not booked, same as Ask. PDFs, images
+and spreadsheets are said to be unread (no vision model). `AShipperCanRequestAQuote` in
+`tests/test_ask_reaches_the_worker_who_owns_it.py` holds all of it.
 
 ### The new dashboard at app.sqrlane.com (live, 2026-09-25)
 
@@ -1200,6 +1214,7 @@ here too, because this is what the next session reads to find its way around.
 │   │                         #   HTTPS endpoint mapped in, and the write-back push
 │   ├── ask.py                # Ask SQRlane: a question, to the Worker who owns it
 │   ├── mcp_server.py         # the same desk as an MCP server, at /mcp
+│   ├── quote_request.py      # a shipper's quote request from their AI chat
 │   ├── uploads.py            # a file dropped into Ask: export, mail, or unreadable
 │   ├── insights.py           # the dashboard's cards and charts, counted not trended
 │   ├── today.py              # what a run means at the desk: at stake, runway,

@@ -244,7 +244,16 @@ instead - it never makes an answer up. Asking changes nothing.
 
 The same desk is an **MCP server** at `https://www.sqrlane.com/mcp`: add it as a custom
 connector in Claude and ask it from there. Read-only tools: `ask_sqrlane`,
-`list_bookings`, `list_scenarios`.
+`request_quote`, `list_bookings`, `list_scenarios`.
+
+`request_quote` is the one a forwarder's *customer* would use from their own AI chat:
+they type the request (and can add text documents), the desk asks for anything missing
+- the route, the container type and count - instead of guessing, and drafts a quote
+for the forwarder to approve. The draft is not an offer, and the prices come from a
+synthetic rate sheet. Two things it does not do yet, and every answer says so: nothing
+is stored, so the request does not reach a forwarder's queue; and there is no access
+control, so a forwarder cannot limit it to their own customers. PDFs, photos and Excel
+files are not read.
 
 ---
 
