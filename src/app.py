@@ -31,8 +31,8 @@ from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, Redirec
                                Response)
 from pydantic import BaseModel
 
-from src import (ask, config, connect, httpget, insights, learning, llm, mcp_server,
-                 orchestrator, simulation, tms, workflow)
+from src import (ask, config, connect, customer_access, httpget, insights, learning, llm,
+                 mcp_server, orchestrator, simulation, tms, workflow)
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 INDEX = STATIC_DIR / "index.html"        # the dashboard, served at /app
@@ -911,23 +911,55 @@ def api_ask(request: AskRequest):
 # --- The desk as an MCP server ---------------------------------------------
 # Add https://sqrlane.com/mcp as a connector in any MCP client and ask the same
 # Assistant the dashboard's Ask box does. Read-only tools; see src/mcp_server.py.
+# A customer adds their personal link, /mcp/c/<key>, instead: that is what lets
+# request_quote through (src/customer_access.py). A key can also come as a bearer
+# token, for a customer's own agent.
 
 
-@app.post("/mcp")
-async def mcp(request: Request):
+async def _mcp_reply(request: Request, customer: str | None):
     try:
         body = await request.json()
     except ValueError:
         return JSONResponse(status_code=400, content={
             "jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "Parse error"}})
     if isinstance(body, list):
-        replies = [r for r in (mcp_server.handle(m) for m in body if isinstance(m, dict)) if r]
+        replies = [r for r in (mcp_server.handle(m, customer) for m in body
+                               if isinstance(m, dict)) if r]
         return JSONResponse(replies) if replies else Response(status_code=202)
-    reply = mcp_server.handle(body if isinstance(body, dict) else {})
+    reply = mcp_server.handle(body if isinstance(body, dict) else {}, customer)
     return JSONResponse(reply) if reply else Response(status_code=202)
 
 
+def _unknown_key():
+    # A wrong link fails loudly, so a customer setting up the connector sees it at
+    # once rather than meeting a refusal on their first quote.
+    return JSONResponse(status_code=401, headers={"WWW-Authenticate": "Bearer"}, content={
+        "jsonrpc": "2.0", "id": None, "error": {
+            "code": -32001, "message": "This customer link is not valid. Ask your forwarder "
+                                       "for your personal connector link."}})
+
+
+@app.post("/mcp")
+async def mcp(request: Request):
+    auth = request.headers.get("authorization") or ""
+    if auth.lower().startswith("bearer "):
+        customer = customer_access.customer_for(auth[7:].strip())
+        if not customer:
+            return _unknown_key()
+        return await _mcp_reply(request, customer)
+    return await _mcp_reply(request, None)
+
+
+@app.post("/mcp/c/{key}")
+async def mcp_for_customer(key: str, request: Request):
+    customer = customer_access.customer_for(key)
+    if not customer:
+        return _unknown_key()
+    return await _mcp_reply(request, customer)
+
+
 @app.get("/mcp")
+@app.get("/mcp/c/{key}")
 def mcp_get():
     """No server-initiated stream: this server only answers requests."""
     return Response(status_code=405, headers={"Allow": "POST"})

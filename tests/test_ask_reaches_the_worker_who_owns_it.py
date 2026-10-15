@@ -12,7 +12,8 @@ src/ask.py puts a person on the desk's bus. The claims made about it:
   * Asking changes nothing: nothing is drafted, queued or sent.
   * A shipper's quote request (request_quote, on /mcp) is worked like a mail: a
     missing detail is asked for, the quote is a draft at the gate, and nothing
-    is stored.
+    is stored. Only a customer holding a key the forwarder issued can send one,
+    and they send it as themselves.
 
 Run it:  python -m unittest discover -s tests
 """
@@ -178,17 +179,17 @@ class AShipperCanRequestAQuote(unittest.TestCase):
         self.assertEqual(result["request"]["equipment"], "40RH")
         self.assertEqual([d["name"] for d in result["unread_documents"]], ["invoice.pdf"])
 
-    def test_every_result_says_nothing_is_stored_and_nobody_is_shut_out(self):
+    def test_every_result_says_nothing_is_stored(self):
         for request in ("Quote 1 x flatrack Busan to Lyon", "hello", ""):
             text = self.q.as_text(self.q.request_quote(request))
             self.assertIn("nothing is stored", text)
-            self.assertIn("no access control", text)
 
     def test_it_is_on_the_mcp_server_and_read_only(self):
         from src import mcp_server
         reply = mcp_server.handle({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
                                    "params": {"name": "request_quote", "arguments": {
-                                       "request": "Quote 2 x 40HC Shenzhen to Antwerp"}}})
+                                       "request": "Quote 2 x 40HC Shenzhen to Antwerp"}}},
+                                  customer="Kempen Electronics NV")
         text = reply["result"]["content"][0]["text"]
         self.assertIn("DRAFT - not sent", text)
         self.assertNotIn("isError", reply["result"])
@@ -202,6 +203,85 @@ class AShipperCanRequestAQuote(unittest.TestCase):
         for forbidden in ("gate", "emit", "push", "post_capped", "correct", "write_text",
                           "dump", "save"):
             self.assertNotIn(forbidden, called)
+
+
+class OnlyTheForwardersCustomersCanRequestAQuote(unittest.TestCase):
+    """request_quote needs a key the forwarder issued. The customer is the key's,
+    never a name the caller typed; a wrong key is refused loudly; with no keys
+    configured nobody gets in; and only the key's hash is ever kept."""
+
+    QUOTE = {"jsonrpc": "2.0", "id": 7, "method": "tools/call",
+             "params": {"name": "request_quote", "arguments": {
+                 "request": "Quote 2 x 40HC Shanghai to Basel",
+                 "customer": "Nordmed Pharma Logistik AG"}}}
+
+    def setUp(self):
+        import json
+        import os
+        from fastapi.testclient import TestClient
+        from src import customer_access
+        from src.app import app
+        self.access = customer_access
+        self.key, digest = customer_access.new_key("Bavaria Drivetrain GmbH")
+        self._saved = os.environ.get(customer_access.ENV)
+        os.environ[customer_access.ENV] = json.dumps({digest: "Bavaria Drivetrain GmbH"})
+        self.client = TestClient(app)
+
+    def tearDown(self):
+        import os
+        if self._saved is None:
+            os.environ.pop(self.access.ENV, None)
+        else:
+            os.environ[self.access.ENV] = self._saved
+
+    def text(self, reply):
+        return reply.json()["result"]["content"][0]["text"]
+
+    def test_without_a_key_the_tool_refuses_and_reads_nothing(self):
+        reply = self.client.post("/mcp", json=self.QUOTE)
+        self.assertEqual(reply.status_code, 200)
+        self.assertTrue(reply.json()["result"]["isError"])
+        self.assertIn("personal connector link", self.text(reply))
+        self.assertNotIn("EUR", self.text(reply))
+
+    def test_the_other_tools_stay_open_without_a_key(self):
+        reply = self.client.post("/mcp", json={
+            "jsonrpc": "2.0", "id": 1, "method": "tools/call",
+            "params": {"name": "list_scenarios", "arguments": {}}})
+        self.assertNotIn("isError", reply.json()["result"])
+
+    def test_a_customer_link_lets_the_customer_in_as_themselves(self):
+        reply = self.client.post(f"/mcp/c/{self.key}", json=self.QUOTE)
+        text = self.text(reply)
+        self.assertIn("DRAFT - not sent", text)
+        # The key's customer, not the name in the arguments.
+        self.assertIn("Request from Bavaria Drivetrain GmbH", text)
+        self.assertNotIn("Nordmed", text)
+
+    def test_a_bearer_token_works_for_a_customers_own_agent(self):
+        reply = self.client.post("/mcp", json=self.QUOTE,
+                                 headers={"Authorization": f"Bearer {self.key}"})
+        self.assertIn("Request from Bavaria Drivetrain GmbH", self.text(reply))
+
+    def test_a_wrong_key_is_refused_before_anything_runs(self):
+        wrong = self.key[:-2] + ("AA" if not self.key.endswith("AA") else "BB")
+        self.assertEqual(self.client.post(f"/mcp/c/{wrong}", json=self.QUOTE).status_code, 401)
+        self.assertEqual(self.client.post("/mcp", json=self.QUOTE, headers={
+            "Authorization": f"Bearer {wrong}"}).status_code, 401)
+
+    def test_with_no_keys_configured_nobody_gets_in(self):
+        import os
+        os.environ[self.access.ENV] = ""
+        self.assertEqual(self.client.post(f"/mcp/c/{self.key}", json=self.QUOTE).status_code, 401)
+        for broken in ("not json", "[1, 2]", '{"short": "Bavaria"}'):
+            self.assertEqual(self.access.load(broken), {})
+
+    def test_only_the_hash_is_kept(self):
+        key, digest = self.access.new_key("Wonen Direct B.V.")
+        self.assertNotIn(key, digest)
+        self.assertEqual(len(digest), 64)
+        self.assertTrue(key.startswith(self.access.PREFIX))
+        self.assertGreaterEqual(len(key), 40)
 
 
 class AFileGoesToTheWorkerItBelongsTo(unittest.TestCase):
