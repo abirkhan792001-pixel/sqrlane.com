@@ -13,10 +13,11 @@ What comes back is what the forwarder would receive, and nothing more:
     the draft quote           DRAFT - not sent, awaiting the forwarder's approval.
                               It is not an offer, and it says so
 
-Two things this build does not do, and the result says both every time:
-nothing is stored, so the request does not reach a forwarder's queue; and there
-is no access control, so it is not limited to a forwarder's own customers. A
-price from the desk's synthetic rate sheet is not a market rate.
+Who may call it is decided before it is reached: on /mcp only a customer holding
+a key the forwarder issued (src/customer_access.py), and `customer` is then the
+key's customer, so their playbook applies. One thing this build does not do, and
+the result says so every time: nothing is stored, so the request does not reach
+a forwarder's queue. A price from the synthetic rate sheet is not a market rate.
 
 Nothing here sends, writes or keeps anything: `workflow.work_mail` returns its
 outputs as dicts at the gate, and this module only reads them.
@@ -45,8 +46,6 @@ LATER = {
 
 NOT_STORED = ("In this build nothing is stored: this request does not reach a forwarder's "
               "queue, and nothing is sent or written.")
-NO_ACCESS_CONTROL = ("There is no access control here yet - a forwarder cannot limit this to "
-                     "their own customers.")
 NOT_AN_OFFER = ("This is the draft the forwarder would be asked to approve - not an offer. "
                 "Prices come from the desk's synthetic rate sheet, not market rates.")
 
@@ -79,7 +78,7 @@ def request_quote(request: str, *, customer: str | None = None, contact: str | N
         return {"status": "nothing to read",
                 "text": "Nothing to quote: send the request as text, or a text document.",
                 "questions": list(QUESTIONS.values()), "unread_documents": unread,
-                "notes": [NOT_STORED, NO_ACCESS_CONTROL]}
+                "notes": [NOT_STORED]}
     item_id = f"RQ-{next(_ids):03d}"
     org = (customer or "").strip() or "Unnamed shipper (AI chat)"
     message = {"id": item_id, "from": (contact or "").strip() or org, "sender_org": org,
@@ -131,7 +130,7 @@ def request_quote(request: str, *, customer: str | None = None, contact: str | N
         "conversation": [f"{m['seq']}. {m['from']} -> {m['to']}: {m['text']}"
                          for m in worked["messages"]],
         "classifier": worked["classifier"],
-        "notes": [NOT_STORED, NO_ACCESS_CONTROL],
+        "notes": [NOT_STORED],
     }
 
 
@@ -143,7 +142,7 @@ def as_text(result: dict) -> str:
         lane = f"{req.get('origin') or '?'} to {req.get('destination') or '?'}"
         kit = (f"{req.get('count') or '?'} x {req['equipment']}" if req.get("equipment")
                else "equipment ?")
-        lines.append(f"Request as read: {lane}, {kit}.")
+        lines.append(f"Request from {req['customer']}, as read: {lane}, {kit}.")
     if result.get("questions"):
         lines += ["", "Questions for the shipper:"] + [f"- {q}" for q in result["questions"]]
     quote = result.get("draft_quote")

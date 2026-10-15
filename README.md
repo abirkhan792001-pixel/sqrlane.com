@@ -250,10 +250,23 @@ connector in Claude and ask it from there. Read-only tools: `ask_sqrlane`,
 they type the request (and can add text documents), the desk asks for anything missing
 - the route, the container type and count - instead of guessing, and drafts a quote
 for the forwarder to approve. The draft is not an offer, and the prices come from a
-synthetic rate sheet. Two things it does not do yet, and every answer says so: nothing
-is stored, so the request does not reach a forwarder's queue; and there is no access
-control, so a forwarder cannot limit it to their own customers. PDFs, photos and Excel
-files are not read.
+synthetic rate sheet. Nothing is stored yet, so the request does not reach a
+forwarder's queue - every answer says so. PDFs, photos and Excel files are not read.
+
+**Only your customers can use `request_quote`.** Each customer gets a personal key, and
+with it a personal connector link to add to Claude instead of the plain `/mcp` address:
+
+```bash
+python -m src.customer_access new "Bavaria Drivetrain GmbH"
+```
+
+That prints the customer's link (`https://www.sqrlane.com/mcp/c/sqr_...`) and a line to
+paste into the `CUSTOMER_KEYS` environment variable in Vercel; redeploy, then send the
+link to the customer. Only a hash of the key is stored, so the link is shown once - keep
+it to send. The quote is always made out to the customer the key belongs to, whatever
+name is typed in the chat. To revoke a customer, delete their entry and redeploy. With
+`CUSTOMER_KEYS` empty, nobody can request a quote. A customer's own AI agent can send the
+key as `Authorization: Bearer sqr_...` instead. The other three tools stay open.
 
 ---
 

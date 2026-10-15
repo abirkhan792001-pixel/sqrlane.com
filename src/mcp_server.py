@@ -15,14 +15,17 @@ asking changes nothing.
     list_bookings    the book the agents are working on, with each one's state
     list_scenarios   the disruptions that can be put on the board
 
-request_quote is the one a forwarder's *customer* would call from their own AI
-chat. It keeps nothing: in this build the request does not reach a forwarder's
-queue, and there is no access control - both are said in every result.
+request_quote is the one a forwarder's *customer* calls from their own AI chat,
+and only a customer can: the request has to arrive with a key the forwarder
+issued (src/customer_access.py) - in the path of a personal connector link,
+/mcp/c/<key>, or as a bearer token. The customer is the key's, never a name the
+caller typed. Without one the tool refuses. It keeps nothing: in this build the
+request does not reach a forwarder's queue, which every result says.
 """
 
 import json
 
-from src import ask, orchestrator, quote_request, risk_monitor
+from src import ask, config, orchestrator, quote_request, risk_monitor
 
 PROTOCOL_VERSION = "2025-06-18"
 SERVER_INFO = {"name": "sqrlane", "title": "SQRlane - AI agents for freight forwarders",
@@ -31,8 +34,9 @@ INSTRUCTIONS = ("SQRlane's desk of freight-forwarding agents. Ask about a bookin
                 "rate, an invoice, customs or what is waiting for approval; the Worker who owns "
                 "it answers from a run of the board. The bookings are synthetic and the TMS "
                 "link is a demo connector: nothing is sent and nothing is written. A shipper "
-                "can send a quote request with request_quote: the desk asks for what is "
-                "missing and drafts a quote for the forwarder to approve - not an offer.")
+                "customer can send a quote request with request_quote, through the personal "
+                "connector link their forwarder issued: the desk asks for what is missing and "
+                "drafts a quote for the forwarder to approve - not an offer.")
 
 _SCENARIO = {"type": "string", "enum": ["hamburg", "redsea", "rhine", "france"],
              "description": "Which disruption is on the board. Omit for a calm board."}
@@ -50,7 +54,8 @@ TOOLS = [
      "annotations": {"readOnlyHint": True, "openWorldHint": False}},
     {"name": "request_quote",
      "title": "Request a freight quote",
-     "description": ("For a shipper: send a quote request as you would write it - a few lines, "
+     "description": ("For the forwarder's customers only - it needs the personal connector "
+                     "link the forwarder issued. Send a quote request as you would write it - a few lines, "
                      "plus any text documents. The desk reads it the way it reads a mail, "
                      "asks for any missing detail (lane, equipment, count) instead of guessing, "
                      "and drafts a quote for the forwarder to approve. The draft is not an "
@@ -59,7 +64,6 @@ TOOLS = [
      "inputSchema": {"type": "object", "properties": {
          "request": {"type": "string",
                      "description": "e.g. 'Quote 2 x 40HC Shanghai to Basel, auto parts'"},
-         "customer": {"type": "string", "description": "The shipper's company name."},
          "contact": {"type": "string", "description": "Name or email to address the quote to."},
          "documents": {"type": "array", "description": "Text documents, read as attachments.",
                        "items": {"type": "object", "properties": {
@@ -85,7 +89,14 @@ def _text(payload) -> dict:
                          else json.dumps(payload, ensure_ascii=False, indent=1)}]}
 
 
-def _call(name: str, args: dict) -> dict:
+def _refused() -> dict:
+    return dict(_text(
+        f"request_quote is only for {config.FORWARDER['company']}'s customers, and this "
+        f"connection did not come with a customer key. Ask your forwarder for your personal "
+        f"connector link and add that one instead. Nothing was read or kept."), isError=True)
+
+
+def _call(name: str, args: dict, customer: str | None = None) -> dict:
     scenario = args.get("scenario") or None
     if name == "ask_sqrlane":
         result = ask.ask(str(args.get("question") or ""), scenario=scenario, use_llm=False)
@@ -98,8 +109,12 @@ def _call(name: str, args: dict) -> dict:
                   for m in result["conversation"]]
         return _text("\n".join(lines))
     if name == "request_quote":
+        if not customer:
+            return _refused()
+        # The customer is whoever the key was issued to. A name in the arguments is
+        # not asked for and not read, so one customer cannot quote as another.
         result = quote_request.request_quote(
-            str(args.get("request") or ""), customer=args.get("customer"),
+            str(args.get("request") or ""), customer=customer,
             contact=args.get("contact"), documents=args.get("documents") or [])
         return _text(quote_request.as_text(result))
     if name == "list_bookings":
@@ -116,8 +131,12 @@ def _call(name: str, args: dict) -> dict:
     raise KeyError(name)
 
 
-def handle(message: dict) -> dict | None:
-    """One JSON-RPC message in, one response out (None for a notification)."""
+def handle(message: dict, customer: str | None = None) -> dict | None:
+    """One JSON-RPC message in, one response out (None for a notification).
+
+    `customer` is who the request's key was issued to, already checked by the
+    caller (src/app.py) - None when it came without one.
+    """
     method, mid = message.get("method"), message.get("id")
     if mid is None:
         return None                      # notifications/initialized and friends
@@ -133,7 +152,7 @@ def handle(message: dict) -> dict | None:
         elif method == "tools/call":
             params = message.get("params") or {}
             try:
-                result = _call(params.get("name"), params.get("arguments") or {})
+                result = _call(params.get("name"), params.get("arguments") or {}, customer)
             except KeyError:
                 return {"jsonrpc": "2.0", "id": mid,
                         "error": {"code": -32602, "message": f"Unknown tool: {params.get('name')}"}}

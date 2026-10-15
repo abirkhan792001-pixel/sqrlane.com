@@ -814,11 +814,24 @@ the desk works it exactly as an inbound mail (`workflow.work_mail`: Inbox, RFQ, 
 Playbook). A missing lane or equipment comes back as a **question, never a filled-in
 value**; a complete one comes back as the RFQ Worker's draft, `DRAFT - not sent` /
 `awaiting_approval`, labelled **not an offer** (synthetic rate sheet). Every result says
-the two things this build does not do: **nothing is stored**, so the request never
-reaches a forwarder's queue, and **there is no access control**. Booking from the chat
+**nothing is stored**, so the request never reaches a forwarder's queue. Booking from the chat
 is deliberately absent - a chat line is priced, not booked, same as Ask. PDFs, images
 and spreadsheets are said to be unread (no vision model). `AShipperCanRequestAQuote` in
 `tests/test_ask_reaches_the_worker_who_owns_it.py` holds all of it.
+
+**Only the forwarder's customers can call it** (2026-10-15, on the owner's instruction:
+"add access control so only my customers can use it"). `src/customer_access.py`: each
+customer gets a key (`python -m src.customer_access new "<customer>"`), used as a personal
+connector link `/mcp/c/<key>` or as `Authorization: Bearer <key>`. Keys live in one env
+var, `CUSTOMER_KEYS`, as JSON of **SHA-256 hash -> customer name** - no database, no
+accounts, only the hash kept. Four rules, held by
+`OnlyTheForwardersCustomersCanRequestAQuote`: **fail closed** (unset or malformed
+`CUSTOMER_KEYS` lets nobody in); **the customer is the key's**, never a name in the
+arguments (the `customer` argument was removed), so their playbook applies and one
+customer cannot quote as another; **a wrong key is a 401** before anything runs, so a
+bad link shows at connector setup; **the other three tools stay open** - they serve the
+synthetic demo book. Checked by deleting the refusal and watching the test fail. The key
+in a link's path will appear in Vercel's request logs; the bearer header avoids that.
 
 ### The new dashboard at app.sqrlane.com (live, 2026-09-25)
 
@@ -1215,6 +1228,7 @@ here too, because this is what the next session reads to find its way around.
 │   ├── ask.py                # Ask SQRlane: a question, to the Worker who owns it
 │   ├── mcp_server.py         # the same desk as an MCP server, at /mcp
 │   ├── quote_request.py      # a shipper's quote request from their AI chat
+│   ├── customer_access.py    # which customer a key belongs to - only the hash kept
 │   ├── uploads.py            # a file dropped into Ask: export, mail, or unreadable
 │   ├── insights.py           # the dashboard's cards and charts, counted not trended
 │   ├── today.py              # what a run means at the desk: at stake, runway,
